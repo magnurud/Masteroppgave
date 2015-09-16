@@ -1,0 +1,73 @@
+----------- BOOLEAN VARIABLES ------------
+ifsplit 			||==1: PnPn form, !=1: Pn-2Pn-2 form. "nek_advance"
+ifexplvis
+IFDOIT    = .FALSE. 	|| Default in drive2.f
+IFCVODE   = .false.
+IFEXPLVIS = .false.
+LOCAL ifverbose
+LOCAL icalld
+----------- Variables ------------- 
+istep				||	current iteration step
+iostep			||	output step frecuency
+time				||	TSTEP current time
+LOCAL timel	||			time at last step
+LOCAL atime	||		  accumulated time 	
+nio					||	Processor node number  
+nelx				||	ZPER number of elements in x-direction 
+ndim				|| number of dimensions
+lglel				|| 	PARALELL vector of length lelt (mapping from local to global element index ?? )
+gllel				|| 	PARALELL vector of length lelg (mapping from global to local element index ?? )
+CBC					|| 3d array containing BC
+ix					|| commonly used as iterator over the x-nodes within an element
+kx1,kx2			|| commonly used as lower and upper bound for ix
+nx1,ny1			|| similar to lx1,ly1  . Initialized in initdim , drive2.f
+nx2,ny2			|| similar to lx2,ly2 (Pressure nodes) . Initialized in initdim , drive2.f
+T(LX1,LY1,LZ1,LELT,LDIMT) || array containing scalars ... temperature, concentration etc. SOLN
+NELV,NELT  || number of elements , local and total ? 
+
+--------------------------------------------------------------------------------------
+----- local variables used when interpolating values and writing to file htps-procedure----
+fieldin			|| input field(s) to interpolate (lelt*lxyz,nfld)
+nfld				|| number of fields in fieldin
+pts					|| packed list of interpolation points pts:=[x(1)...x(n),y(1)...y(n),z(1)...z(n)]
+n						|| local number of interpolation points
+ifto				|| transpose output (n,nfld)^T = (nfld,n) 
+itpts				|| find interpolation points 
+ih					|| interpolation handle
+fieldout    || packed list of interpolated values (n,nfld)
+---------- Functions ------------------------------------- 
+XM1(ix,iy,iz,e) 	Provides the x-position of node nr (ix,iy,iz) in element e.
+avg1(avg_var,curr_var,alpha,beta,n,'avg_var',ifverbose)	Calculating average of var. alpha and beta are the weights, n is the length of the vector		navier5.f
+avg2 		Basically the same but for squared variables.
+avg3 		average of a variable that is a product of two separate variables.
+rzero(vec,n) 	fill vec with length n full of zeroes
+get_exyz 			get the element position in each direction of a given element
+hpts() 				output for some points given in htps.in !?! 
+hpts_out(fieldout,nflds,nfldm,npoints,nbuff) 
+facind(KX1,KX2,KY1,KY2,KZ1,KZ2,NX,NY,NZ,IFACE)   Making sure the limits kx1,kx2... are correct when iterating over face IFACE.
+userbc(IX,IY,IZ,IFACE,IEG) 	imposing bc for node (ix,iy,iz) on face iface of element IEG
+NEKASGN (IX,IY,IZ,IEL) Updating the common variables in NEKUSE for the given node NOTE: Is performed before every userbc call!
+
+
+
+------------- Files --------------- 
+htps.in 		A file that defines certain output points, on the format:
+N
+X1 Y1 Z1
+X2 Y2 Z2
+.....
+XN YN ZN
+
+------------- TIPS ---------------
+When defining curves... a minus sign could imply reducing the precision.
+
+say t(lx,ly) is to be iterated in a function. often the first element is 
+passed as t(1,1) or simply t along with n = lx*ly
+
+
+------- Q's for THG ------------
+What is MAXLOC
+What is iloc and loc
+hpts to get the wanted output?, need to add avg values as output...  any ideas (python script)
+how to read the .f***** files? 
+why both usrdat2 and usrdat3 ?? 
