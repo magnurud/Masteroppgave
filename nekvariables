@@ -40,13 +40,15 @@ XM1(ix,iy,iz,e) 	Provides the x-position of node nr (ix,iy,iz) in element e.
 avg1(avg_var,curr_var,alpha,beta,n,'avg_var',ifverbose)	Calculating average of var. alpha and beta are the weights, n is the length of the vector		navier5.f
 avg2 		Basically the same but for squared variables.
 avg3 		average of a variable that is a product of two separate variables.
+avg_all		averaging all standard variables... navier5.f
 rzero(vec,n) 	fill vec with length n full of zeroes
 get_exyz 			get the element position in each direction of a given element
-hpts() 				output for some points given in htps.in !?! 
+hpts() 				output for some points given in htps.in postpro.f
 hpts_out(fieldout,nflds,nfldm,npoints,nbuff) 
 facind(KX1,KX2,KY1,KY2,KZ1,KZ2,NX,NY,NZ,IFACE)   Making sure the limits kx1,kx2... are correct when iterating over face IFACE.
 userbc(IX,IY,IZ,IFACE,IEG) 	imposing bc for node (ix,iy,iz) on face iface of element IEG
 NEKASGN (IX,IY,IZ,IEL) Updating the common variables in NEKUSE for the given node NOTE: Is performed before every userbc call!
+copy(a,b,n) copies the n first elements in b to a. a,b = real 
 
 
 
