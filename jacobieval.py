@@ -26,26 +26,29 @@ p,q,r,s = symbols('p,q,r,s') # basis functions for xi and eta
 # Gordon hall functions
 Fe,Fn,Fen,Fgh = symbols("Fe,Fn,Fen,Fgh") # Gordon Hall parts
 
-#angle = np.pi/8  # half the size of the total angle 
-#a = np.cos(np.pi/2-angle) # lower Corner x-values
-#b = np.tan(np.pi/2-angle) # Slope for the linear boundaries
-#c = 0.3 # lateral expansion
+angle = pi/4  # half the size of the total angle 
+a = cos(pi/2-angle) # lower Corner x-values
+b = tan(pi/2-angle) # Slope for the linear boundaries
+c = 0.3 # lateral expansion
+d = 1+c # lateral endpoints
 #d = sin(np.pi/2-angle)
 #k = 0.7*(1-np.sin(np.pi/2-angle)) # 2nd order coefficient
-#theta = -angle*xi+np.pi/2     
+theta = pi/4*(2-xi)    
 
 # Defining edge functions 
 ### trapezoidal element with curved bottom
 gamma1 = Matrix([a +c*(1+eta)/2,b*c*(1+eta)/2])
-gamma2 = Matrix([-xi*(a+c),b*c])# + k*(1-xi**2)
+#gamma2 = Matrix([-xi*(a+c),b*c])# + k*(1-xi**2)
+gamma2 = Matrix([d*cos(theta),d*sin(theta)-sin(pi/4)])
 gamma3 = Matrix([-a-c*(1+eta)/2,b*c*(1+eta)/2])
-gamma4 = Matrix([a*xi,0])
+gamma4 = Matrix([cos(theta),sin(theta)-sin(pi/4)])
+#gamma4 = Matrix([a*xi,sqrt(1-(a*xi)**2)])
 ### Circular element 
 #a = 1/np.sqrt(2) # cornervals
-gamma1 = Matrix([sqrt(1-(a*eta)**2),a*eta])
-gamma2 = Matrix([-a*xi,sqrt(1-(a*xi)**2)])
-gamma3 = Matrix([-sqrt(1-(a*eta)**2),-a*eta])
-gamma4 = Matrix([a*xi,-sqrt(1-(a*xi)**2)])
+#gamma1 = Matrix([sqrt(1-(a*eta)**2),a*eta])
+#gamma2 = Matrix([-a*xi,sqrt(1-(a*xi)**2)])
+#gamma3 = Matrix([-sqrt(1-(a*eta)**2),-a*eta])
+#gamma4 = Matrix([a*xi,-sqrt(1-(a*xi)**2)])
 
 
 #### HAVE TO CHECK THIS !!! 
@@ -74,7 +77,7 @@ J = Matrix([[diff(Fgh[0],xi),diff(Fgh[0],eta)],
 # Caldulating determinant and changes in determinant
 Jdet = simplify(J[0,0]*J[1,1]-J[0,1]*J[1,0])
 Jdiv1 = diff(Jdet,xi) 
-Jdiv2 = diff(Jdet,eta) 
-#pprint(collect(Jdet,eta))
-pprint(Jdet)
+#Jdiv2 = diff(Jdet,eta) 
+pprint(collect(Jdet,eta))
+#pprint(J)
 

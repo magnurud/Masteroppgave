@@ -6,9 +6,10 @@ import gh
 import quadrature_nodes as qn
 import structured_grids as sg 
 import laplace_functions as lp 
-case = 2 # Decides what kind of element to be constructed
+case = 1 # Decides what kind of element to be constructed
 boolplot = 1 # Plot or not
 
+# Plots the element outside of a quarter of a circle with radius 1
 #Number of GLL points:
 N = 10
 xis = qn.GLL_points(N)
@@ -16,57 +17,36 @@ weights = qn.GLL_weights(N, xis)
 etas = xis
 
 angle =np.pi/8  # half the size of the total angle 
-c1 = np.cos(np.pi/2-2*angle) # lower Corner x-values
-c2 = np.tan(np.pi/2-2*angle) # Slope for the linear boundaries
-c3 = 0.3 # lateral expansion
-k = 0.7*(1-np.sin(np.pi/2-angle)) # 2nd order coefficient
+c1 = 1*np.cos(np.pi/2-angle) # lower Corner x-values
+c2 = 2*np.cos(np.pi/2-angle) # higher Corner x-values
+c3 = np.tan(np.pi/2-angle) # Slope for the linear boundaries
+c4 = 1*np.sin(np.pi/2-angle) # lower Corner x-values
+c5 = 2*np.sin(np.pi/2-angle) # higher Corner x-values
 
-if case <= 3:
-    def gamma1(eta):
-        return c1+c3*(1+eta)/2,c2*c3*(1+eta)/2
-        #return 1,eta # Linear
-    if case == 1:
-        def gamma2(xi):
-            return -xi*(c1+c3),c2*c3# + k*(1-xi**2)
-            #return xi,1 # Linear
-    elif case == 2:
-			print "heeelo"
-			def gamma2(xi):
-				theta = -angle*xi+np.pi/2     
-				return c3**2*(1+c2**2)*np.cos(theta),c3**2*(1+c2**2)*np.sin(theta)-np.sin(np.pi/2-angle)
-            #return xi,1 # Linear
-    elif case == 3:
-        def gamma2(xi):
-            return -xi*(c1+c3),c2*c3 + k*(1-xi**2)
-            #return xi,1 # Linear
-    def gamma3(eta):
-        return -c1-c3*(1+eta)/2,c2*c3*(1+eta)/2
-        #return -1,eta # Linear
+def gamma1(eta):
+		return c1+1/c3*(1+eta)/2,(c5-c4)*(1+eta)/2 +c4
+		#return 1,eta # Linear
+if case == 1:
+	def gamma2(xi):
+			return -xi*c2,c5# + k*(1-xi**2)
+			#return xi,1 # Linear
+elif case == 2:
+	def gamma2(xi):
+		theta = -angle*xi+np.pi/2     
+		return 2*np.cos(theta),2*np.sin(theta)#-np.sin(np.pi/2-angle)
+				#return xi,1 # Linear
+elif case == 3:
+	def gamma2(xi):
+			#return -xi*(c1+c3),c2*c3 + k*(1-xi**2)
+			return xi,1 # Linear
+def gamma3(eta):
+		return -c1-1/c3*(1+eta)/2, (c5-c4)*(1+eta)/2 +c4
+		#return -1,eta # Linear
 
-    def gamma4(xi):
-        theta = -angle*xi+np.pi/2     
-        return np.cos(theta), np.sin(theta)-np.sin(np.pi/2-angle)
-        #return xi,-1 # Linear
-if case == 4 or case == 5:
-    def gamma1(eta):
-        return c1,c2*c3*(1+eta)/2
-        #return 1,eta # Linear
-    if case == 4:
-        def gamma2(xi):
-            return -xi*c1,c2*c3# + k*(1-xi**2)
-            #return xi,1 # Linear
-    elif case == 5:
-        def gamma2(xi):
-            return -xi*c1,c2*c3+k*(1-xi**2)
-            #return xi,1 # Linear
-    def gamma3(eta):
-        return -c1,c2*c3*(1+eta)/2
-        #return -1,eta # Linear
-
-    def gamma4(xi):
-        theta = -angle*xi+np.pi/2     
-        return np.cos(theta), np.sin(theta)-np.sin(np.pi/2-angle)
-        #return xi,-1 # Linear
+def gamma4(xi):
+		theta = -angle*xi+np.pi/2     
+		return np.cos(theta), np.sin(theta)
+		#return xi,-1 # Linear
 
 #Generate mesh:
 print "Getting Mesh..."
@@ -119,3 +99,4 @@ surf = ax.plot_surface(X, Y, Jac.reshape(N,N), rstride=1, cstride=1, cmap=cm.coo
 #plt.plot(x[:,2],y[:,2],'g')
 #plt.plot(x[:,3],y[:,3],'c')
 plt.show()
+
