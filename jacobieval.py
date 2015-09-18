@@ -2,12 +2,13 @@
 from sympy import *
 import numpy as np
 
-#    ____(2)___
+#    _<__(2)___
 #   |          |
+#   |          ^
 #   |          |
 #  (3)        (1)
 #   |          |
-#   |___(4)____| 
+#   |___(4)_>__| 
 #
 #
 # Different Constants
@@ -34,13 +35,18 @@ Fe,Fn,Fen,Fgh = symbols("Fe,Fn,Fen,Fgh") # Gordon Hall parts
 #theta = -angle*xi+np.pi/2     
 
 # Defining edge functions 
+### trapezoidal element with curved bottom
 gamma1 = Matrix([a +c*(1+eta)/2,b*c*(1+eta)/2])
 gamma2 = Matrix([-xi*(a+c),b*c])# + k*(1-xi**2)
-#gamma2 = Matrix([-xi*(a+c),b*c])# + k*(1-xi**2)
-#gamma2 = Matrix([-xi*(a+c),b*c])# + k*(1-xi**2)
 gamma3 = Matrix([-a-c*(1+eta)/2,b*c*(1+eta)/2])
-#gamma4 = Matrix([cos(theta), sin(theta)-d])
 gamma4 = Matrix([a*xi,0])
+### Circular element 
+#a = 1/np.sqrt(2) # cornervals
+gamma1 = Matrix([sqrt(1-(a*eta)**2),a*eta])
+gamma2 = Matrix([-a*xi,sqrt(1-(a*xi)**2)])
+gamma3 = Matrix([-sqrt(1-(a*eta)**2),-a*eta])
+gamma4 = Matrix([a*xi,-sqrt(1-(a*xi)**2)])
+
 
 #### HAVE TO CHECK THIS !!! 
 # Evaluating in the corners
@@ -69,4 +75,6 @@ J = Matrix([[diff(Fgh[0],xi),diff(Fgh[0],eta)],
 Jdet = simplify(J[0,0]*J[1,1]-J[0,1]*J[1,0])
 Jdiv1 = diff(Jdet,xi) 
 Jdiv2 = diff(Jdet,eta) 
-pprint(collect(Jdet,eta))
+#pprint(collect(Jdet,eta))
+pprint(Jdet)
+
