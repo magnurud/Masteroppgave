@@ -1,17 +1,25 @@
+---------- UNDERSTANDING THE LOGFILE -------------
+
+The line 'Solving for fluid F T T' contains the three boolean vars ifsplit,iftran,ifnav
+
 ----------- BOOLEAN VARIABLES ------------
-ifsplit 			||==1: PnPn form, !=1: Pn-2Pn-2 form. "nek_advance"
-ifexplvis
+IFSPLIT ||==1: PnPn form, !=1: Pn-2Pn-2 form. "nek_advance"
+IFNATC		|| natural convection, boussinesq turned on == BETAG?
 IFDOIT    = .FALSE. 	|| Default in drive2.f
 IFCVODE   = .false.
-IFEXPLVIS = .false.
+IFEXPLVIS = .false. || calculation of explicit stress tensor
+IFTRAN   || transient flow
+IFFLOW 	 || solve for fluid, pressure - velocity 
+IFCHAR 	 || use characteristics for convection operator 
 LOCAL ifverbose
 LOCAL icalld
 ----------- Variables ------------- 
 istep				||	current iteration step
 iostep			||	output step frecuency
 time				||	TSTEP current time
-LOCAL timel	||			time at last step
-LOCAL atime	||		  accumulated time 	
+timef				|| 	time at last step
+timel				||	LOCAL time at last step
+atime				||	LOCAL accumulated time 	
 nio					||	Processor node number  
 nelx				||	ZPER number of elements in x-direction 
 ndim				|| number of dimensions
@@ -24,6 +32,18 @@ nx1,ny1			|| similar to lx1,ly1  . Initialized in initdim , drive2.f
 nx2,ny2			|| similar to lx2,ly2 (Pressure nodes) . Initialized in initdim , drive2.f
 T(LX1,LY1,LZ1,LELT,LDIMT) || array containing scalars ... temperature, concentration etc. SOLN
 NELV,NELT  || number of elements , local and total ? 
+IGEOM 	   || 1 or 2... something to do with change in geometry ? 
+BM1 			 || array containing the mass in each node??
+TA1				 || Array used to store convectional contribution of a scalar, TA2,TA3 the same,induct.f SCRUZ
+
+------TSTEP----------
+DT 					|| timestep
+DTLAG				|| array containing the preevious 10 timesteps
+BD 					|| array containing upto 10 backward difference coeffs
+AB 					|| array containing upto 10 extrapolation coeffs (Adam-Bash...)
+NBDINP			|| param(27), TORDER, temporal discretization order, initialized in drive2.f
+NBD 				|| temporal discretization order, including initial developement.
+DTINVM			|| 1/DT
 
 --------------------------------------------------------------------------------------
 ----- local variables used when interpolating values and writing to file htps-procedure----
@@ -49,6 +69,8 @@ facind(KX1,KX2,KY1,KY2,KZ1,KZ2,NX,NY,NZ,IFACE)   Making sure the limits kx1,kx2.
 userbc(IX,IY,IZ,IFACE,IEG) 	imposing bc for node (ix,iy,iz) on face iface of element IEG
 NEKASGN (IX,IY,IZ,IEL) Updating the common variables in NEKUSE for the given node NOTE: Is performed before every userbc call!
 copy(a,b,n) copies the n first elements in b to a. a,b = real 
+settolv()	|| Set tolerance for velocity vector
+convop(conv,fi)	|| compute the convective term of a scalar
 
 
 
