@@ -70,6 +70,5 @@ passed as t(1,1) or simply t along with n = lx*ly
 ------- Q's for THG ------------
 What is MAXLOC
 What is iloc and loc
-hpts to get the wanted output?, need to add avg values as output...  any ideas (python script)
-how to read the .f***** files? 
 why both usrdat2 and usrdat3 ?? 
+why dtinf ?
