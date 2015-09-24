@@ -12,7 +12,7 @@ IFTRAN   || transient flow
 IFFLOW 	 || solve for fluid, pressure - velocity 
 IFCHAR 	 || use characteristics for convection operator 
 LOCAL ifverbose
-LOCAL icalld
+LOCAL icalld || Used to determine whether a subroutine has been called
 ----------- Variables ------------- 
 istep				||	current iteration step
 iostep			||	output step frecuency
@@ -90,7 +90,5 @@ passed as t(1,1) or simply t along with n = lx*ly
 
 
 ------- Q's for THG ------------
-What is MAXLOC
-What is iloc and loc
-why both usrdat2 and usrdat3 ?? 
-why dtinf ?
+icalld ? local variable in many scripts... 
+igeom ? Moving mesh
