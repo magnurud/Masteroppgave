@@ -1,0 +1,498 @@
+C-----------------------------------------------------------------------
+C  nek5000 user-file template
+C
+C  user specified routines:
+C     - userbc : boundary conditions
+C     - useric : initial conditions
+C     - uservp : variable properties
+C     - userf  : local acceleration term for fluid
+C     - userq  : local source term for scalars
+C     - userchk: general purpose routine for checking errors etc.
+C
+C-----------------------------------------------------------------------
+      subroutine uservp(ix,iy,iz,eg) ! set variable properties
+      include 'SIZE'
+      include 'TOTAL'
+      include 'NEKUSE'
+
+      integer e,f,eg
+c     e = gllel(eg)
+
+      udiff  = 0.0
+      utrans = 0.0
+
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine userf(ix,iy,iz,eg) ! set acceleration term
+c
+c     Note: this is an acceleration term, NOT a force!
+c     Thus, ffx will subsequently be multiplied by rho(x,t).
+c
+      include 'SIZE'
+      include 'TOTAL'
+      include 'NEKUSE'
+
+      integer e,f,eg
+c     e = gllel(eg)
+
+      ffx = 0.0
+      ffy = 0.0
+      ffz = 0.0
+
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine userq(ix,iy,iz,eg) ! set source term
+      include 'SIZE'
+      include 'TOTAL'
+      include 'NEKUSE'
+
+      integer e,f,eg
+c     e = gllel(eg)
+
+      qvol   = 0.0
+      source = 0.0
+
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine userq2(q) ! set source term
+      include 'SIZE'
+      include 'TOTAL'
+      include 'NEKUSE'
+
+      real q(lx1, ly1, lz1, lelt)
+
+c      if (ifcoup) then
+c         call nekMOAB_import_vars(tTag, 0, q)
+c      elseif (ifvcoup) then
+c         call nekMOAB_import_vars(vtTag, 1, q)
+c      endif
+
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine userbc(ix,iy,iz,iside,ieg) ! set up boundary conditions
+c     NOTE ::: This subroutine MAY NOT be called by every process
+      include 'SIZE'
+      include 'TOTAL'
+      include 'NEKUSE'
+      include 'inflow.i'
+
+      integer kx1,kx2,ky1,ky2,kz1,kz2, mx,my,mz
+      integer idface, ioffs, nfaces
+      real d 
+              
+      nfaces = 2*ndim 
+
+      call facind(kx1,kx2,ky1,ky2,kz1,kz2,nx1,ny1,nz1,iside)
+   
+      if ( abs(x) .lt. 1e-7 ) then !... west inflow boundary at x=0
+         mx = kx2-kx1+1
+         my = ky2-ky1+1
+         mz = kz2-kz1+1
+         ioffs = ix + (iy-1)*mx + (iz-1)*mx*my - 1
+   
+         idface = (gllel(ieg)-1)*nfaces + iside
+         loc = -1
+         do  i=1,maxloc
+             if ( iloc(1,i) .eq. idface ) loc = iloc(2,i) + ioffs
+         end do
+   
+         ux   = 0.0
+         uy   = 0.0
+         uz   = 0.0
+         if ( loc .gt. 0 ) then
+c...  interpolate velocity components
+            do i=1,nintpt
+               j=intj(i,loc)
+               k=intk(i,loc)
+               ux=ux + wgtint(i,loc)*vxi(j,k)
+               uy=uy + wgtint(i,loc)*vyi(j,k)
+               uz=uz + wgtint(i,loc)*vzi(j,k)
+            end do
+         end if ! ( loc .gt. 0 )
+         temp = 0.0
+      else if ( abs(z) .lt. 1.e-7 ) then  !... floor
+         d = 0.0515 ! Radius of the circle
+         if ( param(70) .gt. 0.0 .and.
+     &      ((x-0.396)**2 + y**2 ).lt. d**2 ) then
+               ux = 0.0
+               uy = 0.0
+               uz = 0.100   ! 50l/min
+               temp = 1.0
+         else
+            ux   = 0.0
+            uy   = 0.0
+            uz   = 0.0
+            temp = 0.0
+         end if
+      end if
+
+c     write(*,*) "ieg,x,y,z,ux,uy,uz = ",ieg,x,y,z,ux,uy,uz
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine useric(ix,iy,iz,ieg) ! set up initial conditions
+      include 'SIZE'
+      include 'TOTAL'
+      include 'NEKUSE'
+
+      ux   = 0.0
+      uy   = 0.0
+      uz   = 0.0
+      temp = 0.0
+
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine userchk()
+      include 'SIZE'
+      include 'TOTAL'
+      include 'AVG'
+      include 'inflow.i'
+      
+      integer dataset
+      data dataset /-1/
+      save dataset
+      character*128 fname
+   
+      integer curdat
+      
+      curdat = nfile0 + MOD(NINT(time/dtinf),nfile1-nfile0+1)
+      IF ( curdat .NE. dataset ) THEN
+c...     read velocity data from file
+         write(fname,'(a,i5.5)') '/panfs/pana1/work/der/MODITIC/
+     &Array_case2/inflow_dt_all/TimeSeries/Profiles/prof',curdat
+         if (nid.eq.0) write(*,*) fname
+         open (unit=12,file=fname,status='OLD')
+         DO j=0,inny/3
+            DO k=1,innz
+                IF(j.NE.0) THEN
+                 READ(12,*) vxi(j,k),vyi(j,k),vzi(j,k)
+c...    Has to be done for the new inflowdata MAGNUS
+                 vxi(inny/3+j,k)  = vxi(j,k)
+                 vyi(inny/3+j,k)  = vyi(j,k)
+                 vzi(inny/3+j,k)  = vzi(j,k)
+                 vxi(2*inny/3+j,k)= vxi(j,k)
+                 vyi(2*inny/3+j,k)= vyi(j,k)
+                 vzi(2*inny/3+j,k)= vzi(j,k)
+               ELSE
+c...    Need to take away the first column of inflow
+                 READ(12,*) vxi(inny,innz),vyi(inny,innz),vzi(inny,innz)
+               END IF
+            END DO
+         END DO
+         dataset = curdat
+         CLOSE(12)
+      END IF
+
+c...  add monitor points Only after the gas has moved a certain distance
+      if(MOD(ISTEP,IOSTEP).EQ.0) then
+        call hpts() ! For every IO tstep
+      end if
+c...  compute averages
+      if ( param(71) .gt. 0.0) call avg_all()
+c...  reset all previously calculated averages
+      !if (ISTEP.EQ.1) then 
+         !atime  = 0.
+         !timel  = time
+         !call rzero(uavg,ntot)
+         !call rzero(vavg,ntot)
+         !call rzero(wavg,ntot)
+         !call rzero(pavg,nto2)
+         !do i = 1,ldimt
+            !call rzero(tavg(1,1,1,1,i),ntott)
+         !enddo
+         !call rzero(urms,ntot)
+         !call rzero(vrms,ntot)
+         !call rzero(wrms,ntot)
+         !call rzero(prms,nto2)
+         !do i = 1,ldimt
+            !call rzero(trms(1,1,1,1,i),ntott)
+         !enddo
+         !call rzero(vwms,ntot)
+         !call rzero(wums,ntot)
+         !call rzero(uvms,ntot)
+      !endif
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine usrdat()   ! This routine to modify element vertices
+      include 'SIZE'
+      include 'TOTAL'
+
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine usrdat2()  ! This routine to modify mesh coordinates
+      include 'SIZE'
+      include 'TOTAL'
+      include 'NEKUSE'
+      include 'inflow.i'
+
+      integer loc, ii, inj, ink
+      real dist, dists(nintpt)
+      character*3 cb
+      
+      if ( .false. ) then
+c...  read coordinates for inflow profile
+c...  OPEN(unit=12,file='./Profiles/coords',status='OLD')
+      OPEN(unit=12,file='/panfs/pana1/work/der/MODITIC/Array_case2
+     &/inflow_dt_all/TimeSeries/Profiles/coords',status='OLD')
+      DO j=1,inny
+         DO k=1,innz
+            xi(j,k)=-1.0
+            read(12,*) yi(j,k), zi(j,k) 
+         END DO
+      END DO
+      CLOSE(unit=12)
+
+c...  initialize interpolation variables for inflow profile
+      DO j=1,maxlist
+         DO i=1,nintpt
+            intj(i,j) = -1
+            intk(i,j) = -1
+            wgtint(i,j) = 99999.            
+         END DO
+      END DO
+
+c...  initialize inflow profile velocities
+      do k=1,innz
+      do j=1,inny
+        vxi(j,k) = 0.0   
+        vyi(j,k) = 0.0   
+        vzi(j,k) = 0.0   
+      end do
+      end do
+       
+      
+  
+      DO j=1,maxloc
+         iloc(1,j) = -1
+         iloc(2,j) = -1
+      END DO
+
+c...  parse bc list for inflow faces
+      ifield = 1
+      nfaces = 2*ndim
+      loc = 1
+      ii = 1
+      nel = nelfld(ifield)
+      do ie=1,nel
+         do iface=1,nfaces
+            cb = cbc(iface,ie,ifield)
+            if ( cb .eq. 'v  ' ) then
+               if ( ii .ge. maxloc ) then
+                  write(6,*) "ABORT. Increase maxloc"//
+     >                        " (in inflow.i) and recompile"
+                  call exitt
+               end if
+               iloc(1,ii) = (ie-1)*nfaces + iface
+               iloc(2,ii) = loc
+               ii = ii+1
+               !... for each point in face find interpolation points and weights
+               call facind(kx1,kx2,ky1,ky2,kz1,kz2,nx1,ny1,nz1,iface)
+               do iz=kz1,kz2
+               do iy=ky1,ky2
+               do ix=kx1,kx2
+                  call nekasgn(ix,iy,iz,ie)
+                  if ( abs(x) .lt. 1.e-7 ) then ! only do this for west inflow bdry
+                     !... compute distances and interpolation weights 
+                     do ink=1,innz
+                     do inj=1,inny
+                        if (loc .le. maxlist ) then
+                           !... calculate distance to point
+                           dist = sqrt( (x-xi(inj,ink))**2 + 
+     >                               (y-yi(inj,ink))**2 + 
+     >                               (z-zi(inj,ink))**2 ) + 1.e-6
+                           !... test for distance to point
+                           ipos = 0
+                           do i1=nintpt,1,-1
+                              if ( dist .lt. wgtint(i1,loc) ) ipos = i1
+                           end do
+                           !... if point is closer than already stored points, store and sort in list
+                           if ( ipos .gt. 0 ) then
+                              do i1=nintpt,ipos+1,-1
+                                 intj(i1,loc)   = intj(i1-1,loc)
+                                 intk(i1,loc)   = intk(i1-1,loc)
+                                 wgtint(i1,loc) = wgtint(i1-1,loc)
+                              end do
+                              intj(ipos,loc)   = inj
+                              intk(ipos,loc)   = ink
+                              wgtint(ipos,loc) = dist
+                           end if ! (ipos)
+                        else ! (loc .gt. maxlist )
+                        !... abort with error message
+                           write(6,*) "ABORT. Increase maxlist"//
+     >                       " (in inflow.i) and recompile", loc, nid
+                           call exitt
+                        end if ! (loc)
+                     end do  ! (ink, inj)
+                     end do
+                     loc = loc+1
+                  end if ! ( west inflow bdry )
+               end do ! (ix)
+               end do ! (iy)
+               end do ! (iz)
+            end if   ! (cb .eq.'v  ' )
+         end do ! (ifaces)
+      end do  ! (ie)
+ 
+c...  compute interpolations weights
+      do j=1,loc-1
+         wsum = 0.0
+         do i=1,nintpt
+            wgtint(i,j) = 1.0/wgtint(i,j)
+            wsum = wsum + wgtint(i,j)
+         end do
+         do i=1,nintpt
+            wgtint(i,j) = wgtint(i,j)/wsum
+         end do
+      end do ! (do j)
+      endif  ! (false)
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine usrdat3()
+      include 'SIZE'
+      include 'TOTAL'
+      include 'NEKUSE'
+      include 'inflow.i'
+
+      integer loc, ii, inj, ink, itm
+      real dist, dists(nintpt)
+      character*3 cb
+      
+c...  read coordinates for inflow profile
+c...  OPEN(unit=12,file='./Profiles/coords',status='OLD')
+      DO itm=0,2 ! Need to triple the inflowdata
+        OPEN(unit=12,file='/panfs/pana1/work/der/MODITIC/Array_case2
+     &/inflow_dt_all/TimeSeries/Profiles/coords',status='OLD')
+        DO j=0,inny/3
+           DO k=1,innz
+              IF(j.NE.0) THEN ! The first column is just zeroes! 
+                xi(j+itm*inny/3,k)=0
+                read(12,*) yi(j+itm*inny/3,k), zi(j+itm*inny/3,k) 
+                IF(itm.EQ.0)  yi(j+itm*inny/3,k) = 
+     &                        yi(j+itm*inny/3,k)-2.42
+                IF(itm.EQ.1)  yi(j+itm*inny/3,k) =
+     &                        yi(j+itm*inny/3,k)-0.77
+                IF(itm.EQ.2)  yi(j+itm*inny/3,k) =
+     &                        yi(j+itm*inny/3,k)+0.77
+              ELSE
+c...    Need to take away the first column of inflow
+                read(12,*) yi(inny,innz), zi(inny,innz) 
+              END IF
+           END DO
+        END DO
+        CLOSE(unit=12)
+      END DO
+
+c...  initialize interpolation variables for inflow profile
+      DO j=1,maxlist
+         DO i=1,nintpt
+            intj(i,j) = -1
+            intk(i,j) = -1
+            wgtint(i,j) = 99999.            
+         END DO
+      END DO
+
+c...  initialize inflow profile velocities
+      do k=1,innz
+      do j=1,inny
+        vxi(j,k) = 0.0   
+        vyi(j,k) = 0.0   
+        vzi(j,k) = 0.0   
+      end do
+      end do
+       
+      
+  
+      DO j=1,maxloc
+         iloc(1,j) = -1
+         iloc(2,j) = -1
+      END DO
+
+c...  parse bc list for inflow faces
+      ifield = 1
+      nfaces = 2*ndim
+      loc = 1
+      ii = 1
+      nel = nelfld(ifield)
+      do ie=1,nel
+         do iface=1,nfaces
+            cb = cbc(iface,ie,ifield)
+            if ( cb .eq. 'v  ' ) then
+               if ( ii .ge. maxloc ) then
+                  write(6,*) "ABORT. Increase maxloc"//
+     >                        " (in inflow.i) and recompile"
+                  call exitt
+               end if
+               iloc(1,ii) = (ie-1)*nfaces + iface
+               iloc(2,ii) = loc
+               ii = ii+1
+               !... for each point in face find interpolation points and weights
+               call facind(kx1,kx2,ky1,ky2,kz1,kz2,nx1,ny1,nz1,iface)
+               do iz=kz1,kz2
+               do iy=ky1,ky2
+               do ix=kx1,kx2
+                  call nekasgn(ix,iy,iz,ie)
+                  if ( abs(x) .lt. 1.e-7 ) then ! only do this for west inflow bdry
+                     !... compute distances and interpolation weights 
+                     do ink=1,innz
+                     do inj=1,inny
+                        if (loc .le. maxlist ) then
+                           !... calculate distance to point
+                           dist = sqrt( (x-xi(inj,ink))**2 + 
+     >                               (y-yi(inj,ink))**2 + 
+     >                               (z-zi(inj,ink))**2 ) + 1.e-6
+                           !... test for distance to point
+                           ipos = 0
+                           do i1=nintpt,1,-1
+                              if ( dist .lt. wgtint(i1,loc) ) ipos = i1
+                           end do
+                           !... if point is closer than already stored points, store and sort in list
+                           if ( ipos .gt. 0 ) then
+                              do i1=nintpt,ipos+1,-1
+                                 intj(i1,loc)   = intj(i1-1,loc)
+                                 intk(i1,loc)   = intk(i1-1,loc)
+                                 wgtint(i1,loc) = wgtint(i1-1,loc)
+                              end do
+                              intj(ipos,loc)   = inj
+                              intk(ipos,loc)   = ink
+                              wgtint(ipos,loc) = dist
+                           end if ! (ipos)
+                        else ! (loc .gt. maxlist )
+                        !... abort with error message
+                           write(6,*) "ABORT. Increase maxlist"//
+     >                       " (in inflow.i) and recompile", loc, nid
+                           call exitt
+                        end if ! (loc)
+                     end do  ! (ink, inj)
+                     end do
+                     loc = loc+1
+                  end if ! ( west inflow bdry )
+               end do ! (ix)
+               end do ! (iy)
+               end do ! (iz)
+            end if   ! (cb .eq.'v  ' )
+         end do ! (ifaces)
+      end do  ! (ie)
+ 
+c...  compute interpolations weights
+      do j=1,loc-1
+         wsum = 0.0
+         do i=1,nintpt
+            wgtint(i,j) = 1.0/wgtint(i,j)
+            wsum = wsum + wgtint(i,j)
+         end do
+         do i=1,nintpt
+            wgtint(i,j) = wgtint(i,j)/wsum
+         end do
+      end do ! (do j)
+
+      return
+      end
+C=======================================================================
