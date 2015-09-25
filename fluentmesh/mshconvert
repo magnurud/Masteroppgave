@@ -1,0 +1,49 @@
+#!/usr/bin/env python
+from mshconvert import *
+from optparse import OptionParser
+parser = OptionParser()
+parser.add_option("--fluentmesh", dest="fluentmesh", default = "fluent.msh")
+parser.add_option("--mesh_format", dest="mesh_format", default = "nek5000")
+parser.add_option("--periodic_dx", dest="periodic_dx", default = {})
+parser.add_option("--curves", dest="curves", default = {})
+parser.add_option("--bcs", dest="bcs", default = False)
+parser.add_option("--temperature", dest="temperature", default = False)
+parser.add_option("--passive_scalars", dest="passive_scalars", default = [])
+parser.add_option("--cylindrical", dest="cylindrical", default = 1)
+parser.add_option("--NZ", dest="NZ", default = 1)
+parser.add_option("--reafile", dest="reafile", default = "def.rea")
+parser.add_option("--outfile", dest="outfile", default = "out.rea")
+(options,args) = parser.parse_args()
+
+fluentmesh  = options.fluentmesh
+func=None
+mesh_format = options.mesh_format
+periodic_dx = options.periodic_dx
+curves      = options.curves
+bcs         = options.bcs
+temperature = options.temperature
+passive_scalars = options.passive_scalars
+cylindrical = options.cylindrical
+NZ          = options.NZ
+reafile     = options.reafile
+outfile     = options.outfile
+
+convert(fluentmesh,
+        func,
+        mesh_format,
+        periodic_dx,curves,bcs,
+        temperature,passive_scalars,
+        cylindrical,NZ,reafile,outfile)
+
+#def convert(fluentmesh, 
+#            func=None, 
+#            mesh_format='nek5000',                     # nek5000, semtex or fenics
+#            periodic_dx={}, curves = {}, bcs = False,  # nek5000 and semtex
+#            temperature=False, passive_scalars=[],     # nek5000 only
+#            cylindrical=1, NZ=1):                      # semtex  only
+####  EXAMPLE HOW TO USE THIS SCRIPT ### 
+
+#  python mshconvert --reafile myoriginalcase.rea --outfile mynewcase.rea --fluentmesh my.msh
+
+# This will read the parameters and settings from myoriginalcase.rea
+# and create mynewcase.rea which contains the old settings and the mesh-information from my.msh

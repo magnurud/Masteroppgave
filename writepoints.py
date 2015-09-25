@@ -26,7 +26,7 @@ def makehpts(f,n,x,s):
     with file('hpts.in',s) as outfile:
         for t in linspace(0,1,n):
          #   outfile.write(f(t,x))
-            savetxt(outfile,transpose(f(t,x)),fmt='%-7.2f')
+            savetxt(outfile,transpose(f(t,x)),fmt='%-7.4f')
         #outfile.close()
     return 1
 
@@ -43,6 +43,6 @@ def makehpts2(f,n,x,s):
         for t in linspace(0,1,n+2):
          #   outfile.write(f(t,x))
          if(t != 0 and t!= 1):
-            savetxt(outfile,transpose(f(t,x)),fmt='%-7.3f')
+            savetxt(outfile,transpose(f(t,x)),fmt='%-7.4f')
         #outfile.close()
     return 1
