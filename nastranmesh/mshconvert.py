@@ -1,15 +1,16 @@
-#!/usr/bin python
+#+1!/usr/bin python
 import sys
 import re
 from sets import Set
 from copy import copy
 from numpy import zeros, array, sign, cross, dot, ones, arctan, sin, cos, pi, mod, sqrt, inner
-from numpy.linalg import norm
+from numpy.linalg import norm, solve
 from pylab import find
 from operator import add
 from scipy.optimize import fsolve
 from dolfin import File, MeshEditor, Mesh, Cell, facets
 from collections import defaultdict
+import matplotlib.pyplot as plt
 
 print "Converting from Nastran format to Nek5000, semtex or FEniCS format"
 
@@ -73,7 +74,89 @@ curves_map = {}             # Holds curve information
 curved_faces = {}           # For each boundary zone store faces that are in curved section
 curved_nodes = {}           # For each boundary zone store nodes that are in curved section 
 curved_midpoint = {}        # For each cell and curved edge, coordinates for midpoint (empty for straight edge)
+# ADDED BY RUD 25.09
+curved_east = {}            # For each cell and curved edge, coordinates for the point east of midpoint  
+curved_west = {}            # For each cell and curved edge, coordinates for the point west of midpoint  
 tot_num_curved = 0
+
+######## ADDED BY RUD 25.09.15 #########
+def getreastart(name):
+	# A function that read the start of a .rea file and returns it as a string.
+	# reads the first 127 lines 
+	f = open(name,'r')
+	s = ''
+	for i in range(127):
+		s = s+f.readline()
+	return s
+
+def getreaend(name):
+	# A function that read the end of a .rea file and returns it as a string.
+	# reads the first 127 lines 
+	s = ''
+	dummy = -1
+	for line in open(name).readlines():
+#		s = s+full[i]
+		test = line.find('PRESOLVE')
+		if(test!=-1): dummy = 1
+		if(dummy==1): s = s+line
+	return s
+
+
+# This function is made to fix the boundary conditions SYM and v 
+def fixbc(name):
+    s = ''
+    dummy = -1
+    for line in open(name).readlines():
+           if(dummy==1): #If we are in the BC-section 
+               if(line.find('****')!=-1): dummy = -1 # Out of BC'section
+               if(dummy==1): 
+                   line = line.replace('M  ','SYM')
+                   line = line.replace('V  ','v  ')
+           if(line.find('FLUID')!=-1): dummy = 1 # When reaching the BCS
+           s = s+line
+    newfile = open(name, 'w')
+    newfile.write(s)
+    return 1
+
+# This function is made to fix the thermal boundary conditions
+def fixthermalbc(name):
+    s = '' # full txt
+    thermal = '' # Thermal conditions
+    dummy = -1
+    for line in open(name).readlines():
+           if(dummy==1): #If we are in the FLUID BC-section 
+               if(line.find('****')!=-1): 
+                   dummy = -1 # Out of BC'section
+                   line = '***** THERMAL BOUNDARY CONDITIONS *****\n'
+               if(dummy==1): #If we still are in the FLUID BC-section 
+                   thermal = thermal+line.replace('v  ','t  ')
+           if(line.find('FLUID')!=-1): dummy = 1 # When reaching the BCS
+           s = s+line
+           if(dummy==-1 and thermal!=''): 
+               s = s+thermal # Adding the modified conditions to the termal part 
+               thermal = ''
+    newfile = open(name, 'w')
+    newfile.write(s) 
+    return 1
+
+def points2circ(x1,x2,x3):
+    # A function that takes in three 3D points and returns 
+    # The radius (r) and center x of the sphere with its center 
+    # in the same plane as the three points.
+    # INPUT: xi = array([real,real,real])
+    # OUTPUT: r = real, x = array([real,real,real])
+    n = cross(x2-x1,x3-x1) # 
+    phi1 = x2-x1
+    psi1 = -sum(x1**2-x2**2)/2
+    phi2 = x3-x2
+    psi2 = -sum(x2**2-x3**2)/2
+    psi3 = dot(n,x1)
+    A = array([phi1,phi2,n])
+    b = array([psi1,psi2,psi3])
+    x = solve(A,b)
+    r = sqrt(dot(x-x1,x-x1))
+    return r,x
+######## END RUD 25.09.15 #########
 
 class Face:
     id_index = defaultdict(list)
@@ -290,17 +373,6 @@ C
        0 Point   Objects
 """
 
-def read_zone_nodes(dim, Nmin, Nmax, lines):
-    """Scan lines for nodes and return in an array."""
-    print "NOT USED FOR NASTRAN FILE"
-    if re.search(re_parant, lines[0]): # check for initial paranthesis
-        dummy = lines.pop(0)
-    global nodes 
-    nodes = zeros((dim, Nmax - Nmin + 1))
-    for i in range(Nmin, Nmax + 1):
-        nodes[:, i - Nmin] = [eval(x) for x in lines[i - Nmin].split()]
-    print nodes
-    
 def read_periodic(lines, periodic_dx):
     """Scan periodic section and create periodic_face_map.
     However, if a dictionary periodic_dx has been supplied then simply skip
@@ -370,56 +442,6 @@ def create_periodic_face_map(periodic_dx):
                     
             face1_list.remove((face_of_shadow, shadow_number))
     
-def read_faces(zone_id, Nmin, Nmax, bc_type, face, lines):
-    """Read all faces and create cell_face_map + some boundary maps."""
-    
-    print "NOT USED FOR NASTRAN FILE"
-    if re.search(re_parant, lines[0]): # check for initial paranthesis
-        dummy = lines.pop(0)
-    ls = []
-    for i in range(Nmin, Nmax + 1):
-        line = lines[i - Nmin]
-        ln = line.split()
-        if face == 0:
-            nd = int(ln[0]) # Number of nodes
-            nds = [int(x, 16) for x in ln[1:(nd + 1)]]
-            cells = [int(x, 16) for x in ln[(nd + 1):]]
-        else:
-            nd = face
-            nds = [int(x, 16) for x in ln[:nd]]
-            cells = [int(x, 16) for x in ln[nd:]]
-            
-        face_list.append([nd, copy(nds), copy(cells), bc_type, zone_id])
-        if len(nds) == 2:
-            face_cell_map[(nds[0], nds[1])] = copy(cells)
-            face_cell_map[(nds[1], nds[0])] = copy(cells)
-
-        face_number = len(face_list)
-        if min(cells) == 0: # A boundary zone
-            if zone_id in boundary_nodes:
-                boundary_nodes[zone_id] += nds
-                boundary_faces[zone_id] += [face_number - 1]
-                for nd in nds:
-                    if nd in boundary_nodes_face_map[zone_id]:
-                        boundary_nodes_face_map[zone_id][nd] += [face_number - 1]
-                    else:
-                        boundary_nodes_face_map[zone_id][nd] = [face_number - 1]
-            else:
-                boundary_nodes[zone_id] = nds
-                boundary_faces[zone_id] = [face_number - 1]
-                boundary_nodes_face_map[zone_id] = { nd: [face_number - 1]}
-
-        for c in cells:
-            if c > 0:                                                                      
-                if not c in cell_face_map:
-                    cell_face_map[c] = [face_number]
-                else:
-                    # Preliminary cell_face_map. Needs shaping up later
-                    cell_face_map[c].append(face_number)
-                    
-    if min(cells) == 0:
-        boundary_nodes[zone_id] = list(Set(boundary_nodes[zone_id]))
-
 def process_cell(cell_no, vertices):
     # Update Face dictionary from the nodes in a cell
 
@@ -433,6 +455,8 @@ def process_cell(cell_no, vertices):
 
     # Checking edge midpoints for curved edges
     curved_midpoint[cell_no] = {}
+    curved_east[cell_no] = {}
+    curved_west[cell_no] = {}
     if (vertices[0] == 20):
         check_edge(1, [vertices[1], vertices[2], vertices[9]], cell_no)
         check_edge(2, [vertices[2], vertices[3], vertices[10]], cell_no)
@@ -524,6 +548,8 @@ def check_edge(edge_no, edgeverts, cell_no):
     if ((AC_abs + BC_abs - AB_abs) > 1e-04 * AB_abs):
         print "Curved line for edge", edge_no, "cell", cell_no
         curved_midpoint[cell_no][edge_no] = edgeverts[2] - 1
+        curved_east[cell_no][edge_no] = edgeverts[0] - 1
+        curved_west[cell_no][edge_no] = edgeverts[1] - 1
         tot_num_curved += 1
 
     # Second test for curvature: Inner product
@@ -606,20 +632,6 @@ def create_face_list():
 #        zone_id = 0      # Default interior zone
         face_list.append([nd, copy(nds), copy(cells), bc_type, zone_id])
 
-def create_cell_map(dim):
-    """Create cell_map for use with fenics mesh."""
-    print "NOT USED FOR NASTRAN FILE"
-    for cell, faces in cell_face_map.iteritems():
-        
-        for face in faces:
-            nds = face_list[face - 1][1]
-                
-            if not cell in cell_map:
-                cell_map[cell] = copy(nds)
-                
-            else:
-                cell_map[cell] = list(Set(cell_map[cell] + nds))
-                
 def create_cell_face_map(dim, mesh_format):
     """Creates maps from cells to faces and gives faces local numbering."""
     if mesh_format == 'fenics':
@@ -963,87 +975,6 @@ def circle_center(x, x0, x1, r):
     return (r**2 - (x[0] - x0[0])**2 - (x[1] - x0[1])**2, 
             r**2 - (x[0] - x1[0])**2 - (x[1] - x1[1])**2)
 
-def read_curved_sides(curves):
-    
-    print "NOT USED FOR NASTRAN FILE"
-    for curve_zone, curve in curves.iteritems():
-        cell_face_m = []
-        curve['x'] = []
-        spline = []
-        for face_number in boundary_faces[curve_zone]:
-            face = face_list[face_number]
-            cell = max(face[2])
-            nds = face[1]
-            cell_face_m.append((cell, face_map[cell][(nds[0], nds[1])], face_number)) 
-            if curve['type'] == 'C':
-                for jj in range(curve['depth']):
-                    # Put circle on opposite face
-                    if jj == 0:
-                        if 'circle_center' in curve:
-                            cc_center = curve['circle_center']
-                        else:
-                            cc_center = fsolve(circle_center, (1e-3, 1e-3), 
-                                                args=(nodes[:, nds[0] - 1], 
-                                                    nodes[:, nds[1] - 1], 
-                                                curve['radius']), xtol=1e-12)
-                        curve['x'].append([curve['radius'] , 0, 0, 0, 0])
-                        new_radius = curve['radius']
-                    opposite_face_number = mod(face_map[cell][(nds[0], nds[1])] + 1, 4) + 1
-                    cell_face_m.append((cell, opposite_face_number, 0))
-                    nn = opposite_nodes = face_map[cell][opposite_face_number]
-                    new_radius = sign(new_radius)*0.5*(sqrt((nodes[0, nn[0] - 1] - cc_center[0])**2 + 
-                                        (nodes[1, nn[0] - 1] - cc_center[1])**2) +
-                                    sqrt((nodes[0, nn[1] - 1] - cc_center[0])**2 + 
-                                        (nodes[1, nn[1] - 1] - cc_center[1])**2))
-                    curve['x'].append([-new_radius, 0, 0, 0, 0])
-                    # Put circle on opposing cell
-                    opp_cell = list(face_cell_map[(nn[0], nn[1])])
-                    opp_cell.remove(cell)
-                    opp_cell = opp_cell[0]
-                    opposite_face_number = face_map[opp_cell][(nn[0], nn[1])]
-                    cell_face_m.append((opp_cell, opposite_face_number, 0))
-                    curve['x'].append([new_radius, 0, 0, 0, 0])
-                    cell = opp_cell
-                    nds = copy(nn)
-            elif curve['type'] == 'spline':
-                spline += face[1]
-                    
-        # Check for linearity using both faces of a boundary node.
-        # In the case of not linear, add the nodes/faces to the 
-        # curved_nodes/faces lists.    
-        curved_faces[curve_zone] = []
-        curved_nodes[curve_zone] = []
-        for nd, facel in boundary_nodes_face_map[curve_zone].iteritems():
-            if len(facel) > 1:
-                nds_left = face_list[facel[0]][1]
-                nds_right = face_list[facel[1]][1]
-                n1 = nodes[:, nds_left[0]-1]
-                n2 = nodes[:, nds_left[1]-1]
-                n3 = nodes[:, nds_right[1]-1]
-                dnx1 = n2[0] - n1[0]
-                dny1 = n2[1] - n1[1]
-                dnx2 = n3[0] - n2[0]
-                dny2 = n3[1] - n2[1]
-                if ((abs(dny1) < 1e-6 and abs(dny2) < 1e-6) or
-                    (abs(dnx1) < 1e-6 and abs(dnx2) < 1e-6)):
-                    pass
-                elif ((abs(dny1) < 1e-6 and not abs(dny2) < 1e-6) or 
-                    (abs(dnx1) < 1e-6 and not abs(dnx2) < 1e-6) or
-                    (abs(dnx2/dnx1 - dny2/dny1) > 1.e-6)): 
-                    # Curved line. Add nodes to curved_nodes
-                    curved_faces[curve_zone] += facel
-                    curved_nodes[curve_zone] += nds_left
-                    curved_nodes[curve_zone] += nds_right
-        curved_faces[curve_zone] = list(Set(curved_faces[curve_zone])) 
-        curved_nodes[curve_zone] = list(Set(curved_nodes[curve_zone]))
-        if curve['type'] == 'C':
-            pass
-        elif curve['type'] == 'm':
-            find_mid_point(curve_zone, curve)
-        elif curve['type'] == 'spline':
-            curve['x'] = list(Set(spline))            
-        curves_map[curve_zone] = (cell_face_m, curve)
-        
 def barycentric_weight(y):
     N = len(y)
     w = ones(N, float)
@@ -1488,6 +1419,32 @@ def write_nek5000_file(dim, ofilename, curves, temperature, passive_scalars):
             ofile.write(c1.format(ie, ic+1))
             xx = nodes[:, curved_midpoint[ic+1][ie]]
             ofile.write(c2.format(xx[0], xx[1], xx[2], 0.0, 0.0, 'm'))
+    #####ADDED BY RUD 25.09 ######
+    print 'Printing circle information\n'
+    ofile.write(cc.format(tot_num_curved))
+    #iii = 0
+    #colorarray = array(['c*','bx','r','c--','w','w'])
+    for ic in range(tot_num_cells):
+        for ie in curved_midpoint[ic+1].keys():
+            iii = mod(iii+1,6)
+            ofile.write(c1.format(ie, ic+1))
+            xx = nodes[:, curved_midpoint[ic+1][ie]]
+            xxwest= nodes[:, curved_east[ic+1][ie]]
+            xxeast= nodes[:, curved_west[ic+1][ie]]
+            radius ,center = points2circ(xxwest,xx,xxeast)
+            ofile.write(c2.format(radius,center[0],center[1],center[2], 0.0, 's'))
+            #ofile.write(c1.format(ie, ic+1))
+            #ofile.write(c2.format(xx[0], xx[1], xx[2], 0.0, 0.0, 'm'))
+            #ofile.write(c1.format(ie, ic+1))
+            #ofile.write(c2.format(xxwest[0], xxwest[1], xxwest[2], 0.0, 0.0, 'e'))
+            #ofile.write(c1.format(ie, ic+1))
+            #ofile.write(c2.format(xxeast[0], xxeast[1], xxeast[2], 0.0, 0.0, 'w'))
+            #plt.plot([xxwest[0],xx[0],xxeast[0]],[xxwest[1],xx[1],xxeast[1]],colorarray[iii])
+            #plt.plot(center[0],center[1],colorarray[iii])
+    #plt.show()
+
+    #####END BY RUD 25.09 ######
+
             
     ## for zone in curves:
     ##     if curves_map[zone][1]['type'] == 'C':
@@ -1784,17 +1741,18 @@ def write_fenics_file(dim, ofilename):
     print 'Finished writing FEniCS mesh\n'
     
 def convert(fluentmesh, 
-            periodic_dx,                            # nek5000 and semtex
-            func=None, 
-            mesh_format='nek5000',                     # nek5000, semtex or fenics
-            curves = {}, bcs = False,                  # nek5000 and semtex
-            temperature=False, passive_scalars=[],     # nek5000 only
-            cylindrical=1, NZ=1):                      # semtex  only
-    """Converts a fluent mesh to a mesh format that can be used by Nek5000,
+        periodic_dx,                            # nek5000 and semtex
+        func=None, 
+        mesh_format='nek5000',                     # nek5000, semtex or fenics
+        curves = {}, bcs = False,                  # nek5000 and semtex
+        temperature=False, passive_scalars=[],     # nek5000 only
+        cylindrical=1, NZ=1,                       # semtex  only
+        reafile='def.rea',outfile='out.rea'): 
+    '''Converts a fluent mesh to a mesh format that can be used by Nek5000
        semtex or FEniCS. 
-         
+
          fluentmesh = fluent mesh (*.msh file)
-         
+
                func = Optional function of spatial coordinates (x,y) that can 
                       be used to modify the fluent mesh.
                       For example, say you have a mesh that is a rectangular 
@@ -1802,22 +1760,22 @@ def convert(fluentmesh,
                       squeeze this mesh around x = 0 to create a stenosis type
                       of mesh. This can be accomplished by squeezing the mesh
                       in the y-direction through:
-                      
+
                       def func_y(x, y):
                           if abs(x) < 1.:
                               return y*(1 - 0.25*(1 + cos(x*pi)))
                           else:
                               return y
-                              
+
                       and supplying this value to the keyword func like:
-                      
+
                       func={'y': func_y}
-                      
+
                       Otherwise you might just create this stenosis in your
                       mesh generation software and supply nothing for func.
                       Note that in nek5000 you will most likely do this in
                       subroutines userdat or userdat2.
-                      
+
         mesh_format = 'nek5000', 'semtex' or 'fenics'
 
                 bcs = False or dictionary of boundary conditions for 
@@ -1829,7 +1787,7 @@ def convert(fluentmesh,
                       'somename_v' for zone 2. Zonenames are easy to modify
                       at the bottom of the fluent msh files.
                       Don't include periodic zones here.
-                
+
         periodic_dx = Dictionary describing any periodicity in the mesh.
                       Keys are tuples of the two periodic zones (zone0, zone1)
                       and values are displacement vectors.
@@ -1846,7 +1804,7 @@ def convert(fluentmesh,
                       in gambit and not assigning names to the 6 zones won't
                       work. We need zone identifiers (for now).
                       Not for FEniCS.
-                      
+
              curves = Dictionary of curve information. Keys are curve zones 
                       and value is either 
                                {'type': 'C', 
@@ -1859,7 +1817,7 @@ def convert(fluentmesh,
                                {'type': 'spline'}
                       for a curved side with semtex. Here a .geom file containing
                       the spline information will be created.
-                      
+
                       The circle may provide the radius or the center of the
                       circle through 'circle_center'. The curvature may also be 
                       used in the internal elements inside the surface through
@@ -1869,24 +1827,29 @@ def convert(fluentmesh,
                       e.g., a cylinder. The radius for an internal face is 
                       allways computed as the distance to the circle_center.
                       Not for FEniCS.
-                      
+
         temperature = False or dictionary of boundary conditions for 
                       temperature (something like {1: 'W', 2: 'v'}) for
                       Wall in zone 1 and Dirchlet specified in .usr in zone 2.
                       False indicates that temperature is not used. 
                       (nek5000 only)
-                      
+
     passive_scalars = [] or list of dictionaries of boundary conditions for
                       passive scalars. Empty means no passive scalars are used.
                       (nek5000 only)
-                                                                  
+
         cylindrical = 1 for cylindrical mesh and 0 for regular (semtex only)
-        
+
                  NZ = Number of planes in homogeneous direction (semtex only)
-                 
-    """
+    '''
+# ADDED BY RUD 25.09.15
+# This part is just a default that goes into the top of the rea-file:
+    if (reafile != 'def.rea'): 
+        start_of_rea=getreastart(reafile)
+        end_of_rea =getreaend(reafile)
+    else:print 'REMEMBER TO INPUT A REA-FILE IF YOU HAVE SOME STORED SETTINGS'
+# END RUD 25.09.15
     #periodic_dx={(3,6):[0,1,0]}
-    
     ofilename = fluentmesh[:-4]
     ifile  = open(fluentmesh, "r")
 
@@ -1936,3 +1899,10 @@ def convert(fluentmesh,
         write_fenics_file(dim, ofilename)
 
     ifile.close()
+	# ADDED BY RUD 25.09.15
+    print 'Fixing symmetry and inflow conditions \n '
+    fixbc(ofilename + '.rea')
+
+    print 'Fixing thermal inflow conditions \n '
+    fixthermalbc(ofilename + '.rea')
+	# END ADDED BY RUD 25.09.15
