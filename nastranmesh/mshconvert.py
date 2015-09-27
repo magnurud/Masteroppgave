@@ -77,6 +77,7 @@ curved_midpoint = {}        # For each cell and curved edge, coordinates for mid
 # ADDED BY RUD 25.09
 curved_east = {}            # For each cell and curved edge, coordinates for the point east of midpoint  
 curved_west = {}            # For each cell and curved edge, coordinates for the point west of midpoint  
+# END BY RUD 25.09
 tot_num_curved = 0
 
 ######## ADDED BY RUD 25.09.15 #########
@@ -1426,7 +1427,7 @@ def write_nek5000_file(dim, ofilename, curves, temperature, passive_scalars):
     #colorarray = array(['c*','bx','r','c--','w','w'])
     for ic in range(tot_num_cells):
         for ie in curved_midpoint[ic+1].keys():
-            iii = mod(iii+1,6)
+            #iii = mod(iii+1,6)
             ofile.write(c1.format(ie, ic+1))
             xx = nodes[:, curved_midpoint[ic+1][ie]]
             xxwest= nodes[:, curved_east[ic+1][ie]]
@@ -1515,232 +1516,7 @@ def write_nek5000_file(dim, ofilename, curves, temperature, passive_scalars):
     # Close files
     ofile.close()
 
-def write_semtex_file(dim, ofilename, curves, cylindrical, NZ):
-    tot_num_cells = len(cell_map)
-    if not dim == 2:
-        print 'Error, semtex uses only 2D meshes'
-        raise TypeError
-
-    print 'Writing semtex mesh file\n'
-    print 'Writing first some default tokens. Be sure to modify these to your own liking later\n'
-    ofile  = open(ofilename, "w")
-    ofile.write('<FIELDS>\n')
-    if NZ == 1:
-        ofile.write('    u    v    p\n')
-    else:
-        ofile.write('    u    v    w    p\n')
-    ofile.write('</FIELDS>\n\n')
-    #Inserting some default tokens:
-    ofile.write("""<TOKENS>
-KINVIS      = 0.01
-D_T         = 0.01
-N_STEP      = 100
-CYLINDRICAL = %d
-CHKPOINT    = 1
-N_TIME      = 2
-Lz          = 10
-N_P         = 9
-N_Z         = %d
-IO_CFL      = 20
-IO_FLD      = N_STEP
-</TOKENS>\n\n""" %(cylindrical, NZ))
-    if NZ == 1:
-        ofile.write("""<USER>
-    u = 0.0
-    v = 0.0
-    p = 0.0
-</USER>\n\n""")
-    else:
-        ofile.write("""<USER>
-    u = 0.0
-    v = 0.0
-    w = 0.0
-    p = 0.0
-</USER>\n\n""")
-    semtex_bnds = {}
-    for key, val in boundary_val_map.iteritems():
-        if not val == 'E':
-            if val in semtex_bnds:
-                semtex_bnds[val].append(key)
-            else:
-                semtex_bnds[val] = [key]
-    N = 0
-    for key, val in semtex_bnds.iteritems():
-        if key == 'P':
-            N += len(val)/2
-        else:
-            N += len(val)        
-    len_bnds = len(semtex_bnds) - {True: 1, False: 0}['P' in semtex_bnds]
-    if len_bnds > 0:
-        ofile.write('<GROUPS NUMBER=%s>\n' %(len_bnds))
-        bcsc = copy(bcs_copy)
-        for key, val in bcs_copy.iteritems():
-            bcsc[val] = key
-        groups_str = '{0:4d}{1:>8}{2:>16}\n'
-        i = 0
-        for key, val in semtex_bnds.iteritems():
-            if not key == 'P':
-                i += 1
-                ofile.write(groups_str.format(i, key, zones[bcsc[key]][0]))
-        ofile.write('</GROUPS>\n\n')
-        ofile.write('<BCS NUMBER=%s>' %(len_bnds))
-        if NZ == 1:
-            dirichlet_str = """    
-{0:4d}{1:>4}    3
-    <D> u = 0.0     </D>
-    <D> v = 0.0     </D>
-    <H> p = 0.0     </H>\n"""
-            neuman_str = """    
-{0:4d}{1:>4}    3
-    <N> u = 0.0     </N>
-    <N> v = 0.0     </N>
-    <D> p = 0.0     </D>\n"""
-            axis_str = """    
-{0:4d}{1:>4}    3
-    <A> u = 0.0     </A>
-    <A> v = 0.0     </A>
-    <A> p = 0.0     </A>\n"""
-        else:
-            dirichlet_str = """    
-{0:4d}{1:>4}    4
-    <D> u = 0.0     </D>
-    <D> v = 0.0     </D>
-    <D> w = 0.0     </D>
-    <H> p = 0.0     </H>\n"""
-            neuman_str = """    
-{0:4d}{1:>4}    4
-    <N> u = 0.0     </N>
-    <N> v = 0.0     </N>
-    <N> w = 0.0     </N>
-    <D> p = 0.0     </D>\n"""
-            axis_str = """    
-{0:4d}{1:>4}    4
-    <A> u = 0.0     </A>
-    <A> v = 0.0     </A>
-    <A> w = 0.0     </A>
-    <A> p = 0.0     </A>\n"""
-        i = 0
-        for key, val in semtex_bnds.iteritems():
-            if not key == 'P':
-                i += 1
-                if key in ('a', 'A'):
-                    ofile.write(axis_str.format(i, key))
-                elif key in ('o', 'O'):
-                    ofile.write(neuman_str.format(i, key))
-                else:
-                    ofile.write(dirichlet_str.format(i, key))
-        ofile.write('</BCS>\n\n')
-                                
-    print 'Writing nodes\n'
-    nodes_header = '<NODES NUMBER=%s>\n'
-    node_str = ' {0:5d} {1:14.7e} {2:14.7e} 0.000000\n'
-    ofile.write(nodes_header %(nodes.shape[1]))
-    for i in range(nodes.shape[1]):
-        ofile.write(node_str.format(i+1, nodes[0, i], nodes[1, i]))
-        
-    ofile.write('</NODES>\n\n')
-    print 'Writing elements\n'
-    element_header = '<ELEMENTS NUMBER=%s>\n'
-    element_str = ' {0:5d} <Q> {1:4d}{2:4d}{3:4d}{4:4d} </Q>\n'
-    ofile.write(element_header %(tot_num_cells))
-    for i in range(1, tot_num_cells + 1):
-        ofile.write(element_str.format(i, cell_map[i][0], cell_map[i][1], cell_map[i][2], cell_map[i][3]))
-    ofile.write('</ELEMENTS>\n\n')
-    print 'Writing surfaces\n'
-    surfaces_header = '<SURFACES NUMBER=%s>\n'
-    ofile.write(surfaces_header %(N))
-    surfaces_str = '{0:4d}{1:4d}{2:4d} <B> {3:s} </B>\n'
-    surfaces_pstr = '{0:4d}{1:4d}{2:4d} <P> {3:4d}{4:4d} </P>\n'
-    i = 0
-    for key in semtex_bnds.iterkeys():
-        for val in semtex_bnds[key]:
-            i += 1
-            if not key == 'P':
-                ofile.write(surfaces_str.format(i, val[0], val[1], key))
-            else:
-                pp = periodic_cell_face_map[val]
-                ofile.write(surfaces_pstr.format(i, val[0], val[1], pp[0], pp[1]))
-                semtex_bnds['P'].remove(pp)
-    ofile.write('</SURFACES>\n\n') 
-    if len(curves) > 0:
-        print 'Writing curves\n'
-        cc = '<CURVES NUMBER={}>\n'
-        c1 = '{0:4d}{1:6d}{2:6d} <ARC> {3:14.7f} </ARC>\n'
-        c2 = ' {0:4d} {1:6d} {2:4d}  <SPLINE> {3:s} </SPLINE>\n'
-        tmp_list = []
-        count = 0
-        for zone in curves:
-            if curves_map[zone][1]['type'] == 'C':
-                for i in range(len(curves_map[zone][0])):
-                    xx = curves_map[zone][1]['x'][i]
-                    count += 1
-                    tmp_list.append(c1.format(count, curves_map[zone][0][i][0], 
-                                    curves_map[zone][0][i][1], xx[0]))
-                    
-            elif curves_map[zone][1]['type'] == 'spline':
-                spline_file = open(ofilename + '.geom', 'w')                                            
-                spl_nodes = []
-                for nd in boundary_nodes[zone]:
-                    if nd in curved_nodes[zone]:
-                        spl_nodes.append([nodes[0, nd - 1], nodes[1, nd - 1]])
-                spl_nodes = array(spl_nodes)
-                ind = spl_nodes[:, 0].argsort()
-                for k in ind:
-                    x, y = spl_nodes[k, :]
-                    spline_file.write(' {0:14.6f} {1:14.6f}\n'.format(x, y))
-                spline_file.close()
-                for i in range(len(curves_map[zone][0])):
-                    face = face_list[curves_map[zone][0][i][2]]
-                    nds = face[1]
-                    if curved_nodes[zone].__contains__(nds[0] or nds[1]):
-                        count += 1
-                        tmp_list.append(c2.format(count, curves_map[zone][0][i][0], curves_map[zone][0][i][1], ofilename + '.geom'))
-        ofile.write(cc.format(count))
-        for tmp in tmp_list: ofile.write(tmp)                        
-        ofile.write('</CURVES>\n')
-        
-    print 'Finished writing semtex mesh\n'
-    ofile.close()
-
-def write_fenics_file(dim, ofilename):
-    ofile  = File(ofilename + '.xml')
-    mesh = Mesh()
-    editor = MeshEditor()
-    editor.open(mesh, dim, dim)
-    editor.init_vertices(nodes.shape[1])
-    editor.init_cells(len(cell_map))
-    
-    for i in range(nodes.shape[1]):
-        if dim == 2:
-            editor.add_vertex(i, nodes[0, i], nodes[1, i])
-        else:
-            editor.add_vertex(i, nodes[0, i], nodes[1, i], nodes[2, i])
-            
-    for i in range(1, len(cell_map)+1):
-        if dim == 2:
-            editor.add_cell(i-1, cell_map[i][0]-1, cell_map[i][1]-1, cell_map[i][2]-1)
-        else:
-            editor.add_cell(i-1, cell_map[i][0]-1, cell_map[i][1]-1, cell_map[i][2]-1, cell_map[i][3]-1)
-    
-    mesh.order()
-    mvc = mesh.domains().markers(dim-1)
-    for zone, faces in boundary_faces.iteritems():
-        for face in faces:
-            cell = face_list[face][2][0]
-            dolfin_cell = Cell(mesh, cell-1)
-            nodes_of_cell = dolfin_cell.entities(0)
-            nodes_of_face = array(face_list[face][1]) - 1
-            for jj, ff in enumerate(facets(dolfin_cell)):
-                facet_nodes = ff.entities(0)
-                if all(map(lambda x: x in nodes_of_face, facet_nodes)):
-                    local_index = jj
-                    break
-            mvc.set_value(cell-1, local_index, zone)
-        
-    ofile << mesh        
-    print 'Finished writing FEniCS mesh\n'
-    
-def convert(fluentmesh, 
+def convert(nastranmesh, 
         periodic_dx,                            # nek5000 and semtex
         func=None, 
         mesh_format='nek5000',                     # nek5000, semtex or fenics
@@ -1751,7 +1527,7 @@ def convert(fluentmesh,
     '''Converts a fluent mesh to a mesh format that can be used by Nek5000
        semtex or FEniCS. 
 
-         fluentmesh = fluent mesh (*.msh file)
+         nastranmesh = fluent mesh (*.msh file)
 
                func = Optional function of spatial coordinates (x,y) that can 
                       be used to modify the fluent mesh.
@@ -1850,8 +1626,8 @@ def convert(fluentmesh,
     else:print 'REMEMBER TO INPUT A REA-FILE IF YOU HAVE SOME STORED SETTINGS'
 # END RUD 25.09.15
     #periodic_dx={(3,6):[0,1,0]}
-    ofilename = fluentmesh[:-4]
-    ifile  = open(fluentmesh, "r")
+    ofilename = nastranmesh[:-4]
+    ifile  = open(nastranmesh, "r")
 
     zone_id = 0
     if not nodes:

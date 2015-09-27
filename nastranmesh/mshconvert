@@ -2,7 +2,7 @@
 from mshconvert import *
 from optparse import OptionParser
 parser = OptionParser()
-parser.add_option("--fluentmesh", dest="fluentmesh", default = "fluent.msh")
+parser.add_option("--nastranmesh", dest="nastranmesh", default = "fluent.msh")
 parser.add_option("--mesh_format", dest="mesh_format", default = "nek5000")
 parser.add_option("--periodic_dx", dest="periodic_dx", default = {})
 parser.add_option("--curves", dest="curves", default = {})
@@ -15,7 +15,7 @@ parser.add_option("--reafile", dest="reafile", default = "def.rea")
 parser.add_option("--outfile", dest="outfile", default = "out.rea")
 (options,args) = parser.parse_args()
 
-fluentmesh  = options.fluentmesh
+nastranmesh  = options.nastranmesh
 func=None
 mesh_format = options.mesh_format
 periodic_dx = options.periodic_dx
@@ -28,7 +28,7 @@ NZ          = options.NZ
 reafile     = options.reafile
 outfile     = options.outfile
 
-convert(fluentmesh,
+convert(nastranmesh,
         periodic_dx,
         func,
         mesh_format,
@@ -36,7 +36,7 @@ convert(fluentmesh,
         temperature,passive_scalars,
         cylindrical,NZ,reafile,outfile)
 
-#def convert(fluentmesh, 
+#def convert(nastranmesh, 
 #            func=None, 
 #            mesh_format='nek5000',                     # nek5000, semtex or fenics
 #            periodic_dx={}, curves = {}, bcs = False,  # nek5000 and semtex
