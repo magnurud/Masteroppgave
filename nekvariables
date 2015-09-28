@@ -11,11 +11,12 @@ IFEXPLVIS = .false. || calculation of explicit stress tensor
 IFTRAN   || transient flow
 IFFLOW 	 || solve for fluid, pressure - velocity 
 IFCHAR 	 || use characteristics for convection operator 
+IFNEKNEK || NO IDEA ?? 
 LOCAL ifverbose
 LOCAL icalld || Used to determine whether a subroutine has been called
 ----------- Variables ------------- 
 istep				||	current iteration step
-iostep			||	output step frecuency
+iostep				||	output step frecuency
 time				||	TSTEP current time
 timef				|| 	time at last step
 timel				||	LOCAL time at last step
@@ -27,14 +28,14 @@ lglel				|| 	PARALELL vector of length lelt (mapping from local to global elemen
 gllel				|| 	PARALELL vector of length lelg (mapping from global to local element index ?? )
 CBC					|| 3d array containing BC
 ix					|| commonly used as iterator over the x-nodes within an element
-kx1,kx2			|| commonly used as lower and upper bound for ix
-nx1,ny1			|| similar to lx1,ly1  . Initialized in initdim , drive2.f
-nx2,ny2			|| similar to lx2,ly2 (Pressure nodes) . Initialized in initdim , drive2.f
+kx1,kx2				|| commonly used as lower and upper bound for ix
+nx1,ny1				|| similar to lx1,ly1  . Initialized in initdim , drive2.f
+nx2,ny2				|| similar to lx2,ly2 (Pressure nodes) . Initialized in initdim , drive2.f
 T(LX1,LY1,LZ1,LELT,LDIMT) || array containing scalars ... temperature, concentration etc. SOLN
-NELV,NELT  || number of elements , local and total ? 
-IGEOM 	   || 1 or 2... something to do with change in geometry ? 
-BM1 			 || array containing the mass in each node??
-TA1				 || Array used to store convectional contribution of a scalar, TA2,TA3 the same,induct.f SCRUZ
+NELV,NELT			|| number of elements , local and total ? 
+IGEOM				|| 1 or 2... something to do with change in geometry ? 
+BM1					|| array containing the mass in each node??
+TA1					|| Array used to store convectional contribution of a scalar, TA2,TA3 the same,induct.f SCRUZ
 
 ------TSTEP----------
 DT 					|| timestep
