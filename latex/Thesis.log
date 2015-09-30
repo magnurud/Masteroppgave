@@ -1,0 +1,2649 @@
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.10.26)  4 APR 2015 16:31
+entering extended mode
+ restricted \write18 enabled.
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**Thesis.cls
+(./Thesis.cls
+LaTeX2e <2011/06/27>
+Babel <3.9h> and hyphenation patterns for 26 languages loaded.
+
+LaTeX Warning: You have requested package `',
+               but the package provides `Thesis'.
+
+Package: Thesis 2007/22/02 v1.0 LaTeX document class
+./Thesis.cls:42: Use of \@ doesn't match its definition.
+\@checkoptions#1#2-> \edef \@curroptions{\@p
+                                            tionlist{\@currname.\@currext}} ...
+l.42 \@checkoptions{11pt}{{10pt}{11pt}{12pt}}
+                                             
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+./Thesis.cls:42: Use of \@ doesn't match its definition.
+\@...ns#1#2-> \edef \@curroptions{\@ptionlist{\@cu
+                                                  rrname.\@currext}} \@temps...
+l.42 \@checkoptions{11pt}{{10pt}{11pt}{12pt}}
+                                             
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+./Thesis.cls:42: Use of \@ doesn't match its definition.
+\@...def \@curroptions{\@ptionlist{\@currname.\@cu
+                                                  rrext}} \@tempswafalse \@t...
+l.42 \@checkoptions{11pt}{{10pt}{11pt}{12pt}}
+                                             
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+./Thesis.cls:42: Use of \@ doesn't match its definition.
+\@...ptions{\@ptionlist{\@currname.\@currext}} \@t
+                                                  empswafalse \@tfor\@this:=...
+l.42 \@checkoptions{11pt}{{10pt}{11pt}{12pt}}
+                                             
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+
+./Thesis.cls:42: LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.42 \@checkoptions{11pt}{{10pt}{11pt}{12pt}}
+                                             
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no e in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no e in font nullfont!
+./Thesis.cls:42: Use of \@ doesn't match its definition.
+\@...ist{\@currname.\@currext}} \@tempswafalse \@t
+                                                  for\@this:=#2\do { \@expan...
+l.42 \@checkoptions{11pt}{{10pt}{11pt}{12pt}}
+                                             
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+Missing character: There is no f in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no r in font nullfont!
+./Thesis.cls:42: Use of \@ doesn't match its definition.
+\@...currname.\@currext}} \@tempswafalse \@tfor\@t
+                                                  his:=#2\do { \@expandtwoar...
+l.42 \@checkoptions{11pt}{{10pt}{11pt}{12pt}}
+                                             
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+Missing character: There is no h in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no : in font nullfont!
+Missing character: There is no = in font nullfont!
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no t in font nullfont!
+./Thesis.cls:42: Undefined control sequence.
+\@...currext}} \@tempswafalse \@tfor\@this:=#2\do 
+                                                  { \@expandtwoargs\in @{,\@...
+l.42 \@checkoptions{11pt}{{10pt}{11pt}{12pt}}
+                                             
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Thesis.cls:42: Use of \@ doesn't match its definition.
+\@...xt}} \@tempswafalse \@tfor\@this:=#2\do { \@e
+                                                  xpandtwoargs\in @{,\@this,...
+l.42 \@checkoptions{11pt}{{10pt}{11pt}{12pt}}
+                                             
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+Missing character: There is no x in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no s in font nullfont!
+./Thesis.cls:42: Missing $ inserted.
+<inserted text> 
+                $
+l.42 \@checkoptions{11pt}{{10pt}{11pt}{12pt}}
+                                             
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 42.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 42.
+./Thesis.cls:42: Use of \@ doesn't match its definition.
+\@...tfor\@this:=#2\do { \@expandtwoargs\in @{,\@t
+                                                  his,}{,\@curroptions,} \if...
+l.42 \@checkoptions{11pt}{{10pt}{11pt}{12pt}}
+                                             
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+./Thesis.cls:42: Undefined control sequence.
+\@...woargs\in @{,\@this,}{,\@curroptions,} \ifin 
+                                                  @ \@tempswatrue \@break@tf...
+l.42 \@checkoptions{11pt}{{10pt}{11pt}{12pt}}
+                                             
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Thesis.cls:42: Use of \@ doesn't match its definition.
+\@...s\in @{,\@this,}{,\@curroptions,} \ifin @ \@t
+                                                  empswatrue \@break@tfor \f...
+l.42 \@checkoptions{11pt}{{10pt}{11pt}{12pt}}
+                                             
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+./Thesis.cls:42: Use of \@ doesn't match its definition.
+\@...,}{,\@curroptions,} \ifin @ \@tempswatrue \@b
+                                                  reak@tfor \fi } \let \@thi...
+l.42 \@checkoptions{11pt}{{10pt}{11pt}{12pt}}
+                                             
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+./Thesis.cls:42: Extra \fi.
+\@...ons,} \ifin @ \@tempswatrue \@break@tfor \fi 
+                                                  } \let \@this\@empty \if @...
+l.42 \@checkoptions{11pt}{{10pt}{11pt}{12pt}}
+                                             
+I'm ignoring this; it doesn't match any \if.
+
+./Thesis.cls:42: Extra }, or forgotten $.
+\@...ns,} \ifin @ \@tempswatrue \@break@tfor \fi }
+                                                   \let \@this\@empty \if @t...
+l.42 \@checkoptions{11pt}{{10pt}{11pt}{12pt}}
+                                             
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/book.cls
+Document Class: book 2007/10/19 v1.4h Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/bk11.clo
+File: bk11.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
+
+
+LaTeX Font Warning: Command \normalsize invalid in math mode on input line 64.
+
+)
+\c@part=\count79
+\c@chapter=\count80
+\c@section=\count81
+\c@subsection=\count82
+\c@subsubsection=\count83
+\c@paragraph=\count84
+\c@subparagraph=\count85
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:324: Missing $ inserted.
+<inserted text> 
+                $
+l.324 
+      
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 42--324
+[]
+ []
+
+
+Overfull \hbox (6.66669pt too wide) in paragraph at lines 42--324
+\OMS/cmsy/m/n/10 2
+ []
+
+
+Overfull \hbox (284.11334pt too wide) in paragraph at lines 42--324
+\OT1/cmr/m/n/10 @[][]@\OML/cmm/m/it/10 empswatruereak\OT1/cmr/m/n/10 @\OML/cmm/
+m/it/10 tforhistempty$ 
+ []
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:453: Use of \@ doesn't ma
+tch its definition.
+l.453 \@b
+         eginparpenalty -\@lowpenalty
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:453: LaTeX Error: Missing
+ \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.453 \@be
+          ginparpenalty -\@lowpenalty
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no e in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no y in font nullfont!
+Missing character: There is no - in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:453: Use of \@ doesn't ma
+tch its definition.
+l.453 \@beginparpenalty -\@l
+                            owpenalty
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+Missing character: There is no o in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no y in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:454: Use of \@ doesn't ma
+tch its definition.
+l.454 \@e
+         ndparpenalty   -\@lowpenalty
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+Missing character: There is no n in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no y in font nullfont!
+Missing character: There is no - in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:454: Use of \@ doesn't ma
+tch its definition.
+l.454 \@endparpenalty   -\@l
+                            owpenalty
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+Missing character: There is no o in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no y in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:455: Use of \@ doesn't ma
+tch its definition.
+l.455 \@i
+         tempenalty     -\@lowpenalty
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+Missing character: There is no t in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no y in font nullfont!
+Missing character: There is no - in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:455: Use of \@ doesn't ma
+tch its definition.
+l.455 \@itempenalty     -\@l
+                            owpenalty
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+Missing character: There is no o in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no y in font nullfont!
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:464: LaTeX Error: \p unde
+fined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.464 \renewcommand\p
+                     @enumii{\theenumi}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no e in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no i in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:464: Use of \@ doesn't ma
+tch its definition.
+\theenumi ->\@a
+               rabic\c @enumi
+l.464 \renewcommand\p@enumii{\theenumi
+                                      }
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+Missing character: There is no r in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no b in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no c in font nullfont!
+LaTeX Font Info:    Try loading font information for +cmr on input line 464.
+LaTeX Font Info:    No file cmr.fd. on input line 464.
+
+LaTeX Font Warning: Font shape `/cmr/m/n' undefined
+(Font)              using `/cmr/m/n' instead on input line 464.
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:464: Corrupted NFSS table
+s.
+wrong@fontshape ...message {Corrupted NFSS tables}
+                                                  error@fontshape else let f...
+l.464 \renewcommand\p@enumii{\theenumi
+                                      }
+This error message was generated by an \errmessage
+command, so I can't give any explicit help.
+Pretend that you're Hercule Poirot: Examine all clues,
+and deduce the truth by order and method.
+
+
+LaTeX Font Warning: Font shape `/cmr/m/n' undefined
+(Font)              using `OT1/cmr/m/n' instead on input line 464.
+
+Missing character: There is no e in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no i in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:465: Use of \@ doesn't ma
+tch its definition.
+\theenumi ->\@a
+               rabic\c @enumi
+l.465 \renewcommand\p@enumiii{\theenumi
+                                       (\theenumii)}
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+Missing character: There is no r in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no b in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no ( in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:465: Use of \@ doesn't ma
+tch its definition.
+\theenumii ->\@a
+                lph\c @enumii
+l.465 \renewcommand\p@enumiii{\theenumi(\theenumii
+                                                  )}
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+Missing character: There is no l in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no ) in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no v in font nullfont!
+Missing character: There is no @ in font nullfont!
+Missing character: There is no @ in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no i in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:466: Use of \@ doesn't ma
+tch its definition.
+\theenumiii ->\@r
+                 oman\c @enumiii
+l.466 \renewcommand\p@enumiv{\p@enumiii\theenumiii
+                                                  }
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+Missing character: There is no o in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no i in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:534: Illegal unit of meas
+ure (pt inserted).
+<to be read again> 
+                   @
+l.534 \setlength\arraycolsep{5\p@}
+                                  
+Dimensions can be in units of em, ex, in, pt, pc,
+cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
+I'll assume that you meant to say pt, for printer's points.
+To recover gracefully from this error, it's best to
+delete the erroneous units; e.g., type `2' to delete
+two letters. (See Chapter 27 of The TeXbook.)
+
+Missing character: There is no @ in font nullfont!
+Missing character: There is no @ in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:535: Illegal unit of meas
+ure (pt inserted).
+<to be read again> 
+                   @
+l.535 \setlength\tabcolsep{6\p@}
+                                
+Dimensions can be in units of em, ex, in, pt, pc,
+cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
+I'll assume that you meant to say pt, for printer's points.
+To recover gracefully from this error, it's best to
+delete the erroneous units; e.g., type `2' to delete
+two letters. (See Chapter 27 of The TeXbook.)
+
+Missing character: There is no @ in font nullfont!
+Missing character: There is no @ in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:536: Illegal unit of meas
+ure (pt inserted).
+<to be read again> 
+                   @
+l.536 \setlength\arrayrulewidth{.4\p@}
+                                      
+Dimensions can be in units of em, ex, in, pt, pc,
+cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
+I'll assume that you meant to say pt, for printer's points.
+To recover gracefully from this error, it's best to
+delete the erroneous units; e.g., type `2' to delete
+two letters. (See Chapter 27 of The TeXbook.)
+
+Missing character: There is no @ in font nullfont!
+Missing character: There is no @ in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:537: Illegal unit of meas
+ure (pt inserted).
+<to be read again> 
+                   @
+l.537 \setlength\doublerulesep{2\p@}
+                                    
+Dimensions can be in units of em, ex, in, pt, pc,
+cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
+I'll assume that you meant to say pt, for printer's points.
+To recover gracefully from this error, it's best to
+delete the erroneous units; e.g., type `2' to delete
+two letters. (See Chapter 27 of The TeXbook.)
+
+Missing character: There is no @ in font nullfont!
+Missing character: There is no @ in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:539: Use of \@ doesn't ma
+tch its definition.
+l.539 \skip\@mp
+               footins = \skip\footins
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:539: Missing number, trea
+ted as zero.
+<to be read again> 
+                   f
+l.539 \skip\@mpf
+                ootins = \skip\footins
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:539: Missing number, trea
+ted as zero.
+<to be read again> 
+                   f
+l.539 \skip\@mpf
+                ootins = \skip\footins
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:539: Illegal unit of meas
+ure (pt inserted).
+<to be read again> 
+                   f
+l.539 \skip\@mpf
+                ootins = \skip\footins
+Dimensions can be in units of em, ex, in, pt, pc,
+cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
+I'll assume that you meant to say pt, for printer's points.
+To recover gracefully from this error, it's best to
+delete the erroneous units; e.g., type `2' to delete
+two letters. (See Chapter 27 of The TeXbook.)
+
+Missing character: There is no f in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no = in font nullfont!
+Missing character: There is no 3 in font nullfont!
+Missing character: There is no @ in font nullfont!
+Missing character: There is no @ in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:541: Illegal unit of meas
+ure (pt inserted).
+<to be read again> 
+                   @
+l.541 \setlength\fboxrule{.4\p@}
+                                
+Dimensions can be in units of em, ex, in, pt, pc,
+cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
+I'll assume that you meant to say pt, for printer's points.
+To recover gracefully from this error, it's best to
+delete the erroneous units; e.g., type `2' to delete
+two letters. (See Chapter 27 of The TeXbook.)
+
+Missing character: There is no @ in font nullfont!
+Missing character: There is no @ in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:542: Use of \@ doesn't ma
+tch its definition.
+l.542 \@a
+         ddtoreset {equation}{chapter}
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+Missing character: There is no d in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no q in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no r in font nullfont!
+\c@figure=\count86
+\c@table=\count87
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:573: Illegal unit of meas
+ure (pt inserted).
+<to be read again> 
+                   @
+l.573 \setlength\abovecaptionskip{10\p@}
+                                        
+Dimensions can be in units of em, ex, in, pt, pc,
+cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
+I'll assume that you meant to say pt, for printer's points.
+To recover gracefully from this error, it's best to
+delete the erroneous units; e.g., type `2' to delete
+two letters. (See Chapter 27 of The TeXbook.)
+
+Missing character: There is no @ in font nullfont!
+Missing character: There is no @ in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:574: Illegal unit of meas
+ure (pt inserted).
+<to be read again> 
+                   @
+l.574 \setlength\belowcaptionskip{0\p@}
+                                       
+Dimensions can be in units of em, ex, in, pt, pc,
+cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
+I'll assume that you meant to say pt, for printer's points.
+To recover gracefully from this error, it's best to
+delete the erroneous units; e.g., type `2' to delete
+two letters. (See Chapter 27 of The TeXbook.)
+
+Missing character: There is no @ in font nullfont!
+Missing character: There is no @ in font nullfont!
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:594: LaTeX Error: Command
+ \@ already defined.
+               Or name \end... illegal, see p.192 of the manual.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.594 \newcommand\@p
+                    numwidth{1.55em}
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+Missing character: There is no n in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 5 in font nullfont!
+Missing character: There is no 5 in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no m in font nullfont!
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:595: LaTeX Error: Command
+ \@ already defined.
+               Or name \end... illegal, see p.192 of the manual.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.595 \newcommand\@t
+                    ocrmarg{2.55em}
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+Missing character: There is no o in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 5 in font nullfont!
+Missing character: There is no 5 in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no m in font nullfont!
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:596: LaTeX Error: Command
+ \@ already defined.
+               Or name \end... illegal, see p.192 of the manual.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.596 \newcommand\@d
+                    otsep{4.5}
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+Missing character: There is no o in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no 4 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 5 in font nullfont!
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:610: LaTeX Error: Command
+ \l already defined.
+               Or name \end... illegal, see p.192 of the manual.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.610 \newcommand*\l@
+                     part[2]{%
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+Missing character: There is no p in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no [ in font nullfont!
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no ] in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:611: Missing number, trea
+ted as zero.
+<to be read again> 
+                   \unhbox 
+l.611   \ifnum \c@
+                  tocdepth >-2\relax
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:611: Missing = inserted f
+or \ifnum.
+<to be read again> 
+                   \unhbox 
+l.611   \ifnum \c@
+                  tocdepth >-2\relax
+I was expecting to see `<', `=', or `>'. Didn't.
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:611: Missing number, trea
+ted as zero.
+<to be read again> 
+                   \unhbox 
+l.611   \ifnum \c@
+                  tocdepth >-2\relax
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+Missing character: There is no t in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no > in font nullfont!
+Missing character: There is no - in font nullfont!
+Missing character: There is no 2 in font nullfont!
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:612: LaTeX Error: Somethi
+ng's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.612     \addpenalty{-\@highpenalty}
+                                     %
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:613: LaTeX Error: Somethi
+ng's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.613     \addvspace{2.25em \@plus\p@}
+                                      %
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:614: Use of \@ doesn't ma
+tch its definition.
+<argument> t
+            
+l.614     \setlength\@t
+                       empdima{3em}%
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+Missing character: There is no e in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no 3 in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no m in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:616: Undefined control se
+quence.
+l.616       \parindent \z
+                         @ \rightskip \@pnumwidth
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:616: Missing number, trea
+ted as zero.
+<to be read again> 
+                   @
+l.616       \parindent \z@
+                           \rightskip \@pnumwidth
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:616: Illegal unit of meas
+ure (pt inserted).
+<to be read again> 
+                   @
+l.616       \parindent \z@
+                           \rightskip \@pnumwidth
+Dimensions can be in units of em, ex, in, pt, pc,
+cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
+I'll assume that you meant to say pt, for printer's points.
+To recover gracefully from this error, it's best to
+delete the erroneous units; e.g., type `2' to delete
+two letters. (See Chapter 27 of The TeXbook.)
+
+Missing character: There is no @ in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:616: Use of \@ doesn't ma
+tch its definition.
+l.616       \parindent \z@ \rightskip \@p
+                                         numwidth
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:616: Missing number, trea
+ted as zero.
+<to be read again> 
+                   n
+l.616       \parindent \z@ \rightskip \@pn
+                                          umwidth
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:616: Illegal unit of meas
+ure (pt inserted).
+<to be read again> 
+                   n
+l.616       \parindent \z@ \rightskip \@pnu
+                                           mwidth
+Dimensions can be in units of em, ex, in, pt, pc,
+cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
+I'll assume that you meant to say pt, for printer's points.
+To recover gracefully from this error, it's best to
+delete the erroneous units; e.g., type `2' to delete
+two letters. (See Chapter 27 of The TeXbook.)
+
+Missing character: There is no n in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no h in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:617: Use of \@ doesn't ma
+tch its definition.
+l.617       \parfillskip -\@p
+                             numwidth
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:617: Missing number, trea
+ted as zero.
+<to be read again> 
+                   n
+l.617       \parfillskip -\@pn
+                              umwidth
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:617: Illegal unit of meas
+ure (pt inserted).
+<to be read again> 
+                   n
+l.617       \parfillskip -\@pnu
+                               mwidth
+Dimensions can be in units of em, ex, in, pt, pc,
+cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
+I'll assume that you meant to say pt, for printer's points.
+To recover gracefully from this error, it's best to
+delete the erroneous units; e.g., type `2' to delete
+two letters. (See Chapter 27 of The TeXbook.)
+
+Missing character: There is no n in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no h in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:619: Undefined control se
+quence.
+l.619        \large
+                    \bfseries #1\hfil \hb@xt@\@pnumwidth{\hss #2}}\par
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:619: You can't use `macro
+ parameter character #' in horizontal mode.
+l.619        \large \bfseries #
+                               1\hfil \hb@xt@\@pnumwidth{\hss #2}}\par
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:619: Undefined control se
+quence.
+l.619        \large \bfseries #1\hfil \hb
+                                         @xt@\@pnumwidth{\hss #2}}\par
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:619: Use of \@ doesn't ma
+tch its definition.
+l.619        \large \bfseries #1\hfil \hb@xt@\@p
+                                                numwidth{\hss #2}}\par
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:619: You can't use `macro
+ parameter character #' in horizontal mode.
+l.619 ...fseries #1\hfil \hb@xt@\@pnumwidth{\hss #
+                                                  2}}\par
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:619: Infinite glue shrink
+age found in a paragraph.
+l.619 ... #1\hfil \hb@xt@\@pnumwidth{\hss #2}}\par
+                                                  
+The paragraph just ended includes some glue that has
+infinite shrinkability, e.g., `\hskip 0pt minus 1fil'.
+Such glue doesn't belong there---it allows a paragraph
+of any length to fit on one line. But it's safe to proceed,
+since the offensive shrinkability has been made finite.
+
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 453--619
+[]
+ []
+
+
+Overfull \hbox (7.7778pt too wide) in paragraph at lines 453--619
+[]
+ []
+
+
+Overfull \hbox (15.5556pt too wide) in paragraph at lines 453--619
+[][]
+ []
+
+
+Overfull \hbox (7.7778pt too wide) in paragraph at lines 453--619
+[]
+ []
+
+
+Overfull \hbox (7.7778pt too wide) in paragraph at lines 453--619
+[]
+ []
+
+
+Overfull \hbox (5.74997pt too wide) in paragraph at lines 453--619
+\OT1/cmr/bx/n/10 1
+ []
+
+
+Overfull \hbox (78.90236pt too wide) in paragraph at lines 453--619
+\OT1/cmr/bx/n/10 @xt@numwidth
+ []
+
+
+Overfull \hbox (5.74997pt too wide) in paragraph at lines 453--619
+\OT1/cmr/bx/n/10 2
+ []
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:621: Use of \@ doesn't ma
+tch its definition.
+l.621          \global\@n
+                         obreaktrue
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:621: You can't use a pref
+ix with `the letter o'.
+<to be read again> 
+                   o
+l.621          \global\@no
+                          breaktrue
+I'll pretend you didn't say \long or \outer or \global or \protected.
+
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:621: LaTeX Error: Missing
+ \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.621          \global\@no
+                          breaktrue
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no o in font nullfont!
+Missing character: There is no b in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no k in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no e in font nullfont!
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:625: LaTeX Error: Command
+ \l already defined.
+               Or name \end... illegal, see p.192 of the manual.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.625 \newcommand*\l@
+                     chapter[2]{%
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+Missing character: There is no c in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no [ in font nullfont!
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no ] in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:626: Missing number, trea
+ted as zero.
+<to be read again> 
+                   \unhbox 
+l.626   \ifnum \c@
+                  tocdepth >\m@ne
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:626: Missing = inserted f
+or \ifnum.
+<to be read again> 
+                   \unhbox 
+l.626   \ifnum \c@
+                  tocdepth >\m@ne
+I was expecting to see `<', `=', or `>'. Didn't.
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:626: Missing number, trea
+ted as zero.
+<to be read again> 
+                   \unhbox 
+l.626   \ifnum \c@
+                  tocdepth >\m@ne
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+Missing character: There is no t in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no > in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:626: Undefined control se
+quence.
+l.626   \ifnum \c@tocdepth >\m
+                              @ne
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no @ in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no e in font nullfont!
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:627: LaTeX Error: Somethi
+ng's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.627     \addpenalty{-\@highpenalty}
+                                     %
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Overfull \hbox (7.7778pt too wide) in paragraph at lines 621--628
+[]
+ []
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:628: Use of \@ doesn't ma
+tch its definition.
+l.628     \vskip 1.0em \@p
+                          lus\p@
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:628: LaTeX Error: Missing
+ \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.628     \vskip 1.0em \@pl
+                           us\p@
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no l in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no @ in font nullfont!
+Missing character: There is no @ in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:629: Use of \@ doesn't ma
+tch its definition.
+<argument> t
+            
+l.629     \setlength\@t
+                       empdima{1.5em}%
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+Missing character: There is no e in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 5 in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no m in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:631: Undefined control se
+quence.
+l.631       \parindent \z
+                         @ \rightskip \@pnumwidth
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:631: Missing number, trea
+ted as zero.
+<to be read again> 
+                   @
+l.631       \parindent \z@
+                           \rightskip \@pnumwidth
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:631: Illegal unit of meas
+ure (pt inserted).
+<to be read again> 
+                   @
+l.631       \parindent \z@
+                           \rightskip \@pnumwidth
+Dimensions can be in units of em, ex, in, pt, pc,
+cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
+I'll assume that you meant to say pt, for printer's points.
+To recover gracefully from this error, it's best to
+delete the erroneous units; e.g., type `2' to delete
+two letters. (See Chapter 27 of The TeXbook.)
+
+Missing character: There is no @ in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:631: Use of \@ doesn't ma
+tch its definition.
+l.631       \parindent \z@ \rightskip \@p
+                                         numwidth
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:631: Missing number, trea
+ted as zero.
+<to be read again> 
+                   n
+l.631       \parindent \z@ \rightskip \@pn
+                                          umwidth
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:631: Illegal unit of meas
+ure (pt inserted).
+<to be read again> 
+                   n
+l.631       \parindent \z@ \rightskip \@pnu
+                                           mwidth
+Dimensions can be in units of em, ex, in, pt, pc,
+cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
+I'll assume that you meant to say pt, for printer's points.
+To recover gracefully from this error, it's best to
+delete the erroneous units; e.g., type `2' to delete
+two letters. (See Chapter 27 of The TeXbook.)
+
+Missing character: There is no n in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no h in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:632: Use of \@ doesn't ma
+tch its definition.
+l.632       \parfillskip -\@p
+                             numwidth
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:632: Missing number, trea
+ted as zero.
+<to be read again> 
+                   n
+l.632       \parfillskip -\@pn
+                              umwidth
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:632: Illegal unit of meas
+ure (pt inserted).
+<to be read again> 
+                   n
+l.632       \parfillskip -\@pnu
+                               mwidth
+Dimensions can be in units of em, ex, in, pt, pc,
+cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
+I'll assume that you meant to say pt, for printer's points.
+To recover gracefully from this error, it's best to
+delete the erroneous units; e.g., type `2' to delete
+two letters. (See Chapter 27 of The TeXbook.)
+
+Missing character: There is no n in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no h in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:634: Use of \@ doesn't ma
+tch its definition.
+l.634       \advance\leftskip\@t
+                                empdima
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:634: Missing number, trea
+ted as zero.
+<to be read again> 
+                   e
+l.634       \advance\leftskip\@te
+                                 mpdima
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:636: You can't use `macro
+ parameter character #' in horizontal mode.
+l.636       #
+             1\nobreak\hfil \nobreak\hb@xt@\@pnumwidth{\hss #2}\par
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:636: Undefined control se
+quence.
+l.636       #1\nobreak\hfil \nobreak\hb
+                                       @xt@\@pnumwidth{\hss #2}\par
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:636: Use of \@ doesn't ma
+tch its definition.
+l.636       #1\nobreak\hfil \nobreak\hb@xt@\@p
+                                              numwidth{\hss #2}\par
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:636: You can't use `macro
+ parameter character #' in horizontal mode.
+l.636 ...ak\hfil \nobreak\hb@xt@\@pnumwidth{\hss #
+                                                  2}\par
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:636: Infinite glue shrink
+age found in a paragraph.
+l.636 ...l \nobreak\hb@xt@\@pnumwidth{\hss #2}\par
+                                                  
+The paragraph just ended includes some glue that has
+infinite shrinkability, e.g., `\hskip 0pt minus 1fil'.
+Such glue doesn't belong there---it allows a paragraph
+of any length to fit on one line. But it's safe to proceed,
+since the offensive shrinkability has been made finite.
+
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 628--636
+[]
+ []
+
+
+Overfull \hbox (31.46509pt too wide) in paragraph at lines 628--636
+\OT1/cmr/bx/n/10 pdima
+ []
+
+
+Overfull \hbox (84.65233pt too wide) in paragraph at lines 628--636
+\OT1/cmr/bx/n/10 1 @xt@numwidth
+ []
+
+
+Overfull \hbox (5.74997pt too wide) in paragraph at lines 628--636
+\OT1/cmr/bx/n/10 2
+ []
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:637: Use of \@ doesn't ma
+tch its definition.
+l.637       \penalty\@h
+                       ighpenalty
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:637: Missing number, trea
+ted as zero.
+<to be read again> 
+                   i
+l.637       \penalty\@hi
+                        ghpenalty
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:637: LaTeX Error: Missing
+ \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.637       \penalty\@hi
+                        ghpenalty
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:640: LaTeX Error: Command
+ \l already defined.
+               Or name \end... illegal, see p.192 of the manual.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.640 \newcommand*\l@
+                     section{\@dottedtocline{1}{1.5em}{2.3em}}
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+Missing character: There is no s in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no n in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:640: Use of \@ doesn't ma
+tch its definition.
+l.640 \newcommand*\l@section{\@d
+                                ottedtocline{1}{1.5em}{2.3em}}
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+Missing character: There is no o in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 5 in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 3 in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no m in font nullfont!
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:641: LaTeX Error: Command
+ \l already defined.
+               Or name \end... illegal, see p.192 of the manual.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.641 \newcommand*\l@
+                     subsection{\@dottedtocline{2}{3.8em}{3.2em}}
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+Missing character: There is no s in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no b in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no n in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:641: Use of \@ doesn't ma
+tch its definition.
+l.641 \newcommand*\l@subsection{\@d
+                                   ottedtocline{2}{3.8em}{3.2em}}
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+Missing character: There is no o in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no 3 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 8 in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no 3 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no m in font nullfont!
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:642: LaTeX Error: Command
+ \l already defined.
+               Or name \end... illegal, see p.192 of the manual.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.642 \newcommand*\l@
+                     subsubsection{\@dottedtocline{3}{7.0em}{4.1em}}
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+Missing character: There is no s in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no b in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no b in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no n in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:642: Use of \@ doesn't ma
+tch its definition.
+l.642 \newcommand*\l@subsubsection{\@d
+                                      ottedtocline{3}{7.0em}{4.1em}}
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+Missing character: There is no o in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no 3 in font nullfont!
+Missing character: There is no 7 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no 4 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no m in font nullfont!
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:643: LaTeX Error: Command
+ \l already defined.
+               Or name \end... illegal, see p.192 of the manual.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.643 \newcommand*\l@
+                     paragraph{\@dottedtocline{4}{10em}{5em}}
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+Missing character: There is no p in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no h in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:643: Use of \@ doesn't ma
+tch its definition.
+l.643 \newcommand*\l@paragraph{\@d
+                                  ottedtocline{4}{10em}{5em}}
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+Missing character: There is no o in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no 4 in font nullfont!
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no 5 in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no m in font nullfont!
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:644: LaTeX Error: Command
+ \l already defined.
+               Or name \end... illegal, see p.192 of the manual.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.644 \newcommand*\l@
+                     subparagraph{\@dottedtocline{5}{12em}{6em}}
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+Missing character: There is no s in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no b in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no h in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:644: Use of \@ doesn't ma
+tch its definition.
+l.644 \newcommand*\l@subparagraph{\@d
+                                     ottedtocline{5}{12em}{6em}}
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+Missing character: There is no o in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no 5 in font nullfont!
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no 6 in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no m in font nullfont!
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:657: LaTeX Error: Command
+ \l already defined.
+               Or name \end... illegal, see p.192 of the manual.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.657 \newcommand*\l@
+                     figure{\@dottedtocline{1}{1.5em}{2.3em}}
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+Missing character: There is no f in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no e in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:657: Use of \@ doesn't ma
+tch its definition.
+l.657 \newcommand*\l@figure{\@d
+                               ottedtocline{1}{1.5em}{2.3em}}
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+Missing character: There is no o in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 5 in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 3 in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no b in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no @ in font nullfont!
+Missing character: There is no @ in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no e in font nullfont!
+\bibindent=\dimen102
+Missing character: There is no p in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no b in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no b in font nullfont!
+Missing character: There is no @ in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no y in font nullfont!
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:710: LaTeX Error: Command
+ \@ already defined.
+               Or name \end... illegal, see p.192 of the manual.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.710 \newcommand\@i
+                    dxitem{\par\hangindent 40\p@}
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+Missing character: There is no d in font nullfont!
+Missing character: There is no x in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no m in font nullfont!
+
+Overfull \hbox (52.70804pt too wide) in paragraph at lines 637--710
+[]\OT1/cmr/bx/n/10 ighpenalty
+ []
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:710: Illegal unit of meas
+ure (pt inserted).
+<to be read again> 
+                   @
+l.710 \newcommand\@idxitem{\par\hangindent 40\p
+                                               @}
+Dimensions can be in units of em, ex, in, pt, pc,
+cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
+I'll assume that you meant to say pt, for printer's points.
+To recover gracefully from this error, it's best to
+delete the erroneous units; e.g., type `2' to delete
+two letters. (See Chapter 27 of The TeXbook.)
+
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:710: LaTeX Error: Missing
+ \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.710 \newcommand\@idxitem{\par\hangindent 40\p
+                                               @}
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no @ in font nullfont!
+Missing character: There is no @ in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no r in font nullfont!
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:719: LaTeX Error: Command
+ \@ already defined.
+               Or name \end... illegal, see p.192 of the manual.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.719 \newcommand\@m
+                    akefntext[1]{%
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+Missing character: There is no a in font nullfont!
+Missing character: There is no k in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no x in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no [ in font nullfont!
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no ] in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:722: Undefined control se
+quence.
+l.722     \hb
+             @xt@1.8em{\hss\@makefnmark}#1}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no @ in font nullfont!
+Missing character: There is no x in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no @ in font nullfont!
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 8 in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no k in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no f in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no k in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:722: You can't use `macro
+ parameter character #' in horizontal mode.
+l.722     \hb@xt@1.8em{\hss\@makefnmark}#
+                                         1}
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+Missing character: There is no 1 in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:737: Illegal unit of meas
+ure (pt inserted).
+<to be read again> 
+                   @
+l.737 \setlength\columnsep{10\p@}
+                                 
+Dimensions can be in units of em, ex, in, pt, pc,
+cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
+I'll assume that you meant to say pt, for printer's points.
+To recover gracefully from this error, it's best to
+delete the erroneous units; e.g., type `2' to delete
+two letters. (See Chapter 27 of The TeXbook.)
+
+Missing character: There is no @ in font nullfont!
+Missing character: There is no @ in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:738: Illegal unit of meas
+ure (pt inserted).
+<to be read again> 
+                   @
+l.738 \setlength\columnseprule{0\p@}
+                                    
+Dimensions can be in units of em, ex, in, pt, pc,
+cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
+I'll assume that you meant to say pt, for printer's points.
+To recover gracefully from this error, it's best to
+delete the erroneous units; e.g., type `2' to delete
+two letters. (See Chapter 27 of The TeXbook.)
+
+Missing character: There is no @ in font nullfont!
+Missing character: There is no @ in font nullfont!
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:739: Undefined control se
+quence.
+<argument> \undefinedpagestyle 
+                               
+l.739 \pagestyle{headings}
+                          
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:750: Infinite glue shrink
+age found in a paragraph.
+\newpage ...k \@nobreakfalse \everypar {}\fi \par 
+                                                  \vfil \penalty -\@M 
+l.750   \onecolumn
+                  
+The paragraph just ended includes some glue that has
+infinite shrinkability, e.g., `\hskip 0pt minus 1fil'.
+Such glue doesn't belong there---it allows a paragraph
+of any length to fit on one line. But it's safe to proceed,
+since the offensive shrinkability has been made finite.
+
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 710--750
+[]
+ []
+
+
+/usr/share/texlive/texmf-dist/tex/latex/base/book.cls:750: LaTeX Error: The fon
+t size command \normalsize is not defined:
+               there is probably something wrong with the class file.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.750   \onecolumn
+                  
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}])
+
+./Thesis.cls:66: LaTeX Error: \usepackage before \documentclass.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.66 \usepackage{
+                 setspace}
+\usepackage may only appear in the document preamble, i.e.,
+between \documentclass and \begin{document}.
+
+./Thesis.cls:67: Undefined control sequence.
+l.67 \onehalfspacing
+                    
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+./Thesis.cls:70: LaTeX Error: \usepackage before \documentclass.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.70 \usepackage{
+                 vmargin}
+\usepackage may only appear in the document preamble, i.e.,
+between \documentclass and \begin{document}.
+
+
+./Thesis.cls:73: LaTeX Error: \RequirePackage or \LoadClass in Options Section.
+
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.73 
+     
+The package `' is defective.
+It attempts to load `inputenc' in the options section, i.e.,
+between \DeclareOption and \ProcessOptions.
+
+./Thesis.cls:77: Undefined control sequence.
+l.77 \setmarginsrb
+                    { 1.5in}  % left margin
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+./Thesis.cls:77: LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.77 \setmarginsrb  { 1
+                       .5in}  % left margin
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 5 in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 6 in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no 1 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 8 in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 2 in font nullfont!
+Missing character: There is no 5 in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no 9 in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no 3 in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no 5 in font nullfont!
+Missing character: There is no @ in font nullfont!
+Missing character: There is no @ in font nullfont!
+
+./Thesis.cls:93: LaTeX Error: \usepackage before \documentclass.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.93 \usepackage{
+                 fancyhdr}
+\usepackage may only appear in the document preamble, i.e.,
+between \documentclass and \begin{document}.
+
+./Thesis.cls:94: Undefined control sequence.
+l.94 \lhead
+           [\rm\thepage]{\fancyplain{}{\sl{\rightmark}}}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no [ in font nullfont!
+./Thesis.cls:94: Undefined control sequence.
+l.94 \lhead[\rm\thepage]{\fancyplain
+                                    {}{\sl{\rightmark}}}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Thesis.cls:95: Undefined control sequence.
+l.95 \rhead
+           [\fancyplain{}{\sl{\leftmark}}]{\rm\thepage}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Thesis.cls:95: Undefined control sequence.
+l.95 \rhead[\fancyplain
+                       {}{\sl{\leftmark}}]{\rm\thepage}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Thesis.cls:96: Undefined control sequence.
+l.96 \chead
+           {}\lfoot{}\rfoot{}\cfoot{}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Thesis.cls:96: Undefined control sequence.
+l.96 \chead{}\lfoot
+                   {}\rfoot{}\cfoot{}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Thesis.cls:96: Undefined control sequence.
+l.96 \chead{}\lfoot{}\rfoot
+                           {}\cfoot{}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Thesis.cls:96: Undefined control sequence.
+l.96 \chead{}\lfoot{}\rfoot{}\cfoot
+                                   {}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Thesis.cls:97: Undefined control sequence.
+<argument> \undefinedpagestyle 
+                               
+l.97 \pagestyle{fancy}
+                      
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+./Thesis.cls:98: LaTeX Error: \chaptermark undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.98 \renewcommand{\chaptermark}
+                                [1]{\btypeout{\thechapter\space #1}\markboth...
+
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+./Thesis.cls:106: LaTeX Error: \usepackage before \documentclass.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.106 \usepackage{
+                  amsmath,amsfonts,amssymb,amscd,amsthm,xspace}
+\usepackage may only appear in the document preamble, i.e.,
+between \documentclass and \begin{document}.
+
+./Thesis.cls:107: Undefined control sequence.
+l.107 \theoremstyle
+                   {plain}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+\c@example=\count88
+\c@theorem=\count89
+./Thesis.cls:114: Undefined control sequence.
+l.114 \theoremstyle
+                   {definition}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Thesis.cls:116: Undefined control sequence.
+l.116 \theoremstyle
+                   {remark}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+./Thesis.cls:118: LaTeX Error: \usepackage before \documentclass.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.118 \usepackage[centerlast,small,sc]{
+                                       caption}
+\usepackage may only appear in the document preamble, i.e.,
+between \documentclass and \begin{document}.
+
+./Thesis.cls:119: Undefined control sequence.
+<argument> \captionmargin 
+                          
+l.119 \setlength{\captionmargin}{20pt}
+                                      
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+./Thesis.cls:136: LaTeX Error: \usepackage before \documentclass.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.136 \usepackage{
+                  graphicx}
+\usepackage may only appear in the document preamble, i.e.,
+between \documentclass and \begin{document}.
+
+
+./Thesis.cls:137: LaTeX Error: \usepackage before \documentclass.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.137 \usepackage{
+                  epstopdf}
+\usepackage may only appear in the document preamble, i.e.,
+between \documentclass and \begin{document}.
+
+
+./Thesis.cls:138: LaTeX Error: \usepackage before \documentclass.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.138 \usepackage{
+                  booktabs}
+\usepackage may only appear in the document preamble, i.e.,
+between \documentclass and \begin{document}.
+
+
+./Thesis.cls:139: LaTeX Error: \usepackage before \documentclass.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.139 \usepackage{
+                  rotating}
+\usepackage may only appear in the document preamble, i.e.,
+between \documentclass and \begin{document}.
+
+
+./Thesis.cls:140: LaTeX Error: \usepackage before \documentclass.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.140 \usepackage{
+                  listings}
+\usepackage may only appear in the document preamble, i.e.,
+between \documentclass and \begin{document}.
+
+
+./Thesis.cls:141: LaTeX Error: \usepackage before \documentclass.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.141 \usepackage{
+                  lstpatch}
+\usepackage may only appear in the document preamble, i.e.,
+between \documentclass and \begin{document}.
+
+./Thesis.cls:142: Undefined control sequence.
+l.142 \lstset
+             {captionpos=b,
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Thesis.cls:144: Undefined control sequence.
+l.144         basicstyle=\scriptsize
+                                    \ttfamily,
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Thesis.cls:147: Undefined control sequence.
+l.147 \lstdefinestyle
+                     {matlab} {
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Thesis.cls:149: Undefined control sequence.
+l.149         keywordstyle=\color
+                                 {blue},
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Thesis.cls:150: Undefined control sequence.
+l.150         commentstyle=\color
+                                 [rgb]{0.13,0.55,0.13}\em,
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./Thesis.cls:151: Undefined control sequence.
+l.151         stringstyle=\color
+                                [rgb]{0.7,0,0} }
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+./Thesis.cls:152: LaTeX Error: \usepackage before \documentclass.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.152 \usepackage[pdfpagemode={
+                               UseOutlines},bookmarks=true,bookmarksopen=true,
+\usepackage may only appear in the document preamble, i.e.,
+between \documentclass and \begin{document}.
+
+./Thesis.cls:156: Undefined control sequence.
+l.156 \pdfstringdefDisableCommands
+                                  {
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+./Thesis.cls:234: LaTeX Error: \maketitle undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.234 \renewcommand\maketitle
+                             {
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+\c@dummy=\count90
+
+./Thesis.cls:379: LaTeX Error: \usepackage before \documentclass.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.379 \usepackage{
+                  longtable}
+\usepackage may only appear in the document preamble, i.e.,
+between \documentclass and \begin{document}.
+
+
+./Thesis.cls:390: LaTeX Error: \usepackage before \documentclass.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.390 \usepackage{
+                  longtable}
+\usepackage may only appear in the document preamble, i.e.,
+between \documentclass and \begin{document}.
+
+
+./Thesis.cls:401: LaTeX Error: \usepackage before \documentclass.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.401 \usepackage{
+                  longtable}
+\usepackage may only appear in the document preamble, i.e.,
+between \documentclass and \begin{document}.
+
+
+./Thesis.cls:429: LaTeX Error: \backmatter undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.429 \renewcommand\backmatter
+                              {
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+)
+! Emergency stop.
+<*> Thesis.cls
+              
+*** (job aborted, no legal \end found)
+
+ 
+Here is how much of TeX's memory you used:
+ 314 strings out of 494465
+ 3107 string characters out of 6166360
+ 52116 words of memory out of 5000000
+ 3643 multiletter control sequences out of 15000+600000
+ 5115 words of font info for 19 fonts, out of 8000000 for 9000
+ 350 hyphenation exceptions out of 8191
+ 24i,4n,19p,243b,331s stack positions out of 5000i,500n,10000p,200000b,80000s
+!  ==> Fatal error occurred, no output PDF file produced!
