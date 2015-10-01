@@ -12,6 +12,12 @@ IFTRAN   || transient flow
 IFFLOW 	 || solve for fluid, pressure - velocity 
 IFCHAR 	 || use characteristics for convection operator 
 IFNEKNEK || NO IDEA ?? 
+IFFMTIN  || If curved sides exists ? 
+IFGMSH3  || velocity or stress formulation 
+IFRE2 	 || the new binary reafile is created and used 
+IFDFRM   || For timing purposes IFDEFORMED !! if element is deformed!! 
+IFMVBD	 || If moving boundary
+IFFAST 	 || if Ax is to be solved fast, IFDFRM ==1 => IFFAST = 0
 LOCAL ifverbose
 LOCAL icalld || Used to determine whether a subroutine has been called
 ----------- Variables ------------- 
@@ -45,6 +51,22 @@ AB 					|| array containing upto 10 extrapolation coeffs (Adam-Bash...)
 NBDINP			|| param(27), TORDER, temporal discretization order, initialized in drive2.f
 NBD 				|| temporal discretization order, including initial developement.
 DTINVM			|| 1/DT
+------curved elements------
+CCURVE(12,lelt)    || array containing curved side character. , INPUT
+CURVE(12,6,LELT)   || array containing curved side information, INPUT
+IFDFRM(LELT)	   || array of booleans regarding element structure.. angle=90 or not ? || COMMON/FASTMD
+arcsrf(xml,yml,zml,nxl,nyl,nzl,ie,isid) || imposing circle geometry. 
+sphsrf(xml,yml,zml,iface,ie,nxl,nyl,nzl,work) || imposing sperical geometry
+rdcurve 			|| subroutine for reading curved side data
+bin_rd1(ifbswap)	|| reading mesh, curves, bc. called from subroutine readat for .re2 files.
+gengeom(igeom)		|| Generate geometry data, drive2.f
+geom_reset(icalled)	|| reGenerate geometry data, ic.f
+geom1 (xm3,ym3,zm3) || routine to generate all elemental geometric data for mesh 1 coeff.f
+glmapm1				|| routine to generate mapping data based on GLL , coeff.f
+volume 				|| Compute the volume coeff.f
+setinvm 			|| Inverts the mass matrix coeff.f 
+setdef				|| Set up deformed element logical switches, genxyz.f KEY FUNCTION!!! 
+
 
 --------------------------------------------------------------------------------------
 ----- local variables used when interpolating values and writing to file htps-procedure----
@@ -72,6 +94,11 @@ NEKASGN (IX,IY,IZ,IEL) Updating the common variables in NEKUSE for the given nod
 copy(a,b,n) copies the n first elements in b to a. a,b = real 
 settolv()	|| Set tolerance for velocity vector
 convop(conv,fi)	|| compute the convective term of a scalar
+blank(A,N) || set all elements in a character array equal ''
+FNC(ETA) 	|| Should return something close to zero if eta is small. Has to do with sphere genxyz.f
+lagmass 	|| Lag the mass matrix
+
+
 
 
 
@@ -93,3 +120,8 @@ passed as t(1,1) or simply t along with n = lx*ly
 ------- Q's for THG ------------
 icalld ? local variable in many scripts... 
 igeom ? Moving mesh
+
+------ Common mistakes ------ 
+The lelt variable is not large enough
+Remember to set all parts in icem to PLOAD
+Relocation truncated to fit. ==> lx1*lelt is too big!! 
