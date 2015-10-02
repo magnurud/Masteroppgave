@@ -123,5 +123,5 @@ igeom ? Moving mesh
 
 ------ Common mistakes ------ 
 The lelt variable is not large enough
-Remember to set all parts in icem to PLOAD
+Remember to set all parts in icem to PLOAD, what went wrong in test-case
 Relocation truncated to fit. ==> lx1*lelt is too big!! 

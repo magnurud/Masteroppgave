@@ -209,7 +209,7 @@ class Face:
 Faces = []
 
 # This part is just a default that goes into the top of the rea-file:
-start_of_rea = """****** PARAMETERS *****
+rea_start= """****** PARAMETERS *****
     2.610000     NEKTON VERSION
    {0:2d} DIMENSIONAL RUN
           103 PARAMETERS FOLLOW
@@ -339,7 +339,7 @@ start_of_rea = """****** PARAMETERS *****
 """
 
 # This part goes into the bottom of the rea-file:
-end_of_rea = """            0 PRESOLVE/RESTART OPTIONS  *****
+rea_end = """            0 PRESOLVE/RESTART OPTIONS  *****
             7         INITIAL CONDITIONS *****
 C Default
 C Default
@@ -1638,7 +1638,10 @@ def convert(nastranmesh,
     if (reafile != 'def.rea'): 
         start_of_rea=getreastart(reafile)
         end_of_rea =getreaend(reafile)
-    else:print 'REMEMBER TO INPUT A REA-FILE IF YOU HAVE SOME STORED SETTINGS'
+    else:
+        print 'REMEMBER TO INPUT A REA-FILE IF YOU HAVE SOME STORED SETTINGS'
+        start_of_rea = rea_start
+        end_of_rea = rea_end
 # END RUD 25.09.15
     #periodic_dx={(3,6):[0,1,0]}
     if(outfile != 'out.rea'): ofilename = outfile[:-4]
