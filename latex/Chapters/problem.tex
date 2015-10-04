@@ -1,0 +1,49 @@
+% Chapter 3 - Description of problem
+
+\chapter{Application of nek5000 and the creation of grid} % Main chapter title
+
+\label{problem} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
+
+\lhead{Chapter 3. \emph{application of nek}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
+
+%----------------------------------------------------------------------------------------
+%	SECTION 1
+%----------------------------------------------------------------------------------------
+\section{Nek5000}
+
+There are many numerical solvers for turbulent flows available on the market. From large commercial softwares such as fluent which runs as a 
+black-box solver, to CDP which is a bit more specialized solver with the posibility to modify the code to apply it to the wanted usage and 
+to full open-source codes such as nek5000 and openFOAM. The solvers can vary both in the fundamental numerical method (FV,FD,FEM,SEM) 
+the implemented algorithm (Fractional Step, Poisson pressure, Uzawa) and the type of simulation (RANS,LES,DNS). 
+The software is chosen depending on the users requirement, but the work flow does follow a certain structure in all cases. 
+
+\begin{itemize}
+	\item Practical problem --> Mathematical formulation --> Generation of mesh --> Simulation --> post-processing
+\end{itemize}
+An example is waterflow in a channel, which would be the practical problem. The mathematical formulation would be the incompressible N-S eq, 
+with LES dynamical SGS. The mesh could consist of tetrahedros or hexahedrons. The simulation is the performed on some cluster before the 
+wanted data in some sub-domain is visualized and presented. 
+
+Nek provides a basic tool for generation of mesh. For more complex geometries this tool cannot compare with more visualized-based softwares 
+such as ICEM from ANSYS which exports mesh to several numerical solvers such as Fluent and nastran.
+It is therefore very useful to have an automatic way of converting a mesh created in ICEM to the format required by nek5000. 
+In order for nek to run optimally the elements should be as homogenous and as similar to the reference element as possible. 
+It is therefore of great interest to be able to propagate curved geometries into the neighbour-elements in order to have a smooth as 
+possible transition from a boundary with high curvature.
+
+\section{Gas dispersion in a simplified urban area}
+The problem investigated in this work is gas dispersion of neutral gas in a velocity field through four cubic blocks.
+Similar simulations have been done in CDP and Fluent which are compared to data from a wind-tunnel experiment performed by ALAN.
+\begin{itemize}
+	\item Description of problem and domain
+	\item mesh and fluent/CDP mesh
+\end{itemize}
+
+\section{Creation of the mesh-convertion script}
+
+\begin{itemize}
+	\item initial script
+	\item changes and modifications
+	\item performance testing
+	\item pitfalls
+\end{itemize}

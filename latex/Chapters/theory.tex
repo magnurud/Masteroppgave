@@ -1,0 +1,70 @@
+% Chapter 1 - theory
+
+\chapter{Numerical theory} % Main chapter title
+
+\label{theory} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
+
+\lhead{Chapter 1. \emph{background on numerical methods}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
+
+%----------------------------------------------------------------------------------------
+%	SECTION 1
+%----------------------------------------------------------------------------------------
+
+\section{Galerkin formulation}
+\begin{itemize}
+\item a common BVP, weak formulation 
+\item search and solution space, test and basis functions
+\item error estimation
+\end{itemize}
+\section{Finite element method}
+
+Finite element method is one of the most widely used numerical methods applied on problems within construction, flow simulation and many 
+other areas. It offers a precise mathematical foundation and due to the connectivity properties of the elements 
+it guaranties a sparse system. The decomposition of the geometrical domain into a finite amount of elements chosen according to the problem 
+wanted to solve, makes it possible to create general algorithms applicable to all kinds of geometries. 
+For the full mathematical foundation of FEM it will be referred to \cite{Quarteroni}, but some of the key propertie will be stated here
+in order to provide a thourough understanding of the spectral element method. 
+\begin{itemize}
+\item projection onto a h-subspace
+\item the basis functions
+\item convergence rate
+\item How the sparsity decays with increasing polynomial order
+\item assembly algorithm
+\item problem with a non-symmetrical problem
+\end{itemize}
+
+%-----------------------------------
+%	SUBSECTION 1
+%-----------------------------------
+\section{Spectral methods}
+Spectral methods share a some of the mathematical ideas as FEM, but are not as widely used in real life problems. SM are however very 
+interesting from a theoretical point of view due to its spectral convergence rate which allows you to obtain solutions of extremely high accuracy. 
+The most important draw-back of SM are the difficulties with applications to complex geometries. Allthough the system of equations surging from
+a BVP can be constructed in an elegant way it is rarely sparse and often result in expensive calculations. 
+
+\begin{itemize}
+\item quadrature rule
+\item the choice of nodes and basis functions
+\item the role of the jacobian 
+\item cross product formulations
+\end{itemize}
+
+\cite{Canuto}
+
+%-----------------------------------
+%	SUBSECTION 2
+%-----------------------------------
+
+\section{Spectral element method}
+In the early 1980's the the idea to combine FEM and SM came along in order to obtain the robustness and resulting sparse system of FEM with the
+spectral convergence rate obtained from SM. The result was the Spectral element method. Read articles\ldots Several formulations was investigated  and the development of super computers has played an important role in deciding the method applied today. The basic idea is to divide the domain 
+of the BVP wanted to solve into elements as in FEM and then use spectral basis functions of higher degree with support only within one element. 
+
+\begin{itemize}
+\item READ LITERATURE ON THIS !! 
+\end{itemize}
+
+%----------------------------------------------------------------------------------------
+%	SECTION 2
+%----------------------------------------------------------------------------------------
+

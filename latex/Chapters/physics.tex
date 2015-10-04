@@ -1,0 +1,70 @@
+% Chapter 2 - physics theory
+
+\chapter{Fluid dynamics} % Main chapter title
+
+\label{physics} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
+
+\lhead{Chapter 2. \emph{background on fluid dynamics}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
+
+%----------------------------------------------------------------------------------------
+%	SECTION 1
+%----------------------------------------------------------------------------------------
+\section{Navier-Stokes equation}
+
+The physics regarding fluids in motion are described mathematically by the Navier-Stokes equation. The equations can be derived in many ways, 
+and it is referred to \cite{White} for a complete explication. The general idea is to conserve momentum and mass in a control domain and by 
+applying Reynolds transport theorem and the result is the following two equations reffered to as the N-S equations. 
+\begin{itemize}
+\item N-S eq.
+\end{itemize}
+These equations have been studied for centuries and different physical situations lead to different simplifications and sets of equations. 
+Examples are the Euler equations, Stokes problem, darcy flow and the incompressible navier-stokes equations. 
+Without doing the derivation of the equations a short discussion of each term in equation N-S will be given here in order to understand there
+physical origin and their mathematical attributes. 
+
+\begin{itemize}
+\item The time-derivative
+\item The convective term 
+\item The diffusive term 
+\item The pressure gradient
+\item The reynolds stress tensor
+\item The reynolds number
+\item The mass equation
+\end{itemize}
+
+
+\section{Resolving the turbulent term}
+Depending on the wanted accuracy of your solution and the number of computational units at hand the turbulent term can be solved in 
+different ways. A brief overview of the different approaches to the turbulent term are discussed in the following subsections
+
+\begin{itemize}
+	\item Laminar flow
+	\item RANS
+	\item LES
+	\item K-epsilon and K-omega
+	\item DNS
+\end{itemize}
+
+\section{Solution methods of incombressible N-S}
+A non-linear set of equations requires a non-trivial solution method, and when the domain of the problem can be anyting from a simple channel 
+to a moving turbine there are many considerations that needs to be made. Allthough the equations have been known for over 200 years no one 
+has been able to prove or disprove the well-posedness of the problem. FINAL ELEMENT FORMULATION WELL-POSED?? Some of the most common algorithms 
+will be discussed in the following subsections
+
+\begin{itemize}
+\item coupled versus decoupled 
+\item The Uzawa algorithm 
+\item Pressure correction method
+\item fractional step method
+\end{itemize}
+
+\section{nek5000}
+Nek5000 is a turbulent flow solver developed mainly by Paul Fischer and has through the past 20 years had several contributours. 
+It is a open-source code applicable to many different flow situations.   
+
+\begin{itemize}
+\item Application areas
+\item Description of the numerical algorithm 
+\item usage of the program 
+\end{itemize}
+

@@ -172,7 +172,7 @@ In this project some basic properties of the least squares method is analysed. B
 \pagestyle{fancy} % The page style headers have been "empty" all this time, now use the "fancy" headers as defined before to bring them back
 
 \lhead{\emph{Contents}} % Set the left side page header to "Contents"
-%\tableofcontents % Write out the Table of Contents
+\tableofcontents % Write out the Table of Contents
 
 %\lhead{\emph{List of Figures}} % Set the left side page header to "List of Figures"
 %\listoffigures % Write out the List of Figures
@@ -262,29 +262,29 @@ In this project some basic properties of the least squares method is analysed. B
 \listofsymbols{ll} % Include a list of Abbreviations (a table of two columns)
 {
 \textbf{CONVENTION} & we let subscript $h$ denote the discretized variables \\
-$u$ & Solution of the partial differential equation\\
-$\mathbf{w} = [w_1 \; w_2 ] $ & Negative gradient of $u$ \\
-$\mathbf{u} = [ \mathbf{w} \; u ]^T$ & Solution to the first order transformation \\ 
-$ R_g $ & Lifting function \\
-$\tilde{\mathbf{u}} = \mathbf{u}-R_g $ & Solution to the first order transformation minus the lifting function \\ 
-$\mathbf{b}$ & Two dimensional vector field \\
-$f$ & loading function\\
-$\mathbf{f} = (0,0,f)$ & loading function for the first order transformation\\
-$\mathcal{L} , \mathcal{B} $ & Linear operators \\
-$(\cdot,\cdot)$ & Inner product, when not specified read as $(\cdot,\cdot)_{L_2}$  \\
-$a(\cdot,\cdot)$ & Bilinear form obtained from standard Galerkin approach \\
-$Q(\cdot,\cdot)$ & Bilinear form obtained from the least squares approach \\
-$\mathring{a}(\cdot,\cdot)$ & Bilinear form obtained from the combined GLS-method\\
-$F(\cdot)$ & Linear form obtained from the least squares approach \\
-$\tilde{F}(\cdot)$ & Linear form obtained from the least squares approach including BC's \\
-$\mathring{F}(\cdot)$ & Linear form obtained from the combined GLS-method \\
-\textbf{Linear Algebra} \\
-$A$ & The stiffness matrix \\
-$G$ & The gradient matrix \\
-$R$ & The reaction matrix \\
-$F$ & The vector obtained from the linear functional $F(\cdot)$ \\ 
-$W$ 	& The diagonal matrix with the GLL-weights \\ 
-$L$ 	& The matrix with the derivative of the lagrange functions in each node \\ 
+%$u$ & Solution of the partial differential equation\\
+%$\mathbf{w} = [w_1 \; w_2 ] $ & Negative gradient of $u$ \\
+%$\mathbf{u} = [ \mathbf{w} \; u ]^T$ & Solution to the first order transformation \\ 
+%$ R_g $ & Lifting function \\
+%$\tilde{\mathbf{u}} = \mathbf{u}-R_g $ & Solution to the first order transformation minus the lifting function \\ 
+%$\mathbf{b}$ & Two dimensional vector field \\
+%$f$ & loading function\\
+%$\mathbf{f} = (0,0,f)$ & loading function for the first order transformation\\
+%$\mathcal{L} , \mathcal{B} $ & Linear operators \\
+%$(\cdot,\cdot)$ & Inner product, when not specified read as $(\cdot,\cdot)_{L_2}$  \\
+%$a(\cdot,\cdot)$ & Bilinear form obtained from standard Galerkin approach \\
+%$Q(\cdot,\cdot)$ & Bilinear form obtained from the least squares approach \\
+%$\mathring{a}(\cdot,\cdot)$ & Bilinear form obtained from the combined GLS-method\\
+%$F(\cdot)$ & Linear form obtained from the least squares approach \\
+%$\tilde{F}(\cdot)$ & Linear form obtained from the least squares approach including BC's \\
+%$\mathring{F}(\cdot)$ & Linear form obtained from the combined GLS-method \\
+%\textbf{Linear Algebra} \\
+%$A$ & The stiffness matrix \\
+%$G$ & The gradient matrix \\
+%$R$ & The reaction matrix \\
+%$F$ & The vector obtained from the linear functional $F(\cdot)$ \\ 
+%$W$ 	& The diagonal matrix with the GLL-weights \\ 
+%$L$ 	& The matrix with the derivative of the lagrange functions in each node \\ 
 %$\Phi$ & $W\otimes WL$\\ 
 %$\Psi$ & $WL\otimes W$\\ 
 
@@ -299,11 +299,10 @@ $L$ 	& The matrix with the derivative of the lagrange functions in each node \\
 % Include the chapters of the thesis as separate files from the Chapters folder
 % Uncomment the lines as you write the chapters
 
-\cite{Canuto}
-\input{Chapters/Chapter1}
-%\input{Chapters/theory.tex} 
-%\input{Chapters/newTheory.tex} 
-%\input{Chapters/implementation.tex}
+%\input{Chapters/Chapter1}
+\input{Chapters/theory.tex} 
+\input{Chapters/physics.tex} 
+\input{Chapters/problem.tex}
 %\input{Chapters/results.tex} 
 %\input{Chapters/Chapter5} 
 %\input{Chapters/Chapter6} 

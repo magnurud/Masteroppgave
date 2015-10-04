@@ -1,8 +1,22 @@
-\begin{thebibliography}{0}
+\begin{thebibliography}{2}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Quarteroni(2014)]{Quarteroni}
+Alfio Quarteroni.
+\newblock \emph{Numerical Models for Differential Problems, 2. edition}.
+\newblock Springer, 2014.
+
+\bibitem[Canuto and Quarteroni(1982)]{Canuto}
+C.~Canuto and A.~Quarteroni.
+\newblock Approximation results for orthogonal polynomials in sobolev spaces.
+\newblock \emph{Mathematics of Computation}, 38\penalty0 (157):\penalty0
+  67–67, Jan 1982.
+\newblock ISSN 0025-5718.
+\newblock \doi{10.1090/s0025-5718-1982-0637287-3}.
+\newblock URL \url{http://dx.doi.org/10.1090/S0025-5718-1982-0637287-3}.
 
 \end{thebibliography}
