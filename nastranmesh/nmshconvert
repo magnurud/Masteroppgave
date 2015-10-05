@@ -2,7 +2,7 @@
 from nmshconvert import *
 from optparse import OptionParser
 parser = OptionParser()
-parser.add_option("--nastranmesh", dest="nastranmesh", default = "nastran_input")
+parser.add_option("--mesh", dest="nastranmesh", default = "nastran_input")
 parser.add_option("--mesh_format", dest="mesh_format", default = "nek5000")
 parser.add_option("--periodic_dx", dest="periodic_dx", default = {})
 parser.add_option("--curves", dest="curves", default = {})

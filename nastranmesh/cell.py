@@ -1,4 +1,4 @@
-import numpy as np
+from numpy import zeros,array,dot, sqrt
 
 # Global dictionaries
 edge2points = {1:[1,2], 2:[2,3], 3:[3,4], 4:[1,4], 5:[5,6], 6:[6,7], 7:[7,8], 8:[8,9], 9:[1,5], 10:[2,6], 11:[3,7], 12:[4,8]}
@@ -9,10 +9,10 @@ Pts = [] # A list with the position vector of each point
 
 class cell:
     cellID= 0 # Id number
-    vertices = np.zeros(21) #List of vertices,[#tot,8 vertices, 12 midpoints] All global
+    vertices = zeros(21) #List of vertices,[#tot,8 vertices, 12 midpoints] All global
     curved_edge = [] # curved edge numbers
     curved_edge_info = [] # list of curved edges and their information ready to print in .rea file
-    nbours = np.zeros(6) # Array of neighbours global numbers corresonding to facenumber
+    nbours = zeros(6) # Array of neighbours global numbers corresonding to facenumber
     nbours_list = [] # List of actual neighbour cells
     info_nbour = [] #each row corresponds to each neighbour, 
     # info_nbour = [nbour,opposite face or not bool, 2 global verts defining edge on shared face, 
@@ -54,8 +54,8 @@ class cell:
         x3 = info_array[3:6] 
         a = Pts[x2]-Pts[x1]
         b = Pts[x3]-Pts[x1]
-        k = np.dot(a,a)/np.dot(a,b)*sqrt(np.dot(a,a)) # rel distance in kji direction from corner x1. 
-        h = np.dot(b-k*a,b-k*a) # rel distance in eta direction from the line x2-x1
+        k = dot(a,a)/dot(a,b)*sqrt(dot(a,a)) # rel distance in kji direction from corner x1. 
+        h = dot(b-k*a,b-k*a) # rel distance in eta direction from the line x2-x1
         return k,h/2
 
     def define_face_mappings():
