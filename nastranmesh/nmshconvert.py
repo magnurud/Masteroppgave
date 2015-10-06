@@ -1,7 +1,7 @@
 #+1!/usr/bin python
 import sys
 import re
-import cell
+from cell import cell, Face
 from sets import Set
 from copy import copy
 from numpy import zeros, array, sign, cross, dot, ones, arctan, sin, cos, pi, mod, sqrt, inner
@@ -82,6 +82,27 @@ curved_west = {}            # For each cell and curved edge, coordinates for the
 tot_num_curved = 0
 
 ######## ADDED BY RUD 25.09.15 #########
+# Global dictionaries
+edge2points = {1:[1,2], 2:[2,3], 3:[3,4], 4:[1,4], 5:[5,6], 6:[6,7], 7:[7,8], 8:[8,9], 9:[1,5], 10:[2,6], 11:[3,7], 12:[4,8]}
+face2points = {1:[1,2,6,5], 2:[2,3,7,6], 3:[4,3,7,8], 4:[1,4,8,5], 5:[1,2,3,4], 6:[5,6,7,8]}
+edge2faces = {1:[1,5], 2:[2,5], 3:[3,5], 4:[4,5], 5:[1,6], 6:[2,6], 7:[3,6], 8:[4,6], 9:[4,1], 10:[1,2], 11:[2,3], 12:[3,4]}
+shadow_face = {1:3, 3:1, 2:4, 4:2, 5:6, 6:5}
+def find_neighbours():
+    global Faces,Cells
+    for i in range(len(Faces)):
+        #print Faces[i].cell_1,Faces[i].cell_2
+        c1 = Faces[i].cell_1 
+        c2 = Faces[i].cell_2
+        # Add =he neighbours by using the faces
+        if c1 != 0 : 
+            f1 = Cells[c1-1].face_glloc[i+1] #local face value for cell 1
+            Cells[c1-1].nbours[f1] = c2 # zero value indicates no neighbour
+        if c2 != 0:
+            f2 = Cells[c2-1].face_glloc[i+1] #local face value for cell 2
+            Cells[c2-1].nbours[f2] = c1 # zero value indicates no neighbour
+    #for i in range(len(Cells)):
+        #print Cells[i].nbours
+
 def getreastart(name):
 	# A function that read the start of a .rea file and returns it as a string.
 	# reads the first 127 lines 
@@ -160,54 +181,8 @@ def points2circ(x1,x2,x3):
     return r,x
 ######## END RUD 25.09.15 #########
 
-class Face:
-    id_index = defaultdict(list)
-    nodesum_index=defaultdict(list)
-    faceID=0;
-    vert_1 = 0
-    vert_2 = 0
-    vert_3 = 0
-    vert_4 = 0
-    nodesum = vert_1 + vert_2 + vert_3 + vert_4
-    cell_1 = 0
-    cell_2 = 0
-    zone_id = 0
-      
-    def addData(self, v1, v2, v3, v4, c1):
-	self.vert_1 = v1
-	self.vert_2 = v2
-	self.vert_3 = v3
-	self.vert_4 = v4
-	self.cell_1 = c1
-        self.nodesum = self.vert_1 + self.vert_2 + self.vert_3 + self.vert_4
-        self.verts = sorted([self.vert_1, self.vert_2, self.vert_3, self.vert_4])
-#        Face.verts_index[self.verts].append(self)
-	Face.nodesum_index[self.nodesum].append(self)
-     
-    def addCell(self, c2):
-	self.cell_2 = c2
-
-    def addZone(self, zid):
-	self.zone_id = zid
-
-    def addID(self, ID):
-	self.faceID = ID
-	Face.id_index[ID].append(self)
-
-    def getID(self):
-        return self.faceID
-
-    def isEqual(self,v1,v2,v3,v4):
-        return (sorted([v1, v2, v3, v4]) == self.verts)
-
-    @classmethod
-    def find_by_ID(cls, ID):
-        return Face.id_index[ID]
-    @classmethod
-    def find_by_nodesum(cls, sum):
-        return Face.nodesum_index[sum]   
-
 Faces = []
+Cells = []
 
 # This part is just a default that goes into the top of the rea-file:
 rea_start= """****** PARAMETERS *****
@@ -446,7 +421,6 @@ def create_periodic_face_map(periodic_dx):
     
 def process_cell(cell_no, vertices):
     # Update Face dictionary from the nodes in a cell
-
     # Store cell_map, listing the vertices that describe the cell  
     cell_map[cell_no] = zeros(21, int)
     cell_map[cell_no] = vertices[1:21]
@@ -454,6 +428,13 @@ def process_cell(cell_no, vertices):
     #cell_map[cell_no][0:8] = vertices[[2, 3, 4, 1, 6, 7, 8, 5]]
     #if (vertices[0] == 20):
     #    cell_map[cell_no][8:20] = vertices[[10, 11, 12, 9, 14, 15, 16, 13, 18, 19, 20, 17]]
+
+    # ADDED BY MAGNUS 06.10 ####### 
+    currentCell = cell(cell_no,vertices)
+    Cells.append(currentCell)
+    #print currentCell.cellID
+    #print currentCell.vertices
+    # End 
 
     # Checking edge midpoints for curved edges
     curved_midpoint[cell_no] = {}
@@ -473,6 +454,7 @@ def process_cell(cell_no, vertices):
         check_edge(11, [vertices[3], vertices[7], vertices[15]], cell_no)
         check_edge(12, [vertices[4], vertices[8], vertices[16]], cell_no)
             
+
     faceverts = zeros(4)
     face_map[cell_no] = {}
     
@@ -483,7 +465,8 @@ def process_cell(cell_no, vertices):
     # Check for existing face
     facename = "South"
     face_no = check_face(faceverts, facename, cell_no, len(Faces))
-    face_map[cell_no][face_no] = 5
+    face_map[cell_no][face_no] = 5 
+    (Cells[cell_no-1]).faces[5] = face_no # Added by Magnus 06.10
 
     # North Face
     faceverts = ([vertices[5], vertices[6], vertices[7], vertices[8]])
@@ -491,6 +474,7 @@ def process_cell(cell_no, vertices):
     facename = "North"
     face_no = check_face(faceverts, facename, cell_no, len(Faces))
     face_map[cell_no][face_no] = 6
+    (Cells[cell_no-1]).faces[6] = face_no # Added by Magnus 06.10
 
     # West face
     #faceverts = ([vertices[1], vertices[2], vertices[6], vertices[5]])
@@ -499,6 +483,7 @@ def process_cell(cell_no, vertices):
     facename = "West"
     face_no = check_face(faceverts, facename, cell_no, len(Faces))
     face_map[cell_no][face_no] = 4
+    (Cells[cell_no-1]).faces[4] = face_no # Added by Magnus 06.10
 
     # East Face
     #faceverts = ([vertices[4], vertices[3], vertices[7], vertices[8]])
@@ -507,6 +492,7 @@ def process_cell(cell_no, vertices):
     facename = "East"
     face_no = check_face(faceverts, facename, cell_no, len(Faces))
     face_map[cell_no][face_no] = 2
+    (Cells[cell_no-1]).faces[2] = face_no # Added by Magnus 06.10
 
     # Top face
     #faceverts = ([vertices[1], vertices[4], vertices[8], vertices[5]])
@@ -515,6 +501,7 @@ def process_cell(cell_no, vertices):
     facename = "Top"
     face_no = check_face(faceverts, facename, cell_no, len(Faces))
     face_map[cell_no][face_no] = 3
+    (Cells[cell_no-1]).faces[3] = face_no # Added by Magnus 06.10
 
     # Bottom Face
     #faceverts = ([vertices[2], vertices[3], vertices[7], vertices[6]])
@@ -523,6 +510,8 @@ def process_cell(cell_no, vertices):
     facename = "Bottom"
     face_no = check_face(faceverts, facename, cell_no, len(Faces))
     face_map[cell_no][face_no] = 1
+    (Cells[cell_no-1]).faces[1] = face_no # Added by Magnus 06.10
+
 
 def check_edge(edge_no, edgeverts, cell_no):
     global tot_num_curved
@@ -553,6 +542,7 @@ def check_edge(edge_no, edgeverts, cell_no):
         curved_east[cell_no][edge_no] = edgeverts[0] - 1
         curved_west[cell_no][edge_no] = edgeverts[1] - 1
         tot_num_curved += 1
+        Cells[cell_no-1].addCurve(edge_no) # ADDED BY RUD 06.10
 
     # Second test for curvature: Inner product
     #if (abs(inner(AC,BC)) / (norm(AC) * norm(BC)) < 1 - 1e-04):
@@ -1426,28 +1416,28 @@ def write_nek5000_file(dim, ofilename, curves, temperature, passive_scalars,star
     # SPHERE NOTATION 
     #####ADDED BY RUD 25.09 ######
     print 'Printing circle information\n'
-    print face_list[0]
-    print face_list[1]
-    print face_list[2]
-    print face_list[3]
-    print face_list[4]
-    print face_list[5]
-    print face_list[6]
-    print face_list[7]
-    print face_list[8]
-    print face_list[9]
-    print face_list[10]
-    print face_list[11]
-    print face_list[12]
-    print face_list[13]
-    print '------------------\n'
-    print parallel_edge_map[1][0]
+    #print face_list[0]
+    #print face_list[1]
+    #print face_list[2]
+    #print face_list[3]
+    #print face_list[4]
+    #print face_list[5]
+    #print face_list[6]
+    #print face_list[7]
+    #print face_list[8]
+    #print face_list[9]
+    #print face_list[10]
+    #print face_list[11]
+    #print face_list[12]
+    #print face_list[13]
+    #print '------------------\n'
+    #print parallel_edge_map[1][0]
     ofile.write(cc.format(tot_num_curved))
     for ic in range(tot_num_cells):
-	  	print cell_face_map[ic+1]
-		print curved_midpoint[ic+1] 
+		  #print cell_face_map[ic+1]
+		#print curved_midpoint[ic+1] 
 		for ie in curved_midpoint[ic+1].keys():
-			print ic+1,ie 
+			#print ic+1,ie 
 			#print face_list[dumdum[0]]
 			#print ic,'\n'
 
@@ -1540,100 +1530,100 @@ def convert(nastranmesh,
         temperature=False, passive_scalars=[],     # nek5000 only
         cylindrical=1, NZ=1,                       # semtex  only
         reafile='def.rea',outfile='out.rea'): 
-    '''Converts a fluent mesh to a mesh format that can be used by Nek5000
-       semtex or FEniCS. 
+    #Converts a fluent mesh to a mesh format that can be used by Nek5000
+       #semtex or FEniCS. 
 
-         nastranmesh = fluent mesh (*.msh file)
+         #nastranmesh = fluent mesh (*.msh file)
 
-               func = Optional function of spatial coordinates (x,y) that can 
-                      be used to modify the fluent mesh.
-                      For example, say you have a mesh that is a rectangular 
-                      geometry with -2 < x < 6 and 0 < y 0.5. Now you want to
-                      squeeze this mesh around x = 0 to create a stenosis type
-                      of mesh. This can be accomplished by squeezing the mesh
-                      in the y-direction through:
+               #func = Optional function of spatial coordinates (x,y) that can 
+                      #be used to modify the fluent mesh.
+                      #For example, say you have a mesh that is a rectangular 
+                      #geometry with -2 < x < 6 and 0 < y 0.5. Now you want to
+                      #squeeze this mesh around x = 0 to create a stenosis type
+                      #of mesh. This can be accomplished by squeezing the mesh
+                      #in the y-direction through:
 
-                      def func_y(x, y):
-                          if abs(x) < 1.:
-                              return y*(1 - 0.25*(1 + cos(x*pi)))
-                          else:
-                              return y
+                      #def func_y(x, y):
+                          #if abs(x) < 1.:
+                              #return y*(1 - 0.25*(1 + cos(x*pi)))
+                          #else:
+                              #return y
 
-                      and supplying this value to the keyword func like:
+                      #and supplying this value to the keyword func like:
 
-                      func={'y': func_y}
+                      #func={'y': func_y}
 
-                      Otherwise you might just create this stenosis in your
-                      mesh generation software and supply nothing for func.
-                      Note that in nek5000 you will most likely do this in
-                      subroutines userdat or userdat2.
+                      #Otherwise you might just create this stenosis in your
+                      #mesh generation software and supply nothing for func.
+                      #Note that in nek5000 you will most likely do this in
+                      #subroutines userdat or userdat2.
 
-        mesh_format = 'nek5000', 'semtex' or 'fenics'
+        #mesh_format = 'nek5000', 'semtex' or 'fenics'
 
-                bcs = False or dictionary of boundary conditions for 
-                      velocity/pressure (something like {1: 'W', 2: 'v'} for
-                      wall in zone 1 and Dirchlet to be specified in zone 2).
-                      False indicates that dictionary is not used and
-                      in that case we assume the name of the zone ends in
-                      the correct letter, like 'somename_W' for zone 1 and 
-                      'somename_v' for zone 2. Zonenames are easy to modify
-                      at the bottom of the fluent msh files.
-                      Don't include periodic zones here.
+                #bcs = False or dictionary of boundary conditions for 
+                      #velocity/pressure (something like {1: 'W', 2: 'v'} for
+                      #wall in zone 1 and Dirchlet to be specified in zone 2).
+                      #False indicates that dictionary is not used and
+                      #in that case we assume the name of the zone ends in
+                      #the correct letter, like 'somename_W' for zone 1 and 
+                      #'somename_v' for zone 2. Zonenames are easy to modify
+                      #at the bottom of the fluent msh files.
+                      #Don't include periodic zones here.
 
-        periodic_dx = Dictionary describing any periodicity in the mesh.
-                      Keys are tuples of the two periodic zones (zone0, zone1)
-                      and values are displacement vectors.
-                      Note that the current program also can read a mesh where
-                      periodicity has been generated in the mesh generator. 
-                      However, this author has still not managed to 
-                      create a periodic 3D mesh correctly in any mesh software.
-                      Hence I prefer to define periodicity through this
-                      dictionary here and do nothing regarding periodicity in
-                      the meshing software. All you need to know are the ids
-                      and displacement of the periodic zones. Connectivity
-                      will then be computed here. Note that each periodic zone
-                      needs to be its own zone. Simply creating a 3D UnitCube
-                      in gambit and not assigning names to the 6 zones won't
-                      work. We need zone identifiers (for now).
-                      Not for FEniCS.
+        #periodic_dx = Dictionary describing any periodicity in the mesh.
+                      #Keys are tuples of the two periodic zones (zone0, zone1)
+                      #and values are displacement vectors.
+                      #Note that the current program also can read a mesh where
+                      #periodicity has been generated in the mesh generator. 
+                      #However, this author has still not managed to 
+                      #create a periodic 3D mesh correctly in any mesh software.
+                      #Hence I prefer to define periodicity through this
+                      #dictionary here and do nothing regarding periodicity in
+                      #the meshing software. All you need to know are the ids
+                      #and displacement of the periodic zones. Connectivity
+                      #will then be computed here. Note that each periodic zone
+                      #needs to be its own zone. Simply creating a 3D UnitCube
+                      #in gambit and not assigning names to the 6 zones won't
+                      #work. We need zone identifiers (for now).
+                      #Not for FEniCS.
 
-             curves = Dictionary of curve information. Keys are curve zones 
-                      and value is either 
-                               {'type': 'C', 
-                                'radius': radius, 
-                                'circle_center': (x, y), 
-                                'depth': depth} 
-                      for a circle or 
-                               {'type': 'm'} 
-                      for midpoint with nek5000 or
-                               {'type': 'spline'}
-                      for a curved side with semtex. Here a .geom file containing
-                      the spline information will be created.
+             #curves = Dictionary of curve information. Keys are curve zones 
+                      #and value is either 
+                               #{'type': 'C', 
+                                #'radius': radius, 
+                                #'circle_center': (x, y), 
+                                #'depth': depth} 
+                      #for a circle or 
+                               #{'type': 'm'} 
+                      #for midpoint with nek5000 or
+                               #{'type': 'spline'}
+                      #for a curved side with semtex. Here a .geom file containing
+                      #the spline information will be created.
 
-                      The circle may provide the radius or the center of the
-                      circle through 'circle_center'. The curvature may also be 
-                      used in the internal elements inside the surface through
-                      specifying the depth. depth=4 means that the curvature 
-                      is used throughout the first four elements inside that 
-                      surface. This is necessary to get good quality meshes in,
-                      e.g., a cylinder. The radius for an internal face is 
-                      allways computed as the distance to the circle_center.
-                      Not for FEniCS.
+                      #The circle may provide the radius or the center of the
+                      #circle through 'circle_center'. The curvature may also be 
+                      #used in the internal elements inside the surface through
+                      #specifying the depth. depth=4 means that the curvature 
+                      #is used throughout the first four elements inside that 
+                      #surface. This is necessary to get good quality meshes in,
+                      #e.g., a cylinder. The radius for an internal face is 
+                      #allways computed as the distance to the circle_center.
+                      #Not for FEniCS.
 
-        temperature = False or dictionary of boundary conditions for 
-                      temperature (something like {1: 'W', 2: 'v'}) for
-                      Wall in zone 1 and Dirchlet specified in .usr in zone 2.
-                      False indicates that temperature is not used. 
-                      (nek5000 only)
+        #temperature = False or dictionary of boundary conditions for 
+                      #temperature (something like {1: 'W', 2: 'v'}) for
+                      #Wall in zone 1 and Dirchlet specified in .usr in zone 2.
+                      #False indicates that temperature is not used. 
+                      #(nek5000 only)
 
-    passive_scalars = [] or list of dictionaries of boundary conditions for
-                      passive scalars. Empty means no passive scalars are used.
-                      (nek5000 only)
+    #passive_scalars = [] or list of dictionaries of boundary conditions for
+                      #passive scalars. Empty means no passive scalars are used.
+                      #(nek5000 only)
 
-        cylindrical = 1 for cylindrical mesh and 0 for regular (semtex only)
+        #cylindrical = 1 for cylindrical mesh and 0 for regular (semtex only)
 
-                 NZ = Number of planes in homogeneous direction (semtex only)
-    '''
+                 #NZ = Number of planes in homogeneous direction (semtex only)
+
 # ADDED BY RUD 25.09.15
 # This part is just a default that goes into the top of the rea-file:
     if (reafile != 'def.rea'): 
@@ -1667,6 +1657,26 @@ def convert(nastranmesh,
     create_periodic_face_map(periodic_dx)
     create_periodic_cell_face_map()
     create_boundary_section(bcs, temperature, passive_scalars, mesh_format)
+
+# ADDED BY RUD 06.10.15
+    for cell_no in range(len(Cells)):
+        (Cells[cell_no]).define_face_mappings(Faces)
+    find_neighbours()
+    # Checking the cell mapping
+    #for cell_no in range(len(Cells)):
+        #print 'faces for cell number {}:'.format(cell_no+1)
+        #print Cells[cell_no].faces
+        #print Cells[cell_no].face_glloc
+        #for ie in range(6):
+            #print Cells[cell_no].faces[ie+1],Cells[cell_no].face_glloc[Cells[cell_no].faces[ie+1]]
+
+    # Method for assigning the neightbours
+        
+    (Cells[4]).print_info()
+
+        
+    #print ('cellID of elem 1 is {}'.format(Cells[0].cellID))
+# END RUD 06.10.15
     # Modify the entire mesh using the shape-function func
     if func:
         sz = nodes.shape
