@@ -10,6 +10,7 @@ Pts = [] # A list with the position vector of each point
 class cell:
     cellID= 0 # Id number
     vertices = zeros(21) #List of vertices,[#tot,8 vertices, 12 midpoints] All global
+    vert_coord = [] # list corresponding to the coordinates of the vertices
     curved_edge = [] # curved edge numbers
     curved_edge_info = [] # list of curved edges and their information ready to print in .rea file
     nbours = zeros(6) # Array of neighbours global numbers corresonding to facenumber

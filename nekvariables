@@ -99,9 +99,6 @@ FNC(ETA) 	|| Should return something close to zero if eta is small. Has to do wi
 lagmass 	|| Lag the mass matrix
 
 
-
-
-
 ------------- Files --------------- 
 htps.in 		A file that defines certain output points, on the format:
 N
