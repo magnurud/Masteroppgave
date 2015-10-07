@@ -17,6 +17,8 @@ b = Symbol("b")    # Constants for different uses
 c = Symbol("c")    # Constants for different uses
 d = Symbol("d")    # Constants for different uses
 e = Symbol("e")    # Constants for different uses
+Phi = Symbol("Phi")
+Psi = Symbol("Psi")
 # Corner values 
 c1,c2,c3,c4 = symbols('c1,c2,c3,c4')    # Constants for corner values
 # Reference element values 
@@ -39,9 +41,10 @@ theta = pi/4*(2-xi)
 # Defining edge functions 
 ### trapezoidal element with curved bottom
 gamma1 = Matrix([a+c*(1+eta)/2,b*c*(1+eta)/2])
-gamma2 = Matrix([(a+c)*xi,b*c+k*(a+c)**2*(1-xi**2)])
+gamma2 = Matrix([(a+c)*xi,b*c+(2/4)*k*(1-xi**2)])
+#gamma2 = Matrix([(a+c)*xi,Psi])
 gamma3 = Matrix([-a-c*(1+eta)/2,b*c*(1+eta)/2])
-gamma4 = Matrix([a*xi,k*a**2*(1-xi**2)])
+gamma4 = Matrix([a*xi,k*(1-xi**2)])
 ### Circular element 
 #a = 1/np.sqrt(2) # cornervals
 #gamma1 = Matrix([sqrt(1-(a*eta)**2),a*eta])
@@ -50,7 +53,7 @@ gamma4 = Matrix([a*xi,k*a**2*(1-xi**2)])
 #gamma4 = Matrix([a*xi,-sqrt(1-(a*xi)**2)])
 ### quadratic element with curved bottom (and top
 #gamma1 = Matrix([1,eta])
-#gamma2 = Matrix([xi,1 + 1*k/2*(1-xi**2)])
+#gamma2 = Matrix([xi,1 + 1*k*(1-xi**2)])
 #gamma3 = Matrix([-1,eta])
 #gamma4 = Matrix([xi,-1+1*k*(1-xi**2)])
 #gamma4 = Matrix([a*xi,sqrt(1-(a*xi)**2)])
@@ -60,7 +63,7 @@ gamma4 = Matrix([a*xi,k*a**2*(1-xi**2)])
 # Evaluating in the corners
 expr1 = gamma1; expr2 = gamma2; expr3 = gamma3; expr4 = gamma4;
 c1 = expr4.subs(xi,-1); c2 = expr3.subs(eta,1) # left side corners
-c3 = expr1.subs(eta,-1); c4 = expr2.subs(xi,1) # right side corners
+c3 = expr1.subs(eta,-1); c4 = expr1.subs(eta,1) # right side corners
 # Defining basis functions 
 p = (1-xi)/2; q = (1+xi)/2
 r = (1-eta)/2; s = (1+eta)/2
@@ -72,16 +75,18 @@ Fen = p*r*c1 + p*s*c2 + q*r*c3 + q*s*c4
 
 Fgh = Fe+Fn-Fen
 
-#pprint(Fe)
+#pprint(Fgh)
 #pprint(Fn)
 #print '=============='
 #pprint(simplify(Fgh[0]))
+#print '=============='
 #pprint(simplify(Fgh[1]))
 #print '=============='
 # Calculating Jacobi-Matrix
 J = Matrix([[diff(Fgh[0],xi),diff(Fgh[0],eta)],
     [diff(Fgh[1],xi),diff(Fgh[1],eta)]])
 
+#print' The jacobian is : '
 #pprint(J)
 # Caldulating determinant and changes in determinant
 Jdet = simplify(J[0,0]*J[1,1]-J[0,1]*J[1,0])
