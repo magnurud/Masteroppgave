@@ -10,5 +10,8 @@ edit mesh
 		merge meshes
 			resolve refinements
 
+-----------------------------
+Adjust parameter nfldmax in SIZE file to enable 
+more output parameters in hpts
 
 

@@ -7,7 +7,7 @@ import quadrature_nodes as qn
 import structured_grids as sg 
 import laplace_functions as lp 
 #Number of GLL points:
-N = 11
+N = 12
 xis = qn.GLL_points(N)
 one = np.ones(N)
 weights = qn.GLL_weights(N, xis)
@@ -47,7 +47,7 @@ for i in range(N):
 
 
 plt.plot(circle[:,0],circle[:,1],'r')
-#plt.show() # Plotting the GLL-points and the circle
+plt.show() # Plotting the GLL-points and the circle
 areal_est = sum(sum(np.multiply(D,np.outer(dist,dist))))
 print ('ESTIMATION DONE FOR {} GLL-POINTS'.format(N))
 print ('estimated areal of circle:{}'.format(areal_est))

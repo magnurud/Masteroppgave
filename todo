@@ -1,5 +1,8 @@
 
-fix rms output
+fix rms output! Chk with current settings! 
+why is the h3-data equal 0 for behind the second block ?? 
 make mesh for channel case - fix the forplantning 
 do jacobi-calculation for general trapezoid --- nooo way
+read up on turbChannels smagorinsky function
+when is lxd,lyd,lzd used
 
