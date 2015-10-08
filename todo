@@ -1,0 +1,5 @@
+
+fix rms output
+make mesh for channel case
+do jacobi-calculation for general trapezoid
+
