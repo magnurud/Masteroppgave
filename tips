@@ -4,4 +4,11 @@ make nastranmesh file from ICEM
 create the parameter input file
 touch filename.par
 
+fix refinements:
+edit mesh
+	merge nodes
+		merge meshes
+			resolve refinements
+
+
 
