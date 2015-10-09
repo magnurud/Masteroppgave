@@ -7,7 +7,7 @@ IFSPLIT ||==1: PnPn form, !=1: Pn-2Pn-2 form. "nek_advance"
 IFNATC		|| natural convection, boussinesq turned on == BETAG?
 IFDOIT    = .FALSE. 	|| Default in drive2.f
 IFCVODE   = .false.
-IFEXPLVIS = .false. || calculation of explicit stress tensor
+IFEXPLVIS = .false. || calculation of explicit stress tensor in plan4, 
 IFTRAN   || transient flow
 IFFLOW 	 || solve for fluid, pressure - velocity 
 IFCHAR 	 || use characteristics for convection operator 
@@ -17,6 +17,7 @@ IFGMSH3  || velocity or stress formulation
 IFRE2 	 || the new binary reafile is created and used 
 IFDFRM   || For timing purposes IFDEFORMED !! if element is deformed!! 
 IFMVBD	 || If moving boundary
+IFUSERVP || imposed by p30, if the subroutine uservp is to be used.
 IFFAST 	 || if Ax is to be solved fast, IFDFRM ==1 => IFFAST = 0
 LOCAL ifverbose
 LOCAL icalld || Used to determine whether a subroutine has been called
@@ -42,7 +43,6 @@ NELV,NELT			|| number of elements , local and total ?
 IGEOM				|| 1 or 2... something to do with change in geometry ? 
 BM1					|| array containing the mass in each node??
 TA1					|| Array used to store convectional contribution of a scalar, TA2,TA3 the same,induct.f SCRUZ
-
 ------TSTEP----------
 DT 					|| timestep
 DTLAG				|| array containing the preevious 10 timesteps

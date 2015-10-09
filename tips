@@ -1,17 +1,32 @@
 
 
-make nastranmesh file from ICEM 
+##make nastranmesh file from ICEM 
 create the parameter input file
 touch filename.par
-
-fix refinements:
+------------------------------
+##fix refinements:
 edit mesh
 	merge nodes
 		merge meshes
 			resolve refinements
 
 -----------------------------
-Adjust parameter nfldmax in SIZE file to enable 
-more output parameters in hpts
+##Adjust parameter nfldmax in SIZE file to enable 
+##more output parameters in hpts
 
+The size of the work array is decided in the beginning of the function htps
+Have to change this definition of nflds as well! 
+Adding extra parameter nfldextra in SIZE file, Need to be adjusted manually 
+for different output
 
+-----------------------------
+##Plotting in Visit
+PSeudocolor
+	operator, slicer,slice, redraw
+		OpAtts slicing, slicer
+
+----------------------------
+fix Xorg high CPU-usage
+	download compizconfig-settings-manager
+		uncheck OpenGL --> Sync to VBlanc 
+		set Texture filter = Fast
