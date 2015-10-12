@@ -6,4 +6,6 @@ make mesh for channel case - fix the propagation
 do jacobi-calculation for general trapezoid --- nooo way
 read up on turbChannels smagorinsky function
 when is lxd,lyd,lzd used. aliasing... 
+fix smag 
+fix calculation of drag and lift
 

@@ -76,6 +76,7 @@ curved_faces = {}           # For each boundary zone store faces that are in cur
 curved_nodes = {}           # For each boundary zone store nodes that are in curved section 
 curved_midpoint = {}        # For each cell and curved edge, coordinates for midpoint (empty for straight edge)
 # ADDED BY RUD 25.09
+tol = 1e-02
 curved_east = {}            # For each cell and curved edge, coordinates for the point east of midpoint  
 curved_west = {}            # For each cell and curved edge, coordinates for the point west of midpoint  
 # END BY RUD 25.09
@@ -536,7 +537,7 @@ def check_edge(edge_no, edgeverts, cell_no):
         print "AC, BC, AB: ", AC_abs, BC_abs, AB_abs
         
     # First test for curvature: Sum of vector lengths 
-    if ((AC_abs + BC_abs - AB_abs) > 1e-04 * AB_abs):
+    if ((AC_abs + BC_abs - AB_abs) > tol * AB_abs):
         print "Curved line for edge", edge_no, "cell", cell_no
         curved_midpoint[cell_no][edge_no] = edgeverts[2] - 1
         curved_east[cell_no][edge_no] = edgeverts[0] - 1
@@ -1450,6 +1451,11 @@ def write_nek5000_file(dim, ofilename, curves, temperature, passive_scalars,star
 			#ofile.write(c2.format(center[0],center[1],center[2],radius, 0.0, 's'))
 			# CIRCLE 
 			ofile.write(c2.format(radius,0.0,0.0,0.0,0.0, 'c'))
+                        # Printing data
+                        #plt.plot([xxwest[0],xx[0],xxeast[0]],[xxwest[1],xx[1],xxeast[1]],'r')
+                        #plt.plot(center[0],center[1],'b*')
+    #plt.show()
+                        
     #####END BY RUD 25.09 ######
 
             
