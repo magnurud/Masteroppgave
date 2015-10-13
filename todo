@@ -1,8 +1,0 @@
-
-
-make mesh for channel case - fix the propagation 
-do jacobi-calculation for general trapezoid --- nooo way
-read up on turbChannels smagorinsky function
-when is lxd,lyd,lzd used. aliasing... 
-laplacian smoothing, generates curved midpoints ?? 
-

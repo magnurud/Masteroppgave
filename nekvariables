@@ -33,6 +33,8 @@ nelx				||	ZPER number of elements in x-direction
 ndim				|| number of dimensions
 lglel				|| 	PARALELL vector of length lelt (mapping from local to global element index ?? )
 gllel				|| 	PARALELL vector of length lelg (mapping from global to local element index ?? )
+ie					|| local element (local in the sense of processor)
+ieg					|| Global element id
 CBC					|| 3d array containing BC
 ix					|| commonly used as iterator over the x-nodes within an element
 kx1,kx2				|| commonly used as lower and upper bound for ix
@@ -43,6 +45,21 @@ NELV,NELT			|| number of elements , local and total ?
 IGEOM				|| 1 or 2... something to do with change in geometry ? 
 BM1					|| array containing the mass in each node??
 TA1					|| Array used to store convectional contribution of a scalar, TA2,TA3 the same,induct.f SCRUZ
+cdiff				|| diffusivity
+CPGRP(-5:10,LDIMT1,3)|| ???? INPUT
+ldimt1 				|| ldimt+1 , number of passive scalars plus 1. SIZE
+ldimt3 				|| ldimt+3 , number of passive scalars plus 3. SIZE
+IGROUP(lelt)		|| the group id of each element. INPUT
+pm1 (lx1,ly1,lz1,lelv) || Pressure mapped to mesh 1
+----------  user specified routines-----------
+userbc : boundary conditions
+useric : initial conditions
+uservp : variable properties
+userf  : local acceleration term for fluid
+userq  : local source term for scalars
+userchk: general purpose routine for checking errors etc.
+
+
 ------TSTEP----------
 DT 					|| timestep
 DTLAG				|| array containing the preevious 10 timesteps
@@ -97,6 +114,19 @@ convop(conv,fi)	|| compute the convective term of a scalar
 blank(A,N) || set all elements in a character array equal ''
 FNC(ETA) 	|| Should return something close to zero if eta is small. Has to do with sphere genxyz.f
 lagmass 	|| Lag the mass matrix
+nekuvp (iel) || Generate user-specified material properties for element iel subs1.f (calls uservp)
+vlmin(v,n)	|| finds the minvalue of array v with length n
+rone(A,n)	|| Fill A with n 1.0 math.f
+ione(A,n)	|| Fill A with n 1 math.f
+add2s2(A,B,c,n) || A+cB math.f
+col2(a,b,n)		|| a.*b  math.f
+subroutine dudxyz (du,u,rm1,sm1,tm1,jm1,imsh,isd)|| navier1.f
+function facint_a(a,area,f,e) || Integrate areal array a() on face f of element e. navier5.f 
+function facint(a,b,area,ifc,ie) || Take the dot product of A and B on the surface IFACE1 of element IE.
+
+
+
+
 
 
 ------------- Files --------------- 
@@ -113,10 +143,17 @@ When defining curves... a minus sign could imply reducing the precision.
 say t(lx,ly) is to be iterated in a function. often the first element is 
 passed as t(1,1) or simply t along with n = lx*ly
 
+When writing to screen, notice the format key. The second input. Make sure you 
+find the right format! 
+
+mesh1 is the velocity mesh
 
 ------- Q's for THG ------------
 icalld ? local variable in many scripts... 
 igeom ? Moving mesh
+why does branches/mvmesh/ branches/adapt_mesh contain many of the same functions as trunk/nek ??
+Usrvp, shouldn't field be a variable as well in order to get the right output ??
+What is Mesh 1 ?
 
 ------ Common mistakes ------ 
 The lelt variable is not large enough
