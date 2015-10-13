@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.10.26)  4 OCT 2015 16:13
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.10.26)  11 OCT 2015 14:54
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -6,22 +6,6 @@ entering extended mode
 (./main.tex
 LaTeX2e <2011/06/27>
 Babel <3.9h> and hyphenation patterns for 26 languages loaded.
-
-! LaTeX Error: Missing \begin{document}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1 q
-     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-? 
-Missing character: There is no q in font nullfont!
-
-Overfull \hbox (20.0pt too wide) in paragraph at lines 1--23
-[] 
- []
-
 (./Thesis.cls
 Document Class: Thesis 2007/22/02 v1.0 LaTeX document class
 (/usr/share/texlive/texmf-dist/tex/latex/base/book.cls
@@ -41,7 +25,7 @@ File: bk11.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 \abovecaptionskip=\skip41
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
- [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}])
+)
 (/usr/share/texlive/texmf-dist/tex/latex/setspace/setspace.sty
 Package: setspace 2011/12/19 v6.7a set line spacing
 )
@@ -782,7 +766,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 
 
-]
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
 ------------------------------------------------------------------------------
  Abstract Page
 ------------------------------------------------------------------------------
@@ -810,40 +794,40 @@ Chapter 1.
 ------------------------------------------------------------------------------
  1 Numerical theory
 ------------------------------------------------------------------------------
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 15.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 30.
 (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 15.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 30.
  [1
 
 
 
-] [2])
-(./Chapters/physics.tex [3]
+] [2] [3])
+(./Chapters/physics.tex [4]
 Chapter 2.
 ------------------------------------------------------------------------------
- 2 Fluid dynamics
+ 2 Fluid dynamics and problem specific mathematics
 ------------------------------------------------------------------------------
 
-Package natbib Warning: Citation `White' on page 4 undefined on input line 15.
+Package natbib Warning: Citation `White' on page 5 undefined on input line 15.
 
-[4
+[5
 
-] [5]) (./Chapters/problem.tex [6]
+] [6] [7]) (./Chapters/problem.tex [8]
 Chapter 3.
 ------------------------------------------------------------------------------
  3 Application of nek5000 and the creation of grid
 ------------------------------------------------------------------------------
-[7
+[9
 
-]) (./main.bbl [8])
+]) (./main.bbl [10])
 
 Package natbib Warning: There were undefined citations.
 
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 342.
-[9
+[11
 
 ]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 342.
@@ -851,31 +835,37 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 342.
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 342.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 342.
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: E9C7B4099DF586FE561D51B92F309C49;3051.
+(rerunfilecheck)             Checksum: 9EC21BAF6FB62744CC25338A104B7285;3229.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 342.
  ) 
 Here is how much of TeX's memory you used:
- 13049 strings out of 494465
- 182464 string characters out of 6166360
- 250129 words of memory out of 5000000
- 16074 multiletter control sequences out of 15000+600000
- 13476 words of font info for 49 fonts, out of 8000000 for 9000
+ 13058 strings out of 494465
+ 182541 string characters out of 6166360
+ 251267 words of memory out of 5000000
+ 16077 multiletter control sequences out of 15000+600000
+ 13744 words of font info for 50 fonts, out of 8000000 for 9000
  350 hyphenation exceptions out of 8191
- 49i,11n,45p,535b,398s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 49i,16n,45p,535b,398s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/shar
 e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/share/tex
 live/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/t
-exmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-di
-st/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/font
-s/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type
-1/public/amsfonts/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
-ic/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/ams
-fonts/cm/cmtt10.pfb>
-Output written on main.pdf (14 pages, 148617 bytes).
+exmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/font
+s/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/publi
+c/amsfonts/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmti12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmtt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols
+/msbm10.pfb>
+Output written on main.pdf (15 pages, 171598 bytes).
 PDF statistics:
- 221 PDF objects out of 1000 (max. 8388607)
- 193 compressed objects within 2 object streams
- 37 named destinations out of 1000 (max. 500000)
+ 243 PDF objects out of 1000 (max. 8388607)
+ 211 compressed objects within 3 object streams
+ 42 named destinations out of 1000 (max. 500000)
  137 words of extra memory for PDF output out of 10000 (max. 10000000)
 

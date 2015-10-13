@@ -11,6 +11,21 @@
 %----------------------------------------------------------------------------------------
 
 \section{Galerkin formulation}
+Throughout this thesis all numerical methods will be based on the Galerkin formulation. Let us consider a general bounary value problem (BVP)
+\begin{align}
+	\begin{split}
+	\mathcal{L}u =& f \;\; \text{ in } \Omega\\
+	\mathcal{B}u =& g \;\; \text{ on } \partial\Omega.
+	\end{split}
+	\label{eq:BVP}
+\end{align}
+The domain $\Omega$ is a closed subspace of $\mathbb{R}^d$, $\mathcal{L}: X(\Omega)\rightarrow Y(\Omega)$ and $\mathcal{B}: X(\partial\Omega)\rightarrow B(\partial\Omega)$ are two linear operators,
+$f\in Y(\Omega)$ and $g\in B(\partial\Omega)$ are known functions and $u \in X(\Omega)$ is the wanted solution. 
+The space $X(\Omega)$ is called the search space. A weak formulation can now be obtained by multiplying the first equation in \ref{eq:BVP} 
+by a test function $v \in X^t(\Omega)$ and integrating over the domain $\Omega$. By choosing $X^t(\Omega) = X(\Omega)$ the Galerkin formulation is obtained.
+For more examples and information on this subject the first chapters in \cite{Quarteroni} are recommended. 
+
+By the Lax-Milgram theorem it is known that a BVP is well-posed if the Operator $\mathcal{L}$ is both bounded and coersive.   
 \begin{itemize}
 \item a common BVP, weak formulation 
 \item search and solution space, test and basis functions
@@ -24,6 +39,29 @@ it guaranties a sparse system. The decomposition of the geometrical domain into 
 wanted to solve, makes it possible to create general algorithms applicable to all kinds of geometries. 
 For the full mathematical foundation of FEM it will be referred to \cite{Quarteroni}, but some of the key propertie will be stated here
 in order to provide a thourough understanding of the spectral element method. 
+
+FEM provides an alorithm for solving any BVP \ref{eq:BVP} and the mathematical formulation is obtained by first finding the Galerkin
+formulation and then choosing a discrete subset $X^h(\Omega) \subset X(\Omega)$ as your search space. Another key aspect of FEM is the 
+treatment of the domain $\Omega$, on which a triangulization $\{\mathcal{T}_h\}$ is defined such that the original domain is divided into elements.
+The discrete subset $X^h$ is defined by a particular basis. FEM is called a projection method since the solution $u_h\in X^h$ is a projection
+of the actual solution $u$ of the BVP onto the discrete space $X^h$. 
+--------- DEFINE THIS NICER ----------------
+The basis functions of FEM are known as hat functions and allthough there are many possible choices they are defined such that all elements 
+consists of the same ``local'' basis functions, and the global basis functions are non-zero in only a small part of $\Omega$. 
+The first feature enables us to develop a local routine performed on each element and later assemble 
+all the local information in a global system of equations. 
+
+The numerical error of FEM is reduced to the order of the approximation error of a function from $X$ to $X^h$.
+\colorbox{yellow}{error estimation}
+
+Before this section ends it is important to understand the two ways to improve the error and the effects these two ways have on the algorithm. 
+Assume the solution of the BVP to be infinitely smooth and let $h$ denote the geneal size of the elements
+and $p$ the order of the polynomial basis that defines $X^h$. 
+performing a $h$-refinement will lead to a convergence of $h^p$, sparsity of the system is conserved
+and  the total algorithm does not change in any other way than increasing the number of elements.
+Keeping $h$ constant and increasing $p$ will provide spectral convergence, but the sparsity will be reduced and all integrals solved will require 
+quadrature rules of higher order. 
+
 \begin{itemize}
 \item projection onto a h-subspace
 \item the basis functions
@@ -56,8 +94,8 @@ a BVP can be constructed in an elegant way it is rarely sparse and often result 
 %-----------------------------------
 
 \section{Spectral element method}
-In the early 1980's the the idea to combine FEM and SM came along in order to obtain the robustness and resulting sparse system of FEM with the
-spectral convergence rate obtained from SM. The result was the Spectral element method. Read articles\ldots Several formulations was investigated  and the development of super computers has played an important role in deciding the method applied today. The basic idea is to divide the domain 
+In the early 1980's the the idea to combine FEM and SM came along in order to obtain the robustness and resulting sparse system of FEM and the
+spectral convergence rate provided by SM. The result was the Spectral element method. Read articles\ldots Several formulations was investigated  and the development of super computers has played an important role in deciding the method applied today. The basic idea is to divide the domain 
 of the BVP wanted to solve into elements as in FEM and then use spectral basis functions of higher degree with support only within one element. 
 
 \begin{itemize}

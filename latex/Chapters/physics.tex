@@ -1,6 +1,6 @@
 % Chapter 2 - physics theory
 
-\chapter{Fluid dynamics} % Main chapter title
+\chapter{Fluid dynamics and problem specific mathematics} % Main chapter title
 
 \label{physics} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
@@ -14,13 +14,43 @@
 The physics regarding fluids in motion are described mathematically by the Navier-Stokes equation. The equations can be derived in many ways, 
 and it is referred to \cite{White} for a complete explication. The general idea is to conserve momentum and mass in a control domain and by 
 applying Reynolds transport theorem and the result is the following two equations reffered to as the N-S equations. 
-\begin{itemize}
-\item N-S eq.
-\end{itemize}
+
+\begin{align}
+	\frac{\partial \mathbf{u}}{\partial t} + \mathbf{u} (\nabla \cdot \mathbf{u}) &= -\nabla p + \nu \nabla \cdot \tau \\
+		\nabla \cdot (\rho \mathbf{u}) &= 0
+	\label{eq:NS}
+\end{align}
+
 These equations have been studied for centuries and different physical situations lead to different simplifications and sets of equations. 
 Examples are the Euler equations, Stokes problem, darcy flow and the incompressible navier-stokes equations. 
 Without doing the derivation of the equations a short discussion of each term in equation N-S will be given here in order to understand there
 physical origin and their mathematical attributes. 
+
+The term $\partial \mathbf{u} /\partial t$  is the time-derivative of the flow, for a steady state flow this term will be equal zero.
+The discretization of this term is often based on some implicit scheme.  
+
+The convective term $\mathbf{u} (\nabla \cdot \mathbf{u})$ describes the transport due to the flow itself on each of its components. 
+This term is non-linear and does therefore require the equations to be solved by some iteration procedure such as Newton iterations.
+
+The diffusive term $\nu \Delta \mathbf{u}$ describes the natural diffusion of the fluid. The effect of diffusion is determined by the 
+viscosity of the fluid. Mathematically this term makes the equations numerically stable and it is therefore generally easier
+to solve the N-S equations for high-viscosity fluids. 
+
+The pressure gradient $\nabla p$ is the only term involving the pressure, \ldots DISCUST THE MEANING OF PRESSURE\ldots 
+in modern solution techniques it is common to solve eq. \ref{eq:NS} 
+in a decoupled manner. 
+
+The reynolds stress tensor $\tau = \cdots$ is the turbulent term of the N-S equation. In laminar flow this term can 
+be neglected.
+
+The second equation in \ref{eq:NS} imposes a divergence free constraint on the solution $\mathbf{u}$ if the fluid is 
+assumed to be incombressible. The density $\rho$ will be a constant and the simplification follows trivially.
+
+The coefficient $\nu$ is the inverse Reynolds number $1/Re$. The reynolds number can be understood in many different ways, but perhaps the most 
+import role is that it describes the relation between the biggest length scales of the flow and the viscous length scales. Turbulent flows are
+characterized by high reynolds number. The huge span in length scales requires an extremely fine mesh if the equations \ref{eq:NS} 
+are to be solved exactly. Because a fine mesh implies a high computational cost a direct numerical solution (DNS) is not feasible for 
+problems of a certain complexity.
 
 \begin{itemize}
 \item The time-derivative
