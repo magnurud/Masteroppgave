@@ -35,7 +35,7 @@ lglel				|| 	PARALELL vector of length lelt (mapping from local to global elemen
 gllel				|| 	PARALELL vector of length lelg (mapping from global to local element index ?? )
 ie					|| local element (local in the sense of processor)
 ieg					|| Global element id
-CBC					|| 3d array containing BC
+cbc					|| character array holding the boundary condition specifier - one per face per field (velocity, temperature, etc.)
 ix					|| commonly used as iterator over the x-nodes within an element
 kx1,kx2				|| commonly used as lower and upper bound for ix
 nx1,ny1				|| similar to lx1,ly1  . Initialized in initdim , drive2.f

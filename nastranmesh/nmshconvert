@@ -13,6 +13,7 @@ parser.add_option("--cylindrical", dest="cylindrical", default = 1)
 parser.add_option("--NZ", dest="NZ", default = 1)
 parser.add_option("--reafile", dest="reafile", default = "def.rea")
 parser.add_option("--outfile", dest="outfile", default = "out.rea")
+parser.add_option("--curvetype", dest="curve_type", default = "m")
 (options,args) = parser.parse_args()
 
 nastranmesh  = options.nastranmesh
@@ -27,6 +28,7 @@ cylindrical = options.cylindrical
 NZ          = options.NZ
 reafile     = options.reafile
 outfile     = options.outfile
+curve_type= options.curve_type
 
 convert(nastranmesh,
         periodic_dx,
@@ -34,7 +36,7 @@ convert(nastranmesh,
         mesh_format,
         curves,bcs,
         temperature,passive_scalars,
-        cylindrical,NZ,reafile,outfile)
+        cylindrical,NZ,reafile,outfile,curve_type)
 
 #def convert(nastranmesh, 
 #            func=None, 

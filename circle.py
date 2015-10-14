@@ -7,7 +7,7 @@ import quadrature_nodes as qn
 import structured_grids as sg 
 import laplace_functions as lp 
 #Number of GLL points:
-N = 12
+N = 11
 xis = qn.GLL_points(N)
 one = np.ones(N)
 weights = qn.GLL_weights(N, xis)
