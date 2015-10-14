@@ -30,3 +30,5 @@ fix Xorg high CPU-usage
 	download compizconfig-settings-manager
 		uncheck OpenGL --> Sync to VBlanc 
 		set Texture filter = Fast
+----------------------------
+Always check if mesh has unwanted curvature !! 

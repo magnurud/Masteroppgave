@@ -1,11 +1,14 @@
 
 
+run dragx case
+fix smag
+check fluent data ! 
+
 fix rms output! Chk with current settings! 
-why is the h3-data equal 0 for behind the second block ?? 
 make mesh for channel case - fix the propagation 
 do jacobi-calculation for general trapezoid --- nooo way
-read up on turbChannels smagorinsky function
+read up on turbChannels smagorinsky function!!
 when is lxd,lyd,lzd used. aliasing... 
 fix smag 
-fix calculation of drag and lift
+fix calculation of drag and lift!! Test this tomorrow!
 

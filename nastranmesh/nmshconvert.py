@@ -1366,7 +1366,7 @@ def scan_nastran_mesh(lines):
         continue
 #        raise IOError('Something went wrong reading fluent mesh.')
 
-def write_nek5000_file(dim, ofilename, curves, temperature, passive_scalars,start_of_rea,end_of_rea):
+def write_nek5000_file(dim, ofilename, curves, temperature, passive_scalars,start_of_rea,end_of_rea,curve_type):
     tot_num_cells = len(cell_map)
     ofile  = open(ofilename + '.rea', "w")
     ## Put the mesh in a rea-file
@@ -1407,12 +1407,26 @@ def write_nek5000_file(dim, ofilename, curves, temperature, passive_scalars,star
     c2 = "{0:14.6e}{1:14.6e}{2:14.6e}{3:14.6e}{4:14.6e} {5:s}\n"    
 
     # MIDPOINT NOTATION 
-    #ofile.write(cc.format(tot_num_curved))
-    #for ic in range(tot_num_cells):
-        #for ie in curved_midpoint[ic+1].keys():
-            #ofile.write(c1.format(ie, ic+1))
-            #xx = nodes[:, curved_midpoint[ic+1][ie]]
-            #ofile.write(c2.format(xx[0], xx[1], xx[2], 0.0, 0.0, 'm'))
+    if(curve_type=='m'):
+        ofile.write(cc.format(tot_num_curved))
+        for ic in range(tot_num_cells):
+            for ie in curved_midpoint[ic+1].keys():
+                ofile.write(c1.format(ie, ic+1))
+                xx = nodes[:, curved_midpoint[ic+1][ie]]
+                ofile.write(c2.format(xx[0], xx[1], xx[2], 0.0, 0.0, 'm'))
+    elif(curve_type=='c'):
+        ofile.write(cc.format(tot_num_curved))
+        for ic in range(tot_num_cells):
+            for ie in curved_midpoint[ic+1].keys():
+                ofile.write(c1.format(ie, ic+1))
+                xx = nodes[:, curved_midpoint[ic+1][ie]]
+                xxwest= nodes[:, curved_east[ic+1][ie]]
+                xxeast= nodes[:, curved_west[ic+1][ie]]
+                radius ,center = points2circ(xxwest,xx,xxeast)
+                # SPHERE 
+                #ofile.write(c2.format(center[0],center[1],center[2],radius, 0.0, 's'))
+                # CIRCLE 
+                ofile.write(c2.format(radius,0.0,0.0,0.0,0.0, 'c'))
 
     # SPHERE NOTATION 
     #####ADDED BY RUD 25.09 ######
@@ -1433,28 +1447,27 @@ def write_nek5000_file(dim, ofilename, curves, temperature, passive_scalars,star
     #print face_list[13]
     #print '------------------\n'
     #print parallel_edge_map[1][0]
-    ofile.write(cc.format(tot_num_curved))
-    for ic in range(tot_num_cells):
-		  #print cell_face_map[ic+1]
-		#print curved_midpoint[ic+1] 
-		for ie in curved_midpoint[ic+1].keys():
-			#print ic+1,ie 
-			#print face_list[dumdum[0]]
-			#print ic,'\n'
-
-			ofile.write(c1.format(ie, ic+1))
-			xx = nodes[:, curved_midpoint[ic+1][ie]]
-			xxwest= nodes[:, curved_east[ic+1][ie]]
-			xxeast= nodes[:, curved_west[ic+1][ie]]
-			radius ,center = points2circ(xxwest,xx,xxeast)
-			# SPHERE 
-			#ofile.write(c2.format(center[0],center[1],center[2],radius, 0.0, 's'))
-			# CIRCLE 
-			ofile.write(c2.format(radius,0.0,0.0,0.0,0.0, 'c'))
-                        # Printing data
-                        #plt.plot([xxwest[0],xx[0],xxeast[0]],[xxwest[1],xx[1],xxeast[1]],'r')
-                        #plt.plot(center[0],center[1],'b*')
-    #plt.show()
+    #ofile.write(cc.format(tot_num_curved))
+    #for ic in range(tot_num_cells):
+                  ##print cell_face_map[ic+1]
+                ##print curved_midpoint[ic+1] 
+                #for ie in curved_midpoint[ic+1].keys():
+                        ##print ic+1,ie 
+                        ##print face_list[dumdum[0]]
+                        ##print ic,'\n'
+                        #ofile.write(c1.format(ie, ic+1))
+                        #xx = nodes[:, curved_midpoint[ic+1][ie]]
+                        #xxwest= nodes[:, curved_east[ic+1][ie]]
+                        #xxeast= nodes[:, curved_west[ic+1][ie]]
+                        #radius ,center = points2circ(xxwest,xx,xxeast)
+                        ## SPHERE 
+                        ##ofile.write(c2.format(center[0],center[1],center[2],radius, 0.0, 's'))
+                        ## CIRCLE 
+                        #ofile.write(c2.format(radius,0.0,0.0,0.0,0.0, 'c'))
+                        ## Printing data
+                        ##plt.plot([xxwest[0],xx[0],xxeast[0]],[xxwest[1],xx[1],xxeast[1]],'r')
+                        ##plt.plot(center[0],center[1],'b*')
+    ##plt.show()
                         
     #####END BY RUD 25.09 ######
 
@@ -1535,7 +1548,7 @@ def convert(nastranmesh,
         curves = {}, bcs = False,                  # nek5000 and semtex
         temperature=False, passive_scalars=[],     # nek5000 only
         cylindrical=1, NZ=1,                       # semtex  only
-        reafile='def.rea',outfile='out.rea'): 
+        reafile='def.rea',outfile='out.rea',curve_type = 'm'): 
     #Converts a fluent mesh to a mesh format that can be used by Nek5000
        #semtex or FEniCS. 
 
@@ -1704,7 +1717,7 @@ def convert(nastranmesh,
 
     # Generate the mesh files for given mesh format
     if mesh_format == 'nek5000':
-        write_nek5000_file(dim, ofilename, curves, temperature, passive_scalars,start_of_rea,end_of_rea)
+        write_nek5000_file(dim, ofilename, curves, temperature, passive_scalars,start_of_rea,end_of_rea,curve_type)
     elif mesh_format == 'semtex':
         write_semtex_file(dim, ofilename, curves, cylindrical, NZ)
     if mesh_format == 'fenics':
