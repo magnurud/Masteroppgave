@@ -41,7 +41,7 @@ kx1,kx2				|| commonly used as lower and upper bound for ix
 nx1,ny1				|| similar to lx1,ly1  . Initialized in initdim , drive2.f
 nx2,ny2				|| similar to lx2,ly2 (Pressure nodes) . Initialized in initdim , drive2.f
 T(LX1,LY1,LZ1,LELT,LDIMT) || array containing scalars ... temperature, concentration etc. SOLN
-NELV,NELT			|| number of elements , local and total ? 
+NELV,NELT			|| number of elements , local and total ? SIZE 
 IGEOM				|| 1 or 2... something to do with change in geometry ? 
 BM1					|| array containing the mass in each node??
 TA1					|| Array used to store convectional contribution of a scalar, TA2,TA3 the same,induct.f SCRUZ
@@ -107,7 +107,7 @@ hpts() 				output for some points given in htps.in postpro.f
 hpts_out(fieldout,nflds,nfldm,npoints,nbuff) 
 facind(KX1,KX2,KY1,KY2,KZ1,KZ2,NX,NY,NZ,IFACE)   Making sure the limits kx1,kx2... are correct when iterating over face IFACE.
 userbc(IX,IY,IZ,IFACE,IEG) 	imposing bc for node (ix,iy,iz) on face iface of element IEG
-NEKASGN (IX,IY,IZ,IEL) Updating the common variables in NEKUSE for the given node NOTE: Is performed before every userbc call!
+NEKASGN (IX,IY,IZ,IEL) Updating the common variables in NEKUSE for the given node NOTE: Is performed before every userbc call! local element number, bdry.f
 copy(a,b,n) copies the n first elements in b to a. a,b = real 
 settolv()	|| Set tolerance for velocity vector
 convop(conv,fi)	|| compute the convective term of a scalar
