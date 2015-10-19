@@ -76,7 +76,6 @@ curved_faces = {}           # For each boundary zone store faces that are in cur
 curved_nodes = {}           # For each boundary zone store nodes that are in curved section 
 curved_midpoint = {}        # For each cell and curved edge, coordinates for midpoint (empty for straight edge)
 # ADDED BY RUD 25.09
-tol = 1e-02
 curved_east = {}            # For each cell and curved edge, coordinates for the point east of midpoint  
 curved_west = {}            # For each cell and curved edge, coordinates for the point west of midpoint  
 # END BY RUD 25.09
@@ -420,7 +419,7 @@ def create_periodic_face_map(periodic_dx):
                     
             face1_list.remove((face_of_shadow, shadow_number))
     
-def process_cell(cell_no, vertices):
+def process_cell(cell_no, vertices,tol):
     # Update Face dictionary from the nodes in a cell
     # Store cell_map, listing the vertices that describe the cell  
     cell_map[cell_no] = zeros(21, int)
@@ -442,18 +441,18 @@ def process_cell(cell_no, vertices):
     curved_east[cell_no] = {}
     curved_west[cell_no] = {}
     if (vertices[0] == 20):
-        check_edge(1, [vertices[1], vertices[2], vertices[9]], cell_no)
-        check_edge(2, [vertices[2], vertices[3], vertices[10]], cell_no)
-        check_edge(3, [vertices[3], vertices[4], vertices[11]], cell_no)
-        check_edge(4, [vertices[4], vertices[1], vertices[12]], cell_no)
-        check_edge(5, [vertices[5], vertices[6], vertices[17]], cell_no)
-        check_edge(6, [vertices[6], vertices[7], vertices[18]], cell_no)
-        check_edge(7, [vertices[7], vertices[8], vertices[19]], cell_no)
-        check_edge(8, [vertices[8], vertices[5], vertices[20]], cell_no)
-        check_edge(9, [vertices[1], vertices[5], vertices[13]], cell_no)
-        check_edge(10, [vertices[2], vertices[6], vertices[14]], cell_no)
-        check_edge(11, [vertices[3], vertices[7], vertices[15]], cell_no)
-        check_edge(12, [vertices[4], vertices[8], vertices[16]], cell_no)
+        check_edge(1, [vertices[1], vertices[2], vertices[9]], cell_no,tol)
+        check_edge(2, [vertices[2], vertices[3], vertices[10]], cell_no,tol)
+        check_edge(3, [vertices[3], vertices[4], vertices[11]], cell_no,tol)
+        check_edge(4, [vertices[4], vertices[1], vertices[12]], cell_no,tol)
+        check_edge(5, [vertices[5], vertices[6], vertices[17]], cell_no,tol)
+        check_edge(6, [vertices[6], vertices[7], vertices[18]], cell_no,tol)
+        check_edge(7, [vertices[7], vertices[8], vertices[19]], cell_no,tol)
+        check_edge(8, [vertices[8], vertices[5], vertices[20]], cell_no,tol)
+        check_edge(9, [vertices[1], vertices[5], vertices[13]], cell_no,tol)
+        check_edge(10, [vertices[2], vertices[6], vertices[14]], cell_no,tol)
+        check_edge(11, [vertices[3], vertices[7], vertices[15]], cell_no,tol)
+        check_edge(12, [vertices[4], vertices[8], vertices[16]], cell_no,tol)
             
 
     faceverts = zeros(4)
@@ -514,7 +513,7 @@ def process_cell(cell_no, vertices):
     (Cells[cell_no-1]).faces[1] = face_no # Added by Magnus 06.10
 
 
-def check_edge(edge_no, edgeverts, cell_no):
+def check_edge(edge_no, edgeverts, cell_no,tol):
     global tot_num_curved
     
     [xa, ya, za] = [nodes[0, edgeverts[0]-1], nodes[1, edgeverts[0]-1], nodes[2, edgeverts[0]-1]]
@@ -1192,7 +1191,7 @@ def scan_fluent_mesh(lines):
         print 'Line = ',line
         raise IOError('Something went wrong reading fluent mesh.')
     
-def scan_nastran_mesh(lines):
+def scan_nastran_mesh(lines,tol):
     """Scan nastran mesh and generate numerous maps."""
     # (Warning! Not yet tested for multiple interior zones) (Fluent)
     dim = 3    # 3-d assumed
@@ -1309,7 +1308,7 @@ def scan_nastran_mesh(lines):
             else:
                 vertices[0] = 8
                 # Process cell
-                process_cell(cell_no, vertices)
+                process_cell(cell_no, vertices,tol)
                 chexaline = 0
             continue
             
@@ -1323,7 +1322,7 @@ def scan_nastran_mesh(lines):
             vertices[20] = int(line[48:56])
             vertices[0] = 20
             # Process faces
-            process_cell(cell_no, vertices)
+            process_cell(cell_no, vertices,tol)
             chexaline = 0
             continue
 
@@ -1427,6 +1426,10 @@ def write_nek5000_file(dim, ofilename, curves, temperature, passive_scalars,star
                 #ofile.write(c2.format(center[0],center[1],center[2],radius, 0.0, 's'))
                 # CIRCLE 
                 ofile.write(c2.format(radius,0.0,0.0,0.0,0.0, 'c'))
+                ## Printing data
+                plt.plot([xxwest[0],xx[0],xxeast[0]],[xxwest[1],xx[1],xxeast[1]],'r')
+                plt.plot(center[0],center[1],'b*')
+        plt.show()
 
     # SPHERE NOTATION 
     #####ADDED BY RUD 25.09 ######
@@ -1548,7 +1551,7 @@ def convert(nastranmesh,
         curves = {}, bcs = False,                  # nek5000 and semtex
         temperature=False, passive_scalars=[],     # nek5000 only
         cylindrical=1, NZ=1,                       # semtex  only
-        reafile='def.rea',outfile='out.rea',curve_type = 'm'): 
+        reafile='def.rea',outfile='out.rea',curve_type = 'm',tol=1e-02): 
     #Converts a fluent mesh to a mesh format that can be used by Nek5000
        #semtex or FEniCS. 
 
@@ -1665,7 +1668,7 @@ def convert(nastranmesh,
         if len(lines) == 0:
             raise IOError("Empty nastran mesh file")
 
-        scan_nastran_mesh(lines)
+        scan_nastran_mesh(lines,tol)
 
     dim = nodes.shape[0]
     create_face_list()

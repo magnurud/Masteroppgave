@@ -1,6 +1,8 @@
 
 
-run dragx case
+run dragx case 
+fix the curve propagation and test it on the drag case.
+fix output data from drag case
 fix smag
 check fluent data ! 
 
