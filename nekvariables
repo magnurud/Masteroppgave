@@ -123,6 +123,7 @@ col2(a,b,n)		|| a.*b  math.f
 subroutine dudxyz (du,u,rm1,sm1,tm1,jm1,imsh,isd)|| navier1.f
 function facint_a(a,area,f,e) || Integrate areal array a() on face f of element e. navier5.f 
 function facint(a,b,area,ifc,ie) || Take the dot product of A and B on the surface IFACE1 of element IE.
+subroutine vrdsmsh || connect.f ,Verify that mesh and dssum are properly defined
 
 
 
@@ -147,6 +148,9 @@ When writing to screen, notice the format key. The second input. Make sure you
 find the right format! 
 
 mesh1 is the velocity mesh
+
+When reading curves! Note that the format changes for different number of elements
+check rdcurve connect2.f
 
 ------- Q's for THG ------------
 icalld ? local variable in many scripts... 

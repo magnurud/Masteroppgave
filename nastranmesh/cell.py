@@ -112,6 +112,12 @@ class cell:
 			east = self.vertices[edge2points[inf_edges[i]][0]]
 			west = self.vertices[edge2points[inf_edges[i]][1]]
 			mid  = self.vertices[edge2mid[inf_edges[i]]] 
+			#print 'first local node  {} edge {}'.format(edge2points[inf_edges[i]][0],inf_edges[i])
+			#print 'second local node  {} edge {}'.format(edge2points[inf_edges[i]][1],inf_edges[i])
+			#print 'local nodes {} on edge {}'.format(edge2points[inf_edges[i]],inf_edges[i])
+			#print 'east {}'.format(east)
+			#print 'west {}'.format(west)
+			#print 'mid {}'.format(mid)
 			self.curved_info[i] = [east,west,mid,inf_offset[i]] # info to be past on
 		
 	def sendInfo(self,cell2):
@@ -127,8 +133,13 @@ class cell:
             x3 = nodes[:,info[2]]
             a = x2-x1
             k = info[3][0]
+            #print 'east {}'.format(x1)
+            #print 'west {}'.format(x2)
+            #print 'mid {}'.format(x3)
+            #print 'the distance on between the vertices {}'.format(k)
             h = info[3][1]
-            x3 = k*a+x1 + h*dot(a,a)*array([-a[1],a[0],0])
+            x3 = k*a+x1 + h*array([-a[1],a[0],0])/sqrt(dot(a,a))
+            #print 'new mid {}'.format(x3)
             return x3
             
 
@@ -147,11 +158,13 @@ class cell:
                              return
                         #print edge
                          self.curved_edge.append(edge)
-                         self.curved_midpoint[edge] = info[2]
-                         self.curved_east[edge] = info[0]
-                         self.curved_west[edge] = info[1]
+                         self.curved_midpoint[edge] = info[2]-1
+                         self.curved_east[edge] = info[0]-1
+                         self.curved_west[edge] = info[1]-1
                          tot_num_curved = tot_num_curved+1
+                         print 'midnode before {}'.format(nodes[:,info[2]])
                          nodes[:,info[2]] = self.updateNodes(nodes,info) # Updating the nodes position
+                         print 'midnode after {}'.format(nodes[:,info[2]])
                  return nodes,tot_num_curved
 
 	def calc_midpoint(self,edge,nodes):
@@ -164,8 +177,9 @@ class cell:
 		a = nodes[:,x2]-nodes[:,x1]
 		b = nodes[:,x3]-nodes[:,x1]
 		k = dot(a,b)/dot(a,a) # rel distance in kji direction from corner x1. 
-		h = dot(b-k*a,b-k*a)/dot(a,a) # rel distance in eta direction from the line x2-x1
-		return k,h/2
+		#h = dot(b-k*a,b-k*a)/dot(a,a) # rel distance in eta direction from the line x2-x1
+		h = sqrt(dot(b-k*a-x1,b-k*a-x1)) # abs distance in eta direction from the line x2-x1
+		return k,h/1
 
 	def define_face_mappings(self,Faces):
 		'''A function that defines the mappings from global to local faces both ways'''

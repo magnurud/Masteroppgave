@@ -1408,10 +1408,10 @@ def write_nek5000_file(dim, ofilename, curves, temperature, passive_scalars,star
     if(curve_type=='m'):
 		ofile.write(cc.format(tot_num_curved))
 		for ic in range(tot_num_cells):
-			#for ie in curved_midpoint[ic+1].keys():
-				#xx = nodes[:, curved_midpoint[ic+1][ie]]
-			for ie in Cells[ic].curved_edge:
-				xx = nodes[:,Cells[ic].curved_midpoint[ie]] 
+                        #for ie in curved_midpoint[ic+1].keys():
+                                #xx = nodes[:, curved_midpoint[ic+1][ie]]
+                        for ie in Cells[ic].curved_edge:
+                                xx = nodes[:,Cells[ic].curved_midpoint[ie]] 
 				print 'Curved line for edge {} cell {}'.format(ie,ic)
 				ofile.write(c1.format(ie, ic+1))
 				# The next 2 lines should provide the identical values
@@ -1419,22 +1419,23 @@ def write_nek5000_file(dim, ofilename, curves, temperature, passive_scalars,star
     elif(curve_type=='c'):
         ofile.write(cc.format(tot_num_curved))
         for ic in range(tot_num_cells):
-            #for ie in curved_midpoint[ic+1].keys():
-            for ie in Cells[ic].curved_edge:
+            for ie in curved_midpoint[ic+1].keys():
+                xx = nodes[:, curved_midpoint[ic+1][ie]]
+                xxwest= nodes[:, curved_east[ic+1][ie]]
+                xxeast= nodes[:, curved_west[ic+1][ie]]
+            #for ie in Cells[ic].curved_edge:
+                #xx = nodes[:,Cells[ic].curved_midpoint[ie]] 
+                #xxwest = nodes[:,Cells[ic].curved_west[ie]] 
+                #xxeast = nodes[:,Cells[ic].curved_east[ie]] 
                 ofile.write(c1.format(ie, ic+1))
-                #xx = nodes[:, curved_midpoint[ic+1][ie]]
-                #xxwest= nodes[:, curved_east[ic+1][ie]]
-                #xxeast= nodes[:, curved_west[ic+1][ie]]
-                xx = nodes[:,Cells[ic].curved_midpoint[ie]] 
-                xxwest = nodes[:,Cells[ic].curved_west[ie]] 
-                xxeast = nodes[:,Cells[ic].curved_east[ie]] 
                 radius ,center = points2circ(xxwest,xx,xxeast)
                 print 'edge number: {}'.format(ie)
                 print 'mid node: {}, west nodes: {},east node: {}'.format(Cells[ic].curved_midpoint[ie],Cells[ic].curved_west[ie],Cells[ic].curved_east[ie])
 						# SPHERE                                                                               
                 #ofile.write(c2.format(center[0],center[1],center[2],radius, 0.0, 's'))
                 # CIRCLE 
-                ofile.write(c2.format(radius,0.0,0.0,0.0,0.0, 'c'))
+                #ofile.write(c2.format(radius,0.0,0.0,0.0,0.0,'C'))
+                ofile.write(c2.format(-0.05,0.0,0.0,0.0,0.0,'C'))
                 ## Printing data
                 plt.plot([xxwest[0],xx[0],xxeast[0]],[xxwest[1],xx[1],xxeast[1]],'r')
                 #plt.plot(center[0],center[1],'b*')
@@ -1704,22 +1705,31 @@ def convert(nastranmesh,
             #print Cells[cell_no].faces[ie+1],Cells[cell_no].face_glloc[Cells[cell_no].faces[ie+1]]
 
     # Method for assigning the neightbours
-    for cell in Cells:
-        cell.create_inf_faces()
-        cell.glob_nodes_inf(nodes)
-        for i in cell.infliction_faces:
-            cell.sendInfo(Cells[cell.nbours[i]-1])
-    (Cells[89]).print_info()
-    # Updating info
-    #print 'final totnum {}'.format(tot_num_curved)
-    for cell in Cells:
-		nodes, tot_num_curved = cell.updateInfo(nodes,tot_num_curved)
+    if(0):
+        print 'propagation is activated \n'
+        for cell in Cells:
+            cell.create_inf_faces()
+            cell.glob_nodes_inf(nodes)
+            for i in cell.infliction_faces:
+                cell.sendInfo(Cells[cell.nbours[i]-1])
+        #Updating info
+        for cell in Cells:
+                    nodes, tot_num_curved = cell.updateInfo(nodes,tot_num_curved)
+        #(Cells[89]).print_info()
+        # SINGLE ELEMENT CASE
+        #(Cells[357]).print_info()
+        #Cells[357].glob_nodes_inf(nodes)
+        #for i in Cells[357].infliction_faces:
+             #Cells[357].sendInfo(Cells[Cells[357].nbours[i]-1])
+        #nodes, tot_num_curved = (Cells[330]).updateInfo(nodes,tot_num_curved)
 
-    #print 'final totnum {}'.format(tot_num_curved)
-    for cell in Cells:
-		if (cell.curved_edge): print 'cell number {} '.format(cell.cellID)
-		for ie in cell.curved_edge:
-			print 'east {}, west {}, mid {}'.format(cell.curved_east[ie],cell.curved_west[ie],cell.curved_midpoint[ie])
+        #(Cells[330]).print_info()
+        # SINGLE ELEM CASE END
+        #print 'final totnum {}'.format(tot_num_curved)
+        for cell in Cells:
+                    if (cell.curved_edge): print 'cell number {} '.format(cell.cellID)
+                    for ie in cell.curved_edge:
+                            print 'east {}, west {}, mid {}'.format(cell.curved_east[ie],cell.curved_west[ie],cell.curved_midpoint[ie])
 
 
         
