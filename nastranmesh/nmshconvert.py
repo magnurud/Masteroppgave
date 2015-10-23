@@ -1,6 +1,7 @@
 #+1!/usr/bin python
 import sys
 import re
+from globals import *
 from cell import cell, Face
 from sets import Set
 from copy import copy
@@ -14,7 +15,7 @@ from collections import defaultdict
 import matplotlib.pyplot as plt
 
 print "Converting from Nastran format to Nek5000, semtex or FEniCS format"
-
+tot_num_curved = 0
 # Use regular expressions to identify sections and tokens found in a fluent file
 re_dimline  = re.compile(r"\(2\s(\d)\)")
 #re_comment  = re.compile(r"\(0\s.*")
@@ -68,7 +69,6 @@ temperature_val_map = {}    # Boundary conditions for temperature
 passive_scalar_val_map = [] # Boundary conditions for passive scalars
 face_node_map = {}          # Maps face with nodes
 mid_point_map = {}          # Store location of midpoint for key face
-parallel_edge_map = {1:[3,5], 2:[4,6], 3:[1,7], 4:[2,8], 5:[1,7], 6:[2,8], 7:[3,5], 8:[4,6], 9:[10,12], 10:[9,11], 11:[10,12], 12:[9,11]} # Topologically parallel edges by nek5000 edge numbering (not including the "opposite" egde)
 
 # For Nek5000 and semtex that can have curved boundaries
 curves_map = {}             # Holds curve information
@@ -76,18 +76,17 @@ curved_faces = {}           # For each boundary zone store faces that are in cur
 curved_nodes = {}           # For each boundary zone store nodes that are in curved section 
 curved_midpoint = {}        # For each cell and curved edge, coordinates for midpoint (empty for straight edge)
 # ADDED BY RUD 25.09
-tol = 1e-02
 curved_east = {}            # For each cell and curved edge, coordinates for the point east of midpoint  
 curved_west = {}            # For each cell and curved edge, coordinates for the point west of midpoint  
 # END BY RUD 25.09
-tot_num_curved = 0
+
 
 ######## ADDED BY RUD 25.09.15 #########
 # Global dictionaries
-edge2points = {1:[1,2], 2:[2,3], 3:[3,4], 4:[1,4], 5:[5,6], 6:[6,7], 7:[7,8], 8:[8,9], 9:[1,5], 10:[2,6], 11:[3,7], 12:[4,8]}
-face2points = {1:[1,2,6,5], 2:[2,3,7,6], 3:[4,3,7,8], 4:[1,4,8,5], 5:[1,2,3,4], 6:[5,6,7,8]}
-edge2faces = {1:[1,5], 2:[2,5], 3:[3,5], 4:[4,5], 5:[1,6], 6:[2,6], 7:[3,6], 8:[4,6], 9:[4,1], 10:[1,2], 11:[2,3], 12:[3,4]}
-shadow_face = {1:3, 3:1, 2:4, 4:2, 5:6, 6:5}
+#edge2points = {1:[1,2], 2:[2,3], 3:[3,4], 4:[1,4], 5:[5,6], 6:[6,7], 7:[7,8], 8:[8,9], 9:[1,5], 10:[2,6], 11:[3,7], 12:[4,8]}
+#face2points = {1:[1,2,6,5], 2:[2,3,7,6], 3:[4,3,7,8], 4:[1,4,8,5], 5:[1,2,3,4], 6:[5,6,7,8]}
+#edge2faces = {1:[1,5], 2:[2,5], 3:[3,5], 4:[4,5], 5:[1,6], 6:[2,6], 7:[3,6], 8:[4,6], 9:[4,1], 10:[1,2], 11:[2,3], 12:[3,4]}
+#shadow_face = {1:3, 3:1, 2:4, 4:2, 5:6, 6:5}
 def find_neighbours():
     global Faces,Cells
     for i in range(len(Faces)):
@@ -420,7 +419,8 @@ def create_periodic_face_map(periodic_dx):
                     
             face1_list.remove((face_of_shadow, shadow_number))
     
-def process_cell(cell_no, vertices):
+def process_cell(cell_no, vertices,tol):
+    print 'processing cell number: {}'.format(cell_no)
     # Update Face dictionary from the nodes in a cell
     # Store cell_map, listing the vertices that describe the cell  
     cell_map[cell_no] = zeros(21, int)
@@ -442,18 +442,18 @@ def process_cell(cell_no, vertices):
     curved_east[cell_no] = {}
     curved_west[cell_no] = {}
     if (vertices[0] == 20):
-        check_edge(1, [vertices[1], vertices[2], vertices[9]], cell_no)
-        check_edge(2, [vertices[2], vertices[3], vertices[10]], cell_no)
-        check_edge(3, [vertices[3], vertices[4], vertices[11]], cell_no)
-        check_edge(4, [vertices[4], vertices[1], vertices[12]], cell_no)
-        check_edge(5, [vertices[5], vertices[6], vertices[17]], cell_no)
-        check_edge(6, [vertices[6], vertices[7], vertices[18]], cell_no)
-        check_edge(7, [vertices[7], vertices[8], vertices[19]], cell_no)
-        check_edge(8, [vertices[8], vertices[5], vertices[20]], cell_no)
-        check_edge(9, [vertices[1], vertices[5], vertices[13]], cell_no)
-        check_edge(10, [vertices[2], vertices[6], vertices[14]], cell_no)
-        check_edge(11, [vertices[3], vertices[7], vertices[15]], cell_no)
-        check_edge(12, [vertices[4], vertices[8], vertices[16]], cell_no)
+        check_edge(1, [vertices[1], vertices[2], vertices[9]], cell_no,tol)
+        check_edge(2, [vertices[2], vertices[3], vertices[10]], cell_no,tol)
+        check_edge(3, [vertices[3], vertices[4], vertices[11]], cell_no,tol)
+        check_edge(4, [vertices[4], vertices[1], vertices[12]], cell_no,tol)
+        check_edge(5, [vertices[5], vertices[6], vertices[17]], cell_no,tol)
+        check_edge(6, [vertices[6], vertices[7], vertices[18]], cell_no,tol)
+        check_edge(7, [vertices[7], vertices[8], vertices[19]], cell_no,tol)
+        check_edge(8, [vertices[8], vertices[5], vertices[20]], cell_no,tol)
+        check_edge(9, [vertices[1], vertices[5], vertices[13]], cell_no,tol)
+        check_edge(10, [vertices[2], vertices[6], vertices[14]], cell_no,tol)
+        check_edge(11, [vertices[3], vertices[7], vertices[15]], cell_no,tol)
+        check_edge(12, [vertices[4], vertices[8], vertices[16]], cell_no,tol)
             
 
     faceverts = zeros(4)
@@ -514,7 +514,7 @@ def process_cell(cell_no, vertices):
     (Cells[cell_no-1]).faces[1] = face_no # Added by Magnus 06.10
 
 
-def check_edge(edge_no, edgeverts, cell_no):
+def check_edge(edge_no, edgeverts, cell_no,tol):
     global tot_num_curved
     
     [xa, ya, za] = [nodes[0, edgeverts[0]-1], nodes[1, edgeverts[0]-1], nodes[2, edgeverts[0]-1]]
@@ -529,12 +529,12 @@ def check_edge(edge_no, edgeverts, cell_no):
     AB_abs = norm(AB)
     BC_abs = norm(BC)
     dev = abs(AC_abs-BC_abs) / AB_abs
-    if (dev > 1e-03):
-        print "Edge point is not midpoint for edge", edge_no, "cell", cell_no, "(deviation", dev,")"
-        print "A: ", [xa, ya, za]
-        print "B: ", [xb, yb, zb]
-        print "C: ", [xc, yc, zc]
-        print "AC, BC, AB: ", AC_abs, BC_abs, AB_abs
+    #if (dev > 1e-03):
+        #print "Edge point is not midpoint for edge", edge_no, "cell", cell_no, "(deviation", dev,")"
+        #print "A: ", [xa, ya, za]
+        #print "B: ", [xb, yb, zb]
+        #print "C: ", [xc, yc, zc]
+        #print "AC, BC, AB: ", AC_abs, BC_abs, AB_abs
         
     # First test for curvature: Sum of vector lengths 
     if ((AC_abs + BC_abs - AB_abs) > tol * AB_abs):
@@ -543,7 +543,7 @@ def check_edge(edge_no, edgeverts, cell_no):
         curved_east[cell_no][edge_no] = edgeverts[0] - 1
         curved_west[cell_no][edge_no] = edgeverts[1] - 1
         tot_num_curved += 1
-        Cells[cell_no-1].addCurve(edge_no) # ADDED BY RUD 06.10
+        Cells[cell_no-1].addCurve(edge_no,edgeverts[2]-1,edgeverts[0]-1,edgeverts[1]-1) # ADDED BY RUD 06.10
 
     # Second test for curvature: Inner product
     #if (abs(inner(AC,BC)) / (norm(AC) * norm(BC)) < 1 - 1e-04):
@@ -1192,7 +1192,7 @@ def scan_fluent_mesh(lines):
         print 'Line = ',line
         raise IOError('Something went wrong reading fluent mesh.')
     
-def scan_nastran_mesh(lines):
+def scan_nastran_mesh(lines,tol):
     """Scan nastran mesh and generate numerous maps."""
     # (Warning! Not yet tested for multiple interior zones) (Fluent)
     dim = 3    # 3-d assumed
@@ -1309,7 +1309,7 @@ def scan_nastran_mesh(lines):
             else:
                 vertices[0] = 8
                 # Process cell
-                process_cell(cell_no, vertices)
+                process_cell(cell_no, vertices,tol)
                 chexaline = 0
             continue
             
@@ -1323,7 +1323,7 @@ def scan_nastran_mesh(lines):
             vertices[20] = int(line[48:56])
             vertices[0] = 20
             # Process faces
-            process_cell(cell_no, vertices)
+            process_cell(cell_no, vertices,tol)
             chexaline = 0
             continue
 
@@ -1405,28 +1405,42 @@ def write_nek5000_file(dim, ofilename, curves, temperature, passive_scalars,star
     else:
         c1 = "{0:2d}{1:12d}"
     c2 = "{0:14.6e}{1:14.6e}{2:14.6e}{3:14.6e}{4:14.6e} {5:s}\n"    
-
     # MIDPOINT NOTATION 
     if(curve_type=='m'):
-        ofile.write(cc.format(tot_num_curved))
-        for ic in range(tot_num_cells):
-            for ie in curved_midpoint[ic+1].keys():
-                ofile.write(c1.format(ie, ic+1))
-                xx = nodes[:, curved_midpoint[ic+1][ie]]
-                ofile.write(c2.format(xx[0], xx[1], xx[2], 0.0, 0.0, 'm'))
+		ofile.write(cc.format(tot_num_curved))
+		for ic in range(tot_num_cells):
+                        #for ie in curved_midpoint[ic+1].keys():
+                                #xx = nodes[:, curved_midpoint[ic+1][ie]]
+                        for ie in Cells[ic].curved_edge:
+                                xx = nodes[:,Cells[ic].curved_midpoint[ie]] 
+				print 'Curved line for edge {} cell {}'.format(ie,ic)
+				ofile.write(c1.format(ie, ic+1))
+				# The next 2 lines should provide the identical values
+				ofile.write(c2.format(xx[0], xx[1], xx[2], 0.0, 0.0, 'm'))
     elif(curve_type=='c'):
         ofile.write(cc.format(tot_num_curved))
         for ic in range(tot_num_cells):
             for ie in curved_midpoint[ic+1].keys():
-                ofile.write(c1.format(ie, ic+1))
                 xx = nodes[:, curved_midpoint[ic+1][ie]]
                 xxwest= nodes[:, curved_east[ic+1][ie]]
                 xxeast= nodes[:, curved_west[ic+1][ie]]
+            #for ie in Cells[ic].curved_edge:
+                #xx = nodes[:,Cells[ic].curved_midpoint[ie]] 
+                #xxwest = nodes[:,Cells[ic].curved_west[ie]] 
+                #xxeast = nodes[:,Cells[ic].curved_east[ie]] 
+                ofile.write(c1.format(ie, ic+1))
                 radius ,center = points2circ(xxwest,xx,xxeast)
-                # SPHERE 
+                print 'edge number: {}'.format(ie)
+                print 'mid node: {}, west nodes: {},east node: {}'.format(Cells[ic].curved_midpoint[ie],Cells[ic].curved_west[ie],Cells[ic].curved_east[ie])
+						# SPHERE                                                                               
                 #ofile.write(c2.format(center[0],center[1],center[2],radius, 0.0, 's'))
                 # CIRCLE 
-                ofile.write(c2.format(radius,0.0,0.0,0.0,0.0, 'c'))
+                #ofile.write(c2.format(radius,0.0,0.0,0.0,0.0,'C'))
+                ofile.write(c2.format(-0.05,0.0,0.0,0.0,0.0,'C'))
+                ## Printing data
+                plt.plot([xxwest[0],xx[0],xxeast[0]],[xxwest[1],xx[1],xxeast[1]],'r')
+                #plt.plot(center[0],center[1],'b*')
+        plt.show()
 
     # SPHERE NOTATION 
     #####ADDED BY RUD 25.09 ######
@@ -1435,7 +1449,7 @@ def write_nek5000_file(dim, ofilename, curves, temperature, passive_scalars,star
     #print face_list[1]
     #print face_list[2]
     #print face_list[3]
-    #print face_list[4]
+   #print face_list[4]
     #print face_list[5]
     #print face_list[6]
     #print face_list[7]
@@ -1548,7 +1562,7 @@ def convert(nastranmesh,
         curves = {}, bcs = False,                  # nek5000 and semtex
         temperature=False, passive_scalars=[],     # nek5000 only
         cylindrical=1, NZ=1,                       # semtex  only
-        reafile='def.rea',outfile='out.rea',curve_type = 'm'): 
+        reafile='def.rea',outfile='out.rea',curve_type = 'm',tol=1e-02): 
     #Converts a fluent mesh to a mesh format that can be used by Nek5000
        #semtex or FEniCS. 
 
@@ -1644,6 +1658,8 @@ def convert(nastranmesh,
                  #NZ = Number of planes in homogeneous direction (semtex only)
 
 # ADDED BY RUD 25.09.15
+    global nodes, tot_num_curved
+    print tot_num_curved
 # This part is just a default that goes into the top of the rea-file:
     if (reafile != 'def.rea'): 
         start_of_rea=getreastart(reafile)
@@ -1665,7 +1681,7 @@ def convert(nastranmesh,
         if len(lines) == 0:
             raise IOError("Empty nastran mesh file")
 
-        scan_nastran_mesh(lines)
+        scan_nastran_mesh(lines,tol)
 
     dim = nodes.shape[0]
     create_face_list()
@@ -1690,8 +1706,32 @@ def convert(nastranmesh,
             #print Cells[cell_no].faces[ie+1],Cells[cell_no].face_glloc[Cells[cell_no].faces[ie+1]]
 
     # Method for assigning the neightbours
-        
-    (Cells[4]).print_info()
+    if(0):
+        print 'propagation is activated \n'
+        for cell in Cells:
+            cell.create_inf_faces()
+            cell.glob_nodes_inf(nodes)
+            for i in cell.infliction_faces:
+                cell.sendInfo(Cells[cell.nbours[i]-1])
+        #Updating info
+        for cell in Cells:
+                    nodes, tot_num_curved = cell.updateInfo(nodes,tot_num_curved)
+        #(Cells[89]).print_info()
+        # SINGLE ELEMENT CASE
+        #(Cells[357]).print_info()
+        #Cells[357].glob_nodes_inf(nodes)
+        #for i in Cells[357].infliction_faces:
+             #Cells[357].sendInfo(Cells[Cells[357].nbours[i]-1])
+        #nodes, tot_num_curved = (Cells[330]).updateInfo(nodes,tot_num_curved)
+
+        #(Cells[330]).print_info()
+        # SINGLE ELEM CASE END
+        #print 'final totnum {}'.format(tot_num_curved)
+        for cell in Cells:
+                    if (cell.curved_edge): print 'cell number {} '.format(cell.cellID)
+                    for ie in cell.curved_edge:
+                            print 'east {}, west {}, mid {}'.format(cell.curved_east[ie],cell.curved_west[ie],cell.curved_midpoint[ie])
+
 
         
     #print ('cellID of elem 1 is {}'.format(Cells[0].cellID))

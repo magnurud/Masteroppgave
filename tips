@@ -32,3 +32,6 @@ fix Xorg high CPU-usage
 		set Texture filter = Fast
 ----------------------------
 Always check if mesh has unwanted curvature !! 
+
+# Vilje
+Had to add extra flag to use mpif77 on vilje!

@@ -1,6 +1,7 @@
 
 
-run dragx case
+fix circle 3d routine, zwgll calculates gll points. 
+
 fix smag
 check fluent data ! 
 
