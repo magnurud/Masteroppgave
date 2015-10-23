@@ -420,6 +420,7 @@ def create_periodic_face_map(periodic_dx):
             face1_list.remove((face_of_shadow, shadow_number))
     
 def process_cell(cell_no, vertices,tol):
+    print 'processing cell number: {}'.format(cell_no)
     # Update Face dictionary from the nodes in a cell
     # Store cell_map, listing the vertices that describe the cell  
     cell_map[cell_no] = zeros(21, int)

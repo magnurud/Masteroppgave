@@ -124,6 +124,7 @@ subroutine dudxyz (du,u,rm1,sm1,tm1,jm1,imsh,isd)|| navier1.f
 function facint_a(a,area,f,e) || Integrate areal array a() on face f of element e. navier5.f 
 function facint(a,b,area,ifc,ie) || Take the dot product of A and B on the surface IFACE1 of element IE.
 subroutine vrdsmsh || connect.f ,Verify that mesh and dssum are properly defined
+subroutine tensr3(v,nv,u,nu,A,Bt,Ct,w)||  Tensor product application of v = (C x B x A) u , fasts.f
 
 
 

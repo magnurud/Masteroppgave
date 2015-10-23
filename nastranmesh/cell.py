@@ -17,7 +17,7 @@ class cell:
 		self.curved_west = {} # west corner node info (rel to curved midpoint)
 		self.curved_east = {} # east corner node info (rel to curved midpoint)
 		self.curved_info = {} # info to be sent to neighbour
-		self.curved_edge_info = [] # list of curved edges and their information ready to print in .rea file
+		self.curved_edge_info = [] # list of curved edges and their information ready to #print in .rea file
 		self.nbours= {} # List of actual neighbour cells
 		self.info_nbour = {} #each row corresponds to each neighbour, 
 		self.rec_info = [] # a list of recieved info
@@ -62,7 +62,7 @@ class cell:
 		print 'Curved edges: \n'
 		if not self.curved_edge : print 'No registered curved edges'
 		else: print self.curved_edge
-		print 'Neighbours, corresponding face and global ID: \n'
+		#print 'Neighbours, corresponding face and global ID: \n'
 		for n in range(6):
 			print n+1 , self.nbours[n+1]
 		print ' neighbours where curvature will be propagated:'
@@ -91,12 +91,13 @@ class cell:
 		for i in range(6):
 			counter = adjFaces.count(i+1)
 			if(counter == 2): # the face to propagate through
-                            if(self.nbours[shadow_face[i+1]]>0): # Check that the neightbour is not zero
-				self.infliction_faces.append(shadow_face[i+1])
+				if(self.nbours[shadow_face[i+1]]>0): # Check that the neightbour is not zero
+					self.infliction_faces.append(shadow_face[i+1])
 
 	def glob_nodes_inf(self,nodes):
 		''' defines the global nodes which are relevant when inflicting curvature 
 		onto another element also assumes a cylindrical structure'''
+		global edge2points
 		inf_edges = []
 		inf_offset = []
 		for edge in self.curved_edge: # Iterating over the curved egdes
@@ -108,77 +109,87 @@ class cell:
 					inf_edges.append(parallel_edge_map[edge][i])
 					inf_offset.append(self.calc_midpoint(edge,nodes))
 		for i in range(len(inf_edges)):
-			#print 'curved offset for edge {} is equal {}\n'.format(inf_edges[i],inf_offset[i])
+			##print 'curved offset for edge {} is equal {}\n'.format(inf_edges[i],inf_offset[i])
 			east = self.vertices[edge2points[inf_edges[i]][0]]
 			west = self.vertices[edge2points[inf_edges[i]][1]]
 			mid  = self.vertices[edge2mid[inf_edges[i]]] 
-			#print 'first local node  {} edge {}'.format(edge2points[inf_edges[i]][0],inf_edges[i])
-			#print 'second local node  {} edge {}'.format(edge2points[inf_edges[i]][1],inf_edges[i])
-			#print 'local nodes {} on edge {}'.format(edge2points[inf_edges[i]],inf_edges[i])
-			#print 'east {}'.format(east)
-			#print 'west {}'.format(west)
-			#print 'mid {}'.format(mid)
+			##print 'first local node  {} edge {}'.format(edge2points[inf_edges[i]][0],inf_edges[i])
+			##print 'second local node  {} edge {}'.format(edge2points[inf_edges[i]][1],inf_edges[i])
+			##print 'local nodes {} on edge {}'.format(edge2points[inf_edges[i]],inf_edges[i])
+			##print 'east {}'.format(east)
+			##print 'west {}'.format(west)
+			##print 'mid {}'.format(mid)
 			self.curved_info[i] = [east,west,mid,inf_offset[i]] # info to be past on
 		
 	def sendInfo(self,cell2):
 		''' sending necessary curved side info to neighobour cell2'''
+		#print 'EDGES '
+		global edge2points
 		for i in self.curved_info.keys():
 			cell2.rec_info.append(self.curved_info[i])
-                print'sending info from cell {} to cell nr {}'.format(self.cellID,cell2.cellID)
+			#print'sending info from cell {} to cell nr {}'.format(self.cellID,cell2.cellID)
 
         def updateNodes(self,nodes,info):
             ''' Moving the midside node of a certain edge returning the correct position'''
-            x1 = nodes[:,info[0]]
-            x2 = nodes[:,info[1]]
-            x3 = nodes[:,info[2]]
+            cc = array([0.5,0.21,0]) # Circle center
+            #cc = array([0.5,0.005,0]) # Circle center
+            x1 = nodes[:,info[0]-1]
+            x2 = nodes[:,info[1]-1]
+            x3 = nodes[:,info[2]-1]
             a = x2-x1
             k = info[3][0]
-            #print 'east {}'.format(x1)
-            #print 'west {}'.format(x2)
-            #print 'mid {}'.format(x3)
-            #print 'the distance on between the vertices {}'.format(k)
             h = info[3][1]
-            x3 = k*a+x1 + h*array([-a[1],a[0],0])/sqrt(dot(a,a))
-            #print 'new mid {}'.format(x3)
+            x31 = k*a+x1# + h/20*array([-a[1],a[0],0])/sqrt(dot(a,a))
+            x32 = k*a+x1# - h/20*array([-a[1],a[0],0])/sqrt(dot(a,a))
+            if (dot(x31-cc,x31-cc) > dot(x32-cc,x32-cc)): x3 = x31
+            else: x3 = x32
+			
+            ##print 'offset {}'.format(h*array([-a[1],a[0],0])/sqrt(dot(a,a)))
             return x3
             
 
         def updateInfo(self,nodes,tot_num_curved):
                  '''updating the info in rec_info so that the curved edges are imposed.'''
                  for info in self.rec_info:
-                    #print 'global point {}'.format(info[0])
+                    ##print 'global point {}'.format(info[0])
                          east = self.points_glloc(info[0]) # local east point
                          west = self.points_glloc(info[1]) # local west point
                          mid = self.points_glloc(info[2]) # local mid point
-                         #print 'Vertices for this edge : {},{}'.format(east,west)
+                         ##print 'east {}'.format(east)
+                         ##print 'west {}'.format(west)
+                         ##print 'mid {}'.format(mid)
+                         ##print 'Vertices for this edge : {},{}'.format(east,west)
                          edge = self.points2edge(east,west)
+                         ##print 'edge {}'.format(edge)
                          if edge == -1: 
-                             print 'all global points for element {}:  {}'.format(self.cellID,self.vertices)
-                             print 'EDGE NOT FOUND IN points2edge!!'
+                             #print 'all global points for element {}:  {}'.format(self.cellID,self.vertices)
+                             #print 'EDGE NOT FOUND IN points2edge!!'
                              return
-                        #print edge
+                        ##print edge
                          self.curved_edge.append(edge)
                          self.curved_midpoint[edge] = info[2]-1
                          self.curved_east[edge] = info[0]-1
                          self.curved_west[edge] = info[1]-1
                          tot_num_curved = tot_num_curved+1
-                         print 'midnode before {}'.format(nodes[:,info[2]])
-                         nodes[:,info[2]] = self.updateNodes(nodes,info) # Updating the nodes position
-                         print 'midnode after {}'.format(nodes[:,info[2]])
+                         #print 'midnode before {}'.format(nodes[:,info[2]-1])
+                         nodes[:,info[2]-1] = self.updateNodes(nodes,info) # Updating the nodes position
+                         #print 'midnode after {}'.format(nodes[:,info[2]-1])
                  return nodes,tot_num_curved
 
 	def calc_midpoint(self,edge,nodes):
 		'''Calculates the relative position of the given midpoint on edge 
 		k is the relative position on edge, and h is the offset from edge.'''
 		x1,x2 = self.vertices[edge2points[edge]] # The endpoints of the curved edge
+		x3 = self.curved_midpoint[edge] # The midpoint of the curved edge
 		x1 = x1 -1 # OBS zero and 1-indexing 
 		x2 = x2 -1 # OBS zero and 1-indexing 
-		x3 = self.curved_midpoint[edge] # The midpoint of the curved edge
 		a = nodes[:,x2]-nodes[:,x1]
 		b = nodes[:,x3]-nodes[:,x1]
 		k = dot(a,b)/dot(a,a) # rel distance in kji direction from corner x1. 
 		#h = dot(b-k*a,b-k*a)/dot(a,a) # rel distance in eta direction from the line x2-x1
-		h = sqrt(dot(b-k*a-x1,b-k*a-x1)) # abs distance in eta direction from the line x2-x1
+		h = sqrt(dot(b-k*a,b-k*a)) # abs distance in eta direction from the line x2-x1
+		#print 'calculated height {}'.format(h)
+		#print 'a and b vector {} ... {}'.format(a,b)
 		return k,h/1
 
 	def define_face_mappings(self,Faces):
@@ -204,7 +215,7 @@ class cell:
 	def create_info():
 		'''creating the curvature info to be passed on to the next cell'''
 		if curved_edge == {}: 
-			print 'no curved info to be created'
+			#print 'no curved info to be created'
 			return 
 		if not infliction_faces: # no faces registered
 			for i in curved_edge.keys():
