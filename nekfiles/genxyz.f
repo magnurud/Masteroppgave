@@ -1249,6 +1249,7 @@ c-----------------------------------------------------------------------
 
       integer e
       logical ifmid
+      logical ifarc
 
       nedge = 4 + 8*(ndim-2)
 
@@ -1257,11 +1258,14 @@ c-----------------------------------------------------------------------
          ifmid = .false.
          do k=1,nedge
             if (ccurve(k,e).eq.'m') ifmid = .true.
+            elseif (ccurve(k,e).eq.'A') ifarc= .true.
          enddo
 
          if (lx1.eq.2) ifmid = .false.
          if (ifmid) then
             call xyzquad(xl(1,e),yl(1,e),zl(1,e),nxl,nyl,nzl,e)
+         elseif (ifarc) then
+            call xyzarc(xl(1,e),yl(1,e),zl(1,e),nxl,nyl,nzl,e)
          else
             call xyzlin (xl(1,e),yl(1,e),zl(1,e),nxl,nyl,nzl,e,ifaxis)
          endif
@@ -1438,3 +1442,242 @@ c     it too should be updated.
       return
       end
 c-----------------------------------------------------------------------
+      subroutine xyzarc(xl,yl,zl,nxl,nyl,nzl,e)
+c     Generate arc - segments of higher order polynomials
+c     Added by Magnus Rud
+c   Preprocessor Corner notation:      Symmetric Corner notation:
+c
+c           4+-----+3    ^ s                    3+-----+4    ^ s
+c           /     /|     |                      /     /|     |
+c          /     / |     |                     /     / |     |
+c        8+-----+7 +2    +----> r            7+-----+8 +2    +----> r
+c         |     | /     /                     |     | /     /
+c         |     |/     /                      |     |/     /
+c        5+-----+6    t                      5+-----+6    t
+
+      include 'SIZE'
+      include 'INPUT'
+
+      real xl(nxl,nyl,nzl),yl(nxl,nyl,nzl),zl(nxl,nyl,nzl)
+      real xedge(nxl),yedge(nxl),zedge(nxl) !working arrays 
+      real ccx,ccy,ccz,gapx,gapy,gapz,medx,medy,medz, ! midpoint and radius
+      integer e,ii,k 
+      real r,gap,hh,theta,hhii,koff ! corner values
+      real zg(nxl),wg(nxl) ! Gauss lobatto points
+      real w(nxl*nxl*nxl,2) ! Working array
+
+      call xyzlin(xl,yl,zl,nxl,nxl,nxl,e,.false.) ! map bilin to nxnxn
+
+      do k=1,12 ! edges in e, NOTE: Preprop edges!
+         if (ccurve(k,e).eq.'A') then
+c       Get the x,y,z coordinates to the given preprocessor edge! 
+            call getcoords(xl,yl,zl,xedge,yedge,zedge,nxl,k)
+            call zwgll(zg,wg,nxl) ! Getting the GLL-points
+            ccx = curve(1,k,e) !x-coordinate to circle center
+            ccy = curve(2,k,e)!y-coordinate to circle center
+            ccz = curve(3,k,e)!z-coordinate to circle center
+            r = curve(4,k,e) ! radius (Should be optional)
+            !do some checks ( All of the above variables are prepro)
+            gapx = xedge(1)-xedge(nxl) ! coordinates of gap vector
+            gapy = yedge(1)-yedge(nxl)
+            gapz = zedge(1)-zedge(nxl)
+            gap = sqrt(gapx**2+gapy**2+gapz**2) ! Length of gap
+            if (1.0001*gap.ge.2*r) write(*,*) 'E:RADIUS IS TOO SMALL!! '
+            medx=(xedge(1)+xedge(nxl))/2 ! midpoint on the line x1,x2
+            medy=(yedge(1)+yedge(nxl))/2
+            medz=(zedge(1)+zedge(nxl))/2
+            !write(*,*) k,r
+            !write(*,*) xedge(1),yedge(1),zedge(1)
+            !write(*,*) medx,medy,medz
+            !write(*,*) xedge(nxl),yedge(nxl),zedge(nxl)
+            hh = sqrt((medx-ccx)**2+(medy-ccy)**2+
+     &                (medz-ccz))**2 ! height of triangle
+            if(hh.gt.radius) write(*,*) 'E:calculation of height WRONG'
+            theta = atan(gap/(2*hh)) ! Size of half the angle
+            !write(*,*) theta
+            call cmult(zg,theta,nxl) !getting the theta for each gllpt
+            do ii 1,nxl ! Updating the edgevalues
+                koff= hh*tan(zg(ii)) !the offset from the midpoint
+                xedge(ii) = medx - (gapx/2)*koff 
+                yedge(ii) = medy - (gapy/2)*koff 
+                zedge(ii) = medz - (gapz/2)*koff 
+                ! Projecting onto circlesurface
+                hhii = sqrt((xedge(ii)-ccx)**2
+     &          +(xedge(ii)-ccy)**2+(zedge(ii)-ccz))**2 ! height of triangle 
+                ! Getting the actual circle point
+                xedge(ii) = ccx+r*(xedge(ii)-ccx)/hhii
+                yedge(ii) = ccy+r*(yedge(ii)-ccy)/hhii
+                zedge(ii) = ccz+r*(zedge(ii)-ccz)/hhii
+            enddo
+            call setcoords(xl,yl,zl,xedge,yedge,zedge,nxl,k) !UPDATED
+         endif
+      enddo
+      call zwgll(zg,wg,nxl) ! Getting the GLL-points
+
+      if (if3d) then
+         call gh_face_extend(xl,zg,nxl,2,w(1,1),w(1,2)) ! 2 --> edge extend
+         call gh_face_extend(yl,zg,nxl,2,w(1,1),w(1,2))
+         call gh_face_extend(zl,zg,nxl,2,w(1,1),w(1,2))
+      else
+          write(*,*) "This routine is only for 3d geometry"
+      endif
+
+      return
+      end
+c---------------------------------------
+      subroutine getcoords(xq,yq,zq,xedge,yedge,zedge,nxl,k)
+          ! copy the wanted edge from xq to xedge
+          ! NOTE: xq, NOT in preprocessor! 
+          ! k is the prepro-edge! 
+          real nxl
+          integer k 
+          real xq(nxl,nxl,nxl),yq(nxl,nxl,nxl),zq(nxl,nxl,nxl)
+          real xedge(nxl),yedge(nxl),zedge(nxl) !working arrays 
+          integer kx1,kx2,ky1,ky2,kz1,kz2 ! Iteration indices
+          integer ii,jj,kk,i ! iteration variables
+          ! get limits for edge k
+          call getlimits(k,nxl,kx1,kx2,ky1,ky2,kz1,kz2) 
+          edge k
+          i = 0 !iteration over the edge, from 1 to 12
+          do ii = kx1,kx2 !Iterating over the wanted edge
+          do jj = ky1,ky2
+          do kk = kz1,kz2
+          i = i+1
+          xedge(i) = xq(ii,jj,kk)
+          yedge(i) = yq(ii,jj,kk)
+          zedge(i) = zq(ii,jj,kk)
+          !write(*,*) xedge(i),yedge(i),zedge(i)
+          enddo
+          enddo
+          enddo
+          write(*,*) 'iterated through n many edges, edges = '
+          write(*,*) i
+          return
+          end
+c---------------------------------------
+      subroutine setcoords(xq,yq,zq,xedge,yedge,zedge,nxl,k)
+          ! copy the updated edges xedge to xq
+          ! NOTE: xq, NOT in preprocessor! 
+          real nxl
+          integer k ! k is the prepro-edge! 
+          real xq(nxl,nxl,nxl),yq(nxl,nxl,nxl),zq(nxl,nxl,nxl)
+          real xedge(nxl),yedge(nxl),zedge(nxl) !working arrays 
+          integer kx1,kx2,ky1,ky2,kz1,kz2 ! Iteration indices
+          integer ii,jj,kk,i ! iteration variables
+          ! get limits for edge k
+          call getlimits(k,nxl,kx1,kx2,ky1,ky2,kz1,kz2) 
+          edge k
+          i = 0
+          do ii = kx1,kx2 !Iterating over the wanted edge
+          do jj = ky1,ky2
+          do kk = kz1,kz2
+          i = i+1
+          xq(ii,jj,kk) = xedge(i)
+          yq(ii,jj,kk) = yedge(i)
+          zq(ii,jj,kk) = zedge(i)
+          enddo
+          enddo
+          enddo
+          write(*,*) 'iterated through n many edges, edges = '
+          write(*,*) i
+
+          return
+          end
+
+c---------------------------------------
+        subroutine getlimits(k,n,kx1,kx2,ky1,ky2,kz1,kz2)
+         ! k is the preprossesor edge number
+         ! kx1,kx2 are the lexicographic limits
+         integer kx1,kx2,ky1,ky2,kz1,kz2,k,n 
+
+         if(k.eq.1) then
+             kx1 = 1 
+             kx2 = n
+             ky1 = 1
+             ky2 = 1
+             kz1 = 1
+             kz2 = 1
+         elseif(k.eq.2) then
+             kx1 = n
+             kx2 = n
+             ky1 = 1
+             ky2 = n
+             kz1 = 1
+             kz2 = 1
+         elseif(k.eq.3) then
+             kx1 = 1 
+             kx2 = n
+             ky1 = n
+             ky2 = n
+             kz1 = 1
+             kz2 = 1
+         elseif(k.eq.4) then
+             kx1 = 1 
+             kx2 = 1
+             ky1 = 1
+             ky2 = n
+             kz1 = 1
+             kz2 = 1
+         elseif(k.eq.5) then
+             kx1 = 1 
+             kx2 = n
+             ky1 = 1
+             ky2 = 1
+             kz1 = n
+             kz2 = n
+         elseif(k.eq.6) then
+             kx1 = n 
+             kx2 = n
+             ky1 = 1
+             ky2 = n
+             kz1 = n
+             kz2 = n
+         elseif(k.eq.7) then
+             kx1 = 1 
+             kx2 = n
+             ky1 = n
+             ky2 = n
+             kz1 = n
+             kz2 = n
+         elseif(k.eq.8) then
+             kx1 = 1 
+             kx2 = 1
+             ky1 = 1
+             ky2 = n
+             kz1 = n
+             kz2 = n
+         elseif(k.eq.9) then
+             kx1 = 1 
+             kx2 = 1
+             ky1 = 1
+             ky2 = 1
+             kz1 = 1
+             kz2 = n
+         elseif(k.eq.10) then
+             kx1 = n 
+             kx2 = n
+             ky1 = 1
+             ky2 = 1
+             kz1 = 1
+             kz2 = n
+         elseif(k.eq.11) then
+             kx1 = n 
+             kx2 = n
+             ky1 = n
+             ky2 = n
+             kz1 = 1
+             kz2 = n
+         elseif(k.eq.12) then
+             kx1 = 1 
+             kx2 = 1
+             ky1 = n
+             ky2 = n
+             kz1 = 1
+             kz2 = n
+         else 
+             write(*,*) 'Edge not valid! '
+         endif
+
+         return
+         end
+C----------------------------------
