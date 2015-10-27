@@ -11,6 +11,13 @@ def numberofelements(N):
 	print ('for {} nodes the total number of elements will be {} million'.format(13,13.0**3*N/1000000))
 	print ('for {} nodes the total number of elements will be {} million'.format(14,14.0**3*N/1000000))
 	print ('for {} nodes the total number of elements will be {} million'.format(15,15.0**3*N/1000000))
+        print ('---------------------------------------\n')
+
+numberofelements(2258)
+numberofelements(2631)
+numberofelements(4425)
+numberofelements(4429)
 
 
-numberofelements(4608)
+
+

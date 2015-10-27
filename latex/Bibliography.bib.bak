@@ -137,7 +137,6 @@
 @Book{Bochev,
   Title                    = {Least-Squares Finite Element Methods},
   Author                   = {Pavel B. Bochev, Max D. Gunzburger},
-  Editor                   = {S.S. Antman},
   Publisher                = {Springer},
   Year                     = {2009},
 
@@ -155,10 +154,9 @@
   Timestamp                = {2015.04.20}
 }
 
-@Book{,
+@Book{Saad,
   Title                    = {Iterative Methods for Sparse Linear Systems, Second Edition},
   Author                   = {Yousef Saad},
-  Editor                   = {Siam},
   Publisher                = {Society for Industrial and Applied Mathematics},
   Year                     = {2003},
 
@@ -169,7 +167,6 @@
 @Book{SM,
   Title                    = {An Introduction to Numerical Analysis},
   Author                   = {Endre Süli and David F. Mayers},
-  Editor                   = {Cambridge},
   Publisher                = {Cambridge},
   Year                     = {2006},
 

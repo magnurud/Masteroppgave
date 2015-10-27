@@ -1435,12 +1435,24 @@ def write_nek5000_file(dim, ofilename, curves, temperature, passive_scalars,star
 						# SPHERE                                                                               
                 #ofile.write(c2.format(center[0],center[1],center[2],radius, 0.0, 's'))
                 # CIRCLE 
-                #ofile.write(c2.format(radius,0.0,0.0,0.0,0.0,'C'))
-                ofile.write(c2.format(-0.05,0.0,0.0,0.0,0.0,'C'))
+                ofile.write(c2.format(radius,0.0,0.0,0.0,0.0,'C'))
+                #ofile.write(c2.format(-0.05,0.0,0.0,0.0,0.0,'C'))
                 ## Printing data
                 plt.plot([xxwest[0],xx[0],xxeast[0]],[xxwest[1],xx[1],xxeast[1]],'r')
                 #plt.plot(center[0],center[1],'b*')
         plt.show()
+    elif(curve_type=='A'):
+        ofile.write(cc.format(tot_num_curved))
+        for ic in range(tot_num_cells):
+            for ie in curved_midpoint[ic+1].keys():
+                xx = nodes[:, curved_midpoint[ic+1][ie]]
+                xxwest= nodes[:, curved_east[ic+1][ie]]
+                xxeast= nodes[:, curved_west[ic+1][ie]]
+                ofile.write(c1.format(ie, ic+1))
+                radius ,center = points2circ(xxwest,xx,xxeast)
+                print 'edge number: {}'.format(ie)
+                print 'mid node: {}, west nodes: {},east node: {}'.format(Cells[ic].curved_midpoint[ie],Cells[ic].curved_west[ie],Cells[ic].curved_east[ie])
+                ofile.write(c2.format(center[0],center[1],center[2],radius,0.0,'A'))
 
     # SPHERE NOTATION 
     #####ADDED BY RUD 25.09 ######

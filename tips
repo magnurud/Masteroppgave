@@ -1,4 +1,6 @@
-
+# Renaming all files in folder 
+rename 's/foo/bar/g' * -vn #preview of foo -> bar
+rename 's/foo/bar/g' * -v #doing foo -> bar
 
 ##make nastranmesh file from ICEM 
 create the parameter input file
