@@ -90,7 +90,17 @@ will be discussed in the following subsections
 
 \section{nek5000}
 Nek5000 is a turbulent flow solver developed mainly by Paul Fischer and has through the past 20 years had several contributours. 
-It is a open-source code applicable to many different flow situations.   
+It is an open-source code applicable to many different types of flow and it has been put a lot of effort into making the code as 
+parallelizable as possible. With SEM as the numerical method applied it is possible to obtain extremely accurate results.  
+
+nek5000 has its own mesh-generator for generating simpler geometries and it is also implemented the possibility to integrate CUBIT mesh 
+files. A common starting point for simulating turbulent flow is a geometry given by a CAD-file, without any functions to describe the 
+boundaries. The possibility to make a mesh through a visual gui is provided through for instance ICEM. This mesh can then later be transformed
+to the inputfile required by nek5000. 
+
+So far nek5000 has supported three automatic routine for generating curved edges; circles in 2-D geometries, spherical shell elements and 
+a general 2nd degree interpolation. Further manipulation of the element edges is left to the user to define manually for each particular 
+problem. 
 
 \begin{itemize}
 \item Application areas

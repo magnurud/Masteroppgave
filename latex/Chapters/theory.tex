@@ -120,21 +120,81 @@ $L_N$ being the Legendre polynomial of degree $N$, defined from the Sturm-Louvil
     \frac{d}{dx}\left[  (1-x^2)\frac{d}{dx}L_n(x)\right]+n(n+1)L_n(x) = 0.
     \label{eq:Legendre}
 \end{align}
-With equations \ref{eq:Legendre} and \ref{eq:GLL-nodes} the basis functions $\phi_j$ can be stated as 
+With equations \ref{eq:Legendre} and \ref{eq:GLL-nodes} the basis functions $\psi_j$ can be stated as 
 \begin{align}
-    \phi_j = \prod_{i\neq j}^{N}\frac{x-x_i}{x_j-x_i}.
+    \psi_j = \prod_{i\neq j}^{N}\frac{x-x_i}{x_j-x_i}.
     \label{eq:Lagrange}
 \end{align}
 \colorbox{yellow}{This should be taken a bit more thouroughly, Quadrature! }
 
-$\{x_i\}$ beeing the solutions to \ref{eq:GLL-nodes}. Note that $\phi_j(x_i) = 0 \text{ when } i \neq j$,
-the expansion coefficients in \ref{eq:spectralprojection} are then chosen as $a_i = u(x_i)$ to minimize the projection error in $L^2(\Omega)$. 
+$\{x_i\}$ beeing the solutions to \ref{eq:GLL-nodes}. Note that $\psi_j(x_i) = 0 \text{ when } i \neq j$,
+the expansion coefficients in \ref{eq:spectralprojection} are then chosen as $a_i = u_i :=u(x_i)$ to minimize the projection error in $L^2(\Omega)$. 
 expanding a basis such that the coefficients are simply the evaluation of the function in that particular point, is known as a nodal SM. 
 Creating a basis for 2 and 3 dimensions is done simply by taking the cross product of the basis functions in each direction
 \begin{align}
-    \Phi_{ijk}(x,y,z) = \phi_i(x)\phi_j(y)\phi_k(z).
+    \Psi_{ijk}(x,y,z) = \psi_i(x)\psi_j(y)\psi_k(z).
     \label{eq:3dbasis}
 \end{align}
+In order to clarify some of the concepts the SM approach will be applied on the Helmholtz equation
+%
+\begin{align}
+    -\Delta u + \lambda u &= f \quad \text{in } \Omega, \\
+    u &= 0 \quad \text{on } \partial \Omega.
+    \label{eq:Helmholtz}
+\end{align}
+%
+$\Omega$ will for this example be defined as the unit square $[-1,1]^2$. 
+Let us start by defining the space $V =H^1_0(\Omega)$ and assuming $f\in L^2(\Omega)$. The weak formulation after applying the divergence theorem is the given as
+
+Find $u\in V$ st. 
+%
+\begin{align}
+    \int_{\Omega}\nabla u \cdot \nabla v \partial \Omega + \lambda \int_{\Omega} u v\partial \Omega 
+    &= \int_{\Omega}f v\partial \Omega \qquad \forall v \in V
+    \label{eq:Helmholtzweak}
+\end{align}
+%
+In order to solve this using SM the discrete space $V_h \subset V$ is defined as $\text{span}\{\psi_i\}$ following the preceding definitions 
+the discrete weak formulation is stated as 
+Find $u_h\in V_h$ st. 
+%
+\begin{align}
+    \sum_i\left(  u_i\int_{\Omega}\nabla \psi_i \cdot \nabla \psi_j \partial \Omega + u_i\lambda \int_{\Omega} \psi_i \psi_j\partial \Omega \right)
+    &= \int_{\Omega}f \psi_j\partial \Omega \qquad \forall \psi_j \in V_h.
+    \label{eq:Helmholtzdiscrete}
+\end{align}
+%
+The following step of this particular SM method is evaluating the integrals by using the GLL-quadrature rule, the resulting system of equations 
+is then given as 
+%
+\begin{align}
+    \sum_i\left(  u_i\sum_k \rho_k\nabla \psi_i(\mathbf{x}_{k}) \cdot \nabla \psi_j(\mathbf{x}_{k}) + u_i\lambda \sum_k \rho_k \psi_i(\mathbf{x}_{k}) \psi_j(\mathbf{x}_{k})\right)\\
+     = \sum_k \rho_kf \psi_j(\mathbf{x}_{k})\qquad \forall \psi_j(\mathbf{x}_{k}) \in V_h.
+    \label{eq:Helmholtzquad}
+\end{align}
+%
+$\rho_k$ is the quadrature weight for the kth node, and $\mathbf{x}_k$ is the vector containing the coordinates to the kth node.
+Note that all the indices $i,j,k=1,\cdots,N_xN_y$.
+This can be written in a compact matrix form as 
+\begin{align}
+    (A+\lambda M)u_h = \tilde f.
+    \label{eq:Helmholtzmat}
+\end{align}
+Where the elements in the matrices and vectors are given as 
+\begin{align}
+    \begin{split}
+        A_{ij} &= \sum_k \rho_k\nabla \psi_i(\mathbf{x}_{k}) \cdot \nabla \psi_j(\mathbf{x}_{k}),\\
+        M_{ij} &= \sum_k \rho_k \psi_i(\mathbf{x}_{k}) \psi_j(\mathbf{x}_{k}) = \rho_i\delta_{ij},\\
+        (u_h)_i & = u(\mathbf{x}_i), \\
+        \tilde f_j &= \sum_k \rho_k f(\mathbf{x}_{k}) \psi_j(\mathbf{x}_{k}) = \rho_j f(\mathbf{x}_{j}).
+    \end{split}
+    \label{eq:Helmholtzmatelem}
+\end{align}
+From these equations it is clear that the mass matrix $M$ is diagonal and the rhs vector $\tilde f$ is easily calculated, 
+while the stiffness matrix $A$ is symmetric but full.
+
+\colorbox{yellow}{some figures or references to illustrate this}
+
 \begin{itemize}
 \item quadrature rule
 \item the choice of nodes and basis functions
@@ -151,9 +211,45 @@ Creating a basis for 2 and 3 dimensions is done simply by taking the cross produ
 %-----------------------------------
 
 \section{Spectral element method}
-In the early 1980's the the idea to combine FEM and SM came along in order to obtain the robustness and resulting sparse system of FEM and the
-spectral convergence rate provided by SM. The result was the Spectral element method. Read articles\ldots Several formulations was investigated  and the development of super computers has played an important role in deciding the method applied today. The basic idea is to divide the domain 
+In the early 1980's the the idea to combine FEM and SM came along in order to obtain the robustness and resulting sparse system of FEM 
+combined with the spectral convergence rate provided by SM. 
+The result was the Spectral element method. An example of Read articles\ldots Several formulations was investigated  and the development of super computers has played an important role in deciding the method applied today. The basic idea is to divide the domain 
 of the BVP wanted to solve into elements as in FEM and then use spectral basis functions of higher degree with support only within one element. 
+
+In the previous subsection the power of spectral methods was illustrated on the unit square in two dimensions.
+But the limitations when it comes to more complex geometry rapidly affects the spectral convergence rate. 
+Let $\hat{\Omega}$ be the reference element $[-1,1]^d$,
+the standard procedure when working on a deformed geometry $\Omega$ with SM is to first create a map $\mathcal{F}:\hat{\Omega}\rightarrow\Omega$.
+The jacobian is then given as the transposed tensor derivative of $\mathcal{F}$
+\begin{align}
+    \mathbf{J} &= (\nabla \otimes \mathcal{F})^T =
+\begin{bmatrix}
+    \frac{\partial \mathcal{F}_1}{\partial x} &  \frac{\partial \mathcal{F}_1}{\partial y}  \\ 	
+	\frac{\partial \mathcal{F}_2}{\partial x} &  \frac{\partial \mathcal{F}_2}{\partial y} \\ 	
+\end{bmatrix},\\
+J &= \text{det}(\mathbf{J}).
+    \label{eq:jaobian}
+\end{align}
+This allows us to transform both derivatives and integrals to the reference domain, let $\boldsymbol\xi = [\xi,\eta]^T$ denote the axis in the reference 
+domain corresponding to $\mathbf{x} = [x,y]^T$ in the deformed domain. The transformation is performed according to the following identities
+\begin{align}
+    \begin{split}
+        d\mathbf{x} &= \mathbf{J}d\boldsymbol\xi \\
+        \int_{\Omega}f(\mathbf{x})d\mathbf{x} &= \int_{\hat\Omega}\hat f J d\boldsymbol\xi \\
+        \nabla u &= \mathbf{J}^{-T}\hat\nabla \hat u.
+    \end{split}
+    \label{eq:transforms}
+\end{align}
+Here $\hat u,\hat f$ are obtain by simply substituting $\mathbf{x}$ with $\mathcal{F}(\boldsymbol{\xi})$ and $\hat \nabla $ is the partial 
+differential operator wrt. $\boldsymbol\xi$. The important thing to notice here is that whenever an integral is solved and a derivative is 
+introduced the Jacobian appears in the equation. When applying the GLL-quadrature to solve the integrals equality is guaranteed iff the 
+function integrated is of polynomial degree $2n-1$ or less, and the error gets bigger with increasing polynomial degree.
+
+By dividing the domain up into smaller elements ${\Omega_e}$ the initial deformation of the full domain $\Omega$ 
+can be reduced to have a very small effect on the each of the elements.
+
+
+%$\Omega$ is some 2 dimensional strongly connected domain with well-defined corners and each of the edges can be described by some polynomial $\Gamma_i$.
 
 \begin{itemize}
 \item READ LITERATURE ON THIS !! 

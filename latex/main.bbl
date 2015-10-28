@@ -1,4 +1,4 @@
-\begin{thebibliography}{3}
+\begin{thebibliography}{4}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -22,5 +22,13 @@ C.~Canuto, M.Y Hussaini, and A.~Quarteroni\ldots [et al.].
 \newblock Scientific computation. Springer, Berlin, 2007.
 \newblock ISBN 978-3-540-30727-3.
 \newblock URL \url{http://opac.inria.fr/record=b1127560}.
+
+\bibitem[White(1991)]{White}
+Frank~M. White.
+\newblock \emph{Viscous fluid flow}.
+\newblock McGraw-Hill series in mechanical engineering. McGraw-Hill, New York,
+  1991.
+\newblock ISBN 0-07-069712-4.
+\newblock URL \url{http://opac.inria.fr/record=b1096847}.
 
 \end{thebibliography}
