@@ -28,6 +28,24 @@
   Volume                   = {19}
 }
 
+@Article{Bayraktar2012,
+  Title                    = {Benchmark computations of {3D} laminar flow around a cylinder with CFX, OpenFOAM and FeatFlow},
+  Author                   = {Bayraktar, Evren and Mierka, Otto and Turek, Stefan},
+  Journal                  = {International Journal of Computational Science and Engineering},
+  Year                     = {2012},
+  Number                   = {3},
+  Pages                    = {253},
+  Volume                   = {7},
+
+  __markedentry            = {[magnus:6]},
+  Doi                      = {10.1504/ijcse.2012.048245},
+  ISSN                     = {1742-7193},
+  Owner                    = {magnus},
+  Publisher                = {Inderscience Publishers},
+  Timestamp                = {2015.10.28},
+  Url                      = {http://dx.doi.org/10.1504/IJCSE.2012.048245}
+}
+
 @Article{bochev1998,
   Title                    = {Finite element methods of least-squares type},
   Author                   = {Bochev, Pavel B and Gunzburger, Max D},
@@ -40,7 +58,20 @@
   Publisher                = {SIAM}
 }
 
-@Article{Canuto,
+@Book{Canuto,
+  Title                    = {Spectral methods : evolution to complex geometries and applications to fluid dynamics},
+  Author                   = {C. Canuto and M.Y Hussaini and A. Quarteroni\ldots [et al.]},
+  Publisher                = {Springer},
+  Year                     = {2007},
+
+  Address                  = {Berlin},
+  Series                   = {Scientific computation},
+
+  ISBN                     = {978-3-540-30727-3},
+  Url                      = {http://opac.inria.fr/record=b1127560}
+}
+
+@Article{Canuto1982,
   Title                    = {Approximation results for orthogonal polynomials in Sobolev spaces},
   Author                   = {Canuto, C. and Quarteroni, A.},
   Journal                  = {Mathematics of Computation},
@@ -51,7 +82,6 @@
   Pages                    = {67–67},
   Volume                   = {38},
 
-  __markedentry            = {[magnus:6]},
   Doi                      = {10.1090/s0025-5718-1982-0637287-3},
   ISSN                     = {0025-5718},
   Owner                    = {magnus},
@@ -77,6 +107,36 @@
   Publisher                = {Wiley-Blackwell},
   Timestamp                = {2015.04.11},
   Url                      = {http://dx.doi.org/10.1002/nme.1620260106}
+}
+
+@Article{Deville2002,
+  Title                    = {High-Order Methods for Incompressible Fluid Flow},
+  Author                   = {Deville, M. O. and Fischer, P. F. and Mund, E. H.},
+  Year                     = {2002},
+
+  __markedentry            = {[magnus:]},
+  Doi                      = {10.1017/cbo9780511546792},
+  ISBN                     = {http://id.crossref.org/isbn/9780521453097},
+  Owner                    = {magnus},
+  Publisher                = {Cambridge University Press (CUP)},
+  Timestamp                = {2015.10.28},
+  Url                      = {http://dx.doi.org/10.1017/CBO9780511546792}
+}
+
+@Article{Fischer96,
+  Title                    = {Projection Techniques for Iterative Solution of Ax=b with successive right-hand sides},
+  Author                   = {Paul F. Fischer},
+  Journal                  = {Comp. Meth. in Appl. Mech},
+  Year                     = {1993},
+  Pages                    = {193--204},
+  Volume                   = {163}
+}
+
+@Article{Fischer_hybridschwarz-multigrid,
+  Title                    = {Hybrid Schwarz-multigrid methods for the spectral element method},
+  Author                   = {Paul F. Fischer and James W. Lottes},
+  Journal                  = {J. Sci. Comput},
+  Pages                    = {45--78}
 }
 
 @Article{Reference1,
@@ -124,7 +184,6 @@
   Publisher                = {Springer Berlin Heidelberg},
   Year                     = {1998},
 
-  __markedentry            = {[magnus:]},
   Doi                      = {10.1007/978-3-662-03740-9},
   ISBN                     = {http://id.crossref.org/isbn/978-3-662-03740-9},
   ISSN                     = {1434-8322},
@@ -132,6 +191,51 @@
   Owner                    = {magnus},
   Timestamp                = {2015.04.12},
   Url                      = {http://dx.doi.org/10.1007/978-3-662-03740-9}
+}
+
+@Book{karniadakis,
+  Title                    = {Spectral/hp element methods for computational fluid dynamics},
+  Author                   = {Karniadakis, George and Sherwin, Spencer},
+  Publisher                = {Oxford University Press},
+  Year                     = {2013}
+}
+
+@Article{Patera1986,
+  Title                    = {An isoparametric spectral element method for solution of the Navier-Stokes equations in complex geometry},
+  Author                   = {Korczak, Karol Z. and Patera, Anthony T.},
+  Journal                  = {Journal of Computational Physics},
+  Year                     = {1986},
+
+  Month                    = {Feb},
+  Number                   = {2},
+  Pages                    = {361–382},
+  Volume                   = {62},
+
+  Doi                      = {10.1016/0021-9991(86)90134-8},
+  ISSN                     = {0021-9991},
+  Owner                    = {mrd},
+  Publisher                = {Elsevier BV},
+  Timestamp                = {2015.10.27},
+  Url                      = {http://dx.doi.org/10.1016/0021-9991(86)90134-8}
+}
+
+@Article{Patera1984,
+  Title                    = {A spectral element method for fluid dynamics: Laminar flow in a channel expansion},
+  Author                   = {Patera, Anthony T},
+  Journal                  = {Journal of Computational Physics},
+  Year                     = {1984},
+
+  Month                    = {Jun},
+  Number                   = {3},
+  Pages                    = {468–488},
+  Volume                   = {54},
+
+  Doi                      = {10.1016/0021-9991(84)90128-1},
+  ISSN                     = {0021-9991},
+  Owner                    = {mrd},
+  Publisher                = {Elsevier BV},
+  Timestamp                = {2015.10.27},
+  Url                      = {http://dx.doi.org/10.1016/0021-9991(84)90128-1}
 }
 
 @Book{Bochev,

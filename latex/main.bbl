@@ -1,4 +1,4 @@
-\begin{thebibliography}{2}
+\begin{thebibliography}{3}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -10,13 +10,17 @@ Alfio Quarteroni.
 \newblock \emph{Numerical Models for Differential Problems, 2. edition}.
 \newblock Springer, 2014.
 
-\bibitem[Canuto and Quarteroni(1982)]{Canuto}
-C.~Canuto and A.~Quarteroni.
-\newblock Approximation results for orthogonal polynomials in sobolev spaces.
-\newblock \emph{Mathematics of Computation}, 38\penalty0 (157):\penalty0
-  67–67, Jan 1982.
-\newblock ISSN 0025-5718.
-\newblock \doi{10.1090/s0025-5718-1982-0637287-3}.
-\newblock URL \url{http://dx.doi.org/10.1090/S0025-5718-1982-0637287-3}.
+\bibitem[Karniadakis and Sherwin(2013)]{Karniadakis}
+George Karniadakis and Spencer Sherwin.
+\newblock \emph{Spectral/hp element methods for computational fluid dynamics}.
+\newblock Oxford University Press, 2013.
+
+\bibitem[Canuto et~al.(2007)Canuto, Hussaini, and [et al.]]{Canuto}
+C.~Canuto, M.Y Hussaini, and A.~Quarteroni\ldots [et al.].
+\newblock \emph{Spectral methods : evolution to complex geometries and
+  applications to fluid dynamics}.
+\newblock Scientific computation. Springer, Berlin, 2007.
+\newblock ISBN 978-3-540-30727-3.
+\newblock URL \url{http://opac.inria.fr/record=b1127560}.
 
 \end{thebibliography}

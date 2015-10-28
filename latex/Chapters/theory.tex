@@ -21,11 +21,16 @@ Throughout this thesis all numerical methods will be based on the Galerkin formu
 \end{align}
 The domain $\Omega$ is a closed subspace of $\mathbb{R}^d$, $\mathcal{L}: X(\Omega)\rightarrow Y(\Omega)$ and $\mathcal{B}: X(\partial\Omega)\rightarrow B(\partial\Omega)$ are two linear operators,
 $f\in Y(\Omega)$ and $g\in B(\partial\Omega)$ are known functions and $u \in X(\Omega)$ is the wanted solution. 
-The space $X(\Omega)$ is called the search space. A weak formulation can now be obtained by multiplying the first equation in \ref{eq:BVP} 
+The space $X(\Omega)$ will be denoted as the search space. A weak formulation can now be obtained by multiplying the first equation in \ref{eq:BVP} 
 by a test function $v \in X^t(\Omega)$ and integrating over the domain $\Omega$. By choosing $X^t(\Omega) = X(\Omega)$ the Galerkin formulation is obtained.
 For more examples and information on this subject the first chapters in \cite{Quarteroni} are recommended. 
 
 By the Lax-Milgram theorem it is known that a BVP is well-posed if the Operator $\mathcal{L}$ is both bounded and coersive.   
+
+Solving the BVP numerically involves choosing discrete subsets of $X,X^t,Y,B$. These will be denoted $X_h,X_h^t,Y_h,B_h$.
+The discrete subspaces can be chosen in a number of ways and the defining basis functions vary from one numerical method to another. 
+In this thesis the spectral and finite element basis will be shortly stated and the spectral element basis will be viewed in more detail.
+
 \begin{itemize}
 \item a common BVP, weak formulation 
 \item search and solution space, test and basis functions
@@ -40,51 +45,103 @@ wanted to solve, makes it possible to create general algorithms applicable to al
 For the full mathematical foundation of FEM it will be referred to \cite{Quarteroni}, but some of the key propertie will be stated here
 in order to provide a thourough understanding of the spectral element method. 
 
-FEM provides an alorithm for solving any BVP \ref{eq:BVP} and the mathematical formulation is obtained by first finding the Galerkin
-formulation and then choosing a discrete subset $X^h(\Omega) \subset X(\Omega)$ as your search space. Another key aspect of FEM is the 
-treatment of the domain $\Omega$, on which a triangulization $\{\mathcal{T}_h\}$ is defined such that the original domain is divided into elements.
-The discrete subset $X^h$ is defined by a particular basis. FEM is called a projection method since the solution $u_h\in X^h$ is a projection
-of the actual solution $u$ of the BVP onto the discrete space $X^h$. 
---------- DEFINE THIS NICER ----------------
-The basis functions of FEM are known as hat functions and allthough there are many possible choices they are defined such that all elements 
-consists of the same ``local'' basis functions, and the global basis functions are non-zero in only a small part of $\Omega$. 
-The first feature enables us to develop a local routine performed on each element and later assemble 
-all the local information in a global system of equations. 
+FEM provides an alorithm for solving any well-posed BVP \ref{eq:BVP} and the mathematical formulation is obtained by first finding the Galerkin
+formulation and choosing a discrete subset $X^p_h(\Omega) \subset X(\Omega)$ spanned by the finite element basis functions ${\phi^p_i}$.
+$p$ denotes the polynomial degree of the basis-functions, in 1D and for $p=1$ the basis functions are defined as
+\[ \phi_i(x) =
+    \begin{cases}
+        \frac{x-x_i}{x_i-x_{i-1}}  & \quad \text{if } x_{i-1}\leq x \leq x_i, \\
+        \frac{x_{i+1}-x}{x_{i+1}-x_i}  & \quad \text{if } x_{i}\leq x \leq x_{i+1}, \\
+        0  & \quad \text{otherwise}. \\
+    \end{cases}
+\]
+Notice that $\text{supp}(\phi_i) = [x_{i-1},x_{i+1}]$ and as a consequence of this $(\phi_i,\phi_j)_{\Omega} = 0 \text{ if } |i-j| > 1 $. 
+These qualities is what gives rise to the resulting sparse linear system. 
+By increasing the polynomial order the number of gridpoints used to define the polynomial will need to increase as well.
+This implies either reducing the distance between the gridpoints or increasing the support of each basis function.
+Both aproaches will reduce the sparsity of the final matrix.
+Another key aspect of FEM is the treatment of the domain $\Omega$, 
+on which a triangulization $\{\mathcal{T}_h\}$ is defined such that the original domain is divided into elements.
+By defining a reference element ($[-1,1]$ in 1D) and a general mapping function, all the local contributions can be calculated by a 
+generalized quadrature rule before being added to the global system of equations. This is a process tailored for parallelization, and can 
+be generalized for a wide range of problems.
 
-The numerical error of FEM is reduced to the order of the approximation error of a function from $X$ to $X^h$.
-\colorbox{yellow}{error estimation}
+FEM is called a projection method since the solution $u_h\in X^h$ is a projection
+of the actual solution $u$ of the BVP onto the discrete space $X^h$. Provided that the initial BVP is well-posed there exists to 
+constants $M,\alpha>0$ known as the bounded and coercivity constant such that the error of the solution can be reduced to a pure 
+interpolation error. The result is known as Cea's lemma,  
+\begin{align}
+    ||u-u_h||_X \leq \frac{M}{\alpha}||u-I_hu||_X.
+    \label{eq:Cea}
+\end{align}
+Where $I_h$ is the projection operator. 
 
 Before this section ends it is important to understand the two ways to improve the error and the effects these two ways have on the algorithm. 
-Assume the solution of the BVP to be infinitely smooth and let $h$ denote the geneal size of the elements
-and $p$ the order of the polynomial basis that defines $X^h$. 
-performing a $h$-refinement will lead to a convergence of $h^p$, sparsity of the system is conserved
-and  the total algorithm does not change in any other way than increasing the number of elements.
+Assume the solution of the BVP to be infinitely smooth and let $h$ denote the general size of the elements
+and $p$ the order of the polynomial basis that defines $X^h$. Roughly speaking the error is given as $e = Ch^p$ with $C$ being some constant.
+This is not a formal truth but rather a guideline as to how the error behaves, factors such as geometric complexity, condition-number,non-linear
+operators and the regularity of the solution will all provide slightly more complicated error estimates. 
+However for a simpler BVP such as $u,f,g \in C^{\infty}(\Omega), \Omega = [-1,1]^d, \mathcal{L} = -\Delta,\mathcal{B} = 1$ the error estimate is valid.  
+performing a $h$-refinement will lead to an algebraic convergence, while the sparsity of the system is conserved
+and the total algorithm does not change in any other way than increasing the number of elements.
 Keeping $h$ constant and increasing $p$ will provide spectral convergence, but the sparsity will be reduced and all integrals solved will require 
-quadrature rules of higher order. 
-
-\begin{itemize}
-\item projection onto a h-subspace
-\item the basis functions
-\item convergence rate
-\item How the sparsity decays with increasing polynomial order
-\item assembly algorithm
-\item problem with a non-symmetrical problem
-\end{itemize}
+quadrature rules of higher order. A more formal statement and numerical validation can be found in \cite{Karniadakis} chapter 2.6.  
 
 %-----------------------------------
 %	SUBSECTION 1
 %-----------------------------------
 \section{Spectral methods}
-Spectral methods share a some of the mathematical ideas as FEM, but are not as widely used in real life problems. SM are however very 
-interesting from a theoretical point of view due to its spectral convergence rate which allows you to obtain solutions of extremely high accuracy. 
+Spectral methods (SM) share a some of the mathematical ideas as FEM, but are not as widely used in real life problems. 
+There are many ways to apply SM, 
+and in this thesis only the Galerkin version with numerical integration (known as G-NI) will be considered and will be referred to only as SM. 
+For a full introduction to SM and its applications to BVP see \cite{Canuto}.
+SM can be reduced to a interpolation problem such as FEM, and are very interesting from a theoretical point of view due to its 
+spectral convergence rate which allows you to obtain solutions of extremely high accuracy. 
 The most important draw-back of SM are the difficulties with applications to complex geometries. Allthough the system of equations surging from
 a BVP can be constructed in an elegant way it is rarely sparse and often result in expensive calculations. 
 
+For a BVP in one dimension SM defines a set of basis functions $\{\psi_i\}_N$ which spans the whole domain $\Omega$. 
+The discrete space $X_h(\Omega)$ spanned by the basis functions involves all polynomials up to degree $N$.
+A function $u$ is projected onto $X_h$ by the relation
+
+\begin{align}
+    u_h(x) = \sum_{i=0}^N a_i\psi_i(x).
+    \label{eq:spectralprojection}
+\end{align}
+Where the coefficients $a_i$ are called the expansion coefficients. There are many possible choices for the basis and the belonging coefficients, 
+in this thesis and the algorithms used the functions $\psi_i$ will be the Lagrange polynomials based on the Gauss-Lobatto-Legendre (GLL) nodes. 
+The GLL-nodes are given as the solutions of the equation 
+\begin{align}
+    (1-\xi^2)L_N'(\xi) = 0.
+    \label{eq:GLL-nodes}
+\end{align}
+$L_N$ being the Legendre polynomial of degree $N$, defined from the Sturm-Louville problem
+\begin{align}
+    \frac{d}{dx}\left[  (1-x^2)\frac{d}{dx}L_n(x)\right]+n(n+1)L_n(x) = 0.
+    \label{eq:Legendre}
+\end{align}
+With equations \ref{eq:Legendre} and \ref{eq:GLL-nodes} the basis functions $\phi_j$ can be stated as 
+\begin{align}
+    \phi_j = \prod_{i\neq j}^{N}\frac{x-x_i}{x_j-x_i}.
+    \label{eq:Lagrange}
+\end{align}
+\colorbox{yellow}{This should be taken a bit more thouroughly, Quadrature! }
+
+$\{x_i\}$ beeing the solutions to \ref{eq:GLL-nodes}. Note that $\phi_j(x_i) = 0 \text{ when } i \neq j$,
+the expansion coefficients in \ref{eq:spectralprojection} are then chosen as $a_i = u(x_i)$ to minimize the projection error in $L^2(\Omega)$. 
+expanding a basis such that the coefficients are simply the evaluation of the function in that particular point, is known as a nodal SM. 
+Creating a basis for 2 and 3 dimensions is done simply by taking the cross product of the basis functions in each direction
+\begin{align}
+    \Phi_{ijk}(x,y,z) = \phi_i(x)\phi_j(y)\phi_k(z).
+    \label{eq:3dbasis}
+\end{align}
 \begin{itemize}
 \item quadrature rule
 \item the choice of nodes and basis functions
+\item sparsity for different operators
 \item the role of the jacobian 
 \item cross product formulations
+
 \end{itemize}
 
 \cite{Canuto}

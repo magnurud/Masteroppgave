@@ -4,45 +4,45 @@ The top-level auxiliary file: main.aux
 The style file: unsrtnat.bst
 Database file #1: Bibliography.bib
 Warning--I didn't find a database entry for "White"
-You've used 2 entries,
+You've used 3 entries,
             2481 wiz_defined-function locations,
-            573 strings with 4816 characters,
-and the built_in function-call counts, 714 in all, are:
-= -- 62
-> -- 22
+            574 strings with 4926 characters,
+and the built_in function-call counts, 953 in all, are:
+= -- 76
+> -- 43
 < -- 2
-+ -- 10
-- -- 6
-* -- 50
-:= -- 120
-add.period$ -- 9
-call.type$ -- 2
++ -- 18
+- -- 12
+* -- 58
+:= -- 165
+add.period$ -- 12
+call.type$ -- 3
 change.case$ -- 3
-chr.to.int$ -- 2
-cite$ -- 2
-duplicate$ -- 38
-empty$ -- 69
-format.name$ -- 10
-if$ -- 148
+chr.to.int$ -- 3
+cite$ -- 3
+duplicate$ -- 57
+empty$ -- 91
+format.name$ -- 17
+if$ -- 200
 int.to.chr$ -- 1
-int.to.str$ -- 3
-missing$ -- 3
-newline$ -- 21
-num.names$ -- 6
-pop$ -- 16
+int.to.str$ -- 4
+missing$ -- 6
+newline$ -- 25
+num.names$ -- 9
+pop$ -- 31
 preamble$ -- 1
-purify$ -- 2
+purify$ -- 3
 quote$ -- 0
-skip$ -- 22
+skip$ -- 31
 stack$ -- 0
-substring$ -- 25
-swap$ -- 5
+substring$ -- 6
+swap$ -- 6
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 11
+type$ -- 12
 warning$ -- 0
-while$ -- 5
+while$ -- 6
 width$ -- 0
-write$ -- 38
+write$ -- 49
 (There was 1 warning)
