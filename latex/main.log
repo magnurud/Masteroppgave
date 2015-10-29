@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.10.26)  28 OCT 2015 17:16
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.6.15)  29 OCT 2015 15:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **./main.tex
 (./main.tex
 LaTeX2e <2011/06/27>
-Babel <3.9h> and hyphenation patterns for 26 languages loaded.
+Babel <3.9h> and hyphenation patterns for 78 languages loaded.
 (./Thesis.cls
 Document Class: Thesis 2007/22/02 v1.0 LaTeX document class
 (/usr/share/texlive/texmf-dist/tex/latex/base/book.cls
@@ -846,12 +846,12 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 343.
  ) 
 Here is how much of TeX's memory you used:
- 13112 strings out of 494465
- 183202 string characters out of 6166360
- 254984 words of memory out of 5000000
- 16103 multiletter control sequences out of 15000+600000
+ 13112 strings out of 493304
+ 183202 string characters out of 6139871
+ 258032 words of memory out of 5000000
+ 16318 multiletter control sequences out of 15000+600000
  15585 words of font info for 56 fonts, out of 8000000 for 9000
- 350 hyphenation exceptions out of 8191
+ 957 hyphenation exceptions out of 8191
  49i,18n,45p,535b,396s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/shar
@@ -871,7 +871,7 @@ ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/share/texlive/tex
 mf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dis
 t/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/share/texlive/texmf-dist/font
 s/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (18 pages, 252255 bytes).
+Output written on main.pdf (18 pages, 251367 bytes).
 PDF statistics:
  314 PDF objects out of 1000 (max. 8388607)
  272 compressed objects within 3 object streams

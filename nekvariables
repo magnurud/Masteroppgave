@@ -51,6 +51,8 @@ ldimt1 				|| ldimt+1 , number of passive scalars plus 1. SIZE
 ldimt3 				|| ldimt+3 , number of passive scalars plus 3. SIZE
 IGROUP(lelt)		|| the group id of each element. INPUT
 pm1 (lx1,ly1,lz1,lelv) || Pressure mapped to mesh 1
+zgm1(lx1,3) 		|| contains the GLL points for x,y and z directions. imposed in coeff.f , ZW,
+vdiff(I,J,K,IEL,IFIELD)|| array of turbulent viscosity read from uservp in nekuvp
 ----------  user specified routines-----------
 userbc : boundary conditions
 useric : initial conditions
