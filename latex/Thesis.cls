@@ -183,13 +183,13 @@
 %	defined as \examname above so you cite it as \examname
 %----------------------------------------------------------------------------------------
 
-\thesistitle{Least Squares Method} % Your thesis title - this is used in the title and abstract
+\thesistitle{Application of nek5000 to dispersion simulations} % Your thesis title - this is used in the title and abstract
 %-------------------------------------------------  
 \supervisor{Anne Kværnø} % You supervisor's name - this is used in the title page
 %-------------------------------------------------   
 \examiner{} % Your examiner's name - this is not currently used anywhere in the template, cite it with \examname if you want it
 %-------------------------------------------------   
-\degree{Project TMA4500} % Your degree name - this is currently used in the title page and abstract
+\degree{Master Thesis} % Your degree name - this is currently used in the title page and abstract
 %-------------------------------------------------   
 \authors{Magnus \textsc{Aarskaug Rud}} % Your name - this is used in the title page and abstract
 %-------------------------------------------------   
