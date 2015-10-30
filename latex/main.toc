@@ -11,8 +11,12 @@
 \contentsline {section}{\numberline {2.1}Navier-Stokes equation}{8}{section.31}
 \contentsline {section}{\numberline {2.2}Resolving the turbulent term}{10}{section.34}
 \contentsline {section}{\numberline {2.3}Solution methods of incombressible N-S}{10}{section.35}
-\contentsline {section}{\numberline {2.4}nek5000}{11}{section.36}
-\contentsline {chapter}{\numberline {3}Application of nek5000 and the creation of grid}{12}{chapter.37}
-\contentsline {section}{\numberline {3.1}Nek5000}{12}{section.38}
-\contentsline {section}{\numberline {3.2}Gas dispersion in a simplified urban area}{13}{section.39}
-\contentsline {section}{\numberline {3.3}Creation of the mesh-convertion script}{13}{section.40}
+\contentsline {subsection}{\numberline {2.3.1}Decoupling the pressure}{11}{subsection.36}
+\contentsline {chapter}{\numberline {3}Application of nek5000 and the creation of grid}{12}{chapter.41}
+\contentsline {section}{\numberline {3.1}Turbulent flow solvers}{12}{section.42}
+\contentsline {section}{\numberline {3.2}nek5000}{12}{section.43}
+\contentsline {subsection}{\numberline {3.2.1}Incompressible N-S solvers in Nek}{14}{subsection.47}
+\contentsline {section}{\numberline {3.3}Gas dispersion in a simplified urban area}{14}{section.52}
+\contentsline {section}{\numberline {3.4}Creation of the mesh-convertion script}{15}{section.53}
+\contentsline {chapter}{\numberline {4}Results}{17}{chapter.68}
+\contentsline {section}{\numberline {4.1}Drag and lift on a cylinder}{17}{section.69}
