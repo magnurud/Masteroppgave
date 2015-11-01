@@ -9,71 +9,92 @@
 %----------------------------------------------------------------------------------------
 %	SECTION 1
 %----------------------------------------------------------------------------------------
-\section{Navier-Stokes equation}
+\section{The Incompressible Navier-Stokes equation}
 
-The physics regarding fluids in motion are described mathematically by the Navier-Stokes equation. The equations can be derived in many ways, 
-and it is referred to \cite{White} for a complete explication. The general idea is to conserve momentum and mass in a control domain and by 
-applying Reynolds transport theorem and the result is the following two equations reffered to as the N-S equations. 
-
+The physics regarding fluids in motion are described mathematically by the Navier-Stokes equation. 
+The equations can be derived in many ways, and it is referred to \cite{White} for a complete derivation.
+The general idea is to conserve momentum and mass in a control domain providing a system of two equations.
+In this thesis only the incompressible N-S equation will be considered, 
+with the assumption of an incompressible flow the conservation of mass 
+results in a divergence free restriction on the solution $u$.
+Without further introduction the non-dimensional incompressible  N-S equations are stated as  
+%
 \begin{align}
-	\frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u}\cdot \nabla)\mathbf{u} &= -\nabla p + \nu \nabla \cdot \tau \\
-		\nabla \cdot (\rho \mathbf{u}) &= 0
+    \begin{split}
+    \frac{\partial \mathbf{u}}{\partial t} + \mathbf{u}\cdot \nabla\mathbf{u} &= -\nabla p + \frac{1}{Re}\nabla \cdot \tau, \\
+		\nabla \cdot \mathbf{u} &= 0.
+    \end{split}
 	\label{eq:NS}
 \end{align}
-
-These equations have been studied for centuries and different physical situations lead to different simplifications and sets of equations. 
-Examples are the Euler equations, Stokes problem, darcy flow and the incompressible navier-stokes equations. 
-Without doing the derivation of the equations a short discussion of each term in equation N-S will be given here in order to understand there
-physical origin and their mathematical attributes. 
-
-The term $\partial \mathbf{u} /\partial t$  is the time-derivative of the flow, for a steady state flow this term will be equal zero.
-The discretization of this term is often based on some implicit scheme.  
-
-The convective term $(\nabla \cdot \mathbf{u}) \mathbf{u}$ describes the transport due to the flow itself on each of its components. 
-This term is non-linear and does therefore require the equations to be solved by some iteration procedure such as Newton iterations.
-
-The diffusive term $\nu \Delta \mathbf{u}$ describes the natural diffusion of the fluid. The effect of diffusion is determined by the 
-viscosity of the fluid. Mathematically this term makes the equations numerically stable and it is therefore generally easier
-to solve the N-S equations for high-viscosity fluids. 
-
-The pressure gradient $\nabla p$ is the only term involving the pressure, \ldots DISCUST THE MEANING OF PRESSURE\ldots 
-in modern solution techniques it is common to solve eq. \ref{eq:NS} 
-in a decoupled manner. 
-
-The reynolds stress tensor $\tau = \cdots$ is the turbulent term of the N-S equation. In laminar flow this term can 
-be neglected.
-
-The second equation in \ref{eq:NS} imposes a divergence free constraint on the solution $\mathbf{u}$ if the fluid is 
-assumed to be incombressible. The density $\rho$ will be a constant and the simplification follows trivially.
-
-The coefficient $\nu$ is the inverse Reynolds number $1/Re$. The reynolds number can be understood in many different ways, but perhaps the most 
-import role is that it describes the relation between the biggest length scales of the flow and the viscous length scales. Turbulent flows are
-characterized by high reynolds number. The huge span in length scales requires an extremely fine mesh if the equations \ref{eq:NS} 
+%
+These equations have been studied for centuries and different physical situations
+lead to different simplifications and sets of equations.
+Examples are the Euler equations,
+Stokes problem and darcy flow.
+In particular the Stokes problem is applied a lot as an initial test of the full N-S problem. 
+Before attempting to solve these equations it is important to understand the role of each term 
+and their mathematical influence on the problem. 
+\begin{itemize}
+    \item $\partial \mathbf{u} /\partial t$
+     - The time-derivative of the flow, for a steady state flow this term will be equal zero.
+             The discretization of this term is often based on some implicit scheme in order to improve stability.  
+    \item $\mathbf{u} \cdot \nabla \mathbf{u}$
+     - The convective term, describes the transport due to the flow itself on each of its components. 
+    The term is not present in Stokes problem.
+    The mathematical operator corresponding to this term is non-linear and non-symmetric, and does therefore require the equations to be solved 
+    by some iteration procedure. Even with linear advection the operator is a source to instability and needs to be handled carefully. 
+\item  $\nabla \cdot \tau$ 
+       - The Reynolds stress tensor, simplifies to $ \Delta \mathbf{u}$ in laminar flows but is treated as 
+       $\nabla \cdot [ \nabla \mathbf{u} + \nabla^T \mathbf{u}] $ in turbulent flows and introduces 
+       6 new unknows, resolving this tensor is known as the closure problem. $\nu$ is the viscosity of the fluid.
+    \item $\nu \Delta \mathbf{u}$ 
+    -The diffusive term describes the natural diffusion of the fluid. The effect of diffusion is determined by the 
+    viscosity of the fluid. The corresponding operator stabilizes the the system and it is therefore generally easier
+    to solve the N-S equations for high-viscosity fluids. 
+    \item $\nabla p$
+    - The pressure gradient, Removal of this term results in a pure advection diffusion problem.
+    \item $\nabla \cdot \mathbf{u}$ 
+    - The divergence free condition from the mass equation.
+    \item $Re$ 
+    - The Reynolds number defined as $UL/\nu$ where $U$ is the velocity scale, $L$ is the length scale and $\nu$ 
+      is the viscosity of the fluid. $Re$ describes the relation between the biggest length scales of the flow
+      and the viscous length scales. Notice how for large Reynolds number the unstable non-linear term 
+      dominates the transportation.Turbulent flows are characterized by high reynolds number.
+\end{itemize}
+For large Reynolds number the huge span in length scales requires an extremely fine mesh if the equations \ref{eq:NS} 
 are to be solved exactly. Because a fine mesh implies a high computational cost a direct numerical solution (DNS) is not feasible for 
-problems of a certain complexity.
+problems of a certain geometrical complexity. There are many different approaches on how to resolve the turbulent term and in 
+this thesis the main approach will be through Large Eddy Simulations (LES) which will be discussed 
+in the following section.
+%
+%
+\section{Resolving the turbulent term using LES}
+When DNS is not feasible due to high Reynoldsnumber LES is one of the most powerful tools when it comes to simulating turbulent flows.
+The idea is based on the fact that for the small turbulent structures behave independently of time and location and are therefore 
+easy to model. This way the larger structures driven by geometry, inflow conditions and external forces can be simulated using a coarser 
+grid while the effect of the small structures are modelled. \colorbox{yellow}{Some source on the importance of SGS-model}
 
-\begin{itemize}
-\item The time-derivative
-\item The convective term 
-\item The diffusive term 
-\item The pressure gradient
-\item The reynolds stress tensor
-\item The reynolds number
-\item The mass equation
-\end{itemize}
+In order to perform a LES a filter width a certain width $\Delta$ has to be chosen, 
+the filtered N-S equations are given as 
+%
+\begin{align}
+    \begin{split}
+        \frac{\partial \mathbf{\bar{u}}}{\partial t} + \mathbf{\bar{u}}\cdot \nabla\mathbf{\bar{u}}
+        &= -\nabla \bar{p} +\nu\Delta \mathbf{\bar{u}}-\nabla \cdot \tau, \\
+        \nabla \cdot \mathbf{\bar{u}} &= 0.
+    \end{split}
+	\label{eq:NSfiltered}
+\end{align}
+%
+Where $\tau$ in this case denotes the subgrid scale (SGS) stress given as 
+\begin{align}
+    \tau_{ij} = \overline{u_iu_j}-\overline{u}_i \overline{u}_j
+    \label{eq:sgstensor}
+\end{align}
 
-
-\section{Resolving the turbulent term}
-Depending on the wanted accuracy of your solution and the number of computational units at hand the turbulent term can be solved in 
-different ways. A brief overview of the different approaches to the turbulent term are discussed in the following subsections
-
-\begin{itemize}
-	\item Laminar flow
-	\item RANS
-	\item LES
-	\item K-epsilon and K-omega
-	\item DNS
-\end{itemize}
+The problem is now reduced to modelling this tensor, the most common SGS-model is the 
+dynamic Smagorinsky-Lilly model.
+\subsection{dynamic Smagorinsky-Lilly SGS-model}
 
 \section{Solution methods of incombressible N-S}
 A non-linear set of equations requires a non-trivial solution method, and when the domain of the problem can be anyting from a simple channel 
@@ -81,12 +102,11 @@ to a moving turbine there are many considerations that needs to be made. Allthou
 has been able to prove or disprove the well-posedness of the problem. FINAL ELEMENT FORMULATION WELL-POSED?? Some of the most common algorithms 
 will be discussed in the following subsections
 
-\begin{itemize}
-\item coupled versus decoupled 
-\item The Uzawa algorithm 
-\item Pressure correction method
-\item fractional step method
-\end{itemize}
+\subsection{Uzawa algorithm}
+\subsection{Splitting algorithms}
+OIFS 
+\subsection{Fractional step}
+\subsection{Pressure-correction}
 
 \subsection{Decoupling the pressure} 
 

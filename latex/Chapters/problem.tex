@@ -1,10 +1,10 @@
 % Chapter 3 - Description of problem
 
-\chapter{Application of nek5000 and the creation of grid} % Main chapter title
+\chapter{Application of Nek5000} % Main chapter title
 
 \label{problem} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
-\lhead{Chapter 3. \emph{application of nek}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
+\lhead{Chapter 3. \emph{application of Nek}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
 
 %----------------------------------------------------------------------------------------
 %	SECTION 1
@@ -24,7 +24,7 @@ and the type of simulation (RANS,LES,DNS).
 %The simulation is the performed on some cluster before the 
 %wanted data in some sub-domain is visualized and presented. 
 
-\section{nek5000}
+\section{Nek5000 Basics }
 Nek5000 is a turbulent flow solver developed mainly by Paul Fischer
 and has through the past 20 years had several contributours. 
 It is an open-source code applicable to many different types of flow 
@@ -43,7 +43,7 @@ Further manipulation of the element edges is left to the user to define manually
 for each particular problem. One of the objectives of this thesis is to make Nek5000 more
 user-friendly and create automatic routines to handle complex geometry.
 
-In order to get a quick overview of the framework in Nek a short list of the main functions 
+In order to get a quick overview of the framework in Nek a short list of the main steps
 are stated in the list below 
 %
 \begin{enumerate}
@@ -55,7 +55,7 @@ are stated in the list below
      and other scalars will be performed. The user is free to choose different solvers which 
      will be discussed later.
  \item \emph{post-processing}
-     \subitem Processing data and writing statistics and other user-specified parameters to file.
+     \subitem Writing statistics and other user-specified parameters to file.
 \end{enumerate}
 %
 Nek provides a basic tool for generation of mesh. For more complex geometries this tool cannot compare with more visualized-based softwares 
@@ -108,6 +108,8 @@ the Helmholtz equation.
 
 
 
+\subsection{Nek5000 for complex geometries}
+
 \section{Gas dispersion in a simplified urban area}
 The problem investigated in this work is gas dispersion of neutral gas in a velocity field through four cubic blocks.
 Similar simulations have been done in CDP and Fluent which are compared to data from a wind-tunnel experiment performed by ALAN.
@@ -116,7 +118,7 @@ Similar simulations have been done in CDP and Fluent which are compared to data 
 	\item mesh and fluent/CDP mesh
 \end{itemize}
 
-\section{Creation of the mesh-convertion script}
+\section{Advances in the mesh-generation routine}
 The routine xyzarc:
 
 The gordon hall algorithm was already implemented as a function in Nek, with the gll-points,plynomial degree and some initial 
