@@ -1,0 +1,52 @@
+% Chapter 1
+
+\chapter{Results} % Main chapter title
+
+\label{results} % For referencing the chapter elsewhere, use \ref{Chapter1} 
+
+\lhead{Chapter 4. \emph{Results and Discussion}} % This is for the header on each page - perhaps a shortened title
+
+%----------------------------------------------------------------------------------------
+
+\section{Drag and lift on a cylinder}
+The effect of the implemented algorithm in Nek5000 explained in Chapter~\ref{problem} is
+illustrated by solving a laminar flow test problem. 
+The solution is compared with previously benchmark computations performed by a number of 
+contributors~\cite{benchmark}. The test problem considered is steady flow with Re=20 in 
+a rectangular channel past a cylinder. The drag and lift coefficients on the cylinder 
+are calculated and compared to a pair of reference values. The results can be found in 
+table~\ref{tab:testcase}. As the results clearly show the treatment of the geometry is 
+crucial, both coefficients are computed with significantly better accuracy. 
+%
+\begin{table}
+\centering
+\begin{tabular}{l l c c c c}
+		\toprule
+		\# of Cells & Software & $c_D$ & $c_L$ & \%\textbf{Err} $c_D$ &\%\textbf{Err} $c_L$ \\ \midrule 
+		2070 & Nek5000 (mid) & 6.18349 & 0.008939 & 0.030 & 4.19 \\ 
+		2070 & Nek5000 (arc) & 6.18498 & 0.009413 & 0.006 & 0.13 \\
+		3145728 & CFX 		 & 6.18287 & 0.009387 & 0.04 &0.15 \\
+		3145728 & OF	     & 6.18931 & 0.00973 & 0.06 &3.5 \\
+		3145728 & FEATFLOW   & 6.18465 & 0.009397 & 0.01 &0.05 \\
+		\bottomrule	
+	\end{tabular}
+	\caption{Results for the drag and lift coefficients with refences values 
+	$c_D = 6.18533$ and $c_L = 0.009401$.}
+\label{tab:testcase}
+\end{table}
+%
+The polynomial degree used in the calculations with Nek5000 was chosen as $p = 11 $ 
+in all directions. The explicit number of cells is therefore $2070\cdot11^{3} = 2755170$,
+approximately $88\%$ of the number of cells used for the benchmark simulations. Compared 
+with the results from the other softwares applied in~\cite{benchmark} Nek5000 performs 
+just as well or better. It should be mentioned that the division of the grid is done 
+differently for Nek5000 so the comparison is not as direct as it may seem from the table.
+\colorbox{yellow}{add more info on the mesh??}
+
+%----------------------------------------------------------------------------------------
+\section{Gas dispersion in a simplified urban area} 
+Results to come \ldots 
+
+\section{Discussion and Conclusion}
+\colorbox{yellow}{How did Nek perform overall, user-friendly ?,correctness,speed etc.}
+

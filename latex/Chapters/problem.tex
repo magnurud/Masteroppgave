@@ -9,8 +9,7 @@
 %----------------------------------------------------------------------------------------
 %	SECTION 1
 %----------------------------------------------------------------------------------------
-\section{Turbulent flow solvers}
-
+\colorbox{yellow}{Some introduction about flow solvers in general and how Nek differs from these}
 There are many numerical solvers for turbulent flows available on the market.
 From large commercial softwares such as Fluent which runs as a 
 black-box solver, to full open-source codes such as nek5000 and openFOAM. 
@@ -83,7 +82,7 @@ OIFS ???
 ---------- CHECK MAKEF IN NAVIER1.F ----------------- 
 \begin{align}
     \sum_{j=0}^{k}\frac{b_j}{\Delta t}Mu^{n-j+1} = Au^{n+1}-Cu^{n+1}+Mf^{n+1}
-    \label{eq:conv-diff}
+    \label{eq:conv-diff2}
 \end{align}
 % 
 By extrapolating the convective term from the $k$ previously calculated steps the equation 
@@ -92,7 +91,7 @@ simplifies to
 \begin{align}
    \frac{b_0}{\Delta t}Mu^{n+1} \sum_{j=1}^{k}\frac{b_j}{\Delta t}Mu^{n-j+1} 
    = Au^{n+1}-\sum_{j=1}^{k}a_jCu^{n-j+1}+Mf^{n+1}
-    \label{eq:conv-diff}
+    \label{eq:conv-diff3}
 \end{align}
 % 
 and finally by moving all the explicit terms to the rhs the equation left to solve is given as 
@@ -100,7 +99,7 @@ and finally by moving all the explicit terms to the rhs the equation left to sol
 \begin{align}
    (\frac{b_0}{\Delta t}M-A)u^{n+1} 
    = -\sum_{j=1}^{k}(\frac{b_j}{\Delta t}M-a_jC)u^{n-j+1}+Mf^{n+1}
-    \label{eq:conv-diff}
+    \label{eq:conv-diff4}
 \end{align}
 % 
 Notice from Section~\ref{theory} that this is equivalent to the matrix formulation of 
@@ -110,13 +109,17 @@ the Helmholtz equation.
 
 \subsection{Nek5000 for complex geometries}
 
-\section{Gas dispersion in a simplified urban area}
+\section{Case 1: Gas dispersion in a simplified urban area}
 The problem investigated in this work is gas dispersion of neutral gas in a velocity field through four cubic blocks.
 Similar simulations have been done in CDP and Fluent which are compared to data from a wind-tunnel experiment performed by ALAN.
 \begin{itemize}
 	\item Description of problem and domain
 	\item mesh and fluent/CDP mesh
 \end{itemize}
+
+\section{Case 2: Drag and lift on a cylinder}
+Descrition of problem\ldots
+Descrition of implementation approach in Nek\ldots
 
 \section{Advances in the mesh-generation routine}
 The routine xyzarc:
