@@ -165,15 +165,19 @@ By specifying the radius and the circle center genxyz calls the routine xyzarc()
 \endgroup
 These lines creates the wanted egde curved as a circle sector corresponding to the radius and circle center given.
 The remaining operation is to call the gordon hall algorithm and create the internal GLL-points defined by the edges 
-provided.
+provided. The figure~\ref{fig:curvature} illustrates the geometry on which the algorithm is performed.
+Notice that the algorithm assumes that the center is somewhere on the plane defined as all the 
+points with equal distance to both $a$ and $b$.
 
 
-\begin{itemize}
-		\item reading radius, and center
-		\item finding the angular offset to match the gll-points
-		\item finding the points on the linear edge
-		\item projecting them on the surface
-\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{Figures/curvature.pdf}
+    \caption{A sketch of the curved edge and the variables necessary to calculate the projection}
+    \label{fig:curvature}
+\end{figure}
+
+
 \begin{itemize}
 	\item initial script
 	\item changes and modifications

@@ -1,3 +1,6 @@
+# Compressing multiple files 
+cat file1 file2 file3* | gzip > files.gz
+
 # Renaming all files in folder 
 rename 's/foo/bar/g' * -vn #preview of foo -> bar
 rename 's/foo/bar/g' * -v #doing foo -> bar

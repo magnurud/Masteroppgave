@@ -1561,8 +1561,8 @@ c---------------------------------------
           enddo
           enddo
           enddo
-          write(*,*) 'iterated through n many edges, edges = '
-          write(*,*) i
+          !write(*,*) 'iterated through n many edges, edges = '
+          !write(*,*) i
           return
           end
 c---------------------------------------
