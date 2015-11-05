@@ -40,3 +40,9 @@ Always check if mesh has unwanted curvature !!
 
 # Vilje
 Had to add extra flag to use mpif77 on vilje!
+
+# Husk filending i ICEM! 
+O : Outflow
+V : inflow
+S or SYM : Symmetry
+W : Wall

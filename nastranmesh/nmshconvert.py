@@ -1,7 +1,6 @@
-#+1!/usr/bin python
+#!/usr/bin python
 import sys
 import re
-from globals import *
 from cell import cell, Face
 from sets import Set
 from copy import copy
@@ -18,7 +17,8 @@ print "Converting from Nastran format to Nek5000, semtex or FEniCS format"
 tot_num_curved = 0
 # Use regular expressions to identify sections and tokens found in a fluent file
 re_dimline  = re.compile(r"\(2\s(\d)\)")
-#re_comment  = re.compile(r"\(0\s.*")
+#re_comment  = re.compile(r"\(0\s.*") # Fluent
+re_comment  = re.compile(r"^\$\s.*") # Nastran
 re_zone0    = re.compile(r"\(10\s\(0\s(\w+)\s(\w+)\s(\d+)\s(\d+)\)\)")
 re_zone     = re.compile(r"\(10\s\((\w+)\s(\w+)\s(\w+)\s(\d+)\s(\d)\)(\(|)")
 re_face0    = re.compile(r"\(13(\s*)\(0\s+(\w+)\s+(\w+)\s+(0|0 0)\)\)")
@@ -30,12 +30,6 @@ re_cells    = re.compile(r"\(12.*\((\w+)\s+(\w+)\s+(\w+)\s+(\d+)\s+(\d+)\)\)")
 re_cells2   = re.compile(r"\(12(\s*)\((\w+)\s+(\w+)\s+(\w+)\s+(\w+)\s+(\w+)\)(\s*)(\(|)")
 re_zones    = re.compile(r"\((45|39)\s+\((\d+)\s+(\S+)\s+(\S+).*\)\((.*|[0-9]+[\.]*[0-9]*)\)\)")
 re_parant   = re.compile(r"(^\s*\)(\s*)|^\s*\)\)(\s*)|^\s*\(\s*)")
-
-# The fluent mesh (the .msh file) is basically stored as a list of nodes, and then a 
-# list of faces for each zone of the mesh, the interior and the boundaries.
-
-# Use regular expressions to identify sections and tokens found in a nastran file
-re_comment  = re.compile(r"^\$\s.*")
 
 # Declare some maps that will be built when reading in the lists of nodes and faces:
 cell_map = {}               # Maps cell id with nodes
@@ -78,6 +72,8 @@ curved_midpoint = {}        # For each cell and curved edge, coordinates for mid
 # ADDED BY RUD 25.09
 curved_east = {}            # For each cell and curved edge, coordinates for the point east of midpoint  
 curved_west = {}            # For each cell and curved edge, coordinates for the point west of midpoint  
+# RUD PROJ ALG
+surf_list = [] # A list containing all elements and the local face that are to be projected on an exact surface from ICEM
 # END BY RUD 25.09
 
 
@@ -420,7 +416,7 @@ def create_periodic_face_map(periodic_dx):
             face1_list.remove((face_of_shadow, shadow_number))
     
 def process_cell(cell_no, vertices,tol):
-    print 'processing cell number: {}'.format(cell_no)
+    #print 'processing cell number: {}'.format(cell_no)
     # Update Face dictionary from the nodes in a cell
     # Store cell_map, listing the vertices that describe the cell  
     cell_map[cell_no] = zeros(21, int)
@@ -458,7 +454,7 @@ def process_cell(cell_no, vertices,tol):
 
     faceverts = zeros(4)
     face_map[cell_no] = {}
-    
+
     # Define faces according to Nastran node numbering
 
     # South face
@@ -466,7 +462,7 @@ def process_cell(cell_no, vertices,tol):
     # Check for existing face
     facename = "South"
     face_no = check_face(faceverts, facename, cell_no, len(Faces))
-    face_map[cell_no][face_no] = 5 
+    face_map[cell_no][face_no] = 5  
     (Cells[cell_no-1]).faces[5] = face_no # Added by Magnus 06.10
 
     # North Face
@@ -538,7 +534,7 @@ def check_edge(edge_no, edgeverts, cell_no,tol):
         
     # First test for curvature: Sum of vector lengths 
     if ((AC_abs + BC_abs - AB_abs) > tol * AB_abs):
-        print "Curved line for edge", edge_no, "cell", cell_no
+        #print "Curved line for edge", edge_no, "cell", cell_no
         curved_midpoint[cell_no][edge_no] = edgeverts[2] - 1
         curved_east[cell_no][edge_no] = edgeverts[0] - 1
         curved_west[cell_no][edge_no] = edgeverts[1] - 1
@@ -926,6 +922,12 @@ def create_boundary_section(bcs, temperature, passive_scalars, mesh_format):
                     if (zones[zone_id][1][-1] == 'S'):
                         # Fix for symmetry boundary condition
                         boundary_val_map[(c, local_face)] = 'SYM'
+                    # RUD PROJ ALG
+                    elif (zones[zone_id][1][-1] == 'E'):    
+                     # A list containing all elements and the local 
+                     #face that are to be projected on an exact surface from ICEM
+                     surf_list.append([c,local_face]) 
+                     boundary_val_map[(c, local_face)] = zones[zone_id][1][-2]
                     else:
                         boundary_val_map[(c, local_face)] = zones[zone_id][1][-1]
                     bcs_copy[zone_id] = zones[zone_id][1][-1]
@@ -1744,7 +1746,6 @@ def convert(nastranmesh,
                     for ie in cell.curved_edge:
                             print 'east {}, west {}, mid {}'.format(cell.curved_east[ie],cell.curved_west[ie],cell.curved_midpoint[ie])
 
-
         
     #print ('cellID of elem 1 is {}'.format(Cells[0].cellID))
 # END RUD 06.10.15
@@ -1782,4 +1783,16 @@ def convert(nastranmesh,
 
     print 'Fixing thermal inflow conditions \n '
     fixthermalbc(ofilename + '.rea')
+    # RUD PROJ ALG
+    # Looping through all the boundary surfaces and printing the nodes to file
+    # This should be as an alternative to writing nek-file.
+    write_surf = 0
+    if(write_surf==1):
+        for face in Faces:
+            if(face.zone_id>0):
+                # Set the write routine here
+                # remember to remove duplicates !
+                print 'face {} belonging to zone {} with verts: {},{},{},{} '\
+                .format(face.faceID,face.zone_id,face.vert_1,face.vert_2,face.vert_3,face.vert_4)
+
 	# END ADDED BY RUD 25.09.15
