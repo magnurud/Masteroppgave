@@ -53,6 +53,7 @@ IGROUP(lelt)		|| the group id of each element. INPUT
 pm1 (lx1,ly1,lz1,lelv) || Pressure mapped to mesh 1
 zgm1(lx1,3) 		|| contains the GLL points for x,y and z directions. imposed in coeff.f , ZW,
 vdiff(I,J,K,IEL,IFIELD)|| array of turbulent viscosity read from uservp in nekuvp
+CPFLD(ldimt1,3)          || scalar parameters, see connect2, rdparam
 ----------  user specified routines-----------
 userbc : boundary conditions
 useric : initial conditions
@@ -128,6 +129,8 @@ function facint(a,b,area,ifc,ie) || Take the dot product of A and B on the surfa
 subroutine vrdsmsh || connect.f ,Verify that mesh and dssum are properly defined
 subroutine tensr3(v,nv,u,nu,A,Bt,Ct,w)||  Tensor product application of v = (C x B x A) u , fasts.f
 subroutine gh_face_extend_3d(x,zg,n,gh_type,e,v)|| gh algorithm x = the array to be modified, zg = gll-points, n = pol degree, gh_type = 2,  
+ltrunc(string,l) || returns the position of the last non-blank character in string of length l, math.f
+INDX_CUT(line,'str',3) || check if line contains the string 'str' of 3 char
 
 
 
@@ -163,6 +166,15 @@ why does branches/mvmesh/ branches/adapt_mesh contain many of the same functions
 Usrvp, shouldn't field be a variable as well in order to get the right output ??
 What is Mesh 1 ?
 
+
+Why are there 2 times 9 scalars in rea file, 4 lines of passive scalars...
+answer: This is the variables cdiff ctrans sat in subs1.f , vprops 
+
+The initial conditions 
+read in ic.f
+sets the boolean arrays 
+ifprsl
+iffort
 ------ Common mistakes ------ 
 The lelt variable is not large enough
 Remember to set all parts in icem to PLOAD, what went wrong in test-case
