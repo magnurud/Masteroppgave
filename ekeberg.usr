@@ -193,7 +193,7 @@ c-----------------------------------------------------------------------
       integer nodes,nn,i,j,kk,e,f,ix,iy,iz,kx1,kx2,ky1,ky2,kz1,kz2
       real midpoint(3), wrk(3), radius !midpoint on cell face and radius 
       real xx,yy,zz,snx,sny,snz,a,b,c ! surface coordinates
-      real kappa,err_surf,err_new
+      real kappa,lambda,err_surf,err_new
 
           !real wrk(3),wrksurf(nsurf,3)!,wrkbdry(2*nsurf/nbdry,3) ! Wrk array
           !integer wrkelem(nbdry,2)
@@ -262,7 +262,7 @@ c-----------------------------------------------------------------------
           !write(*,*) iter!, 10*nsurf/nbdry
 
           !Iterate over all the gll-nodes on this face
-          write(*,*) iter-1
+          !write(*,*) iter-1
           do iz=kz1,kz2
           do iy=ky1,ky2
           do ix=kx1,kx2
@@ -284,6 +284,7 @@ c-----------------------------------------------------------------------
               snz = unz(ix,iy,f,e)
           endif
           !write(*,*) snx,sny,snz,k
+           write(*,*) sqrt(snx**2+sny**2+snz**2) !confirm the normality
 
           ! Iterating through wrkbdry
           err_surf = 100000
@@ -293,44 +294,40 @@ c-----------------------------------------------------------------------
             wrk(2) = y-wrkbdry(kk,2)
             wrk(3) = z-wrkbdry(kk,3)
             lambda = sqrt(wrk(1)**2+wrk(2)**2+wrk(3)**2)
-            wrk(1) =    wrk(1)/lambda
+            wrk(1) =    wrk(1)/lambda ! Normalizing
             wrk(2) =    wrk(2)/lambda
             wrk(3) =    wrk(3)/lambda
             !if(sqrt(wrk(1)**2+wrk(2)**2+wrk(3)**2).lt.100) then 
                 !write(*,*) sqrt(wrk(1)**2+wrk(2)**2+wrk(3)**2)
             !endif
-            a =snx/sign(max(1e-3,abs(wrk(1))),wrk(1)) !x-coeff
-            b =sny/sign(max(1e-3,abs(wrk(2))),wrk(2)) !y-coeff
-            c =snz/sign(max(1e-3,abs(wrk(3))),wrk(3)) !z-coeff
+            a =snx/sign(max(1e-6,abs(wrk(1))),wrk(1)) !x-coeff
+            b =sny/sign(max(1e-6,abs(wrk(2))),wrk(2)) !y-coeff
+            c =snz/sign(max(1e-6,abs(wrk(3))),wrk(3)) !z-coeff
             kappa = 1/3*(a+b+c)
-            !write(*,*) '----------------'
             !write(*,*) snx,sny,snz
+            !write(*,*) '----------------'
             !write(*,*) a,b,c 
-            !write(*,*) wrk(1), wrk(2), wrk(3)
+            !write(*,*) kappa
 
             err_new = sqrt((kappa-a)**2+(kappa-b)**2+(kappa-c)**2)
             if(err_new.lt.err_surf) then
                 i_closest = kk ! 
                 err_surf =err_new
-            !    write(*,*) i_closest
-               ! , err_new
+            endif ! redefine error
+          enddo ! kk
 
-            endif
-            write(*,*) iclosest
-          enddo       
+          write(*,*) 'The closest points!',i_closest,err_surf
+          !Updating the gll-points 
+          xm1(ix,iy,iz,e) = wrkbdry(i_closest,1)
+          ym1(ix,iy,iz,e) = wrkbdry(i_closest,2)
+          zm1(ix,iy,iz,e) = wrkbdry(i_closest,3)
+          enddo ! ix 
+          enddo ! iy 
+          enddo ! iz 
+          enddo ! e
 
-          !write(*,*) 'The closest points!'
-          !write(*,*) i_closest ,err_surf
-          !write(*,*) x-wrkbdry(II,1) ! vector from gllpoint to surf 
-          !write(*,*) y-wrkbdry(II,2)
-          !write(*,*) z-wrkbdry(II,3)
-
-          enddo  
-          enddo  
-          enddo  
-          !write(*,*) e , f 
-          end do
-
+          ! Fixing the internal GLL-points
+          call fix_geom()
           return
           end
 c-----------------------------------------------------------------------

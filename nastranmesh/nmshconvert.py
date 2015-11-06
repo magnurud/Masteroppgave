@@ -190,6 +190,41 @@ def write_surface_file():
         ofile.write(reduce(add, ['{0:.6e} '.format(x) 
         for x in nn]) + '\n')
     ofile.close()
+
+def write_surf_list():
+    print 'Writing surface elements and local faces to bdry.i !'
+    ofile = open('bdry.i', "w")
+    #ofile.write('{}\n'.format(len(surf_list)))
+    for info in surf_list:
+        #ofile.write(reduce(add, ['{0:.8e}'.format(x).rjust(16) 
+        ofile.write(reduce(add, ['{}'.format(x) 
+                                    for x in info]) + '\n')
+    ofile.close()
+
+    print 'Appending some essential variables in SIZE as well!! Remeber to call the script from the same folder as your SIZE-file!!'
+    ifile = open('SIZE',"r")
+    # Read all lines of nastran mesh
+    lines = ifile.readlines()
+    ifile.close()
+    if len(lines) == 0:
+        raise IOError("Empty SIZE file")
+
+    ofile = open("SIZE","w")
+    # Iterating through the lines
+    dummy = 0
+    target = '(?<=nbdry).+\)'
+    repl= '='+'{}'.format(len(surf_list))+')'
+    for line in lines:
+        # want to replace lfdm=XXX with lfdm = 38
+        m = re.search(target,line)
+        if(m): dummy = 1
+        line = re.sub(target,repl,line)
+        #re.sub('(?<=lfdm).+)','=38\)',line)
+        #print line
+        ofile.write(line)
+    if (not dummy): ofile.write('      parameter (nbdry={}) ! Number of bdry nodes\n'.format(len(surf_list)))
+    ofile.close()
+
 ######## END RUD 25.09.15 #########
 
 Faces = []
@@ -1803,15 +1838,6 @@ def convert(nastranmesh,
     fixthermalbc(ofilename + '.rea')
 
     if(surf_list): 
-        print 'Writing surface elements and local faces to bdry.i !'
-        ofile = open('SIZE',"a")
-        ofile.write('      parameter (nbdry={}) ! Number of bdry nodes\n'.format(len(surf_list)))
-        ofile.close()
-        ofile = open('bdry.i', "w")
-        #ofile.write('{}\n'.format(len(surf_list)))
-        for info in surf_list:
-            #ofile.write(reduce(add, ['{0:.8e}'.format(x).rjust(16) 
-            ofile.write(reduce(add, ['{}'.format(x).rjust(16) 
-                                        for x in info]) + '\n')
-        ofile.close()
+        write_surf_list()
+
 	# END ADDED BY RUD 25.09.15
