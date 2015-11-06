@@ -72,6 +72,7 @@ curved_midpoint = {}        # For each cell and curved edge, coordinates for mid
 # ADDED BY RUD 25.09
 curved_east = {}            # For each cell and curved edge, coordinates for the point east of midpoint  
 curved_west = {}            # For each cell and curved edge, coordinates for the point west of midpoint  
+tot_num_nodes = 0           # Total number of nodes
 # RUD PROJ ALG
 surf_list = [] # A list containing all elements and the local face that are to be projected on an exact surface from ICEM
 # END BY RUD 25.09
@@ -129,7 +130,7 @@ def fixbc(name):
            if(dummy==1): #If we are in the BC-section 
                if(line.find('****')!=-1): dummy = -1 # Out of BC'section
                if(dummy==1): 
-                   line = line.replace('M  ','SYM')
+                   #line = line.replace('M  ','SYM')
                    line = line.replace('V  ','v  ')
            if(line.find('FLUID')!=-1): dummy = 1 # When reaching the BCS
            s = s+line
@@ -175,6 +176,20 @@ def points2circ(x1,x2,x3):
     x = solve(A,b)
     r = sqrt(dot(x-x1,x-x1))
     return r,x
+
+def write_surface_file():
+    print 'Writing surface nodes to surf.i !'
+    global tot_num_nodes
+    ofile = open('SIZE',"a")
+    ofile.write('      parameter (nsurf={}) ! Number of surf nodes\n'.format(tot_num_nodes))
+    ofile.close()
+    ofile  = open('surf.i', "w")
+    #ofile.write('{}\n'.format(tot_num_nodes))
+    for n in range(tot_num_nodes):
+        nn = nodes[:,n] 
+        ofile.write(reduce(add, ['{0:.6e} '.format(x) 
+        for x in nn]) + '\n')
+    ofile.close()
 ######## END RUD 25.09.15 #########
 
 Faces = []
@@ -922,15 +937,14 @@ def create_boundary_section(bcs, temperature, passive_scalars, mesh_format):
                     if (zones[zone_id][1][-1] == 'S'):
                         # Fix for symmetry boundary condition
                         boundary_val_map[(c, local_face)] = 'SYM'
-                    # RUD PROJ ALG
-                    elif (zones[zone_id][1][-1] == 'E'):    
-                     # A list containing all elements and the local 
-                     #face that are to be projected on an exact surface from ICEM
-                     surf_list.append([c,local_face]) 
-                     boundary_val_map[(c, local_face)] = zones[zone_id][1][-2]
                     else:
                         boundary_val_map[(c, local_face)] = zones[zone_id][1][-1]
                     bcs_copy[zone_id] = zones[zone_id][1][-1]
+                    # RUD PROJ ALG
+                    if (zones[zone_id][1][-2] == 'E'):    
+                     # A list containing all elements and the local 
+                     #face that are to be projected on an exact surface from ICEM
+                     surf_list.append([c,local_face]) 
                 if temperature:
                     temperature_val_map[(c, local_face)] =  \
                                                     temperature[zone_id]
@@ -1197,6 +1211,7 @@ def scan_fluent_mesh(lines):
 def scan_nastran_mesh(lines,tol):
     """Scan nastran mesh and generate numerous maps."""
     # (Warning! Not yet tested for multiple interior zones) (Fluent)
+    global tot_num_nodes
     dim = 3    # 3-d assumed
     print 'Mesh is ' + str(dim) + 'D\n'
     num_faces = 0
@@ -1213,7 +1228,8 @@ def scan_nastran_mesh(lines,tol):
             line = lines.pop(0)
         except:
             if ((num_vertices == node_no) and (tot_num_cells == cell_no)):
-                print "All", node_no, "nodes read"
+                tot_num_nodes = node_no
+                print "All", tot_num_nodes, "nodes read"
                 print "All", cell_no, "cells read"
                 print 'Finished reading file\n'
                 break
@@ -1771,6 +1787,8 @@ def convert(nastranmesh,
     # Generate the mesh files for given mesh format
     if mesh_format == 'nek5000':
         write_nek5000_file(dim, ofilename, curves, temperature, passive_scalars,start_of_rea,end_of_rea,curve_type)
+    elif mesh_format == 'surface':
+        write_surface_file();
     elif mesh_format == 'semtex':
         write_semtex_file(dim, ofilename, curves, cylindrical, NZ)
     if mesh_format == 'fenics':
@@ -1783,16 +1801,17 @@ def convert(nastranmesh,
 
     print 'Fixing thermal inflow conditions \n '
     fixthermalbc(ofilename + '.rea')
-    # RUD PROJ ALG
-    # Looping through all the boundary surfaces and printing the nodes to file
-    # This should be as an alternative to writing nek-file.
-    write_surf = 0
-    if(write_surf==1):
-        for face in Faces:
-            if(face.zone_id>0):
-                # Set the write routine here
-                # remember to remove duplicates !
-                print 'face {} belonging to zone {} with verts: {},{},{},{} '\
-                .format(face.faceID,face.zone_id,face.vert_1,face.vert_2,face.vert_3,face.vert_4)
 
+    if(surf_list): 
+        print 'Writing surface elements and local faces to bdry.i !'
+        ofile = open('SIZE',"a")
+        ofile.write('      parameter (nbdry={}) ! Number of bdry nodes\n'.format(len(surf_list)))
+        ofile.close()
+        ofile = open('bdry.i', "w")
+        #ofile.write('{}\n'.format(len(surf_list)))
+        for info in surf_list:
+            #ofile.write(reduce(add, ['{0:.8e}'.format(x).rjust(16) 
+            ofile.write(reduce(add, ['{}'.format(x).rjust(16) 
+                                        for x in info]) + '\n')
+        ofile.close()
 	# END ADDED BY RUD 25.09.15

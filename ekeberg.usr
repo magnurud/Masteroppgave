@@ -1,0 +1,342 @@
+C-----------------------------------------------------------------------
+C  nek5000 user-file template
+C
+C  user specified routines:
+C     - userbc : boundary conditions
+C     - useric : initial conditions
+C     - uservp : variable properties
+C     - userf  : local acceleration term for fluid
+C     - userq  : local source term for scalars
+C     - userchk: general purpose routine for checking errors etc.
+C
+C-----------------------------------------------------------------------
+      subroutine uservp(ix,iy,iz,eg) ! set variable properties
+      include 'SIZE'
+      include 'TOTAL'
+      include 'NEKUSE'
+
+      integer e,f,eg
+c     e = gllel(eg)
+
+      udiff  = 0.0
+      utrans = 0.0
+
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine userf(ix,iy,iz,eg) ! set acceleration term
+c
+c     Note: this is an acceleration term, NOT a force!
+c     Thus, ffx will subsequently be multiplied by rho(x,t).
+c
+      include 'SIZE'
+      include 'TOTAL'
+      include 'NEKUSE'
+
+      integer e,f,eg
+c     e = gllel(eg)
+
+      ffx = 0.0
+      ffy = 0.0
+      ffz = 0.0
+
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine userq(ix,iy,iz,eg) ! set source term
+      include 'SIZE'
+      include 'TOTAL'
+      include 'NEKUSE'
+
+      integer e,f,eg
+c     e = gllel(eg)
+
+      qvol   = 0.0
+      source = 0.0
+
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine userq2(q) ! set source term
+      include 'SIZE'
+      include 'TOTAL'
+      include 'NEKUSE'
+
+      real q(lx1, ly1, lz1, lelt)
+
+c      if (ifcoup) then
+c         call nekMOAB_import_vars(tTag, 0, q)
+c      elseif (ifvcoup) then
+c         call nekMOAB_import_vars(vtTag, 1, q)
+c      endif
+
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine userbc(ix,iy,iz,iside,ieg) ! set up boundary conditions
+c     NOTE ::: This subroutine MAY NOT be called by every process
+      include 'SIZE'
+      include 'TOTAL'
+      include 'NEKUSE'
+
+      integer kx1,kx2,ky1,ky2,kz1,kz2, mx,my,mz
+      integer idface, ioffs, nfaces
+      real d
+              
+      nfaces = 2*ndim 
+
+      call facind(kx1,kx2,ky1,ky2,kz1,kz2,nx1,ny1,nz1,iside)
+
+       ux   = 0.0
+       uy   = 1.0
+       uz   = 0.0
+   
+      !if ( abs(x+1.0) .lt. 1e-8 ) then !... west inflow boundary at x=-1
+         !mx = kx2-kx1+1
+         !my = ky2-ky1+1
+         !mz = kz2-kz1+1
+         !ioffs = ix + (iy-1)*mx + (iz-1)*mx*my - 1
+   
+         !idface = (gllel(ieg)-1)*nfaces + iside
+         !loc = -1
+         !do  i=1,maxloc
+             !if ( iloc(1,i) .eq. idface ) loc = iloc(2,i) + ioffs
+         !end do
+   
+         !ux   = 0.0
+         !uy   = 0.0
+         !uz   = 0.0
+         !if ( loc .gt. 0 ) then
+!c...  interpolate velocity components
+            !do i=1,nintpt
+               !j=intj(i,loc)
+               !k=intk(i,loc)
+               !ux=ux + wgtint(i,loc)*vxi(j,k)
+               !uy=uy + wgtint(i,loc)*vyi(j,k)
+               !uz=uz + wgtint(i,loc)*vzi(j,k)
+            !end do
+         !end if ! ( loc .gt. 0 )
+         !temp = 0.0
+      !else if ( abs(z) .lt. 1.e-8 ) then  !... floor
+         !d = 0.109
+         !if ( param(70) .gt. 0.0 .and. x**2 + y**2 .lt. d**2 ) then
+               !ux = 0.0
+               !uy = 0.0
+               !uz = 0.089   ! 50l/min
+               !temp = 1.0
+         !else
+            !ux   = 0.0
+            !uy   = 0.0
+            !uz   = 0.0
+            !temp = 0.0
+         !end if
+      !end if
+
+c     write(*,*) "ieg,x,y,z,ux,uy,uz = ",ieg,x,y,z,ux,uy,uz
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine useric(ix,iy,iz,ieg) ! set up initial conditions
+      include 'SIZE'
+      include 'TOTAL'
+      include 'NEKUSE'
+
+      ux   = 0.0
+      uy   = 0.0
+      uz   = 0.0
+      temp = 0.0
+
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine userchk()
+      include 'SIZE'
+      include 'TOTAL'
+      
+      !curdat = nfile0 + MOD(NINT(time/dtinf),nfile1-nfile0+1)
+      !IF ( curdat .NE. dataset ) THEN
+!c...     read velocity data from file
+         !write(fname,'(a,i5.5)') './Profiles/prof',curdat
+         !if (nid.eq.0) write(*,*) fname
+         !open (unit=12,file=fname,status='OLD')
+         !DO j=1,inny
+            !DO k=1,innz
+               !READ(12,*) vxi(j,k),vyi(j,k),vzi(j,k)
+            !END DO
+         !END DO
+         !dataset = curdat
+         !CLOSE(12)
+      !END IF
+
+c...  add monitor points
+      !call hpts()
+
+c...  compute averages
+      if ( param(71) .gt. 0.0 ) call avg_all()
+
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine usrdat()   ! This routine to modify element vertices
+      include 'SIZE'
+      include 'TOTAL'
+
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine usrdat2()  ! This routine to modify mesh coordinates
+      include 'SIZE'
+      include 'TOTAL'
+      include 'NEKUSE'
+
+      integer i_closest, iter
+      integer nodes,nn,i,j,kk,e,f,ix,iy,iz,kx1,kx2,ky1,ky2,kz1,kz2
+      real midpoint(3), wrk(3), radius !midpoint on cell face and radius 
+      real xx,yy,zz,snx,sny,snz,a,b,c ! surface coordinates
+      real kappa,err_surf,err_new
+
+          !real wrk(3),wrksurf(nsurf,3)!,wrkbdry(2*nsurf/nbdry,3) ! Wrk array
+          !integer wrkelem(nbdry,2)
+          ! nbdry and nsurf are read from SIZE
+
+          ! Looping over the surface elements ! These should be added to
+          !automatically to the SIZE-file CHECK FOR DOUBLING 
+          
+          open(unit=13,file='surf.i',status='OLD')
+          do i = 1,nsurf
+              read(13,*) wrksurf(i,1),wrksurf(i,2),wrksurf(i,3)
+          end do
+          close(unit=13)
+
+          !! Reading the list of boundary elements
+          open (unit=12,file='bdry.i',status='OLD')
+          do i = 1,nbdry
+            read(12,*) wrkelem(i,1),wrkelem(i,2)
+          end do
+          close(unit=12)
+
+          ! Iterating over the Boundary elements
+          do i = 1,nbdry
+          e = wrkelem(i,1)
+          f = wrkelem(i,2)
+          call rzero(wrkbdry,10*nsurf/bdry)
+          call rzero(midpoint,3)
+          call rzero(wrk,3)
+
+          !Getting the iteration limits
+          call facind(kx1,kx2,ky1,ky2,kz1,kz2,nx1,ny1,nz1,f)
+
+          ! Calculating the midpoint on the face
+          call nekasgn(abs(kx1-kx2)/2+1,
+     $                 abs(ky1-ky2)/2+1,abs(kz1-kz2)/2+1,e)
+          midpoint(1) = x
+          midpoint(2) = y
+          midpoint(3) = z
+
+          ! Calculating the radius of interest
+          call nekasgn(kx1,ky1,kz1,e)
+          wrk(1) = x
+          wrk(2) = y
+          wrk(3) = z
+          call nekasgn(kx2,ky2,kz2,e)
+          radius = 1*sqrt((wrk(1)-x)**2+(wrk(2)-y)**2+(wrk(3)-z)**2)
+          !write(*,*) radius
+
+          ! Finding the points of interest
+          iter = 1
+          do j = 1,nsurf
+
+              if (sqrt((wrksurf(j,1)-midpoint(1))**2+
+     $        (wrksurf(j,2)-midpoint(2))**2+
+     $        (wrksurf(j,3)-midpoint(3))**2).le.radius) then 
+                  wrkbdry(iter,1) =wrksurf(j,1)
+                  wrkbdry(iter,2) =wrksurf(j,2)
+                  wrkbdry(iter,3) =wrksurf(j,3)
+                  iter = iter+1.0              
+                  !write(*,*) iter
+                 ! write(*,*) wrksurf(j,1),wrksurf(j,2),wrksurf(j,3)
+              end if
+              if(iter.eq.10*nsurf/nbdry) 
+     $        write(*,*) 'ERR:Increase wrkbdry in SIZE or reduce radius'
+          end do
+          !write(*,*) iter!, 10*nsurf/nbdry
+
+          !Iterate over all the gll-nodes on this face
+          write(*,*) iter-1
+          do iz=kz1,kz2
+          do iy=ky1,ky2
+          do ix=kx1,kx2
+          call nekasgn(ix,iy,iz,ie)
+
+          ! Get the normal vector
+          if (f.eq.1.or.f.eq.2) then
+              ! "r face"
+              snx = unx(iy,iz,f,e)
+              sny = uny(iy,iz,f,e)
+              snz = unz(iy,iz,f,e)
+          elseif (f.eq.3.or.f.eq.4) then ! "s face"
+              snx = unx(ix,iz,f,e)
+              sny = uny(ix,iz,f,e)
+              snz = unz(ix,iz,f,e)
+          elseif (f.eq.5.or.f.eq.6) then ! "t face"
+              snx = unx(ix,iy,f,e)
+              sny = uny(ix,iy,f,e)
+              snz = unz(ix,iy,f,e)
+          endif
+          !write(*,*) snx,sny,snz,k
+
+          ! Iterating through wrkbdry
+          err_surf = 100000
+          i_closest = 1
+          do kk = 1,iter-1
+            wrk(1) = x-wrkbdry(kk,1) ! vector from gllpoint to surf 
+            wrk(2) = y-wrkbdry(kk,2)
+            wrk(3) = z-wrkbdry(kk,3)
+            lambda = sqrt(wrk(1)**2+wrk(2)**2+wrk(3)**2)
+            wrk(1) =    wrk(1)/lambda
+            wrk(2) =    wrk(2)/lambda
+            wrk(3) =    wrk(3)/lambda
+            !if(sqrt(wrk(1)**2+wrk(2)**2+wrk(3)**2).lt.100) then 
+                !write(*,*) sqrt(wrk(1)**2+wrk(2)**2+wrk(3)**2)
+            !endif
+            a =snx/sign(max(1e-3,abs(wrk(1))),wrk(1)) !x-coeff
+            b =sny/sign(max(1e-3,abs(wrk(2))),wrk(2)) !y-coeff
+            c =snz/sign(max(1e-3,abs(wrk(3))),wrk(3)) !z-coeff
+            kappa = 1/3*(a+b+c)
+            !write(*,*) '----------------'
+            !write(*,*) snx,sny,snz
+            !write(*,*) a,b,c 
+            !write(*,*) wrk(1), wrk(2), wrk(3)
+
+            err_new = sqrt((kappa-a)**2+(kappa-b)**2+(kappa-c)**2)
+            if(err_new.lt.err_surf) then
+                i_closest = kk ! 
+                err_surf =err_new
+            !    write(*,*) i_closest
+               ! , err_new
+
+            endif
+            write(*,*) iclosest
+          enddo       
+
+          !write(*,*) 'The closest points!'
+          !write(*,*) i_closest ,err_surf
+          !write(*,*) x-wrkbdry(II,1) ! vector from gllpoint to surf 
+          !write(*,*) y-wrkbdry(II,2)
+          !write(*,*) z-wrkbdry(II,3)
+
+          enddo  
+          enddo  
+          enddo  
+          !write(*,*) e , f 
+          end do
+
+          return
+          end
+c-----------------------------------------------------------------------
+      subroutine usrdat3()
+
+
+      return
+      end
+C=======================================================================
