@@ -67,7 +67,79 @@ problems of a certain geometrical complexity. There are many different approache
 this thesis the main approach will be through Large Eddy Simulations (LES) which will be discussed 
 in the following section.
 %
+\subsection{Weak formulation of N-S}
+The numerical algorithms applied in this thesis require a weak formulation of equation~\ref{eq:NS}.
+Before the weak form is derivated a few operators will be defined in order to simplify the final 
+expression.
+\begin{align}
+    ( \cdot, \cdot)_{L_2} &= \int_{\Omega}\cdot\cdot d\Omega\\
+    \mathcal{A}(\mathbf{u},\mathbf{v}) &= (\nabla\cdot\mathbf{u},\nabla\cdot\mathbf{v})_{L_2}\\
+    \mathcal{B}(\mathbf{u},p) &= (\nabla \cdot \mathbf{u},p)_{L_2}\\
+    \mathcal{C}(\mathbf{w};\mathbf{u},\mathbf{v}) &= (\mathbf{w}\cdot \nabla \mathbf{u},\mathbf{v})_{L_2}\\
+    \label{eq:weakoperators}
+\end{align}
+A weak formulation is obtained by multiplying with a test funcion $\mathbf{v}$ and integrating over
+the entire domain.
+\begin{align}
+    \begin{split}
+        \int_{\Omega}\frac{\partial \mathbf{u}}{\partial t}\cdot\mathbf{v}d\Omega
+        + \int_{\Omega}\mathbf{u}\cdot \nabla\mathbf{u}\cdot\mathbf{v}d\Omega
+        &= -\int_{\Omega}\nabla p\cdot \mathbf{q} d\Omega 
+        + -\int_{\Omega}\frac{1}{Re}\nabla \cdot \tau\cdot\mathbf{v}d\Omega, \\
+		\int_{\Omega}\nabla \cdot \mathbf{u}\cdot\mathbf{v}d\Omega &= 0.
+    \end{split}
+	\label{eq:NSweak}
+\end{align}
+\begin{align}
+    \begin{split}
+        (\frac{\partial \mathbf{u}}{\partial t},\mathbf{v})
+        + (\mathbf{u}\cdot \nabla\mathbf{u},\mathbf{v})
+        &= -(\nabla p, \mathbf{v} ) 
+        -(\frac{1}{Re}\nabla \cdot \tau,\mathbf{v}), \\
+		(\nabla \cdot \mathbf{u},p) &= 0.
+    \end{split}
+	\label{eq:NSweak}
+\end{align}
+Writing the covective term in conservational form $\nabla \cdot \mathbf{u}\mathbf{u}$ and applying the 
+divergence theorem on the terms leaves us with 
+\begin{align}
+    \begin{split}
+        (\frac{\partial \mathbf{u}}{\partial t},\mathbf{v})
+        - (\mathbf{u}\mathbf{u},\nabla \cdot \mathbf{v})
+        &= +(p,\nabla \cdot \mathbf{v} ) 
+        +\frac{1}{Re}(\tau,\nabla \cdot \mathbf{v}), \\
+		-(\mathbf{u},\nabla p) &= 0.
+    \end{split}
+	\label{eq:NSweak}
+\end{align}
+Finally, by using the notation introduced in ~\ref{eq:weakoperators} the weak formulation of the incompressible
+N-S equation can be stated as 
+\begin{align}
+    \begin{split}
+        (\frac{\partial \mathbf{u}}{\partial t},\mathbf{v})
+        - \mathcal{C}(\mathbf{u};\mathbf{u},\mathbf{v})
+        &= \mathcal{B}(\mathbf{v},p) 
+        +\frac{1}{Re}\mathcal{A}(\mathbf{u},\mathbf{v}), \\
+        -\mathcal{B}(\mathbf{u},p) &= 0.
+    \end{split}
+	\label{eq:NSweak}
+\end{align}
+
+
 %
+\section{The passive scalar equation}
+The N-S equation explains how a fluid will behave and solving it provides a complete pressure-velocity field of the 
+domain of interest, but it does not provide the answer of how heat will distribute in this flow, or how a gas will spread.
+The equation corresponding to this physical problem will be reffered to as the passive scalar equation for any scalar 
+$\phi_i$ and is stated as 
+\begin{align}
+    \begin{split}
+        (\rho c_p)_i\frac{\partial \phi_i}{\partial t} + \mathbf{u}\cdot \nabla\phi_i 
+        &= \nabla \cdot(k_i\nabla \phi_i)+ (q_{vol})_i.
+    \end{split}
+	\label{eq:PS}
+\end{align}
+\colorbox{yellow}{How to explain the constant in this equation ??} 
 \section{Resolving the turbulent term using LES}
 When DNS is not feasible due to high Reynoldsnumber LES is one of the most powerful tools when it comes to simulating turbulent flows.
 The idea is based on the fact that for the small turbulent structures behave independently of time and location and are therefore 
@@ -102,27 +174,87 @@ to a moving turbine there are many considerations that needs to be made. Allthou
 has been able to prove or disprove the well-posedness of the problem. FINAL ELEMENT FORMULATION WELL-POSED?? Some of the most common algorithms 
 will be discussed in the following subsections
 
-\subsection{Uzawa algorithm}
-\subsection{Splitting algorithms}
-OIFS 
-\subsection{Fractional step}
-\subsection{Pressure-correction}
+\subsection{Operator-splitting techniques }
+Let us considere a simplified transient problem 
+\begin{align}
+    \frac{du}{dt} = f + g.
+    \label{eq:testproblem}
+\end{align}
+both $f$ and $g$ are functions of $u$ and therefore of $t$ as well. By integrating on both sides one obtains
+\begin{align}
+    u(s) - u(0) = \int_0^s f dt + \int_0^s g dt.
+    \label{eq:testproblemintegrated}
+\end{align}
+The idea is then to evaluate one of the integrals by an explicit scheme and the other one with an implicit scheme.
+A general formulation of this for a timestep would be on the form 
+\begin{align}
+    u^{n+1}-u^{n} = \sum_{k = 0}^{N} a_k f^{n-k}+\sum_{k = 0}^{N} b_k g^{n-k+1}.
+    \label{eq:exp-imp}
+\end{align}
+In equation~\ref{eq:exp-imp} the first integral in ~\ref{eq:testproblemintegrated} is evaluated by 
+an explicit scheme and the second one by an implicit scheme. The theoretical foundation for 
+this method is rather technical and the reader is refered to Maday et al [262] for further details.
 
-\subsection{Decoupling the pressure} 
+\colorbox{yellow}{Maday,Ronquist An operator-integration-factor splitting method for time dependent problems.}
 
-A common way to approach equation~\ref{eq:NS} is to solve the pressure and velocity field
-seperatly. The mathematical reasoning for this approach is obtained by taking the 
-divergence on both sides, 
+%Now introducing an integrational factor $Q(t)$ the initial problem ~\ref{eq:testproblem} can be written as
+
+
+Making a efficient and stable numerical scheme requires some intelligent splitting technique. 
+OIFS allows one to treat the diffusive term implisitly while the convective term explicitly.
+By considering the NS-equation in a general operational form 
+\begin{align}
+    M\frac{d v_i}{dt} + Cv_i = -Kv_i +D_i p +Mf_i.
+    \label{eq:NSoperator}
+\end{align}
+Now let us define an operator $Q(t)$ such that 
 
 \begin{align}
-	\nabla \cdot \frac{\partial \mathbf{u}}{\partial t} + 
-    \nabla \cdot(\mathbf{u} \cdot \nabla) \mathbf{u} 
-    &= -\Delta p + \nu \Delta \tau \\
-	\frac{\partial (\nabla \cdot  \mathbf{u})}{\partial t} + 
-    (\nabla \cdot \mathbf{u}) \cdot \nabla \mathbf{u} 
-    &= -\Delta p + \nu \Delta \tau \\
-   \Delta p &= \nu \Delta \tau \\
-	\label{eq:pressuredecoupling}
+    \frac{dQ(t)M\mathbf{v}}{dt} &=  Q(t)M\frac{d\mathbf{v}}{dt} + \frac{d}{dt}(Q(t)M)\mathbf{v}.\\
+    &= M\frac{d\mathbf{v}}{dt} + C\mathbf{v} \text{  when t = t*. }
+    \label{eq:integrationalfactor}
+\end{align}
+%
+This way equation~\ref{eq:NSoperator} can be written as 
+\begin{align}
+    \frac{d QM\mathbf{v}}{dt} =Q( -K\mathbf{v} +D p +M\mathbf{f}.)
+    \label{eq:NSoperatorOIFS}
 \end{align}
 
-Where the divergence free criterium is applied to get to the final equation.
+\subsection{Fractional step}
+Fractional step is an algorithm that can be divided into four seperate steps. For simplicity let us write the N-S
+equation as 
+\begin{align}
+    \partial_t v = Lv + Dp + Nv.
+    \label{eq:NSfracstep}
+\end{align}
+Where $\partial_t, L,D,P$ Denotes the time-derivate, linear, gradient and non-linear operator. 
+The method describing one time-step can then be summarized as following
+\begin{itemize}
+    \item solve $v^* = v^n + \Delta t Nv^n$.
+    \item solve the poisson pressure equation $\Delta\: p = \nabla \cdot (v^*/\Delta t)$.
+    \item solve $v^{**} =v^* + \Delta t Dp^{n+1}$.
+    \item solve $\partial_t v^{n+1}=v^{**} + \Delta t Lv^{n+1}$.
+\end{itemize}
+This method provides an efficient algorithm, but is known to produce errors of order O(1).
+The problem is the pressure poisson equation which is solved with incorrect boundary 
+conditions.
+\subsection{Pressure-correction}
+
+%\subsection{Decoupling the pressure} 
+
+%A common way to approach equation~\ref{eq:NS} is to solve the pressure and velocity field
+%seperatly. The mathematical reasoning for this approach is obtained by taking the 
+%divergence on both sides, 
+%\begin{align}
+	%\nabla \cdot \frac{\partial \mathbf{u}}{\partial t} + 
+    %\nabla \cdot(\mathbf{u} \cdot \nabla) \mathbf{u} 
+    %&= -\Delta p + \nu \Delta \tau \\
+	%\frac{\partial (\nabla \cdot  \mathbf{u})}{\partial t} + 
+    %(\nabla \cdot \mathbf{u}) \cdot \nabla \mathbf{u} 
+    %&= -\Delta p + \nu \Delta \tau \\
+   %\Delta p &= \nu \Delta \tau \\
+	%\label{eq:pressuredecoupling}
+%\end{align}
+
+%Where the divergence free criterium is applied to get to the final equation.

@@ -2,7 +2,7 @@
 
 \chapter{Implementation} % Main chapter title
 
-\label{introduction} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
+\label{implementation} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
 \lhead{Chapter 5. \emph{Implementation}} % Change X to a consecutive number; this is for the header on each page - perhaps a shortened title
 
@@ -21,8 +21,49 @@ Similar simulations have been done in CDP and Fluent which are compared to data 
 \end{itemize}
 
 \section{Case 2: Drag and lift on a cylinder}
-Descrition of problem\ldots
-Descrition of implementation approach in Nek\ldots
+A standard benchmark case for flow solvers is presented in ~\cite{benchmark}.
+The case is to calculate the drag and lift coefficient on a cylinder in a rectangular channel.
+The setup for the domain and boundary conditions are given in figure~\ref{fig:cylinder}.
+The inflow condition is for this case $U(0,y,z) = 7.2yz(y-H)(z-H)/H^4$m/s.  
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 1.0\textwidth]{Figures/cylinder.pdf}
+    \caption{Computational domain and boundary conditions.}
+    \label{fig:cylinder}
+\end{figure}
+
+The flow is laminar with Reynoldsnumber $Re=20$ so all the 
+challenges arising when dealing with turbulent flow does not come to play in this case. 
+The spectral element method applied in Nek is known to be an accurate solution method and is expected to 
+provide a very good result in a test-case like this.
+The drag and lift forces on an surface $S$ are given as 
+
+\begin{align}
+    F_D = \int_{S}(\rho \nu \frac{\partial v_t}{\partial n}n_y-pn_x)dS 
+    \qquad , \qquad
+    F_L = -\int_{S}(\rho \nu \frac{\partial v_t}{\partial n}n_x+pn_y)dS.
+    \label{eq:dragnlift}
+\end{align}
+
+The coefficients corresponding to these forces known as the drag and lift coefficients 
+are given by the formulas 
+\begin{align}
+    c_D = \frac{2F_D}{\rho U^2 D H}
+    \qquad , \qquad
+    c_L = \frac{2F_L}{\rho U^2 D H}.
+    \label{eq:dragnliftcoeffs}
+\end{align}
+Nek does already have functions for calcuting lift and drag on any user-specified object.
+The function is called \verb|drag_calc(scale)|, with the input parameter 
+defined by the user, for this case \verb|scale|$=2/(\rho U^2DH)$.  
+Apart from this a \verb|set_obj()| has to be created in order to create an object 
+which consists of all the faces on the cylinder.
+Let $x,y$ be points in the computational domain, $x_c,y_c$ be the coordinates to the 
+center line in the cylinder and $0<tol\ll1$ be some user defined tolerance. The faces that belong to the cylinder can then be found by 
+looping over all elements and their faces evaluating $\epsilon = \sqrt{(x-x_c)^2+(y-y_c)}$.
+If $\epsilon < tol$ for an entire face then this face is known to 
+belong to the cylinder and is added to the object. Nek also allows the user to specify multiple objects 
+assigning the faces of interest to object 1, object 2 etc. 
 
 \section{Advances in the mesh-generation routine}
 The routine xyzarc:

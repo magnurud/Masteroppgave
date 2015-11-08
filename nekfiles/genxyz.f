@@ -1462,12 +1462,29 @@ c        5+-----+6    t                      5+-----+6    t
       include 'INPUT'
 
 
-      integer e,ii,k,nxl,nyl,nzl 
-      real xl(nxl,nyl,nzl),yl(nxl,nyl,nzl),zl(nxl,nyl,nzl)
-      real xedge(nxl),yedge(nxl),zedge(nxl) !working arrays 
-      real ccx,ccy,ccz,gapx,gapy,gapz,medx,medy,medz ! midpoint and radius
-      real r,gap,hh,theta,hhii,koff ! corner values
-      real zg(nxl),wg(nxl) ! Gauss lobatto points
+      integer e,            ! element
+     &        i,k,          ! looping indices
+     &        nxl,nyl,nzl   ! 1D nodes
+
+      real xl(nxl,nyl,nzl), ! coordinates of the element 
+     &     yl(nxl,nyl,nzl),
+     &     zl(nxl,nyl,nzl)
+
+      real xedge(nxl),!working arrays 
+     &     yedge(nxl),
+     &     zedge(nxl) 
+
+      real cc(3)  ! circle center
+     &     gap(3) ! original edge
+     &     med(3) ! midpoint 
+
+      real r,      ! radius of the circle
+     &     gap_abs,! length of the initial linear edge
+     &     theta,  ! half the angle of the circle sector
+     &     height, ! distance from cc to the initial lin. edge
+     &     koff    ! offset coefficient
+
+      real zg(nxl),wg(nxl) ! Gauss lobatto points and weights
       real w(nxl*nxl*nxl,2) ! Working array
 
       call xyzlin(xl,yl,zl,nxl,nxl,nxl,e,.false.) ! map bilin to nxnxn
@@ -1477,50 +1494,34 @@ c        5+-----+6    t                      5+-----+6    t
 c       Get the x,y,z coordinates to the given preprocessor edge! 
             call getcoords(xl,yl,zl,xedge,yedge,zedge,nxl,k)
             call zwgll(zg,wg,nxl) ! Getting the GLL-points
-            ccx = curve(1,k,e) !x-coordinate to circle center
-            ccy = curve(2,k,e)!y-coordinate to circle center
-            ccz = curve(3,k,e)!z-coordinate to circle center
+            call copy(cc,curve(1,k,e),3)
             r = curve(4,k,e) ! radius (Should be optional)
             !do some checks ( All of the above variables are prepro)
-            gapx = xedge(1)-xedge(nxl) ! coordinates of gap vector
-            gapy = yedge(1)-yedge(nxl)
-            gapz = zedge(1)-zedge(nxl)
-            gap = sqrt(gapx**2+gapy**2+gapz**2) ! Length of gap
-            if (1.0001*gap.ge.2*r) write(*,*) 'E:RADIUS IS TOO SMALL!! '
-            medx=(xedge(1)+xedge(nxl))/2 ! midpoint on the line x1,x2
-            medy=(yedge(1)+yedge(nxl))/2
-            medz=(zedge(1)+zedge(nxl))/2
-            !write(*,*) "========================"
-            !write(*,*) k,r
-            !write(*,*) gapx,gapy,gapz
-            !write(*,*) ccx,ccy,ccz
-            !write(*,*) xedge(1),yedge(1),zedge(1)
-            !write(*,*) medx,medy,medz
-            !write(*,*) xedge(nxl),yedge(nxl),zedge(nxl)
-            hh = sqrt((medx-ccx)**2+(medy-ccy)**2+(medz-ccz)**2) ! height of triangle
-            if(hh.gt.r) write(*,*) 'E:calculation of height WRONG'
-            theta = atan(gap/(2*hh)) ! Size of half the angle
-            !write(*,*) hh
-            !write(*,*) theta/(4*atan(1.0))
-            !write(*,*) "========================"
-            !write(*,*) zg 
+            gap(1) = xedge(1)-xedge(nxl) ! coordinates of gap vector
+            gap(2) = yedge(1)-yedge(nxl)
+            gap(3) = zedge(1)-zedge(nxl)
+            gap_abs = sqrt(gap(1)**2+gap(2)**2+gap(3)**2) ! Length of gap
+            if (1.0001*gap_abs.ge.2*r) 
+     &      write(*,*) 'E:RADIUS IS TOO SMALL!! '
+            med(1)=(xedge(1)+xedge(nxl))/2 ! midpoint on the line x1,x2
+            med(2)=(yedge(1)+yedge(nxl))/2
+            med(3)=(zedge(1)+zedge(nxl))/2
+            height = sqrt((med(1)-cc(1))**2
+     &               +(med(2)-cc(2))**2
+     &               +(med(3)-cc(3))**2) ! height of triangle
+            if(height.gt.r) write(*,*) 'E:calculation of height WRONG'
+            theta = atan(gap_abs/(2*height)) ! Size of half the angle
             call cmult(zg,theta,nxl) !getting the theta for each gllpt
-            !write(*,*) zg 
-            do ii=1,nxl ! Updating the edgevalues
-                koff= hh*tan(zg(ii)) !the offset from the midpoint
-                !write(*,*) koff 
-                xedge(ii) = medx - (gapx/gap)*koff 
-                yedge(ii) = medy - (gapy/gap)*koff 
-                zedge(ii) = medz - (gapz/gap)*koff 
-                !write(*,*) xedge(ii),yedge(ii),zedge(ii)
-                ! Projecting onto circlesurface
-                hhii = sqrt((xedge(ii)-ccx)**2
-     &          +(yedge(ii)-ccy)**2+(zedge(ii)-ccz)**2) ! height of triangle 
-                !write(*,*) hhii
-                ! Getting the actual circle point
-                xedge(ii) = ccx+r*(xedge(ii)-ccx)/hhii
-                yedge(ii) = ccy+r*(yedge(ii)-ccy)/hhii
-                zedge(ii) = ccz+r*(zedge(ii)-ccz)/hhii
+            do i=1,nxl ! Updating the edgevalues
+                koff= height*tan(zg(i)) !the offset from the midpoint
+                xedge(i) = med(1) - (gap(1)/gap_abs)*koff 
+                yedge(i) = med(2) - (gap(2)/gap_abs)*koff 
+                zedge(i) = med(3) - (gap(3)/gap_abs)*koff 
+                height = sqrt((xedge(i)-cc(1))**2
+     &          +(yedge(i)-cc(2))**2+(zedge(i)-cc(3))**2) ! height of triangle 
+                xedge(i) = cc(1)+r*(xedge(i)-cc(1))/height
+                yedge(i) = cc(2)+r*(yedge(i)-cc(2))/height
+                zedge(i) = cc(3)+r*(zedge(i)-cc(3))/height
             enddo
             call setcoords(xl,yl,zl,xedge,yedge,zedge,nxl,k) !UPDATED
          endif

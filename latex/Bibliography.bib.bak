@@ -2,22 +2,6 @@
 % Encoding: UTF-8
 
 
-@Article{Reference3,
-  Title                    = {A Simple Extended-Cavity Diode Laser},
-  Author                   = {A. S. Arnold and J. S. Wilson and M. G. Boshier},
-  Journal                  = {Review of Scientific Instruments},
-  Year                     = {1998},
-
-  Month                    = {March},
-  Number                   = {3},
-  Pages                    = {1236--1239},
-  Volume                   = {69},
-
-  Abstract                 = {Operating a laser diode in an extended cavity which provides frequency-selective feedback is a very effective method of reducing the laser's linewidth and improving its tunability. We have developed an extremely simple laser of this type, built from inexpensive commercial components with only a few minor modifications. A 780~nm laser built to this design has an output power of 80~mW, a linewidth of 350~kHz, and it has been continuously locked to a Doppler-free rubidium transition for several days.},
-  Numpages                 = {4},
-  Url                      = {http://link.aip.org/link/?RSI/69/1236/1}
-}
-
 @Article{arnold1985mixed,
   Title                    = {Mixed and nonconforming finite element methods: implementation, postprocessing and error estimates},
   Author                   = {Arnold, Douglas N and Brezzi, Franco},
@@ -46,27 +30,13 @@
   Url                      = {http://dx.doi.org/10.1504/IJCSE.2012.048245}
 }
 
-@Article{bochev1998,
-  Title                    = {Finite element methods of least-squares type},
-  Author                   = {Bochev, Pavel B and Gunzburger, Max D},
-  Journal                  = {SIAM review},
-  Year                     = {1998},
-  Number                   = {4},
-  Pages                    = {789--837},
-  Volume                   = {40},
-
-  Publisher                = {SIAM}
-}
-
 @Book{Canuto,
   Title                    = {Spectral methods : evolution to complex geometries and applications to fluid dynamics},
   Author                   = {C. Canuto and M.Y Hussaini and A. Quarteroni\ldots [et al.]},
   Publisher                = {Springer},
   Year                     = {2007},
-
   Address                  = {Berlin},
   Series                   = {Scientific computation},
-
   ISBN                     = {978-3-540-30727-3},
   Url                      = {http://opac.inria.fr/record=b1127560}
 }
@@ -88,25 +58,6 @@
   Publisher                = {American Mathematical Society (AMS)},
   Timestamp                = {2015.06.04},
   Url                      = {http://dx.doi.org/10.1090/S0025-5718-1982-0637287-3}
-}
-
-@Article{Carey1988,
-  Title                    = {Least-squares finite elements for first-order hyperbolic systems},
-  Author                   = {Carey, Graham F. and Jianng, B. N.},
-  Journal                  = {Int. J. Numer. Meth. Engng.},
-  Year                     = {1988},
-
-  Month                    = {Jan},
-  Number                   = {1},
-  Pages                    = {81–93},
-  Volume                   = {26},
-
-  Doi                      = {10.1002/nme.1620260106},
-  ISSN                     = {1097-0207},
-  Owner                    = {magnus},
-  Publisher                = {Wiley-Blackwell},
-  Timestamp                = {2015.04.11},
-  Url                      = {http://dx.doi.org/10.1002/nme.1620260106}
 }
 
 @Article{Deville2002,
@@ -139,33 +90,6 @@
   Pages                    = {45--78}
 }
 
-@Article{Reference1,
-  Title                    = {Littrow Configuration Tunable External Cavity Diode Laser with Fixed Direction Output Beam},
-  Author                   = {C. J. Hawthorn and K. P. Weber and R. E. Scholten},
-  Journal                  = {Review of Scientific Instruments},
-  Year                     = {2001},
-
-  Month                    = {December},
-  Number                   = {12},
-  Pages                    = {4477--4479},
-  Volume                   = {72},
-
-  Abstract                 = {We have developed an enhanced Littrow configuration extended cavity diode laser (ECDL) that can be tuned without changing the direction of the output beam. The output of a conventional Littrow ECDL is reflected from a plane mirror fixed parallel to the tuning diffraction grating. Using a free-space Michelson wavemeter to measure the laser wavelength, we can tune the laser over a range greater than 10 nm without any alteration of alignment.},
-  Numpages                 = {3},
-  Url                      = {http://link.aip.org/link/?RSI/72/4477/1}
-}
-
-@Book{DM,
-  Title                    = {Direct Minimization of Equation Residuals in Least Squares hp-Finite Element Methods},
-  Author                   = {Wijnand Hoitinga},
-  Publisher                = {Technichal University of Delft},
-  Year                     = {2004},
-
-  Owner                    = {magnus},
-  Timestamp                = {2015.06.18},
-  Url                      = {http://www.lr.tudelft.nl/fileadmin/Faculteit/LR/Organisatie/Afdelingen_en_Leerstoelen/Afdeling_AEWE/Aerodynamics/Contributor_Area/Secretary/M._Sc._theses/doc/2004_1_06.pdf}
-}
-
 @Article{hughes1989,
   Title                    = {A new finite element formulation for computational fluid dynamics: VIII. The Galerkin/least-squares method for advective-diffusive equations},
   Author                   = {Hughes, Thomas JR and Franca, Leopoldo P and Hulbert, Gregory M},
@@ -176,21 +100,6 @@
   Volume                   = {73},
 
   Publisher                = {Elsevier}
-}
-
-@Book{Jiang,
-  Title                    = {The Least-Squares Finite Element Method},
-  Author                   = {Jiang, Bo-nan},
-  Publisher                = {Springer Berlin Heidelberg},
-  Year                     = {1998},
-
-  Doi                      = {10.1007/978-3-662-03740-9},
-  ISBN                     = {http://id.crossref.org/isbn/978-3-662-03740-9},
-  ISSN                     = {1434-8322},
-  Journal                  = {Scientific Computation},
-  Owner                    = {magnus},
-  Timestamp                = {2015.04.12},
-  Url                      = {http://dx.doi.org/10.1007/978-3-662-03740-9}
 }
 
 @Book{karniadakis,
@@ -238,16 +147,6 @@
   Url                      = {http://dx.doi.org/10.1016/0021-9991(84)90128-1}
 }
 
-@Book{Bochev,
-  Title                    = {Least-Squares Finite Element Methods},
-  Author                   = {Pavel B. Bochev, Max D. Gunzburger},
-  Publisher                = {Springer},
-  Year                     = {2009},
-
-  Owner                    = {magnus},
-  Timestamp                = {2015.04.20}
-}
-
 @Book{Quarteroni,
   Title                    = {Numerical Models for Differential Problems, 2. edition},
   Author                   = {Alfio Quarteroni},
@@ -278,20 +177,18 @@
   Timestamp                = {2015.05.08}
 }
 
-@Article{Reference2,
-  Title                    = {Using Diode Lasers for Atomic Physics},
-  Author                   = {Carl E. Wieman and Leo Hollberg},
-  Journal                  = {Review of Scientific Instruments},
-  Year                     = {1991},
-
-  Month                    = {January},
-  Number                   = {1},
-  Pages                    = {1--20},
-  Volume                   = {62},
-
-  Abstract                 = {We present a review of the use of diode lasers in atomic physics with an extensive list of references. We discuss the relevant characteristics of diode lasers and explain how to purchase and use them. We also review the various techniques that have been used to control and narrow the spectral outputs of diode lasers. Finally we present a number of examples illustrating the use of diode lasers in atomic physics experiments. Review of Scientific Instruments is copyrighted by The American Institute of Physics.},
-  Keywords                 = {Diode Laser},
-  Numpages                 = {20},
-  Url                      = {http://link.aip.org/link/?RSI/62/1/1}
+@book{White,
+    title = {Viscous fluid flow},
+    author = {White, Frank M.},
+    series = {McGraw-Hill series in mechanical engineering},
+    publisher = {McGraw-Hill},
+    address = {New York},
+    url = {http://opac.inria.fr/record=b1096847},
+    isbn = {0-07-069712-4},
+    year = {1991}
 }
-
+@MISC{benchmark,
+	author = {S. Turek and M. Schäfer},
+	title = {Recent Benchmark Computations of Laminar Flow Around a Cylinder},
+	year = {1996}
+}

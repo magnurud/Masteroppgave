@@ -243,6 +243,7 @@ function integrated is of polynomial degree $2n-1$ or less, and the error gets b
 By dividing the domain up into smaller elements ${\Omega_e}$ the initial deformation of the full domain $\Omega$ 
 can be reduced to have a very small effect on the each of the elements.
 
+\colorbox{yellow}{Direct stifness summation!!!}
 
 %$\Omega$ is some 2 dimensional strongly connected domain with well-defined corners and each of the edges can be described by some polynomial $\Gamma_i$.
 
@@ -253,6 +254,8 @@ can be reduced to have a very small effect on the each of the elements.
 When choosing a polynomial space with a not sufficiently high degree the modes tends to get spourios and the discrete solution 
 \ldots By projecting parts of the higher order modes onto the polynomials of lower degree one can greatly decrease the spourious effect.
 \cite{Karniadakis} Chapter 2.4
+\colorbox{yellow}{Fischer, Mullen (2001) filter-based stabilization of spectral element methods.}
+\colorbox{yellow}{Pasquetti and Xu (2002) Comments on filter-based stab of SEM J comp phys.}
 \subsection{aliasing}
 When solving the non-linear term in the N-S equation the polynomial to be integrated is of order 3/2 normal \ldots
 \cite{Karniadakis} Chapter 2.4
@@ -260,4 +263,44 @@ When solving the non-linear term in the N-S equation the polynomial to be integr
 %----------------------------------------------------------------------------------------
 %	SECTION 2
 %----------------------------------------------------------------------------------------
+
+\subsection{Gordon-Hall algorithm}
+In order to work on complex geometries the elements require a certain deformation in order to be able 
+to describe the entire domain. It is necessary to evaluate all the integrals surging from the weak formulation over 
+a reference domain $\hat{\Omega} = [-1,1]^d$ for sakes of efficiency and implementation purposes. The Gordon-Hall 
+algorithm is a general method that creates a map from an arbitrary simply connected domain to $\hat{\Omega}$.
+Let $\mathbf{\tilde{x}}$ be the mapping function from the reference domain to the physical domain given on the form 
+%
+\begin{align}
+    \mathbf{\tilde{x}}= \sum_i \sum_j \sum_k \mathbf{x}_{ijk}l_i(r) l_j(s) l_k(t).
+    \label{eq:mapping}
+\end{align}
+%
+$l_i$ being the ith lagrange polynomial.
+The full description of the algorithm with helpful figures can be found in \cite{Deville} chapter 4.
+Let us first introduce the linear interpolation operator $I_r$. Let $f(x)$ be any function on the domain $[a,b]$, 
+application of $I_r$ then yields 
+\begin{align}
+    \tilde{f}(r) = I_rf = \frac{1-r}{2}f(a) + \frac{1+r}{2}f(b).
+    \label{eq:interpolationoperator}
+\end{align}
+Notice that the interpolant only need the endpoints of the function on its domain.
+Similarly for a two-dimensional approach only the edges needs to be described. 
+Let $\Gamma_{ns}(r,\pm 1), \Gamma_{ew}(\pm 1,s) $ denote south/north and east/west boundaries of a deformed element.
+The complete 2D-interpolation operator is stated as $I_{rs} = I_r+I_s-I_rI_s$,
+applied on the deformed element $\Omega$ provides the mapping
+%
+\begin{align}
+    \mathbf{\tilde{x}}(r,s) = 
+    I_{rs}\mathbf{x} = 
+    I_r\Gamma_{ew}(\pm 1,s)+I_s\Gamma_{ns}(r,\pm 1)-I_rI_s\Gamma(\pm 1,\pm 1)
+    \label{eq:interpolationoperator2d}
+\end{align}
+%
+In 3D the additional knowledge of the faces may be applied to create mappings from elements with deformed faces.
+It is however possible to implement the algorithm in a way such that this information is not needed to create the mapping.
+The vertix information is sufficent to create a mapping from a deformed element
+with straight edges to $\hat{\Omega}$. If the edges are curved but no further information is provided about the faces 
+a linear 2D interpolation as the one stated in ~\ref{eq:interpolationoperator2d} can be created for each face. 
+\colorbox{yellow}{Gordon Hall 1973 , Transfinite element methods: Blending function interpolation over arbitrary curved elements}
 
