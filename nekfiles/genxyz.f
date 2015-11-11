@@ -1461,7 +1461,6 @@ c        5+-----+6    t                      5+-----+6    t
       include 'SIZE'
       include 'INPUT'
 
-
       integer e,            ! element
      &        i,k,          ! looping indices
      &        nxl,nyl,nzl   ! 1D nodes
@@ -1474,8 +1473,8 @@ c        5+-----+6    t                      5+-----+6    t
      &     yedge(nxl),
      &     zedge(nxl) 
 
-      real cc(3)  ! circle center
-     &     gap(3) ! original edge
+      real cc(3),  ! circle center
+     &     gap(3), ! original edge
      &     med(3) ! midpoint 
 
       real r,      ! radius of the circle
@@ -1491,28 +1490,35 @@ c        5+-----+6    t                      5+-----+6    t
 
       do k=1,12 ! edges in e, NOTE: Preprop edges!
          if (ccurve(k,e).eq.'A') then
-c       Get the x,y,z coordinates to the given preprocessor edge! 
+
+c           Get the x,y,z coordinates to the given preprocessor edge! 
             call getcoords(xl,yl,zl,xedge,yedge,zedge,nxl,k)
             call zwgll(zg,wg,nxl) ! Getting the GLL-points
             call copy(cc,curve(1,k,e),3)
             r = curve(4,k,e) ! radius (Should be optional)
-            !do some checks ( All of the above variables are prepro)
-            gap(1) = xedge(1)-xedge(nxl) ! coordinates of gap vector
+
+c           coordinates and length of gap vector
+            gap(1) = xedge(1)-xedge(nxl) 
             gap(2) = yedge(1)-yedge(nxl)
             gap(3) = zedge(1)-zedge(nxl)
-            gap_abs = sqrt(gap(1)**2+gap(2)**2+gap(3)**2) ! Length of gap
-            if (1.0001*gap_abs.ge.2*r) 
-     &      write(*,*) 'E:RADIUS IS TOO SMALL!! '
-            med(1)=(xedge(1)+xedge(nxl))/2 ! midpoint on the line x1,x2
+            gap_abs = sqrt(gap(1)**2+gap(2)**2+gap(3)**2)
+
+            if (1.0001*gap_abs.ge.2*r) write(*,*)'E:RADIUS IS TOO SMALL'
+
+c           midpoint on the line x1,x2 and distance from cc.
+            med(1)=(xedge(1)+xedge(nxl))/2 
             med(2)=(yedge(1)+yedge(nxl))/2
             med(3)=(zedge(1)+zedge(nxl))/2
             height = sqrt((med(1)-cc(1))**2
-     &               +(med(2)-cc(2))**2
-     &               +(med(3)-cc(3))**2) ! height of triangle
+     &                   +(med(2)-cc(2))**2
+     &                   +(med(3)-cc(3))**2) ! height of triangle
+
             if(height.gt.r) write(*,*) 'E:calculation of height WRONG'
+
             theta = atan(gap_abs/(2*height)) ! Size of half the angle
             call cmult(zg,theta,nxl) !getting the theta for each gllpt
-            do i=1,nxl ! Updating the edgevalues
+c           Updating the edgevalues
+            do i=1,nxl 
                 koff= height*tan(zg(i)) !the offset from the midpoint
                 xedge(i) = med(1) - (gap(1)/gap_abs)*koff 
                 yedge(i) = med(2) - (gap(2)/gap_abs)*koff 
@@ -1542,14 +1548,15 @@ c---------------------------------------
       subroutine getcoords(xq,yq,zq,xedge,yedge,zedge,nxl,k)
           ! copy the wanted edge from xq to xedge
           ! NOTE: xq, NOT in preprocessor! 
-          ! k is the prepro-edge! 
-          integer k,nxl
-          real xq(nxl,nxl,nxl),yq(nxl,nxl,nxl),zq(nxl,nxl,nxl)
-          real xedge(nxl),yedge(nxl),zedge(nxl) !working arrays 
-          integer kx1,kx2,ky1,ky2,kz1,kz2 ! Iteration indices
-          integer ii,jj,kk,i ! iteration variables
-          ! get limits for edge k
+
+          real xq(nxl,nxl,nxl),yq(nxl,nxl,nxl),zq(nxl,nxl,nxl),
+     &         xedge(nxl),yedge(nxl),zedge(nxl) !working arrays 
+          integer k,nxl                         ! k is the prepro-edge 
+     &            ii,jj,kk,i,                   ! iteration indices 
+     &            kx1,kx2,ky1,ky2,kz1,kz2       ! Iteration limits
+
           call getlimits(k,nxl,kx1,kx2,ky1,ky2,kz1,kz2) 
+
           i = 0 !iteration over the edge, from 1 to 12
           do ii = kx1,kx2 !Iterating over the wanted edge
           do jj = ky1,ky2
@@ -1558,25 +1565,25 @@ c---------------------------------------
           xedge(i) = xq(ii,jj,kk)
           yedge(i) = yq(ii,jj,kk)
           zedge(i) = zq(ii,jj,kk)
-          !write(*,*) xedge(i),yedge(i),zedge(i)
           enddo
           enddo
           enddo
-          !write(*,*) 'iterated through n many edges, edges = '
-          !write(*,*) i
+
           return
           end
 c---------------------------------------
       subroutine setcoords(xq,yq,zq,xedge,yedge,zedge,nxl,k)
           ! copy the updated edges xedge to xq
           ! NOTE: xq, NOT in preprocessor! 
-          integer k,nxl ! k is the prepro-edge! 
-          real xq(nxl,nxl,nxl),yq(nxl,nxl,nxl),zq(nxl,nxl,nxl)
-          real xedge(nxl),yedge(nxl),zedge(nxl) !working arrays 
-          integer kx1,kx2,ky1,ky2,kz1,kz2 ! Iteration indices
-          integer ii,jj,kk,i ! iteration variables
-          ! get limits for edge k
+
+          integer kx1,kx2,ky1,ky2,kz1,kz2, ! Iteration limits
+     &            ii,jj,kk,i ! iteration indices 
+     &            k,nxl ! k is the prepro-edge! 
+          real xq(nxl,nxl,nxl),yq(nxl,nxl,nxl),zq(nxl,nxl,nxl),
+     &         xedge(nxl),yedge(nxl),zedge(nxl) !working arrays 
+
           call getlimits(k,nxl,kx1,kx2,ky1,ky2,kz1,kz2) 
+
           i = 0
           do ii = kx1,kx2 !Iterating over the wanted edge
           do jj = ky1,ky2
