@@ -180,9 +180,6 @@ def points2circ(x1,x2,x3):
 def write_surface_file():
     print 'Writing surface nodes to surf.i !'
     global tot_num_nodes
-    ofile = open('SIZE',"a")
-    ofile.write('      parameter (nsurf={}) ! Number of surf nodes\n'.format(tot_num_nodes))
-    ofile.close()
     ofile  = open('surf.i', "w")
     #ofile.write('{}\n'.format(tot_num_nodes))
     for n in range(tot_num_nodes):
@@ -191,29 +188,50 @@ def write_surface_file():
         for x in nn]) + '\n')
     ofile.close()
 
+    ### Do necessary changes in SIZE file! 
+    lines = ifile.readlines()
+    ifile.close()
+    if len(lines) == 0:
+        raise IOError("Empty SIZE file")
+    ofile = open("SIZE","w")
+    # Iterating through the lines
+    dummy = 0
+    target = '(?<=nsurf\=).+\)'
+    repl= '{}'.format(tot_num_nodes)+')'
+    for line in lines:
+        # want to replace lfdm=XXX with lfdm = 38
+        m = re.search(target,line)
+        if(m): dummy = 1
+        line = re.sub(target,repl,line)
+        #re.sub('(?<=lfdm).+)','=38\)',line)
+        #print line
+        ofile.write(line)
+    if (not dummy): ofile.write('      parameter (nsurf={}) ! Number of bdry nodes\n'.format(tot_num_cells))
+    ofile.close()
+
 def write_surf_list():
     print 'Writing surface elements and local faces to bdry.i !'
     ofile = open('bdry.i', "w")
     #ofile.write('{}\n'.format(len(surf_list)))
     for info in surf_list:
         #ofile.write(reduce(add, ['{0:.8e}'.format(x).rjust(16) 
-        ofile.write(reduce(add, ['{}'.format(x) 
+        ofile.write(reduce(add, ['{} '.format(x) 
                                     for x in info]) + '\n')
     ofile.close()
 
     print 'Appending some essential variables in SIZE as well!! Remeber to call the script from the same folder as your SIZE-file!!'
     ifile = open('SIZE',"r")
-    # Read all lines of nastran mesh
+
+    ### Do necessary changes in SIZE file! 
     lines = ifile.readlines()
     ifile.close()
     if len(lines) == 0:
         raise IOError("Empty SIZE file")
-
     ofile = open("SIZE","w")
     # Iterating through the lines
     dummy = 0
-    target = '(?<=nbdry).+\)'
-    repl= '='+'{}'.format(len(surf_list))+')'
+    target = '(?<=nbdry\=).+\)'
+    repl= '{}'.format(len(surf_list))+')'
     for line in lines:
         # want to replace lfdm=XXX with lfdm = 38
         m = re.search(target,line)
