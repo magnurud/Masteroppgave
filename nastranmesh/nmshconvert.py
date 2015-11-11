@@ -160,7 +160,7 @@ def fixthermalbc(name):
     return 1
 
 def points2circ(x1,x2,x3):
-    # A function that takes in three 3D points and returns 
+    # takes in three 3D points and returns 
     # The radius (r) and center x of the sphere with its center 
     # in the same plane as the three points.
     # INPUT: xi = array([real,real,real])
@@ -178,6 +178,7 @@ def points2circ(x1,x2,x3):
     return r,x
 
 def write_surface_file():
+
     print 'Writing surface nodes to surf.i !'
     global tot_num_nodes
     ofile  = open('surf.i', "w")
@@ -210,6 +211,7 @@ def write_surface_file():
     ofile.close()
 
 def write_surf_list():
+
     print 'Writing surface elements and local faces to bdry.i !'
     ofile = open('bdry.i', "w")
     #ofile.write('{}\n'.format(len(surf_list)))

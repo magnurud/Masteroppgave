@@ -146,6 +146,13 @@ The idea is based on the fact that for the small turbulent structures behave ind
 easy to model. This way the larger structures driven by geometry, inflow conditions and external forces can be simulated using a coarser 
 grid while the effect of the small structures are modelled. \colorbox{yellow}{Some source on the importance of SGS-model}
 
+\subsection{Filter}
+A filter in its general form is given as 
+\begin{align}
+    \tilde{U}(\mathbf{x},t) = \int_{\Omega} G(\mathbf{r},\mathbf{x})U(\mathbf{x}-\mathbf{r},t)d\mathbf{r}
+    \label{eq:filter}
+\end{align}
+
 In order to perform a LES a filter width a certain width $\Delta$ has to be chosen, 
 the filtered N-S equations are given as 
 %

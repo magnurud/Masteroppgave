@@ -8,4 +8,128 @@
 
 \section{Variables}
 
+The Nek manual provides information on many of the variables given in the .rea and SIZE
+file. It is however no list of useful variables defined in other files. Below is a list of
+some of the variables that have been frequently used in .usr subroutines which initially are 
+defined outside of both SIZE, .rea and .usr. 
+
+
+\begin{table}
+    \centering
+    \begin{tabular}{l l}
+        \multicolumn{2}{l}{\textbf{AVG}}\\ \hline
+uavg(ax1,ay1,az1,lelt)           & Averaged values of u, similar for v,w,p\\
+urms(ax1,ay1,az1,lelt)           & Variance of u, similar for v,w,p\\
+vwms(ax1,ay1,az1,lelt)           & Covariance of vw\\
+tavg(ax1,ay1,az1,lelt,ldimt)     & Averaged values of t and all passive scalars\\
+
+\multicolumn{2}{l}{\textbf{GEOM}}\\ \hline
+xm1(lx1,ly1,lz1,lelt)            & X-coordinates for the velocity mesh \\
+xm2(lx2,ly2,lz2,lelv)            & X-coordinates for the pressure mesh\\
+unx(lx1,lz1,6,lelt)              & Surface normals \\
+
+\multicolumn{2}{l}{\textbf{INPUT}}\\ \hline
+
+cbc(6,lelt,0:ldimt1)             & Boundary conditions of each face\\
+ccurve(12,lelt)                  & Curved side character \\
+curve(12,6,lelt)                 & Curved side information\\
+
+\multicolumn{2}{l}{\textbf{PARALLEL}}\\ \hline
+lglel(lelt)                      & 	Mapping from local to global element index\\
+gllel(lelg)                      & 	Mapping from global to local element index\\
+
+\multicolumn{2}{l}{\textbf{SOLN}}\\ \hline
+vx(lx1,ly1,lz1,lelv)            & X-velocity\\
+t(lx1,ly1,lz1,lelv,ldimt)       & Temperature and passive scalars\\
+vtrans(lx1,ly1,lz1,lelt,ldimt1) & Diffusive constant to additional scalars\\
+vdiff(lx1,ly1,lz1,lelt,ldimt1)  & Convective constants to additional scalars\\
+
+\multicolumn{2}{l}{\textbf{TSTEP}}\\ \hline
+istep                            & Current iteration step\\
+iostep                           & Output step frecuency\\
+time                             & Current time\\
+tstep                            & Current timestep	\\
+dt                               & Timestep\\
+dtlag(10)                        & The preevious 10 timesteps\\
+bd(10)                           & Max 10 backward difference coeffs\\
+ab(10)                           & Max 10 extrapolation coeffs (Adam-Bashforth)\\
+
+\multicolumn{2}{l}{\textbf{WZ}}\\ \hline
+zgm1(lx1,3)                      & GLL points for x,y and z directions \\
+
+\multicolumn{2}{l}{\textbf{WZF}}\\ \hline            
+zgl(lx1)                         & Gauss lobatto points\\
+wgl(lx1)                         & Gauss lobatto weights\\
+
+\multicolumn{2}{l}{\textbf{OTHER}}\\ \hline            
+x,y,z                            & Local coordinates assigned by nekasgn()\\
+ux,uy,uz                         & Local velocities assigned by nekasgn()\\
+temp                             & Local temperature assigned by nekasgn()\\
+nio                              & Processor node number  \\
+ndim                             & Number of dimensions\\
+nelv                             & Number of elements for velocity mesh\\
+nelt                             & Number of elements for the t-mesh\\
+pm1 (lx1,ly1,lz1,lelv)           & Pressure mapped to mesh 1\\
+
+
+
+
+
+
+        
+    \end{tabular}
+    \caption{useful variables in Nek}
+    \label{tab:variables}
+\end{table}
+
 \section{Functions}
+
+\subsection{standard calculations found in math.f or navier1.f}
+
+\textbf{nekasgn(ix,iy,iz,ie) } Assigns the coordinates of node 
+    (ix,iy,iz) in element ie to the common variables x,y,z 
+
+\textbf{facind(kx1,kx2,ky1,ky2,kz1,kz2,nx1,ny1,nz1,f) } 
+Assigns the index limits of a face f with nx1,ny1,nz1 points in each spatial direction.
+
+\textbf{zwgll(zg,wg,nx1)} Get the nx1 GLL-points and weights to zg and wg.
+
+\textbf{cadd(zg,c,nx1)} Adding a constant c to a vector zg of length nx1.
+
+\textbf{cmult(zg,c,nx1)} Multiplying every element of vector zg of length nx1 with c.
+
+\textbf{chsign(wrk,nx1)} change the sign of every element in vector wrk of length nx1.
+
+\textbf{cfill(zg,c,nx1)}  Fill vector zg of lenght nx1 with the constant c.
+
+\textbf{rzero(zg,nx1) } Fill vector zg of length nx1 with zeroes.
+
+\textbf{rcopy(zg,zg2,nx1) } copy all elements from vector zg2 to vector zg, both of lenght nx1.
+
+\subsection{Functions regarding mesh and distribution of GLL-points}
+
+\textbf{gh\_face\_extend(yl,zg,nxl,2,w(1,1),w(1,2))}  
+
+\textbf{xyzlin(xl,yl,zl,nxl,nxl,nxl,e,.false.)} map bilin to nxnxn 
+
+\textbf{fix\_geom()} Routine for re distributing the gll-points corrctly on the updated geometry.
+
+\subsection{Additional auxiliary functions implemented for this thesis}
+
+\textbf{fix\_gll(e,f)} Redistribute the gll-points between the given face and the opposite to make sure that all points lie within the element.
+
+\textbf{getface(kx1,kx2,ky1,ky2,kz1,kz2,wrk,n,e)} assigning the values of the face in element e corresponding to the index limits kx1,kx2\ldots to the array wrk of size n*n*3.
+
+\textbf{getsurfnorm(sn,ix,iy,iz,f,ie)} Providing the surface normal sn at point ix,iy,iz of element ie and face f 
+
+\textbf{calcerror(error,lambda,sn,wrk,radius)} calculate the distance from the initial gll-point to a given point on the surface.  
+
+\textbf{interp\_up(iinterp,rinterp,error,k)} Update interpolation points
+
+\textbf{set\_new\_pt(iinterp,rinterp,ix,iy,iz,e)} defining the position of the new gll-point on the surface
+
+\textbf{getlimits(k,n,kx1,kx2,ky1,ky2,kz1,kz2)} Get the index limits kx1,kx2\ldots corresponding to edge k with n gll-points.
+
+\textbf{setcoords(xq,yq,zq,xedge,yedge,zedge,nxl,k)} copy the updated edges xedge to the initial edges xq
+
+\textbf{getcoords(xq,yq,zq,xedge,yedge,zedge,nxl,k)} copy the node information from the initial edge xq to xedge
