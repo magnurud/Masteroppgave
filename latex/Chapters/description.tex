@@ -17,11 +17,12 @@ The general idea is to conserve momentum and mass in a control domain providing 
 In this thesis only the incompressible N-S equation will be considered, 
 with the assumption of an incompressible flow the conservation of mass 
 results in a divergence free restriction on the solution $u$.
-Without further introduction the non-dimensional incompressible  N-S equations are stated as  
+Without further introduction the incompressible  N-S equations are stated as  
 %
 \begin{align}
     \begin{split}
-    \frac{\partial \mathbf{u}}{\partial t} + \mathbf{u}\cdot \nabla\mathbf{u} &= -\nabla p + \frac{1}{Re}\nabla \cdot \tau, \\
+    \frac{\partial \mathbf{u}}{\partial t} + \mathbf{u}\cdot \nabla\mathbf{u} &= 
+    \mathbf{f} + \nabla \cdot \tau, \\
 		\nabla \cdot \mathbf{u} &= 0.
     \end{split}
 	\label{eq:NS}
@@ -44,17 +45,21 @@ and their mathematical influence on the problem.
     The mathematical operator corresponding to this term is non-linear and non-symmetric, and does therefore require the equations to be solved 
     by some iteration procedure. Even with linear advection the operator is a source to instability and needs to be handled carefully. 
 \item  $\nabla \cdot \tau$ 
-       - The Reynolds stress tensor, simplifies to $ \Delta \mathbf{u}$ in laminar flows but is treated as 
-       $\nabla \cdot [ \nabla \mathbf{u} + \nabla^T \mathbf{u}] $ in turbulent flows and introduces 
-       6 new unknows, resolving this tensor is known as the closure problem. $\nu$ is the viscosity of the fluid.
+       - $\tau= -p + \nu[ \nabla \mathbf{u} + \nabla^T \mathbf{u}]$ is known as the Reynolds stress tensor for incompressible flows.
+       The term $\nabla \cdot \tau$ simplifies to $-\nabla p + \nu \Delta \mathbf{u}$ if the viscosity $\nu$
+       is assumed to be constant, This is not the case for turbulent flows.
+       It is a symmetric tensor, hence another 6 unknows is introduced.
     \item $\nu \Delta \mathbf{u}$ 
-    -The diffusive term describes the natural diffusion of the fluid. The effect of diffusion is determined by the 
-    viscosity of the fluid. The corresponding operator stabilizes the the system and it is therefore generally easier
+    - The diffusive term describes the natural diffusion of the fluid. The effect of diffusion is determined by the 
+    viscosity of the fluid. The corresponding mathematical operator stabilizes the system and it is therefore generally easier
     to solve the N-S equations for high-viscosity fluids. 
     \item $\nabla p$
     - The pressure gradient, Removal of this term results in a pure advection diffusion problem.
     \item $\nabla \cdot \mathbf{u}$ 
     - The divergence free condition from the mass equation.
+\item $\mathbf{f}$ 
+    - General term describing exteternal body forces such as gravity. For incompressible flow the
+    gravity term is incorporated in the pressure term, $\nabla p = \nabla p + \rho \mathbf{g}$. 
     \item $Re$ 
     - The Reynolds number defined as $UL/\nu$ where $U$ is the velocity scale, $L$ is the length scale and $\nu$ 
       is the viscosity of the fluid. $Re$ describes the relation between the biggest length scales of the flow
@@ -68,62 +73,72 @@ this thesis the main approach will be through Large Eddy Simulations (LES) which
 in the following section.
 %
 \subsection{Weak formulation of N-S}
-The numerical algorithms applied in this thesis require a weak formulation of equation~\ref{eq:NS}.
+Let us first assume constant viscosity, enableing the simplification $\nabla \cdot \tau = -\nabla p + \nu \Delta \mathbf{u}$.
+This is a poor approximation for a turbulent flow but it will be clarified in later chapters how this can be expanded
+to be valid for more general cases.
+The numerical algorithms applied in this thesis requires a weak formulation of equation~\ref{eq:NS}.
 Before the weak form is derivated a few operators will be defined in order to simplify the final 
 expression.
+%
 \begin{align}
-    ( \cdot, \cdot)_{L_2} &= \int_{\Omega}\cdot\cdot d\Omega\\
-    \mathcal{A}(\mathbf{u},\mathbf{v}) &= (\nabla\cdot\mathbf{u},\nabla\cdot\mathbf{v})_{L_2}\\
+    ( \mathbf{u},\mathbf{v})_{L_2} &= \int_{\Omega}\mathbf{u} \cdot \mathbf{v} d\Omega\\
+    \mathcal{A}(\mathbf{u},\mathbf{v}) &= (\nabla \mathbf{u},\nabla \mathbf{v})_{L_2}\\
     \mathcal{B}(\mathbf{u},p) &= (\nabla \cdot \mathbf{u},p)_{L_2}\\
-    \mathcal{C}(\mathbf{w};\mathbf{u},\mathbf{v}) &= (\mathbf{w}\cdot \nabla \mathbf{u},\mathbf{v})_{L_2}\\
+    \mathcal{C}(\mathbf{w};\mathbf{u},\mathbf{v}) &= (\mathbf{w}\cdot \nabla \mathbf{u},\mathbf{v})_{L_2}
     \label{eq:weakoperators}
 \end{align}
+%
 A weak formulation is obtained by multiplying with a test funcion $\mathbf{v}$ and integrating over
 the entire domain.
 \begin{align}
     \begin{split}
         \int_{\Omega}\frac{\partial \mathbf{u}}{\partial t}\cdot\mathbf{v}d\Omega
-        + \int_{\Omega}\mathbf{u}\cdot \nabla\mathbf{u}\cdot\mathbf{v}d\Omega
-        &= -\int_{\Omega}\nabla p\cdot \mathbf{q} d\Omega 
-        + -\int_{\Omega}\frac{1}{Re}\nabla \cdot \tau\cdot\mathbf{v}d\Omega, \\
-		\int_{\Omega}\nabla \cdot \mathbf{u}\cdot\mathbf{v}d\Omega &= 0.
+        + \int_{\Omega}(\mathbf{u}\cdot \nabla)\mathbf{u}\cdot\mathbf{v}d\Omega
+        &= -\int_{\Omega}\nabla p\cdot \mathbf{v} d\Omega 
+        + \nu \int_{\Omega}\Delta\mathbf{u}\cdot\mathbf{v}d\Omega, \\
+		\int_{\Omega}(\nabla \cdot \mathbf{u}) \mathbf{q}d\Omega &= 0.
     \end{split}
-	\label{eq:NSweak}
+	\label{eq:NSweak1}
 \end{align}
+Introducing the compact inner product notation and appling the divergence theorem on the right hand side of 
+the first equation yields
 \begin{align}
     \begin{split}
         (\frac{\partial \mathbf{u}}{\partial t},\mathbf{v})
         + (\mathbf{u}\cdot \nabla\mathbf{u},\mathbf{v})
-        &= -(\nabla p, \mathbf{v} ) 
-        -(\frac{1}{Re}\nabla \cdot \tau,\mathbf{v}), \\
-		(\nabla \cdot \mathbf{u},p) &= 0.
+        &= -(\nabla \cdot \mathbf{v} , p ) 
+        -\nu(\nabla \mathbf{u},\nabla \mathbf{v}), \\
+		(\nabla \cdot \mathbf{u},q) &= 0.
     \end{split}
 	\label{eq:NSweak}
 \end{align}
-Writing the covective term in conservational form $\nabla \cdot \mathbf{u}\mathbf{u}$ and applying the 
-divergence theorem on the terms leaves us with 
+%Writing the covective term in conservational form $\nabla \cdot \mathbf{u}\mathbf{u}$ and applying the 
+%divergence theorem on the terms leaves us with 
+%\begin{align}
+    %\begin{split}
+        %(\frac{\partial \mathbf{u}}{\partial t},\mathbf{v})
+        %- (\mathbf{u}\mathbf{u},\nabla \cdot \mathbf{v})
+        %&= +(p,\nabla \cdot \mathbf{v} ) 
+        %+\frac{1}{Re}(\tau,\nabla \cdot \mathbf{v}), \\
+		%-(\mathbf{u},\nabla p) &= 0.
+    %\end{split}
+	%\label{eq:NSweak}
+%\end{align}
+Finally, by using the notation introduced in~\ref{eq:weakoperators} the weak formulation of the incompressible
+N-S equation can be stated as: 
+
+Find $(\mathbf{u}, p) \in H^1(\Omega)\times L^2(\Omega)$ such that 
 \begin{align}
     \begin{split}
         (\frac{\partial \mathbf{u}}{\partial t},\mathbf{v})
-        - (\mathbf{u}\mathbf{u},\nabla \cdot \mathbf{v})
-        &= +(p,\nabla \cdot \mathbf{v} ) 
-        +\frac{1}{Re}(\tau,\nabla \cdot \mathbf{v}), \\
-		-(\mathbf{u},\nabla p) &= 0.
+        + \mathcal{C}(\mathbf{u};\mathbf{u},\mathbf{v})
+        &= -\mathcal{B}(\mathbf{v},p) 
+        -\nu\mathcal{A}(\mathbf{u},\mathbf{v}), \\
+        \mathcal{B}(\mathbf{u},q) &= 0.
     \end{split}
 	\label{eq:NSweak}
 \end{align}
-Finally, by using the notation introduced in ~\ref{eq:weakoperators} the weak formulation of the incompressible
-N-S equation can be stated as 
-\begin{align}
-    \begin{split}
-        (\frac{\partial \mathbf{u}}{\partial t},\mathbf{v})
-        - \mathcal{C}(\mathbf{u};\mathbf{u},\mathbf{v})
-        &= \mathcal{B}(\mathbf{v},p) 
-        +\frac{1}{Re}\mathcal{A}(\mathbf{u},\mathbf{v}), \\
-        -\mathcal{B}(\mathbf{u},p) &= 0.
-    \end{split}
-	\label{eq:NSweak}
-\end{align}
+$\forall\; (\mathbf{u}, p) \in H^1(\Omega)\times L^2(\Omega)$.
 
 
 %

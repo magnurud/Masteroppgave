@@ -251,8 +251,24 @@ can be reduced to have a very small effect on the each of the elements.
 \item READ LITERATURE ON THIS !! 
 \end{itemize}
 \subsection{Filtering}
-When choosing a polynomial space with a not sufficiently high degree the modes tends to get spourios and the discrete solution 
+Allthough SEM provides spectral convergence in space and 2nd or 3rd order accuracy in time the stability of a straight forward
+implementation is not guaranteed. In \cite{FischerMullen} a filter-based stabilization is introduced for SEM applied on 
+Navier Stokes equation. The idea is to simply project the highest mode onto a polynomial space of lower order, 
+explicitly they define the filter $F_{\alpha}$ as 
+%
+\begin{align}
+    F_{\alpha}= \alpha I_{N-1}  + (1-\alpha) I_d.
+    \label{eq:filter}
+\end{align}
+%
+Where $I_{N-1}$ is the projector from $\mathbb{P}_N$ to $\mathbb{P}_{N-1}$ and $ I_d$ is the identity operator.
+
+The filter is later explained in more general terms by Pasquetti and Xu in~\cite{Pasquetti}. 
+
+be the filter 
+to get spourios and the discrete solution 
 \ldots By projecting parts of the higher order modes onto the polynomials of lower degree one can greatly decrease the spourious effect.
+The 
 \cite{Karniadakis} Chapter 2.4
 \colorbox{yellow}{Fischer, Mullen (2001) filter-based stabilization of spectral element methods.}
 \colorbox{yellow}{Pasquetti and Xu (2002) Comments on filter-based stab of SEM J comp phys.}

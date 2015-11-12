@@ -35,8 +35,10 @@
   Author                   = {C. Canuto and M.Y Hussaini and A. Quarteroni\ldots [et al.]},
   Publisher                = {Springer},
   Year                     = {2007},
+
   Address                  = {Berlin},
   Series                   = {Scientific computation},
+
   ISBN                     = {978-3-540-30727-3},
   Url                      = {http://opac.inria.fr/record=b1127560}
 }
@@ -60,7 +62,7 @@
   Url                      = {http://dx.doi.org/10.1090/S0025-5718-1982-0637287-3}
 }
 
-@Article{Deville2002,
+@Article{Deville,
   Title                    = {High-Order Methods for Incompressible Fluid Flow},
   Author                   = {Deville, M. O. and Fischer, P. F. and Mund, E. H.},
   Year                     = {2002},
@@ -177,18 +179,40 @@
   Timestamp                = {2015.05.08}
 }
 
-@book{White,
-    title = {Viscous fluid flow},
-    author = {White, Frank M.},
-    series = {McGraw-Hill series in mechanical engineering},
-    publisher = {McGraw-Hill},
-    address = {New York},
-    url = {http://opac.inria.fr/record=b1096847},
-    isbn = {0-07-069712-4},
-    year = {1991}
+@Misc{benchmark,
+  Title                    = {Recent Benchmark Computations of Laminar Flow Around a Cylinder},
+
+  Author                   = {S. Turek and M. Schäfer},
+  Year                     = {1996}
 }
-@MISC{benchmark,
-	author = {S. Turek and M. Schäfer},
-	title = {Recent Benchmark Computations of Laminar Flow Around a Cylinder},
-	year = {1996}
+
+@Book{White,
+  Title                    = {Viscous fluid flow},
+  Author                   = {White, Frank M.},
+  Publisher                = {McGraw-Hill},
+  Year                     = {1991},
+
+  Address                  = {New York},
+  Series                   = {McGraw-Hill series in mechanical engineering},
+
+  ISBN                     = {0-07-069712-4},
+  Url                      = {http://opac.inria.fr/record=b1096847}
 }
+
+@Manual{Nek,
+  Title                    = {NEK5000 documentation},
+  Year                     = {2015},
+  Owner                    = {magnus},
+  Timestamp                = {2015.11.07}
+}
+
+@Article{eriksson,
+  Title                    = {Neutrally Buoyant gas dispersion within an urban street canyon.},
+  Author                   = {Eriksson, Daniel},
+  Journal                  = {MekIT'15.},
+  Year                     = {2015},
+
+  Owner                    = {mrd},
+  Timestamp                = {2015.07.20}
+}
+

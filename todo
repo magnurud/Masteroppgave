@@ -1,6 +1,35 @@
+spm to CEW
+
+the coeffs for the passive scalar eq (Nek manual)
+
+notation for the weak formulation of the diff term (misuse of notation)
+nabla u, nabla v.
+
+Filter for smagorinsky ?? 
+
+Ellipticity and hyberbolic, elliptic allways coercive ? 
+
+weak C1 condition on the element boundaries 82-83 eq 2-28b in Maday Patera
+
+PnPn vs. PnPn-2
+
+BB-condition
+
+Frac-step ( Numerical BC ? ) How can this be a good sol method when 
+velocity error is of O(Dt) ? 
 
 
-fix circle 3d routine, zwgll calculates gll points. 
+
+
+
+
+spm to Anne
+
+Ta med Lax-Milgram i appendix ?
+
+
+
+
 
 fix smag
 check fluent data ! 
