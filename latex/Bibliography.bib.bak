@@ -76,6 +76,33 @@
   Url                      = {http://dx.doi.org/10.1017/CBO9780511546792}
 }
 
+@Article{eriksson,
+  Title                    = {Neutrally Buoyant gas dispersion within an urban street canyon.},
+  Author                   = {Eriksson, Daniel},
+  Journal                  = {MekIT'15.},
+  Year                     = {2015},
+
+  Owner                    = {mrd},
+  Timestamp                = {2015.07.20}
+}
+
+@Article{FischerMullen,
+  Title                    = {Filter-based stabilization of spectral element methods },
+  Author                   = {Paul Fischer and Julia Mullen},
+  Journal                  = {Comptes Rendus de l'Académie des Sciences - Series I - Mathematics },
+  Year                     = {2001},
+  Number                   = {3},
+  Pages                    = {265 - 270},
+  Volume                   = {332},
+
+  Abstract                 = {We present a simple filtering procedure for stabilizing the spectral element method (SEM) for the unsteady advection–diffusion and Navier–Stokes equations. A number of example applications are presented, along with basic analysis for the advection–diffusion case. },
+  Doi                      = {http://dx.doi.org/10.1016/S0764-4442(00)01763-8},
+  ISSN                     = {0764-4442},
+  Owner                    = {magnus},
+  Timestamp                = {2015.11.12},
+  Url                      = {http://www.sciencedirect.com/science/article/pii/S0764444200017638}
+}
+
 @Article{Fischer96,
   Title                    = {Projection Techniques for Iterative Solution of Ax=b with successive right-hand sides},
   Author                   = {Paul F. Fischer},
@@ -128,6 +155,22 @@
   Publisher                = {Elsevier BV},
   Timestamp                = {2015.10.27},
   Url                      = {http://dx.doi.org/10.1016/0021-9991(86)90134-8}
+}
+
+@Article{Pasquetti,
+  Title                    = {Comments on “Filter-Based Stabilization of Spectral Element Methods” },
+  Author                   = {R. Pasquetti and C.J. Xu},
+  Journal                  = {Journal of Computational Physics },
+  Year                     = {2002},
+  Number                   = {2},
+  Pages                    = {646 - 650},
+  Volume                   = {182},
+
+  Doi                      = {http://dx.doi.org/10.1006/jcph.2002.7178},
+  ISSN                     = {0021-9991},
+  Owner                    = {magnus},
+  Timestamp                = {2015.11.12},
+  Url                      = {http://www.sciencedirect.com/science/article/pii/S0021999102971780}
 }
 
 @Article{Patera1984,
@@ -202,17 +245,8 @@
 @Manual{Nek,
   Title                    = {NEK5000 documentation},
   Year                     = {2015},
+
   Owner                    = {magnus},
   Timestamp                = {2015.11.07}
-}
-
-@Article{eriksson,
-  Title                    = {Neutrally Buoyant gas dispersion within an urban street canyon.},
-  Author                   = {Eriksson, Daniel},
-  Journal                  = {MekIT'15.},
-  Year                     = {2015},
-
-  Owner                    = {mrd},
-  Timestamp                = {2015.07.20}
 }
 

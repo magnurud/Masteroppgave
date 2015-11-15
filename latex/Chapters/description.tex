@@ -73,7 +73,7 @@ this thesis the main approach will be through Large Eddy Simulations (LES) which
 in the following section.
 %
 \subsection{Weak formulation of N-S}
-Let us first assume constant viscosity, enableing the simplification $\nabla \cdot \tau = -\nabla p + \nu \Delta \mathbf{u}$.
+Let us first assume constant viscosity, enabling the simplification $\nabla \cdot \tau = -\nabla p + \nu \Delta \mathbf{u}$.
 This is a poor approximation for a turbulent flow but it will be clarified in later chapters how this can be expanded
 to be valid for more general cases.
 The numerical algorithms applied in this thesis requires a weak formulation of equation~\ref{eq:NS}.
@@ -214,34 +214,67 @@ A general formulation of this for a timestep would be on the form
     \label{eq:exp-imp}
 \end{align}
 In equation~\ref{eq:exp-imp} the first integral in ~\ref{eq:testproblemintegrated} is evaluated by 
-an explicit scheme and the second one by an implicit scheme. The theoretical foundation for 
-this method is rather technical and the reader is refered to Maday et al [262] for further details.
+an explicit scheme and the second one by an implicit scheme. The coefficients $a_k,b_k$ corresponds to 
+the elected scheme. When operator splitting is applied in this thesis an Adam-Bashford scheme is 
+chosen for the implicitly evaluated integral while Runge-Kutta is applied for the explicit scheme. 
+Operator splitting is a very convenient strategy for 
+the N-S equations which consists of the easily invertible laplacian operator 
+and the demanding convection operator. 
 
-\colorbox{yellow}{Maday,Ronquist An operator-integration-factor splitting method for time dependent problems.}
-
-%Now introducing an integrational factor $Q(t)$ the initial problem ~\ref{eq:testproblem} can be written as
 
 
-Making a efficient and stable numerical scheme requires some intelligent splitting technique. 
-OIFS allows one to treat the diffusive term implisitly while the convective term explicitly.
+\subsection{Operator integrating factor schemes (OIFS)}
+The operator-splitting method described in the previous chapter may lead to an unstable scheme,
+OIFS is a similar method but it offers a more stable scheme. The presentation of the method 
+is presented here in a computational fashion, for a full description and derivation of the method 
+it is refered to Maday et al~\cite{raey}.
+
 By considering the NS-equation in a general operational form 
 \begin{align}
-    M\frac{d v_i}{dt} + Cv_i = -Kv_i +D_i p +Mf_i.
+    M\frac{d \mathbf{v}}{dt} + C\mathbf{v} = -K\mathbf{v} +D_i p +Mf_i.
     \label{eq:NSoperator}
 \end{align}
-Now let us define an operator $Q(t)$ such that 
+Now let us define an operator $Q(t)$ such that $Q(t^{n+1}) = I$ and 
 
 \begin{align}
     \frac{dQ(t)M\mathbf{v}}{dt} &=  Q(t)M\frac{d\mathbf{v}}{dt} + \frac{d}{dt}(Q(t)M)\mathbf{v}.\\
-    &= M\frac{d\mathbf{v}}{dt} + C\mathbf{v} \text{  when t = t*. }
+    &= Q(t)M\frac{d\mathbf{v}}{dt} + Q(t)C\mathbf{v} 
+   % &= M\frac{d\mathbf{v}}{dt} + C\mathbf{v} \text{  when t = t*. }
     \label{eq:integrationalfactor}
 \end{align}
 %
 This way equation~\ref{eq:NSoperator} can be written as 
 \begin{align}
-    \frac{d QM\mathbf{v}}{dt} =Q( -K\mathbf{v} +D p +M\mathbf{f}.)
+    \frac{d Q(t)M\mathbf{v}}{dt} =Q(t)( -K\mathbf{v} +D p +M\mathbf{f}).
     \label{eq:NSoperatorOIFS}
 \end{align}
+Evaluating this equation with a BDFk-scheme results in a system 
+\begin{align}
+    \sum_{j=0}^{k}\beta_jQ(t^{n+1-j})M\mathbf{v}^{n+1-j} =\Delta t \: Q(t^{n+1})( -K\mathbf{v}^{n+1} +D p^{n+1} +M\mathbf{f}^{n+1}).
+    \label{eq:NSOIFS1}
+\end{align}
+Applying the fact that $Q(t^{n+1}) = I$ enables us to write equation~\ref{eq:NSOIFS1} as 
+\begin{align}
+    \beta_0M\mathbf{v}^{n+1} + \sum_{j=1}^{k}\beta_jQ(t^{n+1-j})M\mathbf{v}^{n+1-j} 
+    =\Delta t ( -K\mathbf{v}^{n+1} +D p^{n+1} +M\mathbf{f}^{n+1}).
+    \label{eq:NSOIFS1}
+\end{align}
+Notice how all the easily invertible operators are evaluated implicitly, while the convective non-linear term is hidden in the BDFk scheme. 
+Now the OIFS method allows us to find the terms in the sum in a rather elegant fashion.  
+First of all the auxiliary variable $\tilde{\mathbf{v}}_j$ is defined such that $Q(t^{n+1-j})M\mathbf{v}^{n+1-j} = M\tilde{\mathbf{v}}_j$ thus enabling us to find
+the summation expression by solving the initial value problem 
+\begin{align}
+    M\frac{d\tilde{\mathbf{v}}_j}{ds} &= -C(\tilde{\mathbf{v}}_j(s))\tilde{\mathbf{v}}_j(s) , \qquad t^{n+1-j}\leq s\leq t^{n+1}\\
+    \tilde{\mathbf{v}}_j(t^{n+1-j}) &= \mathbf{v}(t^{n+1-j}).
+    \label{eq:IVP}
+\end{align}
+Notice how the integrational factor $Q(t)$ is never evaluated directly.
+
+The final scheme applied for solving equation~\ref{eq:NSoperator} when applying OIFS consists of one scheme for solving 
+equation~\ref{eq:NSOIFS1} and another scheme for solving equation~\ref{eq:IVP}. When applied in this thesis the 
+first scheme is an implicit BDFk-scheme while the second is an explicit kth order Runge-Kutta scheme. (4th order ? )
+It is important to add that the error induced by this method is non-vanishing and is only recommended for assuring stability 
+for very instable problem. (Allows higher CFL number?)
 
 \subsection{Fractional step}
 Fractional step is an algorithm that can be divided into four seperate steps. For simplicity let us write the N-S
@@ -258,9 +291,17 @@ The method describing one time-step can then be summarized as following
     \item solve $v^{**} =v^* + \Delta t Dp^{n+1}$.
     \item solve $\partial_t v^{n+1}=v^{**} + \Delta t Lv^{n+1}$.
 \end{itemize}
+%\begin{itemize}
+    %\item solve $dv/dt=Nv$
+    %\item solve the poisson pressure equation $\Delta\: p = \nabla \cdot (v^*/\Delta t)$.
+    %\item solve $v^{**} =v^* + \Delta t Dp^{n+1}$.
+    %\item solve $\partial_t v^{n+1}=v^{**} + \Delta t Lv^{n+1}$.
+%\end{itemize}
 This method provides an efficient algorithm, but is known to produce errors of order O(1).
 The problem is the pressure poisson equation which is solved with incorrect boundary 
-conditions.
+conditions. The first step can also be evaluated in an OIFS-way to gain stability, by rewriting the initial equation 
+as described in the previous chapter. 
+
 \subsection{Pressure-correction}
 
 %\subsection{Decoupling the pressure} 
