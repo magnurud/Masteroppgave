@@ -157,6 +157,25 @@
   Url                      = {http://dx.doi.org/10.1016/0021-9991(86)90134-8}
 }
 
+@Article{raey,
+  Title                    = {An Operator-integration-factor splitting method for time-dependent problems: Application to incompressible fluid flow},
+  Author                   = {Maday, Y. and Patera, AnthonyT. and Rønquist, EinarM.},
+  Journal                  = {Journal of Scientific Computing},
+  Year                     = {1990},
+  Number                   = {4},
+  Pages                    = {263-292},
+  Volume                   = {5},
+
+  Doi                      = {10.1007/BF01063118},
+  ISSN                     = {0885-7474},
+  Keywords                 = {Splitting methods; operator decomposition; Navier-Stokes; equations; pressure},
+  Language                 = {English},
+  Owner                    = {magnus},
+  Publisher                = {Kluwer Academic Publishers-Plenum Publishers},
+  Timestamp                = {2015.11.15},
+  Url                      = {http://dx.doi.org/10.1007/BF01063118}
+}
+
 @Article{Pasquetti,
   Title                    = {Comments on “Filter-Based Stabilization of Spectral Element Methods” },
   Author                   = {R. Pasquetti and C.J. Xu},
