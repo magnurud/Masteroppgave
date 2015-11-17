@@ -43,6 +43,25 @@ just as well or better in most cases. It should be mentioned that the division o
 differently for Nek5000 so the comparison is not as direct as it may seem from the table.
 \colorbox{yellow}{add more info on the mesh??}
 
+\subsection{Parameter adjustments in Nek5000}
+As discussed in chapter~\ref{nek} there are many adjustments available in Nek. 
+In order to enlighten the actual effect on the results, several different settings have 
+been investigated and the results are presented. All simulations are performed as 
+transient flows and the data collected in table~\ref{tab:perf} are gathered when the 
+flow has reached a steady state solution. 
+
+\begin{table}
+    \centering
+    \begin{tabular}{c | c c c | c c | c c c}
+
+         & \multicolumn{3}{|c|}{Settings} & \multicolumn{2}{|c|}{\% Error} & \multicolumn{3}{|c}{Data} \\\hline
+         \#  & Aliasing & IOFS & Filter & $c_D$ & $c_L$ 
+         & DT & CFL & T/Tstep \\ \hline 
+         1 & No & No & No & 1.0 & 2.3 & 1e-04 & 2.03 & 2.1e-02 \\
+    \end{tabular}
+    \caption{Performance data for different settings in Nek5000}
+    \label{tab:perf}
+\end{table}
 %----------------------------------------------------------------------------------------
 \section{Gas dispersion in a simplified urban area} 
 Results to come \ldots 
