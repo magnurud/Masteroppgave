@@ -182,13 +182,56 @@ the filtered N-S equations are given as
 %
 Where $\tau$ in this case denotes the subgrid scale (SGS) stress given as 
 \begin{align}
-    \tau_{ij} = \overline{u_iu_j}-\overline{u}_i \overline{u}_j
+    \tau^r_{ij}(u_i,uj) = (u_iu_j)^r -u_i^ru_j^r
     \label{eq:sgstensor}
 \end{align}
 
-The problem is now reduced to modelling this tensor, the most common SGS-model is the 
-dynamic Smagorinsky-Lilly model.
 \subsection{dynamic Smagorinsky-Lilly SGS-model}
+The problem is now reduced to modelling this tensor, the most common SGS-model is the 
+dynamic Smagorinsky-Lilly model. The initial progress of this model was made by 
+Lilly in 1967~\cite{Lilly67} suggesting the following model of the sgs-tensor
+%
+\begin{align}
+    \tau_{ij} &= -2\nu_{sgs}s_{ij}^r,\\
+    s^r_{ij} &= \frac{1}{2}\left( \frac{\partial u^r_i}{\partial x_j} +
+    \frac{\partial u^r_j}{\partial x_i}\right)\\,
+    \nu_{sgs} &= C_dl^2\sqrt{2s^r_{ij}s^r_{ij}}.
+    \label{eq:boussinesq}
+\end{align}
+%
+Where $l$ denotes the filter width.
+The resolved strain rate is easily calculated and the problem is now reduced to determining
+the constant $C_d$. There were several attempts to determine this constant for the entire domain,
+but finally in 1991~\cite{Germano91} a dynamic subgrid-scale model was presented calculating a 
+$C_d$ locally in time and space. The general idea is that the $C_d$ is independent of the 
+filter width and from this assumption develope an expression for the dynamical constant.
+
+Let $a,b$ denote two distinct filters with corresponding sub-grid scale tensors 
+$\tau^a_{ij}$ and $\tau^b_{ij}$ and filter widths $l_a,l_b$. 
+By defining $a_{ij}=l_a^2\mathcal{S}^a = l_a^2\sqrt{2s^{a}_{ij}s^{a}_{ij}}$ the subgrid scale tensor can 
+be written as $\tau^a_{ij} = 2C_da_{ij} $. Applying both filters on the N-S equation 
+results in a sub-grid scale tensor defined as $L_{ij} = (u_iu_j)^{ab}-u_i^{ab}u_j^{ab}$.
+By the Germano identity this tensor can be written as 
+\begin{align}
+    L_{ij} = (\tau_{ij}^a)^b - \tau_{ij}^b(u_i^a,u_j^a).
+    \label{eq:germanoid}
+\end{align}
+(OBS!! $\tau_{ij}^b(u_i^a,u_j^a)= \tau_{ij}^b(u_i,u_j)$ )!!! 
+By working with this expression assuming a dynamic constant uneffected by the filter 
+one obtains
+\begin{align}
+    \begin{split}
+ L_{ij} &= 2((C_da_{ij})^b-C_db_{ij}),\\
+        &\approx 2C_d(a_{ij}^b-b_{ij}),\\
+        &= 2C_dl_c^2 M_{ij}.
+    \end{split} \\
+        M_{ij} &= (\mathcal{S}^as_{ij}^a)^b - (l_a/l_c)^{2}\mathcal{S}^bs_{ij}^b\\
+        l_c &= l_a/l_b\\
+        C_s &= \frac{L_{ij}}{2l_c^2M_{ij}}
+    \label{eq:dynsmagderivation}
+\end{align}
+
+\colorbox{yellow}{fix notation in this section!!! }
 
 \section{Solution methods of incombressible N-S}
 A non-linear set of equations requires a non-trivial solution method, and when the domain of the problem can be anyting from a simple channel 

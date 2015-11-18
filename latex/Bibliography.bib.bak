@@ -157,6 +157,23 @@
   Url                      = {http://dx.doi.org/10.1016/0021-9991(86)90134-8}
 }
 
+@InProceedings{Lilly67,
+  Title                    = {The representation of small scale turbulence in numerical simulation experiments},
+  Author                   = {Lilly, D. K.},
+  Booktitle                = {IBM Scientific Computing Symposium on environmental sciences},
+  Year                     = {1967},
+
+  Address                  = {Yorktown heights},
+  Pages                    = {195--210},
+
+  Citeulike-article-id     = {4016882},
+  Keywords                 = {file-import-09-02-06\_jcu},
+  Owner                    = {mrd},
+  Posted-at                = {2013-04-16 10:51:38},
+  Priority                 = {2},
+  Timestamp                = {2015.11.18}
+}
+
 @Article{raey,
   Title                    = {An Operator-integration-factor splitting method for time-dependent problems: Application to incompressible fluid flow},
   Author                   = {Maday, Y. and Patera, AnthonyT. and Rønquist, EinarM.},
@@ -229,6 +246,20 @@
 
   Owner                    = {magnus},
   Timestamp                = {2015.06.18}
+}
+
+@Book{sagaut2001large,
+  Title                    = {Large Eddy Simulation for Incompressible Flows: An Introduction},
+  Author                   = {Sagaut, P.},
+  Publisher                = {Springer},
+  Year                     = {2001},
+  Series                   = {Physics and astronomy online library},
+
+  ISBN                     = {9783540678908},
+  Lccn                     = {00059563},
+  Owner                    = {mrd},
+  Timestamp                = {2015.11.16},
+  Url                      = {https://books.google.no/books?id=0qNRAAAAMAAJ}
 }
 
 @Book{SM,
