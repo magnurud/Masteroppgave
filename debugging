@@ -1,0 +1,8 @@
+#-------------------------------------------------
+  Error reading initial condition/drive force data
+    aborting in routine rdicdf.
+    EXIT: rdicdf error          1
+
+FIX1 = Make sure that IFHEAT and THERMAL BC's MAKE SENCE!
+      
+
