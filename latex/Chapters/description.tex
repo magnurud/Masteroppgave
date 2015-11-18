@@ -192,10 +192,10 @@ dynamic Smagorinsky-Lilly model. The initial progress of this model was made by
 Lilly in 1967~\cite{Lilly67} suggesting the following model of the sgs-tensor
 %
 \begin{align}
-    \tau_{ij} &= -2\nu_{sgs}s_{ij}^r,\\
+    \tau_{ij} &= -2C_dl^2\mathcal{S}^rs_{ij}^r,\\
     s^r_{ij} &= \frac{1}{2}\left( \frac{\partial u^r_i}{\partial x_j} +
     \frac{\partial u^r_j}{\partial x_i}\right)\\,
-    \nu_{sgs} &= C_dl^2\sqrt{2s^r_{ij}s^r_{ij}}.
+    \mathcal{S}^r &= \sqrt{2s^r_{ij}s^r_{ij}}.
     \label{eq:boussinesq}
 \end{align}
 %
@@ -206,32 +206,55 @@ but finally in 1991~\cite{Germano91} a dynamic subgrid-scale model was presented
 $C_d$ locally in time and space. The general idea is that the $C_d$ is independent of the 
 filter width and from this assumption develope an expression for the dynamical constant.
 
-Let $a,b$ denote two distinct filters with corresponding sub-grid scale tensors 
-$\tau^a_{ij}$ and $\tau^b_{ij}$ and filter widths $l_a,l_b$. 
-By defining $a_{ij}=l_a^2\mathcal{S}^a = l_a^2\sqrt{2s^{a}_{ij}s^{a}_{ij}}$ the subgrid scale tensor can 
-be written as $\tau^a_{ij} = 2C_da_{ij} $. Applying both filters on the N-S equation 
-results in a sub-grid scale tensor defined as $L_{ij} = (u_iu_j)^{ab}-u_i^{ab}u_j^{ab}$.
-By the Germano identity this tensor can be written as 
-\begin{align}
-    L_{ij} = (\tau_{ij}^a)^b - \tau_{ij}^b(u_i^a,u_j^a).
-    \label{eq:germanoid}
-\end{align}
-(OBS!! $\tau_{ij}^b(u_i^a,u_j^a)= \tau_{ij}^b(u_i,u_j)$ )!!! 
-By working with this expression assuming a dynamic constant uneffected by the filter 
-one obtains
+Let $a,b$ denote two distinct filters with corresponding filter widths $l_a,l_b$. 
+Let $\tau_{ij}$ and $T_{ij}$ denote the stresses based on single- and double filtering
+operations on the N-S equations
 \begin{align}
     \begin{split}
- L_{ij} &= 2((C_da_{ij})^b-C_db_{ij}),\\
-        &\approx 2C_d(a_{ij}^b-b_{ij}),\\
-        &= 2C_dl_c^2 M_{ij}.
+    \tau_{ij} = (u_iu_j)^a - u_i^au_j^a,\\
+    T_{ij} = ((u_iu_j)^a)^b - (u_i^a)^b(u_j^a)^b.
+    \end{split}
+    \label{eq:stresstensors}
+\end{align}
+%By defining $a_{ij}=l_a^2\mathcal{S}^a = l_a^2\sqrt{2s^{a}_{ij}s^{a}_{ij}}$ the subgrid scale tensor can 
+%be written as $\tau^a_{ij} = 2C_da_{ij} $. 
+Applying the $b$ filter on the first tensor in eq~\ref{eq:stresstensors} allows us to define 
+a new tensor $L_{ij}$ which depends only on the $a$-filtered variables. The identity 
+is known as Germanos identity and was first introduced in 1991~\cite{Germano91},
+\begin{align}
+    L_{ij} = T_{ij} - (\tau_{ij})^b
+    = (u_i^au_j^a)^b - (u_i^a)^b(u_j^a)^b.
+    \label{eq:germanoid}
+\end{align}
+Substituting the stress-tensors with their corresponding expression 
+from equation~\ref{eq:boussinesq} and assuming a dynamic constant uneffected by the filter 
+one obtains an approximation for $L_{ij}$ which is computable,
+\begin{align}
+    \begin{split}
+L_{ij} &\approx 2C_d l_b^2 \mathcal{S}^{ab} s^{ab}_{ij}
+        -2 (C_d l_a^2 \mathcal{S}^a s^a_{ij})^b\\
+        &\approx 2C_dl_a^2[\lambda\mathcal{S}^{ab}s^{ab}_{ij} 
+        - (\mathcal{S}^{a}s^{a}_{ij})^b]\\
+        &= 2C_dl_a^2 M_{ij}.
+        \label{eq:lillystress}
     \end{split} \\
-        M_{ij} &= (\mathcal{S}^as_{ij}^a)^b - (l_a/l_c)^{2}\mathcal{S}^bs_{ij}^b\\
-        l_c &= l_a/l_b\\
-        C_s &= \frac{L_{ij}}{2l_c^2M_{ij}}
+    M_{ij} &= \lambda^{2}\mathcal{S}^{ab}s_{ij}^{ab} - (\mathcal{S}^as_{ij}^a)^b\\
+        \lambda &= (l_b/l_a)^2
     \label{eq:dynsmagderivation}
 \end{align}
-
-\colorbox{yellow}{fix notation in this section!!! }
+Minimizing the mean-square error between the exact $L_{ij}$ as expressed in 
+equation~\ref{eq:germanoid} and the boussinesq-based approximation 
+in~\ref{eq:lillystress} yields the best approximation 
+for the dynamic Smagorinsky constant 
+%
+\begin{align}
+    C_d &= \frac{M_{ij}L_{ij}}{2l_a^2\:M_{kl}M_{kl}}.
+    \label{eq:dynsmag}
+\end{align}
+%
+Note that the double indices implies summing. This expression is however not a 
+stable option and to deal with this most implementations apply some sort of mean 
+in either time, space or both when calculating the costant.  
 
 \section{Solution methods of incombressible N-S}
 A non-linear set of equations requires a non-trivial solution method, and when the domain of the problem can be anyting from a simple channel 
