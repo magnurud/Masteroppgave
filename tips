@@ -1,3 +1,12 @@
+# OUTPUT FIELDS! 
+Need at least 5 lines!! 
+# boundary condition error
+Error reading initial condition/drive force data
+aborting in routine rdicdf.
+EXIT: rdicdf error          1
+
+FIX ::: Remove thermal BC's
+
 # Compressing multiple files 
 cat file1 file2 file3* | gzip > files.gz
 

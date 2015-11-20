@@ -89,7 +89,7 @@ quadrature rules of higher order. A more formal statement and numerical validati
 Spectral methods (SM) share a some of the mathematical ideas as FEM, but are not as widely used in real life problems. 
 There are many ways to apply SM, 
 and in this thesis only the Galerkin version with numerical integration (known as G-NI) will be considered and will be referred to only as SM. 
-For a full introduction to SM and its applications to BVP see \cite{Canuto}.
+For a full introduction to SM and its applications to BVP see~\cite{Canuto}.
 SM can be reduced to a interpolation problem such as FEM, and are very interesting from a theoretical point of view due to its 
 spectral convergence rate which allows you to obtain solutions of extremely high accuracy. 
 The most important draw-back of SM are the difficulties with applications to complex geometries. Allthough the system of equations surging from
@@ -188,17 +188,6 @@ Where the elements in the matrices and vectors are given as
 From these equations it is clear that the mass matrix $M$ is diagonal and the rhs vector $\tilde f$ is easily calculated, 
 while the stiffness matrix $A$ is symmetric but full.
 
-\colorbox{yellow}{some figures or references to illustrate this}
-
-\begin{itemize}
-\item quadrature rule
-\item the choice of nodes and basis functions
-\item sparsity for different operators
-\item the role of the jacobian 
-\item cross product formulations
-
-\end{itemize}
-
 \cite{Canuto}
 
 %-----------------------------------
@@ -208,8 +197,10 @@ while the stiffness matrix $A$ is symmetric but full.
 \section{Spectral element method}
 In the early 1980's the the idea to combine FEM and SM came along in order to obtain the robustness and resulting sparse system of FEM 
 combined with the spectral convergence rate provided by SM. 
-The result was the Spectral element method. An example of Read articles\ldots Several formulations was investigated  and the development of super computers has played an important role in deciding the method applied today. The basic idea is to divide the domain 
-of the BVP wanted to solve into elements as in FEM and then use spectral basis functions of higher degree with support only within one element. 
+The result was the Spectral element method. An example of Read articles\ldots Several formulations was investigated 
+and the development of super computers has played an important role in deciding the method applied today. 
+The basic idea is to divide the domain of the BVP into elements as in FEM and then use spectral basis 
+functions of higher degree with support only within one element. 
 
 In the previous subsection the power of spectral methods was illustrated on the unit square in two dimensions.
 But the limitations when it comes to more complex geometry rapidly affects the spectral convergence rate. 
