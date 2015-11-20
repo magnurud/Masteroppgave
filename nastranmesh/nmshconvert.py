@@ -139,7 +139,7 @@ def fixbc(name):
     return 1
 
 # This function is made to fix the thermal boundary conditions
-def fixthermalbc(name):
+def fixthermalbc(name,iftemp):
     s = '' # full txt
     thermal = '' # Thermal conditions
     dummy = -1
@@ -156,6 +156,10 @@ def fixthermalbc(name):
                s = s+thermal # Adding the modified conditions to the termal part 
                thermal = ''
     newfile = open(name, 'w')
+    print 'temperature variable = {}'.format(iftemp)
+    #if(iftemp=='False'): 
+        #print 'temperature variable = {}'.format(iftemp)
+        #s = '  ***** NO THERMAL BOUNDARY CONDITIONS ***** \n'
     newfile.write(s) 
     return 1
 
@@ -190,6 +194,7 @@ def write_surface_file():
     ofile.close()
 
     ### Do necessary changes in SIZE file! 
+    ifile = open('SIZE',"r")
     lines = ifile.readlines()
     ifile.close()
     if len(lines) == 0:
@@ -207,7 +212,7 @@ def write_surface_file():
         #re.sub('(?<=lfdm).+)','=38\)',line)
         #print line
         ofile.write(line)
-    if (not dummy): ofile.write('      parameter (nsurf={}) ! Number of bdry nodes\n'.format(tot_num_cells))
+    if (not dummy): ofile.write('      parameter (nsurf={}) ! Number of bdry nodes\n'.format(tot_num_nodes))
     ofile.close()
 
 def write_surf_list():
@@ -1776,7 +1781,7 @@ def convert(nastranmesh,
     #print "periodic_dx values:", periodic_dx.values()
     create_periodic_face_map(periodic_dx)
     create_periodic_cell_face_map()
-    create_boundary_section(bcs, temperature, passive_scalars, mesh_format)
+    create_boundary_section(bcs, 0, passive_scalars, mesh_format)
 
 # ADDED BY RUD 06.10.15
     for cell_no in range(len(Cells)):
@@ -1841,7 +1846,7 @@ def convert(nastranmesh,
 
     # Generate the mesh files for given mesh format
     if mesh_format == 'nek5000':
-        write_nek5000_file(dim, ofilename, curves, temperature, passive_scalars,start_of_rea,end_of_rea,curve_type)
+        write_nek5000_file(dim, ofilename, curves,0, passive_scalars,start_of_rea,end_of_rea,curve_type)
     elif mesh_format == 'surface':
         write_surface_file();
     elif mesh_format == 'semtex':
@@ -1851,13 +1856,14 @@ def convert(nastranmesh,
 
     ifile.close()
 	# ADDED BY RUD 25.09.15
-    print 'Fixing symmetry and inflow conditions \n '
-    fixbc(ofilename + '.rea')
+    if(mesh_format != 'surface'):
+        print 'Fixing symmetry and inflow conditions \n '
+        fixbc(ofilename + '.rea')
 
-    print 'Fixing thermal inflow conditions \n '
-    fixthermalbc(ofilename + '.rea')
+        print 'Fixing thermal inflow conditions \n '
+        fixthermalbc(ofilename + '.rea',temperature)
 
-    if(surf_list): 
-        write_surf_list()
+        if(surf_list): 
+            write_surf_list()
 
 	# END ADDED BY RUD 25.09.15
