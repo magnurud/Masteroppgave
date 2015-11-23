@@ -234,13 +234,12 @@ function integrated is of polynomial degree $2n-1$ or less, and the error gets b
 By dividing the domain up into smaller elements ${\Omega_e}$ the initial deformation of the full domain $\Omega$ 
 can be reduced to have a very small effect on the each of the elements.
 
-\colorbox{yellow}{Direct stifness summation!!!}
+\colorbox{green}{Apply sem analysis on helmholtz problem}
+
+
+\colorbox{green}{Direct stifness summation!!!}
 
 %$\Omega$ is some 2 dimensional strongly connected domain with well-defined corners and each of the edges can be described by some polynomial $\Gamma_i$.
-
-\begin{itemize}
-\item READ LITERATURE ON THIS!! 
-\end{itemize}
 
 \subsection{Filtering}
 Allthough SEM provides spectral convergence in space and 2nd or 3rd order accuracy in time the stability of a straight forward
@@ -295,6 +294,7 @@ the deduced absolute error $\epsilon_{diff}$ of the filtered energy is of order
 $\epsilon_{diff}\sim \alpha/N$. The approximation $||L_N||^2\approx||L_{N-2}||^2\approx 1/N$
 have been used to achieve the result in~\ref{eq:filterenergy}.
 \subsection{Aliasing}
+\colorbox{green}{add an illustrative example}
 When evaluating the the integral surging from the non-linear term in the N-S equation 
 the polynomial to be integrated is order $2N+(N-1)$. The quadrature rule applied to solve the 
 integrals are only exact up to an order $2N-1$, hence the error surging from this evaluation 
@@ -348,5 +348,7 @@ It is however possible to implement the algorithm in a way such that this inform
 The vertix information is sufficent to create a mapping from a deformed element
 with straight edges to $\hat{\Omega}$. If the edges are curved but no further information is provided about the faces 
 a linear 2D interpolation as the one stated in ~\ref{eq:interpolationoperator2d} can be created for each face. 
-\colorbox{yellow}{Gordon Hall 1973 , Transfinite element methods: Blending function interpolation over arbitrary curved elements}
+\colorbox{green}{Read the article and rewrite some of this section}
+
+
 

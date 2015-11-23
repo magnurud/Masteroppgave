@@ -149,7 +149,7 @@ The equation corresponding to this physical problem will be reffered to as the p
 $\phi_i$ and is stated as 
 \begin{align}
     \begin{split}
-        (\rho c_p)_i\frac{\partial \phi_i}{\partial t} + \mathbf{u}\cdot \nabla\phi_i 
+        (\rho c_p)_i(\frac{\partial \phi_i}{\partial t} + \mathbf{u}\cdot \nabla\phi_i) 
         &= \nabla \cdot(k_i\nabla \phi_i)+ (q_{vol})_i.
     \end{split}
 	\label{eq:PS}
@@ -159,32 +159,35 @@ $\phi_i$ and is stated as
 When DNS is not feasible due to high Reynoldsnumber LES is one of the most powerful tools when it comes to simulating turbulent flows.
 The idea is based on the fact that for the small turbulent structures behave independently of time and location and are therefore 
 easy to model. This way the larger structures driven by geometry, inflow conditions and external forces can be simulated using a coarser 
-grid while the effect of the small structures are modelled. \colorbox{yellow}{Some source on the importance of SGS-model}
+grid while the effect of the small structures are modelled. \colorbox{green}{Some source on the importance of SGS-model}
 
 \subsection{Filter}
 A filter in its general form is given as 
 \begin{align}
-    \tilde{U}(\mathbf{x},t) = \int_{\Omega} G(\mathbf{r},\mathbf{x})U(\mathbf{x}-\mathbf{r},t)d\mathbf{r}
+    U^r(\mathbf{x},t) = \int_{\Omega} G_r(\mathbf{r},\mathbf{x})U(\mathbf{x}-\mathbf{r},t)d\mathbf{r}
     \label{eq:filter}
 \end{align}
 
 In order to perform a LES a filter width a certain width $\Delta$ has to be chosen, 
 the filtered N-S equations are given as 
+\colorbox{yellow}{show commutative properties and important simplifications of the filter?}
 %
 \begin{align}
     \begin{split}
-        \frac{\partial \mathbf{\bar{u}}}{\partial t} + \mathbf{\bar{u}}\cdot \nabla\mathbf{\bar{u}}
-        &= -\nabla \bar{p} +\nu\Delta \mathbf{\bar{u}}-\nabla \cdot \tau, \\
-        \nabla \cdot \mathbf{\bar{u}} &= 0.
+        \frac{\partial \mathbf{u}^r}{\partial t} + \mathbf{u}^r\cdot \nabla\mathbf{u}^r
+        &= -\nabla p^r +\nu\Delta \mathbf{u}^r-\nabla \cdot \tau, \\
+        \nabla \cdot \mathbf{u}^r &= 0.
     \end{split}
 	\label{eq:NSfiltered}
 \end{align}
 %
 Where $\tau$ in this case denotes the subgrid scale (SGS) stress given as 
 \begin{align}
-    \tau^r_{ij}(u_i,uj) = (u_iu_j)^r -u_i^ru_j^r
+    \tau_{ij}(u_i,uj) = (u_iu_j)^r -u_i^ru_j^r
     \label{eq:sgstensor}
 \end{align}
+
+\colorbox{yellow}{Should I show where this tensor comes from in a clearer way?}
 
 \subsection{dynamic Smagorinsky-Lilly SGS-model}
 The problem is now reduced to modelling this tensor, the most common SGS-model is the 
@@ -256,7 +259,12 @@ Note that the double indices implies summing. This expression is however not a
 stable option and to deal with this most implementations apply some sort of mean 
 in either time, space or both when calculating the costant.  
 
+\colorbox{green}{Clearify the effect on N-S eq.}
+
 \section{Solution methods of incombressible N-S}
+\colorbox{green}{Rewrite this introduction}
+
+
 A non-linear set of equations requires a non-trivial solution method, and when the domain of the problem can be anyting from a simple channel 
 to a moving turbine there are many considerations that needs to be made. Allthough the equations have been known for over 200 years no one 
 has been able to prove or disprove the well-posedness of the problem. FINAL ELEMENT FORMULATION WELL-POSED?? Some of the most common algorithms 
@@ -286,6 +294,8 @@ chosen for the implicitly evaluated integral while Runge-Kutta is applied for th
 Operator splitting is a very convenient strategy for 
 the N-S equations which consists of the easily invertible laplacian operator 
 and the demanding convection operator. 
+
+\colorbox{yellow}{Do I need a chapter about Runge-Kutta and Adam-Bashford?}
 
 
 
@@ -343,6 +353,9 @@ It is important to add that the error induced by this method is non-vanishing an
 for very instable problem. (Allows higher CFL number?)
 
 \subsection{Fractional step}
+\colorbox{green}{rewrite such that it is clear how IOFS can be applied}
+
+
 Fractional step is an algorithm that can be divided into four seperate steps. For simplicity let us write the N-S
 equation as 
 \begin{align}
@@ -368,7 +381,7 @@ The problem is the pressure poisson equation which is solved with incorrect boun
 conditions. The first step can also be evaluated in an OIFS-way to gain stability, by rewriting the initial equation 
 as described in the previous chapter. 
 
-\subsection{Pressure-correction}
+%\subsection{Pressure-correction}
 
 %\subsection{Decoupling the pressure} 
 

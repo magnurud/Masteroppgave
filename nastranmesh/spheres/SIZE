@@ -3,8 +3,8 @@ C
 C     HCUBE array dimensions
 C
       parameter (ldim=3)
-      parameter (lx1=6,ly1=lx1,lz1=lx1,lelt=2200,lelv=lelt)
-      parameter (lxd=9,lyd=lxd,lzd=lxd)
+      parameter (lx1=5,ly1=lx1,lz1=lx1,lelt=2500,lelv=lelt)
+      parameter (lxd=5,lyd=lxd,lzd=lxd)
       parameter (lelx=1,lely=lelx,lelz=lelx)
  
       parameter (lzl=3 + 2*(ldim-3))
@@ -109,5 +109,7 @@ c automatically added by makenek
 
 c automatically added by makenek
       common/IOFLAG/nio  ! for logfile verbosity control
+c automatically added by nmshconvert 
       parameter (nbdry=54) ! Number of bdry nodes
-      parameter (nsurf=17030) ! Number of bdry nodes
+c automatically added by nmshconvert 
+      parameter (nsurf=5634) ! Number of bdry nodes

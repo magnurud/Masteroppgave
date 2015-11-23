@@ -23,7 +23,9 @@ and the type of simulation (RANS,LES,DNS).
 %The simulation is the performed on some cluster before the 
 %wanted data in some sub-domain is visualized and presented. 
 
-\section{Nek5000 Basics }
+\section{Nek5000 Basics}
+\colorbox{green}{this whole section needs rewriting}
+
 Nek5000 is a turbulent flow solver developed mainly by Paul Fischer
 and has through the past 20 years had several contributours. 
 It is an open-source code applicable to many different types of flow 
@@ -44,6 +46,7 @@ user-friendly and create automatic routines to handle complex geometry.
 
 In order to get a quick overview of the framework in Nek a short list of the main steps
 are stated in the list below 
+
 %
 \begin{enumerate}
     \item \emph{Initialize} 
@@ -63,7 +66,6 @@ It is therefore very useful to have an automatic way of converting a mesh create
 In order for nek to run optimally the elements should be as homogenous and as similar to the reference element as possible. 
 It is therefore of great interest to be able to propagate curved geometries into the neighbour-elements in order to have a smooth as 
 possible transition from a boundary with high curvature.
-
 
 \section{User-defined files}
 In order to work with Nek there are some practical information that needs to be clarified.
@@ -161,7 +163,7 @@ described in the list below
     \item ifsplit - whether the $\mathbb{P}_N-\mathbb{P}_N$ or the $\mathbb{P}_N-\mathbb{P}_{N-2}$ is to be used.
     \item iftrans - transient or steady flow.
     \item ifheat - solving for heat.
-    \item ifnav - natural convection for the scalar
+    \item ifnav - natural convection for the scalar fields (Boolean array)
     \item param(103) - activation of filtering.
 \end{itemize}
 %
@@ -170,6 +172,8 @@ Both subroutines are found in \verb|drive2.f|. The understanding of these solver
 and~\ref{eq:PS}.  
 
 \colorbox{yellow}{what are fluidp() and heatp( )? solve for pertubated field and then project onto div-free space ? }
+
+\colorbox{green}{How does a preconditioner work in Nek ?}
 
 %
 \section{Incompressible N-S solvers in Nek}
@@ -216,4 +220,5 @@ the Helmholtz equation.
 
 
 \section{Nek5000 for complex geometries}
+\colorbox{green}{The recommended usrdat2 procedure}
 

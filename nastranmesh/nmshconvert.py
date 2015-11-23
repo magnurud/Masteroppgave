@@ -212,7 +212,9 @@ def write_surface_file():
         #re.sub('(?<=lfdm).+)','=38\)',line)
         #print line
         ofile.write(line)
-    if (not dummy): ofile.write('      parameter (nsurf={}) ! Number of bdry nodes\n'.format(tot_num_nodes))
+    if (not dummy):
+        ofile.write('c automatically added by nmshconvert \n') 
+        ofile.write('      parameter (nsurf={}) ! Number of bdry nodes\n'.format(tot_num_nodes))
     ofile.close()
 
 def write_surf_list():
@@ -247,7 +249,9 @@ def write_surf_list():
         #re.sub('(?<=lfdm).+)','=38\)',line)
         #print line
         ofile.write(line)
-    if (not dummy): ofile.write('      parameter (nbdry={}) ! Number of bdry nodes\n'.format(len(surf_list)))
+    if (not dummy): 
+        ofile.write('c automatically added by nmshconvert \n') 
+        ofile.write('      parameter (nbdry={}) ! Number of bdry nodes\n'.format(len(surf_list)))
     ofile.close()
 
 ######## END RUD 25.09.15 #########
@@ -1846,7 +1850,7 @@ def convert(nastranmesh,
 
     # Generate the mesh files for given mesh format
     if mesh_format == 'nek5000':
-        write_nek5000_file(dim, ofilename, curves,0, passive_scalars,start_of_rea,end_of_rea,curve_type)
+        write_nek5000_file(dim, ofilename, curves,temperature, passive_scalars,start_of_rea,end_of_rea,curve_type)
     elif mesh_format == 'surface':
         write_surface_file();
     elif mesh_format == 'semtex':
