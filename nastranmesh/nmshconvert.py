@@ -254,6 +254,57 @@ def write_surf_list():
         ofile.write('      parameter (nbdry={}) ! Number of bdry nodes\n'.format(len(surf_list)))
     ofile.close()
 
+def fixSIZE():
+    # initial values
+    nsurf = 1
+    nbdry = 1
+
+    ifile = open('SIZE',"r")
+
+    ### Do necessary changes in SIZE file! 
+    lines = ifile.readlines()
+    ifile.close()
+    if len(lines) == 0:
+        raise IOError("Empty SIZE file")
+    # Iterating through the lines
+    bdry_dummy = 0
+    surf_dummy= 0
+    work_dummy= 0
+    work_target = '(?<=nwork\=).+\)'
+    bdry_target = '(?<=nbdry\=).+\)'
+    surf_target = '(?<=nsurf\=).+\)'
+    for line in lines:
+        # want to replace lfdm=XXX with lfdm = 38
+        m = re.search(bdry_target,line)
+        n = re.search(surf_target,line)
+        o = re.search(work_target,line)
+    
+        if(m): 
+            bdry_dummy = 1
+            nbdry = int(re.findall(r'\d+',line)[0])
+        if(n): 
+            surf_dummy = 1
+            nsurf = int(re.findall(r'\d+',line)[0])
+    # Updating the nwork variable
+    if(bdry_dummy and surf_dummy):
+        nwork = 10*nsurf/nbdry
+        repl= '{}'.format(nwork)+')'
+    else: return
+
+    ofile = open("SIZE","w")
+    for line in lines:
+        o = re.search(work_target,line)
+        if(o): 
+            work_dummy= 1
+            line = re.sub(work_target,repl,line)
+        ofile.write(line)
+
+    if (not work_dummy): 
+        ofile.write('c automatically added by nmshconvert \n') 
+        ofile.write('      parameter (nwork={}) ! Number of bdry nodes\n'.format(nwork))
+    ofile.close()
+
+
 ######## END RUD 25.09.15 #########
 
 Faces = []
@@ -1864,10 +1915,13 @@ def convert(nastranmesh,
         print 'Fixing symmetry and inflow conditions \n '
         fixbc(ofilename + '.rea')
 
+    if(temperature != False ):
         print 'Fixing thermal inflow conditions \n '
         fixthermalbc(ofilename + '.rea',temperature)
 
-        if(surf_list): 
-            write_surf_list()
+    if(surf_list): 
+        write_surf_list()
+    
+    fixSIZE()
 
 	# END ADDED BY RUD 25.09.15

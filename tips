@@ -1,3 +1,8 @@
+# WARNINGb: Detected non-right-handed element.
+Redo the mesh in ICEM! 
+
+# Error in jacobians etc. 
+Make sure nodes are projected onto surface in ICEM
 # Declaration of variables
 Be absolutely sure that all variables are declared,
 Fortran throws no error message. 
