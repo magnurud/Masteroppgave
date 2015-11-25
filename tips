@@ -1,14 +1,24 @@
+##### Interpreting output
+## alph1n - lines 
+# found in navier4.f subroutine projh()
+how much reduction of the residual is attained. 
+
+# Running interactively on vilje 
+qsub -I  -A ntnu100 -l select=2:ncpus=32:mpiprocs=16 -l walltime=01:00:00
+
 # WARNINGb: Detected non-right-handed element.
 Redo the mesh in ICEM! 
 
 # Error in jacobians etc. 
 Make sure nodes are projected onto surface in ICEM
+
 # Declaration of variables
 Be absolutely sure that all variables are declared,
 Fortran throws no error message. 
 
 # OUTPUT FIELDS! 
 Need at least 5 lines!! 
+
 # boundary condition error
 Error reading initial condition/drive force data
 aborting in routine rdicdf.
