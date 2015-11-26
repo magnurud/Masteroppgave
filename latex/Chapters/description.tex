@@ -154,7 +154,7 @@ $\phi_i$ and is stated as
     \end{split}
 	\label{eq:PS}
 \end{align}
-\colorbox{yellow}{How to explain the constant in this equation ??} 
+\colorbox{green}{write more about this equation and how it is applied in this thesis}
 \section{Resolving the turbulent term using LES}
 When DNS is not feasible due to high Reynoldsnumber LES is one of the most powerful tools when it comes to simulating turbulent flows.
 The idea is based on the fact that for the small turbulent structures behave independently of time and location and are therefore 
@@ -238,11 +238,12 @@ L_{ij} &\approx 2C_d l_b^2 \mathcal{S}^{ab} s^{ab}_{ij}
         -2 (C_d l_a^2 \mathcal{S}^a s^a_{ij})^b\\
         &\approx 2C_dl_a^2[\lambda\mathcal{S}^{ab}s^{ab}_{ij} 
         - (\mathcal{S}^{a}s^{a}_{ij})^b]\\
-        &= 2C_dl_a^2 M_{ij}.
+        &= 2C_s M_{ij}.
         \label{eq:lillystress}
     \end{split} \\
     M_{ij} &= \lambda^{2}\mathcal{S}^{ab}s_{ij}^{ab} - (\mathcal{S}^as_{ij}^a)^b\\
-        \lambda &= (l_b/l_a)^2
+        C_s &= C_dl_a^2\\
+        \lambda &= l_b/l_a
     \label{eq:dynsmagderivation}
 \end{align}
 Minimizing the mean-square error between the exact $L_{ij}$ as expressed in 
@@ -251,13 +252,16 @@ in~\ref{eq:lillystress} yields the best approximation
 for the dynamic Smagorinsky constant 
 %
 \begin{align}
-    C_d &= \frac{M_{ij}L_{ij}}{2l_a^2\:M_{kl}M_{kl}}.
+    C_s &= \frac{M_{ij}L_{ij}}{2M_{kl}M_{kl}}.
     \label{eq:dynsmag}
 \end{align}
 %
 Note that the double indices implies summing. This expression is however not a 
 stable option and to deal with this most implementations apply some sort of mean 
-in either time, space or both when calculating the costant.  
+in either time and/or space when calculating the costant. Another interesting property 
+is that the constant $C_s$ and the final sgs-tensor $\tau = -2C_s\mathcal{S}s_{ij}$ are 
+independent of smallest resolution scale, the only necessary variable is the relationship 
+between the two grid-sizes.
 
 \colorbox{green}{Clearify the effect on N-S eq.}
 

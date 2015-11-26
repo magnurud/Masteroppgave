@@ -188,8 +188,6 @@ Where the elements in the matrices and vectors are given as
 From these equations it is clear that the mass matrix $M$ is diagonal and the rhs vector $\tilde f$ is easily calculated, 
 while the stiffness matrix $A$ is symmetric but full.
 
-\cite{Canuto}
-
 %-----------------------------------
 %	SUBSECTION 2
 %-----------------------------------
@@ -278,7 +276,7 @@ For a full derivation and discussion on this matter it is refered to chapter 6.5
 The filter is proved to be a very effective stabilization method and it preserves the 
 spectral convergence rate. Another interesting property is that the filtering precedure 
 does not imply dissapation of energy, let the energy norm be defined as $E(u) = ||u||_{L_2}^2$.  
-By applying Parsevals identity (REFERENCE) the difference in energy between the original solution
+By applying Parsevals identity~\cite{Young} the difference in energy between the original solution
 and the filtered solution is given as 
 \begin{align}
    \epsilon_{diff}&=E(u) - E(F_{\alpha}u) \\
