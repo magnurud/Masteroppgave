@@ -144,8 +144,8 @@ Let us start by defining the space $V =H^1_0(\Omega)$ and assuming $f\in L^2(\Om
 Find $u\in V$ st. 
 %
 \begin{align}
-    \int_{\Omega}\nabla u \cdot \nabla v \partial \Omega + \lambda \int_{\Omega} u v\partial \Omega 
-    &= \int_{\Omega}f v\partial \Omega \qquad \forall v \in V
+    \int_{\Omega}\nabla u \cdot \nabla v d \Omega + \lambda \int_{\Omega} u vd \Omega 
+    &= \int_{\Omega}f vd \Omega \qquad \forall v \in V
     \label{eq:Helmholtzweak}
 \end{align}
 %
@@ -154,8 +154,8 @@ the discrete weak formulation is stated as
 Find $u_h\in V_h$ st. 
 %
 \begin{align}
-    \sum_i\left(  u_i\int_{\Omega}\nabla \psi_i \cdot \nabla \psi_j \partial \Omega + u_i\lambda \int_{\Omega} \psi_i \psi_j\partial \Omega \right)
-    &= \int_{\Omega}f \psi_j\partial \Omega \qquad \forall \psi_j \in V_h.
+    \sum_i\left(  u_i\int_{\Omega}\nabla \psi_i \cdot \nabla \psi_j d \Omega + u_i\lambda \int_{\Omega} \psi_i \psi_jd \Omega \right)
+    &= \int_{\Omega}f \psi_jd \Omega \qquad \forall \psi_j \in V_h.
     \label{eq:Helmholtzdiscrete}
 \end{align}
 %
@@ -229,8 +229,63 @@ differential operator wrt. $\boldsymbol\xi$. The important thing to notice here 
 introduced the Jacobian appears in the equation. When applying the GLL-quadrature to solve the integrals equality is guaranteed iff the 
 function integrated is of polynomial degree $2n-1$ or less, and the error gets bigger with increasing polynomial degree.
 
-By dividing the domain up into smaller elements ${\Omega_e}$ the initial deformation of the full domain $\Omega$ 
+By dividing the domain up into smaller elements $\left\{ \Omega_k \right\}$ such that 
+ the initial deformation of the full domain 
 can be reduced to have a very small effect on the each of the elements.
+
+Let us again consider the Helmholtz problem~\ref{eq:Helmholtz}, but this time 
+on a more general domain $\Omega$. The set of elements $\left\{ \Omega_k \right\}$
+is defined such that $\Omega_i\bigcap\Omega_j$ is either a vertex or a line and 
+$\Omega = \bigcup^K_{k=1}\Omega_k$.
+The weak formulation in equation~\ref{eq:Helmholtzweak} can then be written according 
+to the SEM formulation
+
+For all elements $\Omega_k$ Find $u_{h,k}\in X^N_k$  such that
+%
+\begin{align}
+    \int_{\Omega_k}\nabla u \cdot \nabla v d \Omega + \lambda \int_{\Omega_k} u vd \Omega 
+    &= \int_{\Omega_k}f vd \Omega \qquad \forall v \in X_k^N.
+    \label{eq:HelmholtzweakSEM}
+\end{align}
+%
+Where $X^N_k =  H^1(\Omega_k)\bigcap\mathbb{P}^N(\Omega_k)$. The same discretization 
+procedure as performed for the pure spectral case is now done for each of the 
+sub domains $\Omega_k$,
+%
+\begin{align}
+    \sum_i\left(  u_i\int_{\Omega_k}\nabla \psi_i \cdot \nabla \psi_j d \Omega + 
+    u_i\lambda \int_{\Omega_k} \psi_i \psi_jd \Omega \right)
+    &= \int_{\Omega_k}f \psi_jd \Omega \qquad \forall \psi_j \in V_h.
+    \label{eq:HelmholtzdiscreteSEM}
+\end{align}
+%
+Since the elements can be deformed a Gordon-Hall map is 
+constructed to map the coordinates to the reference element $\hat{\Omega}=[-1,1]^d$.
+Applying the identities from~\ref{eq:transforms} to~\ref{eq:HelmholtzdiscreteSEM} yields
+%
+\begin{align}
+    \begin{split}
+    \sum_i\left(  u_i\int_{\hat{\Omega}_k}(\mathbf{J}^{-T}\hat{\nabla} \hat{\psi}_i)^T
+    (\mathbf{J}^{-T}\hat{\nabla} \hat{\psi}_j) J d \hat{\Omega} + 
+    u_i\lambda \int_{\hat{\Omega}_k} \hat{\psi}_i \hat{\psi}_j Jd \hat{\Omega} \right)
+    &= \int_{\hat{\Omega}_k}\hat{f} \psi_j J d \hat{\Omega} \qquad \forall \psi_j \in V_h.  \\
+    \sum_i\left(  u_i\int_{\hat{\Omega}_k}\hat{\nabla}^T \hat{\psi}_i\mathbf{J}^{-1}
+    \mathbf{J}^{-T}\hat{\nabla} \hat{\psi}_j J d \hat{\Omega} + 
+    u_i\lambda \int_{\hat{\Omega}_k} \hat{\psi}_i \hat{\psi}_j Jd \hat{\Omega} \right)
+    &= \int_{\hat{\Omega}_k}\hat{f} \psi_j J d \hat{\Omega} \qquad \forall \psi_j \in V_h.
+    \end{split}
+    \label{eq:HelmholtzrefSEM}
+\end{align}
+%
+Notice how the integrals depend on the jacobian $\mathbb{J}$ and its determinant $J$.
+
+\colorbox{yellow}{Do a more thourough analysis of the meaning of J??}
+
+Hence the local matrices $A_k,M_k$ and the loading vector $f_k$ 
+are gathered from each element.
+Equivalently as for FEM the global matrices has to be assembled
+from all the local matrices corresponding to each sub domain. This procedure is general and can 
+be performed on almost any deformed domain as oppose to SM. 
 
 \colorbox{green}{Apply sem analysis on helmholtz problem}
 
@@ -259,53 +314,6 @@ Let $u = \sum_{i=0}^{N} \hat{u}_i L_i$ be the solution to some PDE, where $L_i$ 
 polynomial of order $i$ and $\hat{u}_i$ the corresponding coefficient. The effect of the filter
 can be given as 
 %
-\begin{align}
-    F_{\alpha} u = 
-    (1-\alpha)\hat{u}_{N}L_{N}
-    +\hat{u}_{N-1}L_{N-1} +
-    (\hat{u}_{N-2}+\alpha \hat{u}_{N})L_{N-2}
-    +\sum_{i=0}^{N-3}\hat{u}_{i}L_{i}.
-    \label{eq:filtereffect}
-\end{align}
-%
-From this identity the effect of the filter becomes clear, it is simply removing a part of 
-the highest order mode $N$ to the mode $N-2$. The rest of the coefficients remain unchanged.
-For a full derivation and discussion on this matter it is refered to chapter 6.5.1 in 
-\cite{Karniadakis}.
-
-The filter is proved to be a very effective stabilization method and it preserves the 
-spectral convergence rate. Another interesting property is that the filtering precedure 
-does not imply dissapation of energy, let the energy norm be defined as $E(u) = ||u||_{L_2}^2$.  
-By applying Parsevals identity~\cite{Young} the difference in energy between the original solution
-and the filtered solution is given as 
-\begin{align}
-   \epsilon_{diff}&=E(u) - E(F_{\alpha}u) \\
-                &= 2\alpha\hat{u}_N(\hat{u}_N||L_N||^2+\hat{u}_{N-2}||L_{N-2}||^2)
-    - \alpha^2\hat{u}^2_N(||L_N||^2+||L_{N-2}||^2)\\
-    &\approx \frac{2\alpha}{N}\left[  (1-\frac{\alpha}{2})\hat{u}_N^2 + 
-    \hat{u}_N\hat{u}_{N-2}\right].
-    \label{eq:filterenergy}
-\end{align}
-Which can take both positive and negative values depending on the sign and size of
-$\hat{u}_N\hat{u}_{N-1}$. By applying the known norm of the Legendre polynomials 
-the deduced absolute error $\epsilon_{diff}$ of the filtered energy is of order 
-$\epsilon_{diff}\sim \alpha/N$. The approximation $||L_N||^2\approx||L_{N-2}||^2\approx 1/N$
-have been used to achieve the result in~\ref{eq:filterenergy}.
-\subsection{Aliasing}
-\colorbox{green}{add an illustrative example}
-When evaluating the the integral surging from the non-linear term in the N-S equation 
-the polynomial to be integrated is order $2N+(N-1)$. The quadrature rule applied to solve the 
-integrals are only exact up to an order $2N-1$, hence the error surging from this evaluation 
-can be of significant size. The underevaluation of an integral like this is called a ``variational
-crime''. Applying a quadrature rule of a not sufficently high order results in an 
-aliasing effect of the lower modes, intenting to compensate for the higher order modes omitted. 
-Since a spectral element method arguably has a good accuracy these variational crimes should 
-not be commited and it is therefore common practice to solve this particular integral using a
-quadrature of order $3N$. The concept and illustrative examples are given in Chapter 2.4 in 
-\cite{Karniadakis}.
-
-%----------------------------------------------------------------------------------------
-%	SECTION 2
 %----------------------------------------------------------------------------------------
 
 \subsection{Gordon-Hall algorithm}

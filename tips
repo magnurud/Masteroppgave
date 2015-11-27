@@ -7,7 +7,8 @@ how much reduction of the residual is attained.
 qsub -I  -A ntnu100 -l select=2:ncpus=32:mpiprocs=16 -l walltime=01:00:00
 
 # WARNINGb: Detected non-right-handed element.
-Redo the mesh in ICEM! 
+Redo the mesh in ICEM!
+Make the surfmesh finer! 
 
 # Error in jacobians etc. 
 Make sure nodes are projected onto surface in ICEM
