@@ -1901,9 +1901,11 @@ def convert(nastranmesh,
 
     # Generate the mesh files for given mesh format
     if mesh_format == 'nek5000':
-        write_nek5000_file(dim, ofilename, curves,temperature, passive_scalars,start_of_rea,end_of_rea,curve_type)
+        write_nek5000_file(dim, ofilename, curves,0, passive_scalars,start_of_rea,end_of_rea,curve_type)
+        #write_nek5000_file(dim, ofilename, curves,temperature, passive_scalars,start_of_rea,end_of_rea,curve_type)
     elif mesh_format == 'surface':
         write_surface_file();
+        fixSIZE()
     elif mesh_format == 'semtex':
         write_semtex_file(dim, ofilename, curves, cylindrical, NZ)
     if mesh_format == 'fenics':
@@ -1914,6 +1916,7 @@ def convert(nastranmesh,
     if(mesh_format != 'surface'):
         print 'Fixing symmetry and inflow conditions \n '
         fixbc(ofilename + '.rea')
+        
 
     if(temperature != False ):
         print 'Fixing thermal inflow conditions \n '
@@ -1921,7 +1924,7 @@ def convert(nastranmesh,
 
     if(surf_list): 
         write_surf_list()
+        fixSIZE()
     
-    fixSIZE()
 
 	# END ADDED BY RUD 25.09.15

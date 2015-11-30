@@ -190,6 +190,8 @@ Where $\tau$ in this case denotes the subgrid scale (SGS) stress given as
     \tau_{ij}(u_i,uj) = (u_iu_j)^r -u_i^ru_j^r
     \label{eq:sgstensor}
 \end{align}
+%
+This tensor is a concequence of applying the filter on the non-linear advection term.
 
 \colorbox{yellow}{Should I show where this tensor comes from in a clearer way?}
 
@@ -201,7 +203,7 @@ Lilly in 1967~\cite{Lilly67} suggesting the following model of the sgs-tensor
 \begin{align}
     \tau_{ij} &= -2C_dl^2\mathcal{S}^rs_{ij}^r,\\
     s^r_{ij} &= \frac{1}{2}\left( \frac{\partial u^r_i}{\partial x_j} +
-    \frac{\partial u^r_j}{\partial x_i}\right)\\,
+    \frac{\partial u^r_j}{\partial x_i}\right),\\
     \mathcal{S}^r &= \sqrt{2s^r_{ij}s^r_{ij}}.
     \label{eq:boussinesq}
 \end{align}
@@ -268,9 +270,26 @@ stable option and to deal with this most implementations apply some sort of mean
 in either time and/or space when calculating the costant. Another interesting property 
 is that the constant $C_s$ and the final sgs-tensor $\tau = -2C_s\mathcal{S}s_{ij}$ are 
 independent of smallest resolution scale, the only necessary variable is the relationship 
-between the two grid-sizes.
+between the two grid-sizes. The assumption made in this model is that turbulence behaves 
+as diffusion, and the turbulent viscosity is defined for this case as $\nu_t = C_s\mathcal{S}$.
 
-\colorbox{green}{Clearify the effect on N-S eq.}
+Let us end this section by stating the filtered N-S equation with the LES using 
+dynamical smagorinsky subgrid scale model, and remember that the diffusive term is written 
+in general terms as $2\nabla \cdot \nu s_{ij}$.  
+%
+\begin{align}
+    \begin{split}
+        \frac{\partial \mathbf{u}^r}{\partial t} + \mathbf{u}^r\cdot \nabla\mathbf{u}^r
+        &= -\nabla p^r +2\nabla \cdot (\nu + \nu_t) s_{ij} \\
+        \nabla \cdot \mathbf{u}^r &= 0.
+    \end{split}
+	\label{eq:NSLES}
+\end{align}
+%
+Notice that if $v_t$ were to be a constant in the entire domain this equation would 
+be equivalent to the one for a fluid with viscosity $\nu'= \nu + \nu_t$.
+
+\colorbox{green}{Clarify the effect on N-S eq.}
 
 \section{Solution methods of incombressible N-S}
 \colorbox{green}{Rewrite this introduction}
