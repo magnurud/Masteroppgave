@@ -306,14 +306,15 @@ The routine attempts to be as automatic as possible and the only implementation 
 a call from \verb|usrdat2| with 3 input variables.
 
 Now an illustrative example of how this method is applied by the user. Say you have a project
-called ''myFlow'', and the mesh and surface mesh created in ICEM are named mesh_myFlow and 
-surfmesh_myFlow. The following commands are then executed
-\begin{verbatim}
->> ~/path/to/meshconvert/scrpt/nmshconvert --mesh mesh_myFlow --reafile init.rea --outfile myFlow.rea
+called ''myFlow'', and the mesh and surface mesh created in ICEM are named mesh\_myFlow and 
+surfmesh\_myFlow. The following commands are then executed
+
+%
+\begin{lstlisting}[frame=single]
+>> ~/path/to/meshconvert/scrpt/nmshconvert --mesh mesh_myFlow 
+--reafile init.rea --outfile myFlow.rea
 --tol 1e3 --temperature True --curvetype A
 
 >> ~/path/to/meshconvert/scrpt/nmshconvert --mesh surfmesh_myFlow --mesh_format surface
-
-\end{verbatim}
-
-
+\end{lstlisting}
+% 
