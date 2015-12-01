@@ -346,7 +346,11 @@ $\hat{u}_N\hat{u}_{N-1}$. By applying the known norm of the Legendre polynomials
 the deduced absolute error $\epsilon_{diff}$ of the filtered energy is of order 
 $\epsilon_{diff}\sim \alpha/N$. The approximation $||L_N||^2\approx||L_{N-2}||^2\approx 1/N$
 have been used to achieve the result in~\ref{eq:filterenergy}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsection{Aliasing}
+
 \colorbox{green}{add an illustrative example}
 When evaluating the the integral surging from the non-linear term in the N-S equation 
 the polynomial to be integrated is order $2N+(N-1)$. The quadrature rule applied to solve the 
@@ -357,7 +361,11 @@ aliasing effect of the lower modes, intenting to compensate for the higher order
 Since a spectral element method arguably has a good accuracy these variational crimes should 
 not be commited and it is therefore common practice to solve this particular integral using a
 quadrature of order $3N$. The concept and illustrative examples are given in Chapter 2.4 in 
-\cite{Karniadakis}.
+\cite{Karniadakis}. The effect of aliasing is made clear in chapter~\ref{results}.
+This is one of the time vs.\ accuracy questions one have to decide for each problem. 
+instead of applying the GLL-quadrature "designed" for the basis-functions the functions
+has to be evaluated in a new set of GLL-points with $3/2$ as many nodes. This is a costly 
+process and should only be applied when absolutely necessary. 
 
 %----------------------------------------------------------------------------------------
 %  SECTION 2
