@@ -67,8 +67,35 @@ flow has reached a steady state solution.
 \end{table}
 %----------------------------------------------------------------------------------------
 \section{Gas dispersion in a simplified urban area} 
-Results to come \ldots 
+This case is a part of a larger project designed to evaluate differrent solvers 
+ability to perform simulations of gas dispersion. An initial attempt to simulate the 
+dispersion of gas was performed in Nek5000 with fairly coarse element sizes, but without
+any subgrid-scale model. Only applying filtering on the last 3 nodes made the solution 
+sufficently stable and the results can be seen in figures~\ref{fig:cHfilter} and~\ref{fig:cHfilter}.
+%
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Figures/NekcH.pdf}
+	\caption{Time-averaged concentration with a sample time of $18.00$ s at $z/H = 0.025$ plotted horizontally and scaled 
+	with the free-stream velocity and emission rate. Compared against wind tunnel data.
+Two dashed lines on either side of the centerline represent the canyon.}
+	\label{fig:cHfilter}
+\end{figure}
+%
+Disscuss the plot... 
 
+\colorbox{green}{redo these simulation in case they were started to early.}
+%
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Figures/NekcV.pdf}
+	\caption{Time-averaged concentration with a sample time of $18.00$ s at $y = 0$ plotted
+    vertically and scaled 
+	with the free-stream velocity and emission rate. Compared against wind tunnel data.
+Two dashed lines on either side of the centerline represent the canyon.}
+	\label{fig:cVfilter}
+\end{figure}
+%
 \section{Discussion and Conclusion}
 \colorbox{yellow}{How did Nek perform overall, user-friendly ?,correctness,speed etc.}
 
