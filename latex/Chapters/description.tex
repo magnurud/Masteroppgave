@@ -400,12 +400,48 @@ The method describing one time-step can then be summarized as following
     \item solve $v^{**} =v^* + \Delta t Dp^{n+1}$.
     \item solve $\partial_t v^{n+1}=v^{**} + \Delta t Lv^{n+1}$.
 \end{itemize}
-%\begin{itemize}
-    %\item solve $dv/dt=Nv$
-    %\item solve the poisson pressure equation $\Delta\: p = \nabla \cdot (v^*/\Delta t)$.
-    %\item solve $v^{**} =v^* + \Delta t Dp^{n+1}$.
-    %\item solve $\partial_t v^{n+1}=v^{**} + \Delta t Lv^{n+1}$.
-%\end{itemize}
+\begin{itemize}
+    \item Calculate the intermediate solution $v^*$ by solving $\frac{dv}{dt}=Nv$
+    \item Calculate $p^{n+1}$ by solving the poisson pressure equation $\Delta\: p = \nabla \cdot \frac{v^*}{\Delta t}$.
+    \item Calculate the intermediate velocity $v^{**}$ by solving $\frac{dv}{dt} =Dp^{n+1}$.
+    \item Calculate $v^{n+1}$ by solving $\partial_t v^{n+1}=v^{**} + \Delta t Lv^{n+1}$.
+\end{itemize}
+A schematic overview of the method is stated below, where the equations on the right hand side are 
+solved and the updated solution is stated on the left hand side.
+\begin{align}
+    \begin{split}
+        v^* &\leftarrow \frac{dv}{dt}=Nv,\\
+    p^{n+1} &\leftarrow \Delta\: p = \nabla \cdot \frac{v^*}{\Delta t},\\
+    v^{**} &\leftarrow  \frac{dv^*}{dt} =Dp^{n+1},\\
+    v^{n+1} &\leftarrow \frac{dv^{**}}{dt}= Lv^{**}.
+    \end{split}
+    \label{eq:fracstep}
+\end{align}
+
+As earlier mentioned this method is convenient because it allows us to handle the different 
+terms with different solution techniques. So since the first equation in~\ref{eq:fracstep}
+involves the non-lineat skew-symmetric advection operator this equation is solved using a 
+explicit Adam Bashford scheme. The second equation is the possion pressure equation which
+assures a divergence free velocity field. Note that $p\in L^2\supset H^1$ hence the poisson equation 
+is somewhat different from the one normally studied in textbooks. Another difficulty is the 
+treatment of the boundary conditions. Ideally the BC's should be determined by the velocity 
+field $v^{n+1}$, but since this solution is yet to be calculated the intermediate velocity field 
+$v^{*}$ is used to impose the boundary conditions. With $p^{n+1}$ known the third equation is 
+simply an update of the velocity in order to impose the divergence free condition. Now the last
+equation is solved implicitly due to its nice symmetric structure. This results in a system 
+equivalent to the Helmholtz problem which will be discussed in detail in chapter~\ref{numerics}.
+This can be easily shown by discretizing the equation and obtaining 
+\begin{align}
+    \begin{split}
+    (v^{n+1}-v^{n})/\Delta t  &= Lv^{n+1},\\
+    -Lv^{n+1}+\frac{1}{\Delta t} v^{n+1} &= v^{n}.
+    \end{split}
+    \label{eq:fracHelm}
+\end{align}
+Knowing that $L$ is the discrete laplacian operator and $v^n$ is a known variable this is 
+similar to problem~\ref{eq:Helmholtz}.
+
+
 This method provides an efficient algorithm, but is known to produce errors of order O(1).
 The problem is the pressure poisson equation which is solved with incorrect boundary 
 conditions. The first step can also be evaluated in an OIFS-way to gain stability, by rewriting the initial equation 
