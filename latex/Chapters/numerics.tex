@@ -277,7 +277,7 @@ Applying the identities from~\ref{eq:transforms} to~\ref{eq:HelmholtzdiscreteSEM
     \label{eq:HelmholtzrefSEM}
 \end{align}
 %
-Notice how the integrals depend on the jacobian $\mathbb{J}$ and its determinant $J$.
+Notice how the integrals depend on the jacobian $\mathbf{J}$ and its determinant $J$.
 
 \colorbox{yellow}{Do a more thourough analysis of the meaning of J??}
 
@@ -314,6 +314,53 @@ Let $u = \sum_{i=0}^{N} \hat{u}_i L_i$ be the solution to some PDE, where $L_i$ 
 polynomial of order $i$ and $\hat{u}_i$ the corresponding coefficient. The effect of the filter
 can be given as 
 %
+\begin{align}
+    F_{\alpha} u = 
+    (1-\alpha)\hat{u}_{N}L_{N}
+    +\hat{u}_{N-1}L_{N-1} +
+    (\hat{u}_{N-2}+\alpha \hat{u}_{N})L_{N-2}
+    +\sum_{i=0}^{N-3}\hat{u}_{i}L_{i}.
+    \label{eq:filtereffect}
+\end{align}
+%
+From this identity the effect of the filter becomes clear, it is simply removing a part of 
+the highest order mode $N$ to the mode $N-2$. The rest of the coefficients remain unchanged.
+For a full derivation and discussion on this matter it is refered to chapter 6.5.1 in 
+\cite{Karniadakis}.
+
+The filter is proved to be a very effective stabilization method and it preserves the 
+spectral convergence rate. Another interesting property is that the filtering precedure 
+does not imply dissapation of energy, let the energy norm be defined as $E(u) = ||u||_{L_2}^2$.  
+By applying Parsevals identity~\cite{Young} the difference in energy between the original solution
+and the filtered solution is given as 
+\begin{align}
+   \epsilon_{diff}&=E(u) - E(F_{\alpha}u) \\
+                &= 2\alpha\hat{u}_N(\hat{u}_N||L_N||^2+\hat{u}_{N-2}||L_{N-2}||^2)
+    - \alpha^2\hat{u}^2_N(||L_N||^2+||L_{N-2}||^2)\\
+    &\approx \frac{2\alpha}{N}\left[  (1-\frac{\alpha}{2})\hat{u}_N^2 + 
+    \hat{u}_N\hat{u}_{N-2}\right].
+    \label{eq:filterenergy}
+\end{align}
+Which can take both positive and negative values depending on the sign and size of
+$\hat{u}_N\hat{u}_{N-1}$. By applying the known norm of the Legendre polynomials 
+the deduced absolute error $\epsilon_{diff}$ of the filtered energy is of order 
+$\epsilon_{diff}\sim \alpha/N$. The approximation $||L_N||^2\approx||L_{N-2}||^2\approx 1/N$
+have been used to achieve the result in~\ref{eq:filterenergy}.
+\subsection{Aliasing}
+\colorbox{green}{add an illustrative example}
+When evaluating the the integral surging from the non-linear term in the N-S equation 
+the polynomial to be integrated is order $2N+(N-1)$. The quadrature rule applied to solve the 
+integrals are only exact up to an order $2N-1$, hence the error surging from this evaluation 
+can be of significant size. The underevaluation of an integral like this is called a ``variational
+crime''. Applying a quadrature rule of a not sufficently high order results in an 
+aliasing effect of the lower modes, intenting to compensate for the higher order modes omitted. 
+Since a spectral element method arguably has a good accuracy these variational crimes should 
+not be commited and it is therefore common practice to solve this particular integral using a
+quadrature of order $3N$. The concept and illustrative examples are given in Chapter 2.4 in 
+\cite{Karniadakis}.
+
+%----------------------------------------------------------------------------------------
+%  SECTION 2
 %----------------------------------------------------------------------------------------
 
 \subsection{Gordon-Hall algorithm}

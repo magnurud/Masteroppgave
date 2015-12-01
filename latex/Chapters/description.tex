@@ -370,8 +370,10 @@ Now the OIFS method allows us to find the terms in the sum in a rather elegant f
 First of all the auxiliary variable $\tilde{\mathbf{v}}_j$ is defined such that $Q(t^{n+1-j})M\mathbf{v}^{n+1-j} = M\tilde{\mathbf{v}}_j$ thus enabling us to find
 the summation expression by solving the initial value problem 
 \begin{align}
+    \begin{split}
     M\frac{d\tilde{\mathbf{v}}_j}{ds} &= -C(\tilde{\mathbf{v}}_j(s))\tilde{\mathbf{v}}_j(s) , \qquad t^{n+1-j}\leq s\leq t^{n+1}\\
     \tilde{\mathbf{v}}_j(t^{n+1-j}) &= \mathbf{v}(t^{n+1-j}).
+    \end{split}
     \label{eq:IVP}
 \end{align}
 Notice how the integrational factor $Q(t)$ is never evaluated directly.
@@ -393,19 +395,19 @@ equation as
     \label{eq:NSfracstep}
 \end{align}
 Where $\partial_t, L,D,P$ Denotes the time-derivate, linear, gradient and non-linear operator. 
-The method describing one time-step can then be summarized as following
-\begin{itemize}
-    \item solve $v^* = v^n + \Delta t Nv^n$.
-    \item solve the poisson pressure equation $\Delta\: p = \nabla \cdot (v^*/\Delta t)$.
-    \item solve $v^{**} =v^* + \Delta t Dp^{n+1}$.
-    \item solve $\partial_t v^{n+1}=v^{**} + \Delta t Lv^{n+1}$.
-\end{itemize}
-\begin{itemize}
-    \item Calculate the intermediate solution $v^*$ by solving $\frac{dv}{dt}=Nv$
-    \item Calculate $p^{n+1}$ by solving the poisson pressure equation $\Delta\: p = \nabla \cdot \frac{v^*}{\Delta t}$.
-    \item Calculate the intermediate velocity $v^{**}$ by solving $\frac{dv}{dt} =Dp^{n+1}$.
-    \item Calculate $v^{n+1}$ by solving $\partial_t v^{n+1}=v^{**} + \Delta t Lv^{n+1}$.
-\end{itemize}
+%The method describing one time-step can then be summarized as following
+%\begin{itemize}
+    %\item solve $v^* = v^n + \Delta t Nv^n$.
+    %\item solve the poisson pressure equation $\Delta\: p = \nabla \cdot (v^*/\Delta t)$.
+    %\item solve $v^{**} =v^* + \Delta t Dp^{n+1}$.
+    %\item solve $\partial_t v^{n+1}=v^{**} + \Delta t Lv^{n+1}$.
+%\end{itemize}
+%\begin{itemize}
+    %\item Calculate the intermediate solution $v^*$ by solving $\frac{dv}{dt}=Nv$
+    %\item Calculate $p^{n+1}$ by solving the poisson pressure equation $\Delta\: p = \nabla \cdot \frac{v^*}{\Delta t}$.
+    %\item Calculate the intermediate velocity $v^{**}$ by solving $\frac{dv}{dt} =Dp^{n+1}$.
+    %\item Calculate $v^{n+1}$ by solving $\partial_t v^{n+1}=v^{**} + \Delta t Lv^{n+1}$.
+%\end{itemize}
 A schematic overview of the method is stated below, where the equations on the right hand side are 
 solved and the updated solution is stated on the left hand side.
 \begin{align}
@@ -444,8 +446,12 @@ similar to problem~\ref{eq:Helmholtz}.
 
 This method provides an efficient algorithm, but is known to produce errors of order O(1).
 The problem is the pressure poisson equation which is solved with incorrect boundary 
-conditions. The first step can also be evaluated in an OIFS-way to gain stability, by rewriting the initial equation 
-as described in the previous chapter. 
+conditions. The first step can also be evaluated in an OIFS-way to gain stability,
+by rewriting the initial equation as described in the previous chapter. This allows you 
+to solve the unstable advection operator with multiple substeps. Explicitly the first step 
+in~\ref{eq:fracstep} would be solved by applying the discretization used in~\ref{eq:NSOIFS1}
+with an empty right hand side since the rest of the terms are take care of in the next steps. 
+The IVP~\ref{eq:IVP} is then solved to obtain $v^{*}$.
 
 %\subsection{Pressure-correction}
 
