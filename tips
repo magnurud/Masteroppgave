@@ -3,6 +3,9 @@
 # found in navier4.f subroutine projh()
 how much reduction of the residual is attained. 
 
+# Explosion from the beguinning
+Too high timestep
+
 # Running interactively on vilje 
 qsub -I  -A ntnu100 -l select=2:ncpus=32:mpiprocs=16 -l walltime=01:00:00
 
