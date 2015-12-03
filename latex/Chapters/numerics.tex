@@ -375,7 +375,7 @@ process and should only be applied when absolutely necessary.
 In order to work on complex geometries the elements require a certain deformation in order to be able 
 to describe the entire domain. It is necessary to evaluate all the integrals surging from the weak formulation over 
 a reference domain $\hat{\Omega} = [-1,1]^d$ for sakes of efficiency and implementation purposes. The Gordon-Hall 
-algorithm is a general method that creates a map from an arbitrary simply connected domain to $\hat{\Omega}$.
+algorithm is a general method that creates an isometric map from an arbitrary simply connected domain to $\hat{\Omega}$.
 Let $\mathbf{\tilde{x}}$ be the mapping function from the reference domain to the physical domain given on the form 
 %
 \begin{align}
@@ -385,31 +385,54 @@ Let $\mathbf{\tilde{x}}$ be the mapping function from the reference domain to th
 %
 $l_i$ being the ith lagrange polynomial.
 The full description of the algorithm with helpful figures can be found in \cite{Deville} chapter 4.
-Let us first introduce the linear interpolation operator $I_r$. Let $f(x)$ be any function on the domain $[a,b]$, 
-application of $I_r$ then yields 
+Without going to much into the mathematical foundation of this method a more intuitive and implementable
+presentation of the method will be provided in this chapter. 
+For simplicity a two-dimensional domain will be considered here, and the 3D case will be an easy expansion 
+of the algorithm provided. Consider a deformed domain $\Omega \in \mathbb{R}^2$, with $\Gamma_{i,j}$ representing 
+the discrete boundary coordinates. The four vertices can then be expressed as 
+$\Gamma_{0,0},\Gamma_{0,N},\Gamma_{N,0}\Gamma_{N,N}$. Let $\phi_0,\phi_N$ be defined as 
+%
 \begin{align}
-    \tilde{f}(r) = I_rf = \frac{1-r}{2}f(a) + \frac{1+r}{2}f(b).
+    \phi_0(\xi) = \frac{1-\xi}{2}, \qquad
+    \phi_N(\xi) = \frac{1+\xi}{2}.
     \label{eq:interpolationoperator}
 \end{align}
-Notice that the interpolant only need the endpoints of the function on its domain.
-Similarly for a two-dimensional approach only the edges needs to be described. 
-Let $\Gamma_{ns}(r,\pm 1), \Gamma_{ew}(\pm 1,s) $ denote south/north and east/west boundaries of a deformed element.
-The complete 2D-interpolation operator is stated as $I_{rs} = I_r+I_s-I_rI_s$,
-applied on the deformed element $\Omega$ provides the mapping
+%
+Let $\left\{ \xi_0, \ldots ,\xi_N \right\}_N = \left\{ -1 ,\ldots ,1 \right\}_N$ be the GLL-points corresponding
+to the Lagrange polynomial of order $N-1$. An important property for the functions in~\ref{eq:interpolationoperator} is that
+$\phi_0(\xi_0) =\phi_N(\xi_N) = 1$ and $\phi_0(\xi_N) =\phi_N(\xi_0) = 0$.
+
+The algorithm provides a stepwise routine depending on the complexity of the domain. The first step is to create 
+a mapping to a polygonial spanned from the vertices of $\Omega$.
 %
 \begin{align}
-    \mathbf{\tilde{x}}(r,s) = 
-    I_{rs}\mathbf{x} = 
-    I_r\Gamma_{ew}(\pm 1,s)+I_s\Gamma_{ns}(r,\pm 1)-I_rI_s\Gamma(\pm 1,\pm 1)
-    \label{eq:interpolationoperator2d}
+    \begin{split}
+    \mathbf{\tilde{x}}_{i,j} 
+             &=\Gamma_{0,0}\phi_0(r_i)\phi_0(s_j)\\
+             &+\Gamma_{0,N}\phi_0(r_i)\phi_N(s_j)\\
+             &+\Gamma_{N,0}\phi_N(r_i)\phi_0(s_j)\\
+             &+\Gamma_{N,N}\phi_N(r_i)\phi_N(s_j)\\
+    \end{split}
+    \label{eq:gh1}
 \end{align}
 %
-In 3D the additional knowledge of the faces may be applied to create mappings from elements with deformed faces.
-It is however possible to implement the algorithm in a way such that this information is not needed to create the mapping.
-The vertix information is sufficent to create a mapping from a deformed element
-with straight edges to $\hat{\Omega}$. If the edges are curved but no further information is provided about the faces 
-a linear 2D interpolation as the one stated in ~\ref{eq:interpolationoperator2d} can be created for each face. 
-\colorbox{green}{Read the article and rewrite some of this section}
+If the edges are straight the algorithm ends here, but for curved edges a second step is performed adding 
+the deformation of the edges.
+%
+\begin{align}
+    \begin{split}
+        \mathbf{\tilde{x}}_{i,j}  = \mathbf{\tilde{x}}_{i,j} 
+             &+(\Gamma_{i,0}-\mathbf{\tilde{x}}_{i,0})\phi_0(s_j)\\
+             &+(\Gamma_{i,N}-\mathbf{\tilde{x}}_{i,N})\phi_N(s_j)\\
+             &+(\Gamma_{0,j}-\mathbf{\tilde{x}}_{0,j})\phi_0(r_i)\\
+             &+(\Gamma_{N,j}-\mathbf{\tilde{x}}_{N,j})\phi_N(r_i)\\
+    \end{split}
+    \label{eq:gh1}
+\end{align}
+%
+In 3D the additional knowledge of the faces may be applied to create mappings from elements with deformed faces as a 
+third step. The only difference when applying this algorithm in three dimensions is that you need to include $\phi$
+for a third coordinate $t_k$ and the number of vertices, and edges are $(8,12)$ instead of $(4,4)$.
 
 
 
