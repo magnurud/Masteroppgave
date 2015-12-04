@@ -117,15 +117,15 @@ $L_N$ being the Legendre polynomial of degree $N$, defined from the Sturm-Louvil
 \end{align}
 With equations \ref{eq:Legendre} and \ref{eq:GLL-nodes} the basis functions $\psi_j$ can be stated as 
 \begin{align}
-    \psi_j = \prod_{i\neq j}^{N}\frac{x-x_i}{x_j-x_i}.
+    \psi_j(x) = \prod_{i\neq j}^{N}\frac{x-x_i}{x_j-x_i}.
     \label{eq:Lagrange}
 \end{align}
 \colorbox{yellow}{This should be taken a bit more thouroughly, Quadrature! }
 
-$\{x_i\}$ beeing the solutions to \ref{eq:GLL-nodes}. Note that $\psi_j(x_i) = 0 \text{ when } i \neq j$,
-the expansion coefficients in \ref{eq:spectralprojection} are then chosen as $a_i = u_i :=u(x_i)$ to minimize the projection error in $L^2(\Omega)$. 
+$\{x_i\}$ beeing the solutions to \ref{eq:GLL-nodes}. Note that $\psi_j(x_i) = \delta_{ij}$.
+The expansion coefficients in \ref{eq:spectralprojection} are then chosen as $a_i = u_i :=u(x_i)$ to minimize the projection error in $L^2(\Omega)$. 
 expanding a basis such that the coefficients are simply the evaluation of the function in that particular point, is known as a nodal SM. 
-Creating a basis for 2 and 3 dimensions is done simply by taking the cross product of the basis functions in each direction
+Creating a basis for 2 and 3 dimensions is done simply by taking the tensor product of the basis functions in each direction
 \begin{align}
     \Psi_{ijk}(x,y,z) = \psi_i(x)\psi_j(y)\psi_k(z).
     \label{eq:3dbasis}
@@ -372,6 +372,7 @@ process and should only be applied when absolutely necessary.
 %----------------------------------------------------------------------------------------
 
 \subsection{Gordon-Hall algorithm}
+\colorbox{green}{Make figure!!}
 In order to work on complex geometries the elements require a certain deformation in order to be able 
 to describe the entire domain. It is necessary to evaluate all the integrals surging from the weak formulation over 
 a reference domain $\hat{\Omega} = [-1,1]^d$ for sakes of efficiency and implementation purposes. The Gordon-Hall 
