@@ -225,7 +225,7 @@ points with equal distance to both $a$ and $b$.
 \end{itemize}
 
 
-\section{Additional projection algorithm}
+\section{Additional projection algorithm}\label{surfpro}
 The routine xyzarc enables the user to represent circular edges with the same order as
 the lagrange polynomials of each element. For more complex geometry such as actual 
 terrain and other surfaces without any analytic expression the large element sizes 
@@ -319,11 +319,21 @@ surfmesh\_myFlow. The following commands are then executed
 \end{lstlisting}
 % 
 \subsection{Application on the hill of Ekeberg}
-
+As an initial test of the algorithm a mesh was created based on the hill of Ekeberg.
+The surface was loaded as a \verb|.tin| file in ICEM and a simple box was created with 
+the described terrain as floor. A simple sketch of the domain with the initial mesh in given in 
+figure~\ref{fig:ekeberg}. This geometry was chosen because it resembles a typical problem with 
+spectral elements. Since the initial element-mesh is relatively coarse it does not capture all 
+the details in the geometry and the GLL-nodes distributed on the faces corresponding to the 
+unstructured surface will be misplaced. It is however no theoretical problem to reconstruct the 
+surface with with a polynomial of order $P$. With the routine described in chapter~\ref{surfpro}
+The surface was approximated accurately by higher order polynomials.
 %
-\begin{figure}[h]
-	\includegraphics[width=0.8\textwidth]{Figures/mesh_ekebergaasen.png}
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=0.7\textwidth]{Figures/mesh_ekebergaasen2.png}
     \caption{The initial mesh of the hill}
-	\label{fig:layout}
+	\label{fig:ekeberg}
 \end{figure}
 %
+The algorithm restricts itself to relatively smooth surfaces.
