@@ -310,14 +310,28 @@ called ''myFlow'', and the mesh and surface mesh created in ICEM are named mesh\
 surfmesh\_myFlow. The following commands are then executed
 
 %
-\begin{lstlisting}[frame=single]
->> ~/path/to/meshconvert/scrpt/nmshconvert --mesh mesh_myFlow 
---reafile init.rea --outfile myFlow.rea
---tol 1e3 --temperature True --curvetype A
+%\begin{lstlisting}[style=FormattedNumber, basicstyle = \ttfamily,frame= none]
+%>> ~/path/to/meshconvert/scrpt/nmshconvert --mesh mesh_myFlow 
+%--reafile init.rea --outfile myFlow.rea
+%--tol 1e3 --temperature True --curvetype A
 
->> ~/path/to/meshconvert/scrpt/nmshconvert --mesh surfmesh_myFlow --mesh_format surface
-\end{lstlisting}
+%>> ~/path/to/meshconvert/scrpt/nmshconvert --mesh surfmesh_myFlow --mesh_format surface
+%\end{lstlisting}
 % 
+\begin{verbatim}
+>> ./nmshconvert --mesh mesh_myFlow 
+    --reafile init.rea --outfile myFlow.rea
+    --tol 1e3 --temperature True --curvetype A
+>> ./nmshconvert --mesh surfmesh_myFlow 
+    --mesh_format surface
+
+\end{verbatim}
+% 
+\begin{lstlisting}[style=FormattedNumber, frame=none]
+    int* p;
+    int a[4];
+    p = a;
+\end{lstlisting}
 \subsection{Application on the hill of Ekeberg}
 As an initial test of the algorithm a mesh was created based on the hill of Ekeberg.
 The surface was loaded as a \verb|.tin| file in ICEM and a simple box was created with 
