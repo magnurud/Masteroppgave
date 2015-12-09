@@ -30,13 +30,20 @@ Nek5000 is a turbulent flow solver developed mainly by Paul Fischer
 and has through the past 20 years had several contributours. 
 It is an open-source code applicable to many different types of flow 
 and it has been put a lot of effort into making the code as parallelizable as possible.
-With SEM as the numerical method applied it is possible to obtain extremely accurate results.  
+With SEM as the numerical method applied it is possible to obtain very accurate results.  
 
-nek5000 has its own mesh-generator for generating simpler geometries and it is also implemented the possibility to integrate CUBIT mesh 
-files. A common starting point for simulating turbulent flow is a geometry given by a CAD-file,
-without any functions to describe the boundaries.
-The possibility to make a mesh through a visual gui is provided through for instance ICEM.
-This mesh can then later be transformed to the inputfile required by nek5000. 
+%nek5000 has its own mesh-generator for generating simpler geometries and it is also implemented the possibility to integrate CUBIT mesh 
+%files. A common starting point for simulating turbulent flow is a geometry given by a CAD-file,
+%without any functions to describe the boundaries.
+%The possibility to make a mesh through a visual gui is provided through for instance ICEM.
+%This mesh can then later be transformed to the inputfile required by nek5000. 
+
+Nek provides a basic tool for generation of mesh. For more complex geometries this tool cannot compare with more visualized-based softwares 
+such as ICEM from ANSYS which exports mesh to several numerical solvers such as Fluent and nastran.
+It is therefore very useful to have an automatic way of converting a mesh created in ICEM to the format required by nek5000. 
+%In order for nek to run optimally the elements should be as homogenous and as similar to the reference element as possible. 
+%It is therefore of great interest to be able to propagate curved geometries into the neighbour-elements in order to have a smooth as 
+%possible transition from a boundary with high curvature.
 
 So far nek5000 has supported three automatic routine for generating curved edges;
 circles in 2-D geometries, spherical shell elements and a general 2nd degree interpolation.
@@ -44,47 +51,53 @@ Further manipulation of the element edges is left to the user to define manually
 for each particular problem. One of the objectives of this thesis is to make Nek5000 more
 user-friendly and create automatic routines to handle complex geometry.
 
-In order to get a quick overview of the framework in Nek a short list of the main steps
-are stated in the list below 
+%In order to get a quick overview of the framework in Nek a short list of the main steps
+%are stated in the list below 
 
-%
-\begin{enumerate}
-    \item \emph{Initialize} 
-    \subitem Reading mesh and parameters from user, generating GLL-points, and defining
-        the values needed to perform the simulations. PRESSURE SOLV INIT ??? 
-    \item \emph{solve}
-     \subitem Solving for each timestep, depending on the problem solvers for flow,temperature 
-     and other scalars will be performed. The user is free to choose different solvers which 
-     will be discussed later.
- \item \emph{post-processing}
-     \subitem Writing statistics and other user-specified parameters to file.
-\end{enumerate}
-%
-Nek provides a basic tool for generation of mesh. For more complex geometries this tool cannot compare with more visualized-based softwares 
-such as ICEM from ANSYS which exports mesh to several numerical solvers such as Fluent and nastran.
-It is therefore very useful to have an automatic way of converting a mesh created in ICEM to the format required by nek5000. 
-In order for nek to run optimally the elements should be as homogenous and as similar to the reference element as possible. 
-It is therefore of great interest to be able to propagate curved geometries into the neighbour-elements in order to have a smooth as 
-possible transition from a boundary with high curvature.
+%%
+%\begin{enumerate}
+    %\item \emph{Initialize} 
+    %\subitem Reading mesh and parameters from user, generating GLL-points, and defining
+        %the values needed to perform the simulations. PRESSURE SOLV INIT ??? 
+    %\item \emph{solve}
+     %\subitem Solving for each timestep, depending on the problem solvers for flow,temperature 
+     %and other scalars will be performed. The user is free to choose different solvers which 
+     %will be discussed later.
+ %\item \emph{post-processing}
+     %\subitem Writing statistics and other user-specified parameters to file.
+%\end{enumerate}
+%%
 
 \section{User-defined files}
 In order to work with Nek there are some practical information that needs to be clarified.
-Nek is recompiled for every case and the user specify all the information in the three files \verb|{.rea,.usr,SIZE}|.
+Nek is recompiled for every case and the user specify all the information in the three files 
+\verb|{.rea,.usr,SIZE,}|. These files along with the standard library that belongs to Nek are 
+compiled using makenek which creates the executable file \verb|nek5000|. 
+The user guide \cite{Nek} contains a tutorial which explains the necessary 
+steps on how to get started with Nek.
 %
 \subsection{SIZE}
 Since Nek is mostly based on Fortran77 all memory allocations are done statically and needs to be specified explicitly 
-before runtime. Most of these variables are stated in \verb|SIZE|. Polynomial degree, \#max elements, \#max processors, 
-\#max scalars are all examples of variables that are stated in this file. These variables defines the sizes of almost all 
-the arrays used in the program so it is important to define these variables as accurately as possible in order to optimize
-memory usage.
+before runtime. Most of these variables are stated in \verb|SIZE|. The size of the working arrays 
+are mostly defined by the upper limits of elements, processors, scalars and of course the polynomial degree
+of the local lagrange functions. These variables defines the sizes of almost all 
+the arrays used in the program so it is important to define these variables as accurately 
+as possible in order to optimize memory usage.
 %
 \subsection{.rea}
 In \verb|.rea| all the problem specific parameters are given. The strucuture of the file is given in table~\ref{tab:reafile}.
 Of the 103 variables specified in the beginning of the file there are roughly 50 of them that are used. Example of the variables
 are DT,NSTEPS,IOSTEP which denotes the target time step, total number of steps and the frequency of writing data to file. 
 There are also some physical variables such as VISCOS, RHOCP, DENSITY denoting the viscousity of the fluid, convectional constant and 
-the density. In addition tolerances, cfl-number, order of discretization, preconditioner and de-aliasing info are also defined in this section.
-Of the remaining variables the user can define problem-specific parameters that can be applied in user-defined routines in \verb|.usr|.
+the density. In addition tolerances, target CFL-number, order of temporal discretization, 
+preconditioner and de-aliasing info are also defined in this section.
+Of the remaining variables the user can define problem-specific parameters that 
+can be applied in user-defined routines in \verb|.usr|.
+It is important to edit this file with care, and pay attention to the implication of the 
+variables. If for instance the Thermal BCs are included while \verb|IFTEMP = F| an error 
+will occur. Symmetric boundary conditions on surfaces that are not orthogonal to any of the 
+cartesian axes cannot be imposed unless \verb|IFSTRS = T|. There are several of these subtil
+connections which the user has to be aware of when creating the evironment for his simulation.
 %
 \begin{table}
     \centering
@@ -142,9 +155,11 @@ frequently used for this thesis are described below
 %
 In addition to these routines all user-defined functions are specified in this file. The LES implementation in Nek is based
 on several subroutines specified in addition to those stated above. The project onto surface routine is also implemented 
-in this file.
+in this file. These subroutines provide the user to do almost anything he would like, all variables
+can be accessed and transformed in whatever way desired. 
 
-One important thing to grasp when working with functions in \verb|.usr| is which variables that are available. 
+One important thing to grasp when working with functions in \verb|.usr| is how to access all the 
+available variables. 
 Almost all of the subroutines include \verb|'TOTAL'| which is a file containing several other files where all the.
 essential variables are defined. Sadly these variables are not well-documented and a lot time has been spent 
 searching through the routines of Nek in order to understand when the variables are defined and their purpose. 
@@ -156,7 +171,7 @@ accessible from the subroutines in \verb|.usr| are listed in Appendix~\ref{Appen
 \section{Steps in the solver}
 To best understand the workflow of Nek the subroutine \verb|nek_advance| in \verb|drive1.f| should be examined.
 This routine includes all the steps in one iteration of the solver. The routine is adapted so that it is functional
-for a number of different problems and user-settings. The most important boolean switches used in this routine are 
+for a number of different problems and userdefined settings. The most important boolean switches used in this routine are 
 described in the list below 
 %
 \begin{itemize}
@@ -169,58 +184,59 @@ described in the list below
 %
 further the routines of interests are \verb|fluid| and \verb|heat|, the solvers for N-S equations and passive scalars respectively.
 Both subroutines are found in \verb|drive2.f|. The understanding of these solvers are best achieved by studying equation ~\ref{eq:NS} 
-and~\ref{eq:PS}.  
+and~\ref{eq:PS}. For the settings chosen in this thesis a fractional step procedure as described in 
+chapter~\ref{fracstep} is applied.
 
 %\colorbox{yellow}{what are fluidp() and heatp( )? solve for pertubated field and then project onto div-free space ? }
 
-\colorbox{green}{How does a preconditioner work in Nek ?}
+\colorbox{yellow}{How does a preconditioner work in Nek ?}
 
 %
-\section{Incompressible N-S solvers in Nek}
-Nek offer several implementations depending on the mathematical formulation wanted by the user.
-The most standard, and the algorithm applied in this thesis is the fractional step procedure 
-described in detail in chapter~\ref{description}.
+%\section{Incompressible N-S solvers in Nek}
+%Nek offer several implementations depending on the mathematical formulation wanted by the user.
+%The most standard, and the algorithm applied in this thesis is the fractional step procedure 
+%described in detail in chapter~\ref{description}.
 
 
-A Convection-Diffusion problem can be stated as 
-\begin{align}
-    M\frac{du}{dt} = Au-Cu+Mf
-    \label{eq:conv-diff}
-\end{align}
-% 
-Where $M$ and $A$ is the mass, and stiffness matrix, $f$ is the loading function and $C$ is 
-the matrix corresponding to the convective term. The non-linearity is represented in the 
-convective term since $C$ is dependent of $u$.
-The time-derivative is discretized by a Backward difference (BDFk) scheme using solutions 
-from the $k$ previous steps to extrapolate the current value. In order to gain stability 
-an implicit scheme is chosen and the resulting eguation is given as 
-%
-OIFS ???
----------- CHECK MAKEF IN NAVIER1.F ----------------- 
-\begin{align}
-    \sum_{j=0}^{k}\frac{b_j}{\Delta t}Mu^{n-j+1} = Au^{n+1}-Cu^{n+1}+Mf^{n+1}
-    \label{eq:conv-diff2}
-\end{align}
-% 
-By extrapolating the convective term from the $k$ previously calculated steps the equation 
-simplifies to 
-%
-\begin{align}
-   \frac{b_0}{\Delta t}Mu^{n+1} \sum_{j=1}^{k}\frac{b_j}{\Delta t}Mu^{n-j+1} 
-   = Au^{n+1}-\sum_{j=1}^{k}a_jCu^{n-j+1}+Mf^{n+1}
-    \label{eq:conv-diff3}
-\end{align}
-% 
-and finally by moving all the explicit terms to the rhs the equation left to solve is given as 
-%
-\begin{align}
-   (\frac{b_0}{\Delta t}M-A)u^{n+1} 
-   = -\sum_{j=1}^{k}(\frac{b_j}{\Delta t}M-a_jC)u^{n-j+1}+Mf^{n+1}
-    \label{eq:conv-diff4}
-\end{align}
-% 
-Notice from Section~\ref{theory} that this is equivalent to the matrix formulation of 
-the Helmholtz equation.
+%A Convection-Diffusion problem can be stated as 
+%\begin{align}
+    %M\frac{du}{dt} = Au-Cu+Mf
+    %\label{eq:conv-diff}
+%\end{align}
+%% 
+%Where $M$ and $A$ is the mass, and stiffness matrix, $f$ is the loading function and $C$ is 
+%the matrix corresponding to the convective term. The non-linearity is represented in the 
+%convective term since $C$ is dependent of $u$.
+%The time-derivative is discretized by a Backward difference (BDFk) scheme using solutions 
+%from the $k$ previous steps to extrapolate the current value. In order to gain stability 
+%an implicit scheme is chosen and the resulting eguation is given as 
+%%
+%OIFS ???
+%---------- CHECK MAKEF IN NAVIER1.F ----------------- 
+%\begin{align}
+    %\sum_{j=0}^{k}\frac{b_j}{\Delta t}Mu^{n-j+1} = Au^{n+1}-Cu^{n+1}+Mf^{n+1}
+    %\label{eq:conv-diff2}
+%\end{align}
+%% 
+%By extrapolating the convective term from the $k$ previously calculated steps the equation 
+%simplifies to 
+%%
+%\begin{align}
+   %\frac{b_0}{\Delta t}Mu^{n+1} \sum_{j=1}^{k}\frac{b_j}{\Delta t}Mu^{n-j+1} 
+   %= Au^{n+1}-\sum_{j=1}^{k}a_jCu^{n-j+1}+Mf^{n+1}
+    %\label{eq:conv-diff3}
+%\end{align}
+%% 
+%and finally by moving all the explicit terms to the rhs the equation left to solve is given as 
+%%
+%\begin{align}
+   %(\frac{b_0}{\Delta t}M-A)u^{n+1} 
+   %= -\sum_{j=1}^{k}(\frac{b_j}{\Delta t}M-a_jC)u^{n-j+1}+Mf^{n+1}
+    %\label{eq:conv-diff4}
+%\end{align}
+%% 
+%Notice from Section~\ref{theory} that this is equivalent to the matrix formulation of 
+%the Helmholtz equation.
 
 
 

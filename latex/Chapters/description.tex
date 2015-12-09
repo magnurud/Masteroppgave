@@ -106,7 +106,7 @@ the first equation yields
     \begin{split}
         (\frac{\partial \mathbf{u}}{\partial t},\mathbf{v})
         + (\mathbf{u}\cdot \nabla\mathbf{u},\mathbf{v})
-        &= -(\nabla \cdot \mathbf{v} , p ) 
+        &= (\nabla \cdot \mathbf{v} , p ) 
         -\nu(\nabla \mathbf{u},\nabla \mathbf{v}), \\
 		(\nabla \cdot \mathbf{u},q) &= 0.
     \end{split}
@@ -132,15 +132,26 @@ Find $(\mathbf{u}, p) \in H^1(\Omega)\times L^2(\Omega)$ such that
     \begin{split}
         (\frac{\partial \mathbf{u}}{\partial t},\mathbf{v})
         + \mathcal{C}(\mathbf{u};\mathbf{u},\mathbf{v})
-        &= -\mathcal{B}(\mathbf{v},p) 
+        &= \mathcal{B}(\mathbf{v},p) 
         -\nu\mathcal{A}(\mathbf{u},\mathbf{v}), \\
         \mathcal{B}(\mathbf{u},q) &= 0.
     \end{split}
 	\label{eq:NSweak}
 \end{align}
 $\forall\; (\mathbf{u}, p) \in H^1(\Omega)\times L^2(\Omega)$.
+%
 
-
+In order to solve this equation numerically, everything has to be discretized and expressed 
+using a particular set of basis functions. This procedure will be discussed more thouroughly
+in chapter~\ref{numerics}, but the idea is that the solution $(\mathbf{u},p)$ is approximated 
+by a discretized solution $(\mathbf{u}_h,p_h)$ and the bilinear operators can be represented 
+by matrices. The discretized system of equations can be stated as
+%
+\begin{align}
+    M\frac{\partial \mathbf{u}_h}{\partial t} +C(\mathbf{u}_h)\mathbf{u}_h &= Dp_h-\nu A\mathbf{u}_h,\\
+    D^T\mathbf{u}_h &= 0.
+    \label{eq:NSMatrixform}
+\end{align}
 %
 \section{The passive scalar equation}
 The N-S equation explains how a fluid will behave and solving it provides a complete pressure-velocity field of the 
@@ -337,7 +348,7 @@ it is refered to Maday et al~\cite{raey}.
 
 By considering the NS-equation in a general operational form 
 \begin{align}
-    M\frac{d \mathbf{v}}{dt} + C\mathbf{v} = -K\mathbf{v} +D_i p +Mf_i.
+    M\frac{d \mathbf{v}}{dt} + C\mathbf{v} = -A\mathbf{v} +D_i p +Mf_i.
     \label{eq:NSoperator}
 \end{align}
 Now let us define an operator $Q(t)$ such that $Q(t^{n+1}) = I$ and 
@@ -351,18 +362,18 @@ Now let us define an operator $Q(t)$ such that $Q(t^{n+1}) = I$ and
 %
 This way equation~\ref{eq:NSoperator} can be written as 
 \begin{align}
-    \frac{d Q(t)M\mathbf{v}}{dt} =Q(t)( -K\mathbf{v} +D p +M\mathbf{f}).
+    \frac{d Q(t)M\mathbf{v}}{dt} =Q(t)( -A\mathbf{v} +D p +M\mathbf{f}).
     \label{eq:NSoperatorOIFS}
 \end{align}
 Evaluating this equation with a BDFk-scheme results in a system 
 \begin{align}
-    \sum_{j=0}^{k}\beta_jQ(t^{n+1-j})M\mathbf{v}^{n+1-j} =\Delta t \: Q(t^{n+1})( -K\mathbf{v}^{n+1} +D p^{n+1} +M\mathbf{f}^{n+1}).
+    \sum_{j=0}^{k}\beta_jQ(t^{n+1-j})M\mathbf{v}^{n+1-j} =\Delta t \: Q(t^{n+1})( -A\mathbf{v}^{n+1} +D p^{n+1} +M\mathbf{f}^{n+1}).
     \label{eq:NSOIFS1}
 \end{align}
 Applying the fact that $Q(t^{n+1}) = I$ enables us to write equation~\ref{eq:NSOIFS1} as 
 \begin{align}
     \beta_0M\mathbf{v}^{n+1} + \sum_{j=1}^{k}\beta_jQ(t^{n+1-j})M\mathbf{v}^{n+1-j} 
-    =\Delta t ( -K\mathbf{v}^{n+1} +D p^{n+1} +M\mathbf{f}^{n+1}).
+    =\Delta t ( -A\mathbf{v}^{n+1} +D p^{n+1} +M\mathbf{f}^{n+1}).
     \label{eq:NSOIFS1}
 \end{align}
 Notice how all the easily invertible operators are evaluated implicitly, while the convective non-linear term is hidden in the BDFk scheme. 
@@ -384,17 +395,18 @@ first scheme is an implicit BDFk-scheme while the second is an explicit kth orde
 It is important to add that the error induced by this method is non-vanishing and is only recommended for assuring stability 
 for very instable problem. (Allows higher CFL number?)
 
-\subsection{Fractional step}
+\subsection{Fractional step} 
+\label{fracstep}
 \colorbox{green}{rewrite such that it is clear how IOFS can be applied}
 
 
 Fractional step is an algorithm that can be divided into four seperate steps. For simplicity let us write the N-S
 equation as 
 \begin{align}
-    \partial_t v = Lv + Dp + Nv.
+    \partial_t v = -Av + Dp - Cv.
     \label{eq:NSfracstep}
 \end{align}
-Where $\partial_t, L,D,P$ Denotes the time-derivate, linear, gradient and non-linear operator. 
+Where $\partial_t, A,D,C$ Denotes the time-derivate, linear, gradient and non-linear operator. 
 %The method describing one time-step can then be summarized as following
 %\begin{itemize}
     %\item solve $v^* = v^n + \Delta t Nv^n$.
@@ -412,10 +424,10 @@ A schematic overview of the method is stated below, where the equations on the r
 solved and the updated solution is stated on the left hand side.
 \begin{align}
     \begin{split}
-        v^* &\leftarrow \frac{dv}{dt}=Nv,\\
+        v^* &\leftarrow \frac{dv}{dt}=Cv,\\
     p^{n+1} &\leftarrow \Delta\: p = \nabla \cdot \frac{v^*}{\Delta t},\\
     v^{**} &\leftarrow  \frac{dv^*}{dt} =Dp^{n+1},\\
-    v^{n+1} &\leftarrow \frac{dv^{**}}{dt}= Lv^{**}.
+    v^{n+1} &\leftarrow \frac{dv^{**}}{dt}= -Av^{**}.
     \end{split}
     \label{eq:fracstep}
 \end{align}
@@ -435,12 +447,12 @@ equivalent to the Helmholtz problem which will be discussed in detail in chapter
 This can be easily shown by discretizing the equation and obtaining 
 \begin{align}
     \begin{split}
-    (v^{n+1}-v^{n})/\Delta t  &= Lv^{n+1},\\
-    -Lv^{n+1}+\frac{1}{\Delta t} v^{n+1} &= v^{n}.
+    (v^{n+1}-v^{n})/\Delta t  &= -Av^{n+1},\\
+    Av^{n+1}+\frac{1}{\Delta t} v^{n+1} &= v^{n}.
     \end{split}
     \label{eq:fracHelm}
 \end{align}
-Knowing that $L$ is the discrete laplacian operator and $v^n$ is a known variable this is 
+Knowing that $A$ is the discrete laplacian operator and $v^n$ is a known variable this is 
 similar to problem~\ref{eq:Helmholtz}.
 
 

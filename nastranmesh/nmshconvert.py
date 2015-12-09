@@ -1917,7 +1917,6 @@ def convert(nastranmesh,
         print 'Fixing symmetry and inflow conditions \n '
         fixbc(ofilename + '.rea')
         
-
     if(temperature != False ):
         print 'Fixing thermal inflow conditions \n '
         fixthermalbc(ofilename + '.rea',temperature)
