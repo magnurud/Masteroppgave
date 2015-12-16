@@ -13,7 +13,8 @@
 \section{The Incompressible Navier-Stokes equation}
 
 The physics regarding fluids in motion are described mathematically by the Navier-Stokes equation. 
-The equations can be derived in many ways, and it is referred to \cite{White} for a complete derivation.
+The equations can be derived in many ways, and it is referred to \cite{White} for a complete 
+description of the necessary assumptions and simplifications.
 The general idea is to conserve momentum and mass in a control domain providing a system of two equations.
 In this thesis only the incompressible N-S equation will be considered, 
 with the assumption of an incompressible flow the conservation of mass 
@@ -47,8 +48,8 @@ and their mathematical influence on the problem.
     by some iteration procedure. Even with linear advection the operator is a source to instability and needs to be handled carefully. 
 \item  $\nabla \cdot \tau$ 
        - $\tau= -p + \nu[ \nabla \mathbf{u} + \nabla^T \mathbf{u}]$ is known as the Reynolds stress tensor for incompressible flows.
-       The term $\nabla \cdot \tau$ simplifies to $-\nabla p + \nu \Delta \mathbf{u}$ if the viscosity $\nu$
-       is assumed to be constant, This is not the case for turbulent flows.
+       The term $\nabla \cdot \tau$ simplifies to $-\nabla p + \nu \Delta \mathbf{u}$ if the velocity is assumed to 
+       be divergence free and the viscosity is assumed to be constant. 
        It is a symmetric tensor, hence another 6 unknows is introduced.
     \item $\nu \Delta \mathbf{u}$ 
     - The diffusive term describes the natural diffusion of the fluid. The effect of diffusion is determined by the 
@@ -75,8 +76,6 @@ in the following section.
 %
 \subsection{Weak formulation of N-S}
 Let us first assume constant viscosity, enabling the simplification $\nabla \cdot \tau = -\nabla p + \nu \Delta \mathbf{u}$.
-This is a poor approximation for a turbulent flow but it will be clarified in later chapters how this can be expanded
-to be valid for more general cases.
 The numerical algorithms applied in this thesis requires a weak formulation of equation~\ref{eq:NS}.
 Before the weak form is derivated a few operators will be defined in order to simplify the final 
 expression.
@@ -172,8 +171,8 @@ resemble the viscosity and mass flux.
 
 \colorbox{green}{write more about this equation and how it is applied in this thesis}
 \section{Resolving the turbulent term using LES}
-When DNS is not feasible due to high Reynoldsnumber LES is one of the most powerful tools when it comes to simulating turbulent flows.
-The idea is based on the fact that for the small turbulent structures behave independently of time and location and are therefore 
+When DNS is not feasible due to high Reynoldsnumber LES is one of the most powerful tools for simulating turbulent flows.
+The idea is based on the fact that the small turbulent structures behave independently of time and location and are therefore 
 easy to model. This way the larger structures driven by geometry, inflow conditions and external forces can be simulated using a coarser 
 grid while the effect of the small structures are modelled. \colorbox{green}{Some source on the importance of SGS-model}
 
@@ -355,9 +354,8 @@ By considering the NS-equation in a general operational form
 Now let us define an operator $Q(t)$ such that $Q(t^{n+1}) = I$ and 
 
 \begin{align}
-    \frac{dQ(t)M\mathbf{v}}{dt} &=  Q(t)M\frac{d\mathbf{v}}{dt} + \frac{d}{dt}(Q(t)M)\mathbf{v}.\\
-    &= Q(t)M\frac{d\mathbf{v}}{dt} + Q(t)C\mathbf{v} 
-   % &= M\frac{d\mathbf{v}}{dt} + C\mathbf{v} \text{  when t = t*. }
+    \frac{dQ(t)M\mathbf{v}}{dt} &=  Q(t)M\frac{d\mathbf{v}}{dt} + \frac{d}{dt}(Q(t)M)\mathbf{v},\\
+    &= Q(t)M\frac{d\mathbf{v}}{dt} + Q(t)C\mathbf{v}. 
     \label{eq:integrationalfactor}
 \end{align}
 %
@@ -435,7 +433,7 @@ solved and the updated solution is stated on the left hand side.
 
 As earlier mentioned this method is convenient because it allows us to handle the different 
 terms with different solution techniques. So since the first equation in~\ref{eq:fracstep}
-involves the non-lineat skew-symmetric advection operator this equation is solved using a 
+involves the non-linear skew-symmetric advection operator this equation is solved using a 
 explicit Adam Bashford scheme. The second equation is the possion pressure equation which
 assures a divergence free velocity field. Note that $p\in L^2\supset H^1$ hence the poisson equation 
 is somewhat different from the one normally studied in textbooks. Another difficulty is the 
@@ -445,7 +443,7 @@ $v^{*}$ is used to impose the boundary conditions. With $p^{n+1}$ known the thir
 simply an update of the velocity in order to impose the divergence free condition. Now the last
 equation is solved implicitly due to its nice symmetric structure. This results in a system 
 equivalent to the Helmholtz problem which will be discussed in detail in chapter~\ref{numerics}.
-This can be easily shown by discretizing the equation and obtaining 
+This can be easily shown by discretizing the equation, 
 \begin{align}
     \begin{split}
     (v^{n+1}-v^{n})/\Delta t  &= -Av^{n+1},\\

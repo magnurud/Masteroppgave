@@ -33,12 +33,12 @@ In this thesis the spectral and finite element basis will be shortly stated and 
 
 \section{Finite element method}
 
-Finite element method is one of the most widely used numerical methods applied on problems within construction, flow simulation and many 
+Finite element method (FEM) is one of the most widely used numerical methods applied on problems within construction, flow simulation and many 
 other areas. It offers a precise mathematical foundation and due to the connectivity properties of the elements 
 it guaranties a sparse system. The decomposition of the geometrical domain into a finite amount of elements chosen according to the problem 
 wanted to solve, makes it possible to create general algorithms applicable to all kinds of geometries. 
 For the full mathematical foundation of FEM it will be referred to \cite{Quarteroni}, but some of the key propertie will be stated here
-in order to provide a thourough understanding of the spectral element method. 
+in order to provide a thourough understanding of the spectral element method (SEM). 
 
 FEM provides an alorithm for solving any well-posed BVP \ref{eq:BVP} and the mathematical formulation is obtained by first finding the Galerkin
 formulation and choosing a discrete subset $X^p_h(\Omega) \subset X(\Omega)$ spanned by the finite element basis functions ${\phi^p_i}$.
@@ -57,7 +57,7 @@ This implies either reducing the distance between the gridpoints or increasing t
 Both aproaches will reduce the sparsity of the final matrix.
 Another key aspect of FEM is the treatment of the domain $\Omega$, 
 on which a triangulization $\{\mathcal{T}_h\}$ is defined such that the original domain is divided into elements.
-By defining a reference element ($[-1,1]$ in 1D) and a general mapping function, all the local contributions can be calculated by a 
+By defining a reference element $[-1,1]^d$ and a general mapping function, all the local contributions can be calculated by a 
 generalized quadrature rule before being added to the global system of equations. This is a process tailored for parallelization, and can 
 be generalized for a wide range of problems.
 
@@ -71,16 +71,17 @@ interpolation error. The result is known as Cea's lemma,
 \end{align}
 Where $I_h$ is the projection operator. 
 
-Before this section ends it is important to understand the two ways to improve the error and the effects these two ways have on the algorithm. 
+Before this section ends it is important to understand the two ways to increase accuracy and the effects these two ways have on the algorithm. 
 Assume the solution of the BVP to be infinitely smooth and let $h$ denote the general size of the elements
-and $p$ the order of the polynomial basis that defines $X^h$. Roughly speaking the error is given as $e = Ch^p$ with $C$ being some constant.
-This is not a formal truth but rather a guideline as to how the error behaves, factors such as geometric complexity, condition-number,non-linear
-operators and the regularity of the solution will all provide slightly more complicated error estimates. 
-However for a simpler BVP such as $u,f,g \in C^{\infty}(\Omega), \Omega = [-1,1]^d, \mathcal{L} = -\Delta,\mathcal{B} = 1$ the error estimate is valid.  
-performing a $h$-refinement will lead to an algebraic convergence, while the sparsity of the system is conserved
+and $p$ the order of the polynomial basis that defines $X^h$. Roughly speaking the error is given as $e = Ch^p$, $C$ being some positive constant.
+This is not a formal truth but rather a simple expression to get some intuition on how the error behaves. 
+Factors such as geometric complexity, condition-number,non-linear operators and the regularity of the 
+solution will all provide slightly more complicated error estimates. 
+However for a simpler BVP such as $u,f,g \in C^{\infty}(\Omega), \Omega = [-1,1]^d, \mathcal{L} = -\Delta,\mathcal{B} = 0$ the error estimate is valid.  
+performing a $h$-refinement will lead to an algebraic convergence of order $p$, while the sparsity of the system is conserved
 and the total algorithm does not change in any other way than increasing the number of elements.
 Keeping $h$ constant and increasing $p$ will provide spectral convergence, but the sparsity will be reduced and all integrals solved will require 
-quadrature rules of higher order. A more formal statement and numerical validation can be found in \cite{Karniadakis} chapter 2.6.  
+quadrature rules of higher order. A formal statement and numerical validation of the error estimate can be found in \cite{Karniadakis} chapter 2.6.  
 
 %-----------------------------------
 %	SUBSECTION 1
@@ -95,7 +96,7 @@ spectral convergence rate which allows you to obtain solutions of extremely high
 The most important draw-back of SM are the difficulties with applications to complex geometries. Allthough the system of equations surging from
 a BVP can be constructed in an elegant way it is rarely sparse and often result in expensive calculations. 
 
-For a BVP in one dimension SM defines a set of basis functions $\{\psi_i\}_N$ which spans the whole domain $\Omega$. 
+Applying SM on a BVP in one dimension requires a set of basis functions $\{\psi_i\}_N$ defined on the whole domain $\Omega$. 
 The discrete space $X_h(\Omega)$ spanned by the basis functions involves all polynomials up to degree $N$.
 A function $u$ is projected onto $X_h$ by the relation
 
@@ -105,7 +106,7 @@ A function $u$ is projected onto $X_h$ by the relation
 \end{align}
 Where the coefficients $a_i$ are called the expansion coefficients. There are many possible choices for the basis and the belonging coefficients, 
 in this thesis and the algorithms used the functions $\psi_i$ will be the Lagrange polynomials based on the Gauss-Lobatto-Legendre (GLL) nodes. 
-The GLL-nodes are given as the solutions of the equation 
+The GLL-nodes $\left\{ \xi_i \right\}_{N+1}$ are given as the solutions of the equation 
 \begin{align}
     (1-\xi^2)L_N'(\xi) = 0.
     \label{eq:GLL-nodes}
@@ -115,7 +116,7 @@ $L_N$ being the Legendre polynomial of degree $N$, defined from the Sturm-Louvil
     \frac{d}{dx}\left[  (1-x^2)\frac{d}{dx}L_n(x)\right]+n(n+1)L_n(x) = 0.
     \label{eq:Legendre}
 \end{align}
-With equations \ref{eq:Legendre} and \ref{eq:GLL-nodes} the basis functions $\psi_j$ can be stated as 
+With equations \ref{eq:GLL-nodes} and \ref{eq:Legendre} the basis functions $\psi_j$ can be stated as 
 \begin{align}
     \psi_j(x) = \prod_{i\neq j}^{N}\frac{x-x_i}{x_j-x_i}.
     \label{eq:Lagrange}
