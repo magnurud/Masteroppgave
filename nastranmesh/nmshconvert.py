@@ -112,10 +112,11 @@ def find_neighbours():
 def getreastart(name):
 	# A function that read the start of a .rea file and returns it as a string.
 	# reads the first lines until it reaches the MESH section 
-	f = open(name,'r')
+	#f = open(name,'r')
 	s = ''
 	for line in open(name).readlines():
-            if(line.find('MESH DATA')): return s
+            test = line.find('MESH DATA') 
+            if(test != -1 ): return s
             else: s = s+line
 	return s
 

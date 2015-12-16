@@ -1,10 +1,21 @@
 # Stopping after userchk 
 Some error with the MPI-routines
 
+# Quick plots of output data
+plot "< (grep 'Maxvel' logfile )" u 2:3 w l
+plot "< (grep 'DT' logfile )" u 8 w p
+
+
 ##### Interpreting output
 ## alph1n - lines 
 # found in navier4.f subroutine projh()
 how much reduction of the residual is attained. 
+
+L1/L2 DIV(V): total divergence in l1 and l2 space.
+QTL : Thermal divergence
+
+# DT line
+The two last variables are total time and time/timestep
 
 # Explosion from the beguinning
 Too high timestep
@@ -39,6 +50,9 @@ cat file1 file2 file3* | gzip > files.gz
 # Renaming all files in folder 
 rename 's/foo/bar/g' * -vn #preview of foo -> bar
 rename 's/foo/bar/g' * -v #doing foo -> bar
+
+#making surface mesh 
+Choose patch independent
 
 ##make nastranmesh file from ICEM 
 create the parameter input file
