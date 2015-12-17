@@ -106,6 +106,11 @@ A function $u$ is projected onto $X_h$ by the relation
 \end{align}
 Where the coefficients $a_i$ are called the expansion coefficients. There are many possible choices for the basis and the belonging coefficients, 
 in this thesis and the algorithms used the functions $\psi_i$ will be the Lagrange polynomials based on the Gauss-Lobatto-Legendre (GLL) nodes. 
+The reason for choosing these nodes is because it enables us to apply the Gauss-Lobatto quadrature 
+rule. This is one of several existing Gauss-quadratures, and the only one allowing fixed 
+endpoints which is the case for this thesis. For more detailed information on GL-quadrature and 
+other quadrature rules it is referred to~\cite{SM}.
+
 The GLL-nodes $\left\{ \xi_i \right\}_{N+1}$ are given as the solutions of the equation 
 \begin{align}
     (1-\xi^2)L_N'(\xi) = 0.
@@ -116,7 +121,8 @@ $L_N$ being the Legendre polynomial of degree $N$, defined from the Sturm-Louvil
     \frac{d}{dx}\left[  (1-x^2)\frac{d}{dx}L_n(x)\right]+n(n+1)L_n(x) = 0.
     \label{eq:Legendre}
 \end{align}
-With equations \ref{eq:GLL-nodes} and \ref{eq:Legendre} the basis functions $\psi_j$ can be stated as 
+With equations \ref{eq:GLL-nodes} and \ref{eq:Legendre} the local spectral 
+basis functions $\psi_j$ can be stated as 
 \begin{align}
     \psi_j(x) = \prod_{i\neq j}^{N}\frac{x-x_i}{x_j-x_i}.
     \label{eq:Lagrange}
@@ -124,13 +130,19 @@ With equations \ref{eq:GLL-nodes} and \ref{eq:Legendre} the basis functions $\ps
 \colorbox{yellow}{This should be taken a bit more thouroughly, Quadrature! }
 
 $\{x_i\}$ beeing the solutions to \ref{eq:GLL-nodes}. Note that $\psi_j(x_i) = \delta_{ij}$.
-The expansion coefficients in \ref{eq:spectralprojection} are then chosen as $a_i = u_i :=u(x_i)$ to minimize the projection error in $L^2(\Omega)$. 
-expanding a basis such that the coefficients are simply the evaluation of the function in that particular point, is known as a nodal SM. 
-Creating a basis for 2 and 3 dimensions is done simply by taking the tensor product of the basis functions in each direction
+The expansion coefficients in \ref{eq:spectralprojection} are then chosen as $a_i = u_i :=u(x_i)$. 
+%to minimize the projection error in $L^2(\Omega)$. 
+This definition of the expansion coefficients is very convenient since the actual value of 
+the function in any point can just be read directly from the coefficients without having to 
+sum all the contributions from the different polynomials.
+Creating a basis for 2 and 3 dimensions is done simply by taking the tensor product 
+of the basis functions in each direction, for 3 dimensions the basis functions $\Psi$
+is given as 
 \begin{align}
-    \Psi_{ijk}(x,y,z) = \psi_i(x)\psi_j(y)\psi_k(z).
+    \Psi_{l}(\mathbf{x}) = \psi_i(x)\psi_j(y)\psi_k(z).
     \label{eq:3dbasis}
 \end{align}
+This expansion to multiple dimensions preserves the $\Psi_l(\mathbf{x}_m) = \delta_{lm}$
 In order to clarify some of the concepts the SM approach will be applied on the Helmholtz equation
 %
 \begin{align}
@@ -150,13 +162,13 @@ Find $u\in V$ st.
     \label{eq:Helmholtzweak}
 \end{align}
 %
-In order to solve this using SM the discrete space $V_h \subset V$ is defined as $\text{span}\{\psi_i\}$ following the preceding definitions 
+In order to solve this using SM the discrete space $V_h \subset V$ is defined as $\text{span}\{\Psi_l\}$ following the preceding definitions 
 the discrete weak formulation is stated as 
 Find $u_h\in V_h$ st. 
 %
 \begin{align}
-    \sum_i\left(  u_i\int_{\Omega}\nabla \psi_i \cdot \nabla \psi_j d \Omega + u_i\lambda \int_{\Omega} \psi_i \psi_jd \Omega \right)
-    &= \int_{\Omega}f \psi_jd \Omega \qquad \forall \psi_j \in V_h.
+    \sum_l\left(  u_l\int_{\Omega}\nabla \Psi_l \cdot \nabla \Psi_m d \Omega + u_l\lambda \int_{\Omega} \Psi_l \Psi_md \Omega \right)
+    &= \int_{\Omega}f \Psi_md \Omega \qquad \forall \Psi_m \in V_h.
     \label{eq:Helmholtzdiscrete}
 \end{align}
 %
@@ -164,13 +176,13 @@ The following step of this particular SM method is evaluating the integrals by u
 is then given as 
 %
 \begin{align}
-    \sum_i\left(  u_i\sum_k \rho_k\nabla \psi_i(\mathbf{x}_{k}) \cdot \nabla \psi_j(\mathbf{x}_{k}) + u_i\lambda \sum_k \rho_k \psi_i(\mathbf{x}_{k}) \psi_j(\mathbf{x}_{k})\right)\\
-     = \sum_k \rho_kf \psi_j(\mathbf{x}_{k})\qquad \forall \psi_j(\mathbf{x}_{k}) \in V_h.
+    \sum_l\left(  u_l\sum_n \rho_n\nabla \Psi_l(\mathbf{x}_{n}) \cdot \nabla \Psi_m(\mathbf{x}_{n}) + u_l\lambda \sum_n \rho_n \Psi_l(\mathbf{x}_{n}) \Psi_m(\mathbf{x}_{n})\right)\\
+     = \sum_n \rho_nf \Psi_m(\mathbf{x}_{n})\qquad \forall \Psi_m(\mathbf{x}_{n}) \in V_h.
     \label{eq:Helmholtzquad}
 \end{align}
 %
-$\rho_k$ is the quadrature weight for the kth node, and $\mathbf{x}_k$ is the vector containing the coordinates to the kth node.
-Note that all the indices $i,j,k=1,\cdots,N_xN_y$.
+$\rho_n$ is the quadrature weight for the nth node, and $\mathbf{x}_n$ is the vector containing the coordinates to the nth node.
+Note that all the indices $l,m,n=1,\cdots,N_xN_y$.
 This can be written in a compact matrix form as 
 \begin{align}
     (A+\lambda M)u_h = \tilde f.
@@ -179,10 +191,10 @@ This can be written in a compact matrix form as
 Where the elements in the matrices and vectors are given as 
 \begin{align}
     \begin{split}
-        A_{ij} &= \sum_k \rho_k\nabla \psi_i(\mathbf{x}_{k}) \cdot \nabla \psi_j(\mathbf{x}_{k}),\\
-        M_{ij} &= \sum_k \rho_k \psi_i(\mathbf{x}_{k}) \psi_j(\mathbf{x}_{k}) = \rho_i\delta_{ij},\\
-        (u_h)_i & = u(\mathbf{x}_i), \\
-        \tilde f_j &= \sum_k \rho_k f(\mathbf{x}_{k}) \psi_j(\mathbf{x}_{k}) = \rho_j f(\mathbf{x}_{j}).
+        A_{lm} &= \sum_n \rho_n\nabla \Psi_l(\mathbf{x}_{n}) \cdot \nabla \Psi_m(\mathbf{x}_{n}),\\
+        M_{lm} &= \sum_n \rho_n \Psi_l(\mathbf{x}_{n}) \Psi_m(\mathbf{x}_{n}) = \rho_l\delta_{lm},\\
+        (u_h)_l & = u(\mathbf{x}_l), \\
+        \tilde f_m &= \sum_n \rho_n f(\mathbf{x}_{n}) \Psi_m(\mathbf{x}_{n}) = \rho_m f(\mathbf{x}_{j}).
     \end{split}
     \label{eq:Helmholtzmatelem}
 \end{align}
@@ -194,17 +206,24 @@ while the stiffness matrix $A$ is symmetric but full.
 %-----------------------------------
 
 \section{Spectral element method}
-In the early 1980's the the idea to combine FEM and SM came along in order to obtain the robustness and resulting sparse system of FEM 
+In the early 1980's the idea to combine FEM and SM came along in order to obtain the 
+robustness and sparse properties of FEM 
 combined with the spectral convergence rate provided by SM. 
-The result was the Spectral element method. An example of Read articles\ldots Several formulations was investigated 
-and the development of super computers has played an important role in deciding the method applied today. 
-The basic idea is to divide the domain of the BVP into elements as in FEM and then use spectral basis 
-functions of higher degree with support only within one element. 
+The result was the Spectral element method. Several formulations was investigated mainly by 
+Patera, Maday and Rønqvist in the papers \ldots
+It is important to understand that when solving the N-S equations the efficiency of the solution 
+method is extremely important. The algorithm has to be parallelizable and the development of the
+super computers and computational clusters has played an important role in 
+deciding the method applied today. 
+The idea is to divide the domain of the BVP into elements as in FEM and then use spectral basis 
+functions of higher degree with support only within one single element. 
 
 In the previous subsection the power of spectral methods was illustrated on the unit square in two dimensions.
 But the limitations when it comes to more complex geometry rapidly affects the spectral convergence rate. 
 Let $\hat{\Omega}$ be the reference element $[-1,1]^d$,
-the standard procedure when working on a deformed geometry $\Omega$ with SM is to first create a map $\mathcal{F}:\hat{\Omega}\rightarrow\Omega$.
+the standard procedure when working on a deformed geometry $\Omega$ with SM is to first create a map 
+$\mathcal{F}:\hat{\Omega}\rightarrow\Omega$. An example of this map is the Gordon-Hall prcedure 
+described in chapter~\ref{GH}.
 The jacobian is then given as the transposed tensor derivative of $\mathcal{F}$
 \begin{align}
     \mathbf{J} &= (\nabla \otimes \mathcal{F})^T =
@@ -227,16 +246,16 @@ domain corresponding to $\mathbf{x} = [x,y]^T$ in the deformed domain. The trans
 \end{align}
 Here $\hat u,\hat f$ are obtain by simply substituting $\mathbf{x}$ with $\mathcal{F}(\boldsymbol{\xi})$ and $\hat \nabla $ is the partial 
 differential operator wrt. $\boldsymbol\xi$. The important thing to notice here is that whenever an integral is solved and a derivative is 
-introduced the Jacobian appears in the equation. When applying the GLL-quadrature to solve the integrals equality is guaranteed iff the 
-function integrated is of polynomial degree $2n-1$ or less, and the error gets bigger with increasing polynomial degree.
+introduced the Jacobian appears in the equation. When applying the GLL-quadrature to solve the integrals equality is guaranteed if and 
+only if the function integrated is of polynomial degree $2n-1$ or less, 
+and the error gets bigger with increasing polynomial degree.
 
-By dividing the domain up into smaller elements $\left\{ \Omega_k \right\}$ such that 
- the initial deformation of the full domain 
-can be reduced to have a very small effect on the each of the elements.
+Allthough the whole domain $\Omega$ is deformed, the deformation of each
+element $\left\{ \Omega_k \right\}$ is normally a lot less crucial.
 
 Let us again consider the Helmholtz problem~\ref{eq:Helmholtz}, but this time 
 on a more general domain $\Omega$. The set of elements $\left\{ \Omega_k \right\}$
-is defined such that $\Omega_i\bigcap\Omega_j$ is either a vertex or a line and 
+is defined such that $\Omega_i\bigcap\Omega_j$ is either empty, a vertex or a line and 
 $\Omega = \bigcup^K_{k=1}\Omega_k$.
 The weak formulation in equation~\ref{eq:Helmholtzweak} can then be written according 
 to the SEM formulation
@@ -278,7 +297,8 @@ Applying the identities from~\ref{eq:transforms} to~\ref{eq:HelmholtzdiscreteSEM
     \label{eq:HelmholtzrefSEM}
 \end{align}
 %
-Notice how the integrals depend on the jacobian $\mathbf{J}$ and its determinant $J$.
+Notice how the integrals depend on the jacobian $\mathbf{J}$ and its determinant $J$, 
+
 
 \colorbox{yellow}{Do a more thourough analysis of the meaning of J??}
 
@@ -297,8 +317,11 @@ be performed on almost any deformed domain as oppose to SM.
 
 \subsection{Filtering}
 Allthough SEM provides spectral convergence in space and 2nd or 3rd order accuracy in time the stability of a straight forward
-implementation is not guaranteed. In \cite{FischerMullen} a filter-based stabilization is introduced for SEM applied on 
-Navier Stokes equation. The idea is to simply project the highest mode onto a polynomial space of lower order, 
+implementation is not guaranteed, spurious nodes appear 
+as shown in chapter 2.4.1.2 in~\cite{Karniadakis}.
+In \cite{FischerMullen} a filter-based stabilization is introduced for SEM applied on 
+Navier Stokes equation. The idea is to project a part $ 0 <\alpha < 1$ 
+of the highest mode onto a polynomial space of lower order, 
 explicitly they define the filter $F_{\alpha}$ as 
 %
 \begin{align}
@@ -309,8 +332,10 @@ explicitly they define the filter $F_{\alpha}$ as
 Where $I_{N-1}$ is the projector from $\mathbb{P}_N$ to $\mathbb{P}_{N-1}$ and $ I_d$ is the identity operator.
 $\alpha$ is recommended to be somewhere in the interval $(0.05,0.3)$.
 
-The explication of why this has a filtering effect is best explained by considering the 
-more general explication by Pasquetti and Xu in~\cite{Pasquetti}. 
+The explication of why $F_{\alpha}$ has a filtering effect is best explained by considering the 
+more general explication by Pasquetti and Xu in~\cite{Pasquetti}. A quick demonstration of 
+how the filter works will however be given here. 
+
 Let $u = \sum_{i=0}^{N} \hat{u}_i L_i$ be the solution to some PDE, where $L_i$ denote the lagrange
 polynomial of order $i$ and $\hat{u}_i$ the corresponding coefficient. The effect of the filter
 can be given as 
@@ -353,7 +378,7 @@ have been used to achieve the result in~\ref{eq:filterenergy}.
 \subsection{Aliasing}
 
 \colorbox{green}{add an illustrative example}
-When evaluating the the integral surging from the non-linear term in the N-S equation 
+When evaluating the integral surging from the non-linear term in the N-S equation 
 the polynomial to be integrated is order $2N+(N-1)$. The quadrature rule applied to solve the 
 integrals are only exact up to an order $2N-1$, hence the error surging from this evaluation 
 can be of significant size. The underevaluation of an integral like this is called a ``variational
@@ -372,9 +397,9 @@ process and should only be applied when absolutely necessary.
 %  SECTION 2
 %----------------------------------------------------------------------------------------
 
-\subsection{Gordon-Hall algorithm}
+\subsection{Gordon-Hall algorithm} \label{GH}
 \colorbox{green}{Make figure!!}
-In order to work on complex geometries the elements require a certain deformation in order to be able 
+In order to work on complex geometries some elements require a certain deformation in order to be able 
 to describe the entire domain. It is necessary to evaluate all the integrals surging from the weak formulation over 
 a reference domain $\hat{\Omega} = [-1,1]^d$ for sakes of efficiency and implementation purposes. The Gordon-Hall 
 algorithm is a general method that creates an isometric map from an arbitrary simply connected domain to $\hat{\Omega}$.
@@ -390,7 +415,7 @@ The full description of the algorithm with helpful figures can be found in \cite
 Without going to much into the mathematical foundation of this method a more intuitive and implementable
 presentation of the method will be provided in this chapter. 
 For simplicity a two-dimensional domain will be considered here, and the 3D case will be an easy expansion 
-of the algorithm provided. Consider a deformed domain $\Omega \in \mathbb{R}^2$, with $\Gamma_{i,j}$ representing 
+of the algorithm presented here. Consider a deformed domain $\Omega \in \mathbb{R}^2$, with $\Gamma_{i,j}$ representing 
 the discrete boundary coordinates. The four vertices can then be expressed as 
 $\Gamma_{0,0},\Gamma_{0,N},\Gamma_{N,0}\Gamma_{N,N}$. Let $\phi_0,\phi_N$ be defined as 
 %
@@ -400,8 +425,9 @@ $\Gamma_{0,0},\Gamma_{0,N},\Gamma_{N,0}\Gamma_{N,N}$. Let $\phi_0,\phi_N$ be def
     \label{eq:interpolationoperator}
 \end{align}
 %
-Let $\left\{ \xi_0, \ldots ,\xi_N \right\}_N = \left\{ -1 ,\ldots ,1 \right\}_N$ be the GLL-points corresponding
-to the Lagrange polynomial of order $N-1$. An important property for the functions in~\ref{eq:interpolationoperator} is that
+Let $\left\{ \xi_0, \ldots ,\xi_N \right\}_{N+1} = \left\{ -1 ,\ldots ,1 \right\}_{N+1}$
+be the GLL-points corresponding to the Lagrange polynomial of order $N$. 
+An important property for the functions in~\ref{eq:interpolationoperator} is that
 $\phi_0(\xi_0) =\phi_N(\xi_N) = 1$ and $\phi_0(\xi_N) =\phi_N(\xi_0) = 0$.
 
 The algorithm provides a stepwise routine depending on the complexity of the domain. The first step is to create 
@@ -434,7 +460,8 @@ the deformation of the edges.
 %
 In 3D the additional knowledge of the faces may be applied to create mappings from elements with deformed faces as a 
 third step. The only difference when applying this algorithm in three dimensions is that you need to include $\phi$
-for a third coordinate $t_k$ and the number of vertices, and edges are $(8,12)$ instead of $(4,4)$.
+for a third coordinate $t_k$ and the number of vertices, and edges are 8 and 12 instead of 
+4 and 4.
 
 
 
