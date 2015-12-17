@@ -351,3 +351,23 @@ The surface was approximated accurately by higher order polynomials.
 \end{figure}
 %
 The algorithm restricts itself to relatively smooth surfaces.
+\section{Spatial averaging routine}
+A dynamic smagorinsky model has previously been implemented in Nek5000 for flow in a channel. 
+The method as described in chapter~\ref{description} depends on an averaging routine to calculate
+the dynamic Smagorinsky constant. The implementation in Nek applies an average routine in the plane,
+assuming that the Smagorinsky constant is the same for all points with equal distance to the walls 
+of the channel. This is a rather specific averaging routine only applicable to channel flows.
+
+When applying dynamical Smagorinsky to Case 1 a new spatial mean routine had to be applied. 
+It was first attempted to average only in time, but this proved not to be sufficient. It was
+therefore implemented a simple routine for taking the average within each element, let 
+$c_{num}^e,c_{den}^e$ denote the numerator and the denomenator in equation~\ref{eq:dynsmag}.
+The means are then calculated as 
+\begin{align}
+    c_{num}^e = \frac{1}{V}\int_{\Omega_e}c_{num}^e d\: \Omega 
+    = \frac{1}{V}\sum_{i = 1}^{N^3}\rho_{i,e}c_{num,i}^{e}.
+    \label{eq:averageroutine}
+\end{align}
+And similarly for $c_{den}^e$.
+The coefficients $\rho_{i,e}$ are found in the array \verb|BM1(lx1,ly1,lz1)| in the file 
+\verb|MASS|.
