@@ -60,30 +60,48 @@
 \newcommand{\textcolordummy}[2]{#2}
 
 \definecolor{mygray}{rgb}{0.4,0.4,0.4}
-%\definecolor{mycyan}{rgb}{0,0.8,0.6}
+\definecolor{mycyan}{rgb}{0,0.8,0.6}
 \definecolor{mygreen1}{rgb}{0.3,0.6,0.3}
 \definecolor{mygreen2}{rgb}{0,0.4,0.1}
 \definecolor{myorange}{rgb}{1.0,0.4,0}
 
-\lstset{language=C++,
+%\lstset{language=C++,
+                %basicstyle={\color{black}\footnotesize\ttfamily\let\textcolor\textcolordummy},
+                %%identifierstyle=\color{green},
+                %keywordstyle={\color{blue}\footnotesize\ttfamily\let\textcolor\textcolordummy},
+                %%keywordstyle={\color{blue}\footnotesize\ttfamily\let\textcolor\textcolordummy},
+                %directivestyle={\color{mygreen1}},
+                %emph={int,char,double,float,unsigned},
+                %emphstyle={\color{mygreen2}},
+                %%
+                %stringstyle={\color{myorange}\footnotesize\ttfamily\let\textcolor\textcolordummy},
+                %%stringstyle={\color{orange}\footnotesize\ttfamily\let\textcolor\textcolordummy},
+                %commentstyle={\color{mygray}\footnotesize\ttfamily\let\textcolor\textcolordummy},
+                %morecomment=[l][\color{magenta}]{\#}
+                %%
+                %showspaces=false,  
+                %showstringspaces=false, 
+                %showtabs=false,
+                %extendedchars=true,
+                %frame=single,  
+%}
+\lstset{language=Fortran,
                 basicstyle={\color{black}\footnotesize\ttfamily\let\textcolor\textcolordummy},
                 %identifierstyle=\color{green},
-                keywordstyle={\color{blue}\footnotesize\ttfamily\let\textcolor\textcolordummy},
-                %keywordstyle={\color{blue}\footnotesize\ttfamily\let\textcolor\textcolordummy},
+                keywordstyle={\color{orange}\footnotesize\ttfamily\let\textcolor\textcolordummy},
                 directivestyle={\color{mygreen1}},
-                emph={int,char,double,float,unsigned},
-                emphstyle={\color{mygreen2}},
-                %
-                stringstyle={\color{myorange}\footnotesize\ttfamily\let\textcolor\textcolordummy},
+                emph={tan,abs,arctan,int,char,double,float,unsigned},
+                emphstyle={\color{mycyan}},
+                %stringstyle={\color{myorange}\footnotesize\ttfamily\let\textcolor\textcolordummy},
                 %stringstyle={\color{orange}\footnotesize\ttfamily\let\textcolor\textcolordummy},
-                commentstyle={\color{mygray}\footnotesize\ttfamily\let\textcolor\textcolordummy},
-                morecomment=[l][\color{magenta}]{\#}
+                commentstyle={\color{blue}\footnotesize\ttfamily\let\textcolor\textcolordummy},
+                morecomment=[l][\color{blue}]{\#}
                 %
                 showspaces=false,  
                 showstringspaces=false, 
                 showtabs=false,
                 extendedchars=true,
-                frame=single,  
+                frame=none,  
 }
 \lstdefinestyle{FormattedNumber}{%
     literate={0}{{\textcolor{red}{0}}}{1}%

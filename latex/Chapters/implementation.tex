@@ -124,7 +124,7 @@ are given by the formulas
 Nek provides functions for calcuting lift and drag on any user-specified object.
 The function is called \verb|drag_calc(scale)|, with the input parameter 
 defined by the user, for this case \verb|scale|$=2/(\rho U^2DH)$.  
-Apart from this a \verb|set_obj()| has to be modified in order to create an object 
+Apart from this the function \verb|set_obj()| has to be modified in order to create an object 
 which consists of all the faces on the cylinder.
 Let $x,y$ be points in the computational domain, $x_c,y_c$ be the coordinates to the 
 center line in the cylinder and $0<tol\ll1$ be some user defined tolerance. The faces that belong to the cylinder can then be found by 
@@ -161,51 +161,47 @@ of the circle segments are presented in chapter~\ref{results}.
 %
 %
 \section{Advances in the mesh-generation routine} \label{xyzarc}
-The routine xyzarc:
+The routine \verb|xyzarc()|:
 
-The gordon hall algorithm was already implemented as a function in Nek, with the gll-points,plynomial degree and some initial 
-coordinates to the element. The algorithm creates a distribution of the internal gll-points in each element. 
+The gordon hall algorithm was already implemented as a function in Nek, with the GLL-points,polynomial degree and some initial 
+coordinates to the element. The algorithm creates a distribution of the internal GLL-points in each element. 
 If the element consists of linear edges the only necessary input are the vertices, but by specifying the points on edges and faces
 the algorithm creates a logical distribution of the internal GLL-points to a deformed element. 
 
-The curved edge is specified in the .rea file and the routine genxyz() processes the input of each edge. 
-By specifying the radius and the circle center genxyz calls the routine xyzarc() which performs the following algorithm;
+The curved edge is specified in the .rea file and the routine \verb|genxyz()| processes the input of each edge. 
+By specifying the radius and the circle center \verb|genxyz()| calls the routine \verb|xyzarc()| which performs the following algorithm;
 
-    $a,b$ will be the two endnodes of the edge 
-    $c$ will be the midnode, $s$ will be the arc length, $\theta$ will be the full angle of the circle sector, $cc$ is the center coordinates.
-    $g$ will be the vector containing the GLL-points in $[-1,1]$. $r$ will be the radius.
+$a,b$ will be the two endnodes of the edge 
+$c$ will be the midnode, 
+$s$ will be the arc length, 
+$\theta$ will be the full angle of the circle sector,
+$cc$ is the center coordinates, 
+$g$ will be the vector containing the GLL-points in $[-1,1]$ 
+and $r$ will be the radius.
 
-	%/* Pseudo code */
-%define interpolation algorithm 
-%\textbf{\textbf{for}} each timestep \emph{T}
-  %Read inflow
-  %\textbf{for} each node \emph{N} and velocity component \emph{V} on inflow boundary 
-    %\emph{V}(\emph{N}) = doInterpolation(N)
-  %\textbf{endfor}
-  %solve
-%\textbf{endfor}
 \begingroup
-\fontsize{12pt}{14pt}
-\begin{lstlisting}[escapechar=|]
- l = a-b                       # vector between the corner nodes
- c = (a+b)/2                   # midpoint location
- h = c-cc                      # height of the framed triangle
- |$\theta$| = arctan(abs(l)/2abs(h))    # half the angle of the circle sector
- s = r*|$\theta$|                       # arclength
- g' = g*|$\theta$|                      # angles to the gll-points on the circle-sector
- #---------- Finding the intersecting points ----------#
- #---- x on the line l, and extend x-cc to the arc ----#
- |\textbf{for}| k in range(lx1):          # For the number of nodes in one direction
-    |$\alpha$| = h*tan(g'[k])           # Offset from the midpoint on l
-    x = c-|$\alpha$|*l/abs(l)           # Actual coordinate on l
-    m = x-cc                   # hypothenus of the imposed triangle
-    edge(k) = cc+r*m/abs(m)    # final coordinate on the arc
+%\fontsize{12pt}{14pt}
+\begin{lstlisting}[escapechar=|,frame=none]
+ l = a-b                       ! vector between the corner nodes
+ c = (a+b)/2                   ! midpoint location
+ h = c-cc                      ! height of the framed triangle
+ |$\theta$| = arctan(abs(l)/2*abs(h))    ! half the angle of the circle sector
+ s = r*|$\theta$|                       ! arclength
+ g = g*|$\theta$|                      ! angles to the GLL-points on the circle-sector
+ !---------- Finding the intersecting points ----------!
+ !---- x on the line l, and extend x-cc to the arc ----!
+ do k=1,lx1          ! For the number of nodes in one direction
+    |$\alpha$| = h*tan(g[k])           ! Offset from the midpoint on l
+    x = c-|$\alpha$|*l/abs(l)           ! Actual coordinate on l
+    m = x-cc                   ! hypothenus of the imposed triangle
+    edge(k) = cc+r*m/abs(m)    ! final coordinate on the arc
+ enddo
 \end{lstlisting}
 \endgroup
 These lines creates the wanted egde curved as a circle sector corresponding to the radius and circle center given.
 The remaining operation is to call the gordon hall algorithm and create the internal GLL-points defined by the edges 
 provided. The figure~\ref{fig:curvature} illustrates the geometry on which the algorithm is performed.
-Notice that the algorithm assumes that the center is somewhere on the plane defined as all the 
+Notice that the algorithm assumes that the center $c$ is somewhere on the plane defined as all the 
 points with equal distance to both $a$ and $b$.
 
 
@@ -226,7 +222,7 @@ points with equal distance to both $a$ and $b$.
 
 
 \section{Additional projection algorithm}\label{surfpro}
-The routine xyzarc enables the user to represent circular edges with the same order as
+The routine \verb|xyzarc()| enables the user to represent circular edges with the same order as
 the lagrange polynomials of each element. For more complex geometry such as actual 
 terrain and other surfaces without any analytic expression the large element sizes 
 makes the goemetrical representation difficult. There is however no reason why the 
@@ -245,9 +241,9 @@ In addition to the standard nek library the file surfpro.f needs to be added to
 the /trunk/nek/ folder along with all the other scripts applied by nek.
 
 The algorithm relies on two external files generated by the modified nmshconvert script.
-surf.i contains all the coordinated to the points on the refined surface. 
-bdry.i contains the element, and face number to all the faces to be projected onto the surface.
-When generated they automatically alter the local SIZE file to contain some key variables 
+\verb|surf.i| contains all the coordinated to the points on the refined surface. 
+\verb|bdry.i| contains the element, and face number to all the faces to be projected onto the surface.
+When generated they automatically alter the local \verb|SIZE| file to contain some key variables 
 applied in the algorithm in surfpro.f.
 The algorithm is best explained through a simple box with a non-regular floor. 
 As an initial test-problem the hill of Ekeberg was applied. 
@@ -260,18 +256,18 @@ The psuedocode for the algorithm is listed below.
 %
 \begingroup
 \fontsize{12pt}{14pt}
-\begin{lstlisting}[escapechar=|]
-for e,f in bdry.i
+\begin{lstlisting}[escapechar=|,frame=none]
+do e,f in bdry.i
   wrk = create_working_surface(e,f)
-  for i in GLL-nodes
+  do i in GLL-nodes
     interp = init_interpolation_array() 
-    for j in wrk
+    do j in wrk
        update_int_array(interp,wrk(j))
-    end
+    enddo
     set_new_point(interp,wrk,i,e,f)
-  end
-  fix_gll()
-end
+  enddo
+  fix_GLL()
+enddo
 fix_geom()
 \end{lstlisting}
 \endgroup
@@ -289,8 +285,8 @@ given in the list below
         be closer to the initial GLL-node.
     \item set\_new\_point(interp,wrk,i,e,f) -- updating the new GLL-point determined by the 
         surface points in interp.
-    \item fix\_gll() -- There is a risk after distributing the GLL-points on the surface that
-        some of the internal GLL-points falls outside the element. fix\_gll() distributes 
+    \item fix\_GLL() -- There is a risk after distributing the GLL-points on the surface that
+        some of the internal GLL-points falls outside the element. fix\_GLL() distributes 
         all internal GLL-points correctly between the newly projected face and the opposite.
     \item fix\_geom() -- An already existing Nek routine which redistributes the GLL-points to 
         assure that the distance between them on the new surface are correct.
@@ -318,20 +314,25 @@ surfmesh\_myFlow. The following commands are then executed
 %>> ~/path/to/meshconvert/scrpt/nmshconvert --mesh surfmesh_myFlow --mesh_format surface
 %\end{lstlisting}
 % 
-\begin{verbatim}
->> ./nmshconvert --mesh mesh_myFlow 
+\begingroup
+\fontsize{12pt}{14pt}
+\begin{lstlisting}[escapechar=|,frame=none]
+>> /nmshconvert --mesh mesh_myFlow 
     --reafile init.rea --outfile myFlow.rea
     --tol 1e3 --temperature True --curvetype A
+
 >> ./nmshconvert --mesh surfmesh_myFlow 
     --mesh_format surface
 
-\end{verbatim}
-% 
-\begin{lstlisting}[style=FormattedNumber, frame=none]
-    int* p;
-    int a[4];
-    p = a;
 \end{lstlisting}
+\endgroup
+% 
+% 
+%\begin{lstlisting}[style=FormattedNumber, frame=none]
+    %int* p;
+    %int a[4];
+    %p = a;
+%\end{lstlisting}
 \subsection{Application on the hill of Ekeberg}
 As an initial test of the algorithm a mesh was created based on the hill of Ekeberg.
 The surface was loaded as a \verb|.tin| file in ICEM and a simple box was created with 
