@@ -84,6 +84,7 @@ Two dashed lines on either side of the centerline represent the canyon.}
 %
 Disscuss the plot... 
 
+
 \colorbox{green}{redo these simulation in case they were started to early.}
 %
 \begin{figure}[h]
@@ -96,6 +97,44 @@ Two dashed lines on either side of the centerline represent the canyon.}
 	\label{fig:cVfilter}
 \end{figure}
 %
+
+\subsection{Dynamic Smagorinsky}
+Applying a subgrid scale model to the problem should imply a more accurate result 
+since the grid is not sufficiently fine to resolve the finest eddies. 
+%
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Figures/Nek_smag_cV.pdf}
+	\caption{Time-averaged concentration with a sample time of $22.00$ s at $y = 0$ plotted
+    vertically and scaled 
+	with the free-stream velocity and emission rate. Compared against wind tunnel data.
+Two dashed lines on either side of the centerline represent the canyon.}
+	\label{fig:cVsmag}
+\end{figure}
+%
+%
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Figures/Nek_smag_cH.pdf}
+	\caption{Time-averaged concentration with a sample time of $22.00$ s at $y = 0$ plotted
+    vertically and scaled 
+	with the free-stream velocity and emission rate. Compared against wind tunnel data.
+Two dashed lines on either side of the centerline represent the canyon.}
+	\label{fig:cVsmag}
+\end{figure}
+%
+%
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Figures/Nek_smag_cfluctH.pdf}
+	\caption{Time-averaged concentration with a sample time of $22.00$ s at $y = 0$ plotted
+    vertically and scaled 
+	with the free-stream velocity and emission rate. Compared against wind tunnel data.
+Two dashed lines on either side of the centerline represent the canyon.}
+	\label{fig:cVsmag}
+\end{figure}
+%
+
 \section{Discussion and Conclusion}
 \colorbox{yellow}{How did Nek perform overall, user-friendly ?,correctness,speed etc.}
 
