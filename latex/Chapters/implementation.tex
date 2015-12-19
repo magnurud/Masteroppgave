@@ -12,8 +12,6 @@
 
 \colorbox{green}{Some introduction that motivates the work done in this thesis}
 
-Sed ullamcorper quam eu nisl interdum at interdum enim egestas. Aliquam placerat justo sed lectus lobortis ut porta nisl porttitor. Vestibulum mi dolor, lacinia molestie gravida at, tempus vitae ligula. Donec eget quam sapien, in viverra eros. Donec pellentesque justo a massa fringilla non vestibulum metus vestibulum. Vestibulum in orci quis felis tempor lacinia. Vivamus ornare ultrices facilisis. Ut hendrerit volutpat vulputate. Morbi condimentum venenatis augue, id porta ipsum vulputate in. Curabitur luctus tempus justo. Vestibulum risus lectus, adipiscing nec condimentum quis, condimentum nec nisl. Aliquam dictum sagittis velit sed iaculis. Morbi tristique augue sit amet nulla pulvinar id facilisis ligula mollis. Nam elit libero, tincidunt ut aliquam at, molestie in quam. Aenean rhoncus vehicula hendrerit.
-
 \section{Case 1: Gas dispersion in a simplified urban area}
 %The problem investigated in this work is gas dispersion of neutral gas in a velocity field through four cubic blocks.
 %Similar simulations have been done in CDP and Fluent which are compared to data from a wind-tunnel experiment performed by ALAN.
@@ -47,7 +45,7 @@ shape of the plume at the indicated positions in figure~\ref{fig:layout} are com
 experimental data and simulations performed in Fluent and CDP\@. 
 The wind-field in the tunnel is created by an inflow condition that is defined from previous 
 simulations in CDP~\cite{eriksson}.
-For clarification some of the variables repeteadly mentioned throughout this thesis will be 
+For clarification some of the variables repeatedly mentioned throughout this thesis will be 
 stated explicitly in table~\ref{tab:simplevariables}.
 \begin{table}
     \centering
@@ -64,7 +62,7 @@ stated explicitly in table~\ref{tab:simplevariables}.
     \label{tab:simplevariables}
 \end{table}
 
-The inflow conditions had to be extrapolated onto the domain at each timestep. The velocity field
+The inflow conditions had to be extrapolated onto the domain at each time step. The velocity field
 on the inflow was generated in CDP, in order to create a boundary layer similar to the one found
 in the wind-tunnel. The inflow velocity was written to file every 
 $0.0013$s for a total of $28$ seconds. An interpolation algorithm had to be implemented in order
@@ -91,7 +89,7 @@ in table ~\ref{tab:case2consts}.
     \label{tab:case2consts}
 \end{table}
 %
-The flow is laminar with Reynoldsnumber $Re=20$ so all the 
+The flow is laminar with Reynolds number $Re=20$ so all the 
 challenges arising when dealing with turbulent flow does not come to play in this case. 
 The case will yield a steady state solution at which point the coefficients are calculated
 and compared with the reference solutions.
@@ -121,7 +119,7 @@ are given by the formulas
     c_L = \frac{2F_L}{\rho U^2 D H}.
     \label{eq:dragnliftcoeffs}
 \end{align}
-Nek provides functions for calcuting lift and drag on any user-specified object.
+Nek provides functions for calculating lift and drag on any user-specified object.
 The function is called \verb|drag_calc(scale)|, with the input parameter 
 defined by the user, for this case \verb|scale|$=2/(\rho U^2DH)$.  
 Apart from this the function \verb|set_obj()| has to be modified in order to create an object 
@@ -163,7 +161,7 @@ of the circle segments are presented in chapter~\ref{results}.
 \section{Advances in the mesh-generation routine} \label{xyzarc}
 The routine \verb|xyzarc()|:
 
-The gordon hall algorithm was already implemented as a function in Nek, with the GLL-points,polynomial degree and some initial 
+The Gordon Hall algorithm was already implemented as a function in Nek, with the GLL-points,polynomial degree and some initial 
 coordinates to the element. The algorithm creates a distribution of the internal GLL-points in each element. 
 If the element consists of linear edges the only necessary input are the vertices, but by specifying the points on edges and faces
 the algorithm creates a logical distribution of the internal GLL-points to a deformed element. 
@@ -171,8 +169,8 @@ the algorithm creates a logical distribution of the internal GLL-points to a def
 The curved edge is specified in the .rea file and the routine \verb|genxyz()| processes the input of each edge. 
 By specifying the radius and the circle center \verb|genxyz()| calls the routine \verb|xyzarc()| which performs the following algorithm;
 
-$a,b$ will be the two endnodes of the edge 
-$c$ will be the midnode, 
+$a,b$ will be the two end nodes of the edge 
+$c$ will be the mid node, 
 $s$ will be the arc length, 
 $\theta$ will be the full angle of the circle sector,
 $cc$ is the center coordinates, 
@@ -186,20 +184,20 @@ and $r$ will be the radius.
  c = (a+b)/2                   ! midpoint location
  h = c-cc                      ! height of the framed triangle
  |$\theta$| = arctan(abs(l)/2*abs(h))    ! half the angle of the circle sector
- s = r*|$\theta$|                       ! arclength
+ s = r*|$\theta$|                       ! arc length
  g = g*|$\theta$|                      ! angles to the GLL-points on the circle-sector
  !---------- Finding the intersecting points ----------!
  !---- x on the line l, and extend x-cc to the arc ----!
- do k=1,lx1          ! For the number of nodes in one direction
-    |$\alpha$| = h*tan(g[k])           ! Offset from the midpoint on l
-    x = c-|$\alpha$|*l/abs(l)           ! Actual coordinate on l
-    m = x-cc                   ! hypothenus of the imposed triangle
+ do k=1,lx1          ! for the number of nodes in one direction
+    |$\alpha$| = h*tan(g[k])           ! offset from the midpoint on l
+    x = c-|$\alpha$|*l/abs(l)           ! actual coordinate on l
+    m = x-cc                   ! hypotenuse of the imposed triangle
     edge(k) = cc+r*m/abs(m)    ! final coordinate on the arc
  enddo
 \end{lstlisting}
 \endgroup
-These lines creates the wanted egde curved as a circle sector corresponding to the radius and circle center given.
-The remaining operation is to call the gordon hall algorithm and create the internal GLL-points defined by the edges 
+These lines creates the wanted edge curved as a circle sector corresponding to the radius and circle center given.
+The remaining operation is to call the Gordon Hall algorithm and create the internal GLL-points defined by the edges 
 provided. The figure~\ref{fig:curvature} illustrates the geometry on which the algorithm is performed.
 Notice that the algorithm assumes that the center $c$ is somewhere on the plane defined as all the 
 points with equal distance to both $a$ and $b$.
@@ -223,10 +221,10 @@ points with equal distance to both $a$ and $b$.
 
 \section{Additional projection algorithm}\label{surfpro}
 The routine \verb|xyzarc()| enables the user to represent circular edges with the same order as
-the lagrange polynomials of each element. For more complex geometry such as actual 
+the Lagrange polynomials of each element. For more complex geometry such as actual 
 terrain and other surfaces without any analytic expression the large element sizes 
-makes the goemetrical representation difficult. There is however no reason why the 
-GLL-points on a face can be projected onto a non-analytical surface. Allthough there
+makes the geometrical representation difficult. There is however no reason why the 
+GLL-points on a face can be projected onto a non-analytical surface. Although there
 are no support for automatically reading additional information for distributing the 
 GLL-points exactly on a given surface a routine was made which demands a minimum of 
 manual work. The method can be summed up in these simple steps
@@ -237,8 +235,8 @@ manual work. The method can be summed up in these simple steps
         \item Choose number of interpolation points by modifying param(34)= (1,2,3)
 \end{enumerate}
 
-In addition to the standard nek library the file surfpro.f needs to be added to 
-the /trunk/nek/ folder along with all the other scripts applied by nek.
+In addition to the standard Nek library the file surfpro.f needs to be added to 
+the /trunk/nek/ folder along with all the other scripts applied by Nek.
 
 The algorithm relies on two external files generated by the modified nmshconvert script.
 \verb|surf.i| contains all the coordinated to the points on the refined surface. 
@@ -249,10 +247,10 @@ The algorithm is best explained through a simple box with a non-regular floor.
 As an initial test-problem the hill of Ekeberg was applied. 
 Before describing the algorithm let $E_{tot} = n_xn_yn_z$  be the total number of elements, 
 $N$ is the polynomial degree and let us for simplicity assume that $n_x=n_y=n_z$ such that 
-$E= E_{tot}^{2/3}$ is the number of elements containg a face on the non-regular surface.
+$E= E_{tot}^{2/3}$ is the number of elements containing a face on the non-regular surface.
 The number of points on the refined surface $N_s$ should be somewhat larger than $EN^2$ in 
 order to describe the surface for all the GLL-points that belong to the boundary. 
-The psuedocode for the algorithm is listed below.
+The pseudo code for the algorithm is listed below.
 %
 \begingroup
 \fontsize{12pt}{14pt}
@@ -295,7 +293,7 @@ given in the list below
 Although this routine is only called once, and therefore will not contribute significantly 
 to the total runtime of the program it is desirable to have a fast algorithm. Another analysis
 important to be made is the amount of extra storage space needed for this algorithm.
-By analysing the pseudocode the time of the algorithm should be of order $O(EN^2(E+N^2))$
+By analysing the pseudo code the time of the algorithm should be of order $O(EN^2(E+N^2))$
 and the amount of additional storage space will be of order $O(EN^2+E+N^2)=O(EN^2)$.
 
 The routine attempts to be as automatic as possible and the only implementation necessary is 
@@ -353,7 +351,7 @@ The surface was approximated accurately by higher order polynomials.
 %
 The algorithm restricts itself to relatively smooth surfaces.
 \section{Spatial averaging routine}
-A dynamic smagorinsky model has previously been implemented in Nek5000 for flow in a channel. 
+A dynamic Smagorinsky model has previously been implemented in Nek5000 for flow in a channel. 
 The method as described in chapter~\ref{description} depends on an averaging routine to calculate
 the dynamic Smagorinsky constant. The implementation in Nek applies an average routine in the plane,
 assuming that the Smagorinsky constant is the same for all points with equal distance to the walls 
@@ -362,7 +360,7 @@ of the channel. This is a rather specific averaging routine only applicable to c
 When applying dynamical Smagorinsky to Case 1 a new spatial mean routine had to be applied. 
 It was first attempted to average only in time, but this proved not to be sufficient. It was
 therefore implemented a simple routine for taking the average within each element, let 
-$c_{num}^e,c_{den}^e$ denote the numerator and the denomenator in equation~\ref{eq:dynsmag}.
+$c_{num}^e,c_{den}^e$ denote the numerator and the denominator in equation~\ref{eq:dynsmag}.
 The means are then calculated as 
 \begin{align}
     c_{num}^e = \frac{1}{V}\int_{\Omega_e}c_{num}^e d\: \Omega 

@@ -12,7 +12,7 @@
 \colorbox{yellow}{What should be said about the stokes problem and infsup??}
 \section{The Incompressible Navier-Stokes equation}
 
-The physics regarding fluids in motion are described mathematically by the Navier-Stokes equation. 
+The physics regarding fluids in motion are described mathematically by the Navier-Stokes (N-S) equation. 
 The equations can be derived in many ways, and it is referred to \cite{White} for a complete 
 description of the necessary assumptions and simplifications.
 The general idea is to conserve momentum and mass in a control domain providing a system of two equations.
@@ -33,7 +33,7 @@ Without further introduction the incompressible  N-S equations are stated as
 These equations have been studied for centuries and different physical situations
 lead to different simplifications and sets of equations.
 Examples are the Euler equations,
-Stokes problem and darcy flow.
+Stokes problem and Darcy flow.
 In particular the Stokes problem is applied a lot as an initial test of the full N-S problem. 
 Before attempting to solve these equations it is important to understand the role of each term 
 and their mathematical influence on the problem. 
@@ -50,7 +50,7 @@ and their mathematical influence on the problem.
        - $\tau= -p + \nu[ \nabla \mathbf{u} + \nabla^T \mathbf{u}]$ is known as the Reynolds stress tensor for incompressible flows.
        The term $\nabla \cdot \tau$ simplifies to $-\nabla p + \nu \Delta \mathbf{u}$ if the velocity is assumed to 
        be divergence free and the viscosity is assumed to be constant. 
-       It is a symmetric tensor, hence another 6 unknows is introduced.
+       It is a symmetric tensor, hence another 6 unknowns is introduced.
     \item $\nu \Delta \mathbf{u}$ 
     - The diffusive term describes the natural diffusion of the fluid. The effect of diffusion is determined by the 
     viscosity of the fluid. The corresponding mathematical operator stabilizes the system and it is therefore generally easier
@@ -60,13 +60,13 @@ and their mathematical influence on the problem.
     \item $\nabla \cdot \mathbf{u}$ 
     - The divergence free condition from the mass equation.
 \item $\mathbf{f}$ 
-    - General term describing exteternal body forces such as gravity. For incompressible flow the
+    - General term describing external body forces such as gravity. For incompressible flow the
     gravity term is incorporated in the pressure term, $\nabla p = \nabla p + \rho \mathbf{g}$. 
     \item $Re$ 
     - The Reynolds number defined as $UL/\nu$ where $U$ is the velocity scale, $L$ is the length scale and $\nu$ 
       is the viscosity of the fluid. $Re$ describes the relation between the biggest length scales of the flow
       and the viscous length scales. Notice how for large Reynolds number the unstable non-linear term 
-      dominates the transportation.Turbulent flows are characterized by high reynolds number.
+      dominates the transportation.Turbulent flows are characterized by high Reynolds number.
 \end{itemize}
 For large Reynolds number the huge span in length scales requires an extremely fine mesh if the equations \ref{eq:NS} 
 are to be solved exactly. Because a fine mesh implies a high computational cost a direct numerical solution (DNS) is not feasible for 
@@ -77,7 +77,7 @@ in the following section.
 \subsection{Weak formulation of N-S}
 Let us first assume constant viscosity, enabling the simplification $\nabla \cdot \tau = -\nabla p + \nu \Delta \mathbf{u}$.
 The numerical algorithms applied in this thesis requires a weak formulation of equation~\ref{eq:NS}.
-Before the weak form is derivated a few operators will be defined in order to simplify the final 
+Before the weak form is derived a few operators will be defined in order to simplify the final 
 expression.
 %
 \begin{align}
@@ -88,7 +88,7 @@ expression.
     \label{eq:weakoperators}
 \end{align}
 %
-A weak formulation is obtained by multiplying with a test funcion $\mathbf{v}$ and integrating over
+A weak formulation is obtained by multiplying with a test function $\mathbf{v}$ and integrating over
 the entire domain.
 \begin{align}
     \begin{split}
@@ -100,7 +100,7 @@ the entire domain.
     \end{split}
 	\label{eq:NSweak1}
 \end{align}
-Introducing the compact inner product notation and appling the divergence theorem on the right hand side of 
+Introducing the compact inner product notation and applying the divergence theorem on the right hand side of 
 the first equation yields
 \begin{align}
     \begin{split}
@@ -142,7 +142,7 @@ $\forall\; (\mathbf{u}, p) \in H^1(\Omega)\times L^2(\Omega)$.
 %
 
 In order to solve this equation numerically, everything has to be discretized and expressed 
-using a particular set of basis functions. This procedure will be discussed more thouroughly
+using a particular set of basis functions. This procedure will be discussed more thoroughly
 in chapter~\ref{numerics}, but the idea is that the solution $(\mathbf{u},p)$ is approximated 
 by a discretized solution $(\mathbf{u}_h,p_h)$ and the bilinear operators can be represented 
 by matrices. The discretized system of equations can be stated as
@@ -156,7 +156,7 @@ by matrices. The discretized system of equations can be stated as
 \section{The passive scalar equation}
 The N-S equation explains how a fluid will behave and solving it provides a complete pressure-velocity field of the 
 domain of interest, but it does not provide the answer of how heat will distribute in this flow, or how a gas will spread.
-The equation corresponding to this physical problem will be reffered to as the passive scalar equation for any scalar 
+The equation corresponding to this physical problem will be referred to as the passive scalar equation for any scalar 
 $\phi_i$ and is stated as 
 \begin{align}
     \begin{split}
@@ -171,7 +171,7 @@ resemble the viscosity and mass flux.
 
 \colorbox{green}{write more about this equation and how it is applied in this thesis}
 \section{Resolving the turbulent term using LES}
-When DNS is not feasible due to high Reynoldsnumber LES is one of the most powerful tools for simulating turbulent flows.
+When DNS is not feasible due to high Reynolds number LES is one of the most powerful tools for simulating turbulent flows.
 The idea is based on the fact that the small turbulent structures behave independently of time and location and are therefore 
 easy to model. This way the larger structures driven by geometry, inflow conditions and external forces can be simulated using a coarser 
 grid while the effect of the small structures are modelled. \colorbox{green}{Some source on the importance of SGS-model}
@@ -196,20 +196,20 @@ the filtered N-S equations are given as
 	\label{eq:NSfiltered}
 \end{align}
 %
-Where $\tau$ in this case denotes the subgrid scale (SGS) stress given as 
+Where $\tau$ in this case denotes the subgrid-scale (SGS) stress given as 
 \begin{align}
     \tau_{ij}(u_i,uj) = (u_iu_j)^r -u_i^ru_j^r
     \label{eq:sgstensor}
 \end{align}
 %
-This tensor is a concequence of applying the filter on the non-linear advection term.
+This tensor is a consequence of applying the filter on the non-linear advection term.
 
 \colorbox{yellow}{Should I show where this tensor comes from in a clearer way?}
 
 \subsection{dynamic Smagorinsky-Lilly SGS-model}
 The problem is now reduced to modelling this tensor, the most common SGS-model is the 
 dynamic Smagorinsky-Lilly model. The initial progress of this model was made by 
-Lilly in 1967~\cite{Lilly67} suggesting the following model of the sgs-tensor
+Lilly in 1967~\cite{Lilly67} suggesting the following model of the SGS-tensor
 %
 \begin{align}
     \tau_{ij} &= -2C_dl^2\mathcal{S}^rs_{ij}^r,\\
@@ -224,7 +224,7 @@ The resolved strain rate is easily calculated and the problem is now reduced to 
 the constant $C_d$. There were several attempts to determine this constant for the entire domain,
 but finally in 1991~\cite{Germano91} a dynamic subgrid-scale model was presented calculating a 
 $C_d$ locally in time and space. The general idea is that the $C_d$ is independent of the 
-filter width and from this assumption develope an expression for the dynamical constant.
+filter width and from this assumption develop an expression for the dynamical constant.
 
 Let $a,b$ denote two distinct filters with corresponding filter widths $l_a,l_b$. 
 Let $\tau_{ij}$ and $T_{ij}$ denote the stresses based on single- and double filtering
@@ -240,7 +240,7 @@ operations on the N-S equations
 %be written as $\tau^a_{ij} = 2C_da_{ij} $. 
 Applying the $b$ filter on the first tensor in eq~\ref{eq:stresstensors} allows us to define 
 a new tensor $L_{ij}$ which depends only on the $a$-filtered variables. The identity 
-is known as Germanos identity and was first introduced in 1991~\cite{Germano91},
+is known as the Germano identity and was first introduced in 1991~\cite{Germano91},
 \begin{align}
     L_{ij} = T_{ij} - (\tau_{ij})^b
     = (u_i^au_j^a)^b - (u_i^a)^b(u_j^a)^b.
@@ -250,7 +250,7 @@ The fact that this tensor depends on the $a$-filtered solution and not the resol
 one is very important and is what allows us to compute it exactly.
 
 Substituting the stress-tensors with their corresponding expression 
-from equation~\ref{eq:boussinesq} and assuming a dynamic constant uneffected by the filter 
+from equation~\ref{eq:boussinesq} and assuming a dynamic constant unaffected by the filter 
 one obtains an approximation for $L_{ij}$ which is also computable,
 \begin{align}
     \begin{split}
@@ -267,7 +267,7 @@ L_{ij} &\approx 2C_d l_b^2 \mathcal{S}^{ab} s^{ab}_{ij}
     \label{eq:dynsmagderivation}
 \end{align}
 Minimizing the mean-square error between the exact $L_{ij}$ as expressed in 
-equation~\ref{eq:germanoid} and the boussinesq-based approximation 
+equation~\ref{eq:germanoid} and the Boussinesq-based approximation 
 in~\ref{eq:lillystress} yields the best approximation 
 for the dynamic Smagorinsky constant 
 %
@@ -278,14 +278,14 @@ for the dynamic Smagorinsky constant
 %
 Note that the double indices implies summing. This expression is however not a 
 stable option and to deal with this most implementations apply some sort of mean 
-in either time and/or space when calculating the costant. Another interesting property 
-is that the constant $C_s$ and the final sgs-tensor $\tau = -2C_s\mathcal{S}s_{ij}$ are 
+in either time and/or space when calculating the constant. Another interesting property 
+is that the constant $C_s$ and the final SGS-tensor $\tau = -2C_s\mathcal{S}s_{ij}$ are 
 independent of smallest resolution scale, the only necessary variable is the relationship 
 between the two grid-sizes. The assumption made in this model is that turbulence behaves 
 as diffusion, and the turbulent viscosity is defined for this case as $\nu_t = C_s\mathcal{S}$.
 
 Let us end this section by stating the filtered N-S equation with the LES using 
-dynamical smagorinsky subgrid scale model, and remember that the diffusive term is written 
+dynamical Smagorinsky subgrid scale model, and remember that the diffusive term is written 
 in general terms as $2\nabla \cdot \nu s_{ij}$.  
 %
 \begin{align}
@@ -302,17 +302,17 @@ be equivalent to the one for a fluid with viscosity $\nu'= \nu + \nu_t$.
 
 \colorbox{green}{Clarify the effect on N-S eq.}
 
-\section{Solution methods of incombressible N-S}
+\section{Solution methods of incompressible N-S}
 \colorbox{green}{Rewrite this introduction}
 
 
-A non-linear set of equations requires a non-trivial solution method, and when the domain of the problem can be anyting from a simple channel 
-to a moving turbine there are many considerations that needs to be made. Allthough the equations have been known for over 200 years no one 
-has been able to prove or disprove the well-posedness of the problem. FINAL ELEMENT FORMULATION WELL-POSED?? Some of the most common algorithms 
+A non-linear set of equations requires a non-trivial solution method, and when the domain of the problem can be anything from a simple channel 
+to a moving turbine there are many considerations that needs to be made. Although the equations have been known for over 200 years no one 
+has been able to prove or disprove the well-posedness of the problem. Some of the most common algorithms 
 will be discussed in the following subsections
 
 \subsection{Operator-splitting techniques }
-Let us considere a simplified transient problem 
+Let us consider a simplified transient problem 
 \begin{align}
     \frac{du}{dt} = f + g.
     \label{eq:testproblem}
@@ -323,7 +323,7 @@ both $f$ and $g$ are functions of $u$ and therefore of $t$ as well. By integrati
     \label{eq:testproblemintegrated}
 \end{align}
 The idea is then to evaluate one of the integrals by an explicit scheme and the other one with an implicit scheme.
-A general formulation of this for a timestep would be on the form 
+A general formulation of this for a time step would be on the form 
 \begin{align}
     u^{n+1}-u^{n} = \sum_{k = 0}^{N} a_k f^{n-k}+\sum_{k = 0}^{N} b_k g^{n-k+1}.
     \label{eq:exp-imp}
@@ -333,7 +333,7 @@ an explicit scheme and the second one by an implicit scheme. The coefficients $a
 the elected scheme. When operator splitting is applied in this thesis an Adam-Bashford scheme is 
 chosen for the implicitly evaluated integral while Runge-Kutta is applied for the explicit scheme. 
 Operator splitting is a very convenient strategy for 
-the N-S equations which consists of the easily invertible laplacian operator 
+the N-S equations which consists of the easily invertible Laplacian
 and the demanding convection operator. 
 
 \colorbox{yellow}{Do I need a chapter about Runge-Kutta and Adam-Bashford?}
@@ -344,7 +344,7 @@ and the demanding convection operator.
 The operator-splitting method described in the previous chapter may lead to an unstable scheme,
 OIFS is a similar method but it offers a more stable scheme. The presentation of the method 
 is presented here in a computational fashion, for a full description and derivation of the method 
-it is refered to Maday et al~\cite{raey}.
+it is referred to Maday et al~\cite{raey}.
 
 By considering the NS-equation in a general operational form 
 \begin{align}
@@ -390,16 +390,14 @@ Notice how the integrational factor $Q(t)$ is never evaluated directly.
 
 The final scheme applied for solving equation~\ref{eq:NSoperator} when applying OIFS consists of one scheme for solving 
 equation~\ref{eq:NSOIFS1} and another scheme for solving equation~\ref{eq:IVP}. When applied in this thesis the 
-first scheme is an implicit BDFk-scheme while the second is an explicit kth order Runge-Kutta scheme. (4th order ? )
+first scheme is an implicit BDFk-scheme while the second is an explicit kth order Runge-Kutta scheme. 
 It is important to add that the error induced by this method is non-vanishing and is only recommended for assuring stability 
-for very instable problem. (Allows higher CFL number?)
+for very instable problem. 
 
 \subsection{Fractional step} 
 \label{fracstep}
-\colorbox{green}{rewrite such that it is clear how IOFS can be applied}
 
-
-Fractional step is an algorithm that can be divided into four seperate steps. For simplicity let us write the N-S
+Fractional step is an algorithm that can be divided into four separate steps. For simplicity let us write the N-S
 equation as 
 \begin{align}
     \partial_t v = -Av + Dp - Cv.
@@ -434,8 +432,8 @@ solved and the updated solution is stated on the left hand side.
 As earlier mentioned this method is convenient because it allows us to handle the different 
 terms with different solution techniques. So since the first equation in~\ref{eq:fracstep}
 involves the non-linear skew-symmetric advection operator this equation is solved using a 
-explicit Adam Bashford scheme. The second equation is the possion pressure equation which
-assures a divergence free velocity field. Note that $p\in L^2\supset H^1$ hence the poisson equation 
+explicit Adam Bashford scheme. The second equation is the Possion pressure equation which
+assures a divergence free velocity field. Note that $p\in L^2\supset H^1$ hence the Poisson equation 
 is somewhat different from the one normally studied in textbooks. Another difficulty is the 
 treatment of the boundary conditions. Ideally the BC's should be determined by the velocity 
 field $v^{n+1}$, but since this solution is yet to be calculated the intermediate velocity field 
@@ -451,12 +449,12 @@ This can be easily shown by discretizing the equation,
     \end{split}
     \label{eq:fracHelm}
 \end{align}
-Knowing that $A$ is the discrete laplacian operator and $v^n$ is a known variable this is 
+Knowing that $A$ is the discrete Laplacian and $v^n$ is a known variable this is 
 similar to problem~\ref{eq:Helmholtz}.
 
 
 This method provides an efficient algorithm, but is known to produce errors of order O(1).
-The problem is the pressure poisson equation which is solved with incorrect boundary 
+The problem is the pressure Poisson equation which is solved with incorrect boundary 
 conditions. The first step can also be evaluated in an OIFS-way to gain stability,
 by rewriting the initial equation as described in the previous chapter. This allows you 
 to solve the unstable advection operator with multiple substeps. Explicitly the first step 
