@@ -232,14 +232,15 @@ C
        0 Edge    Objects
        0 Point   Objects
 """
-######## ADDED BY RUD 23.09.15 #########
 def getreastart(name):
 	# A function that read the start of a .rea file and returns it as a string.
-	# reads the first 127 lines 
-	f = open(name,'r')
+	# reads the first lines until it reaches the MESH section 
+	#f = open(name,'r')
 	s = ''
-	for i in range(127):
-		s = s+f.readline()
+	for line in open(name).readlines():
+            test = line.find('MESH DATA') 
+            if(test != -1 ): return s
+            else: s = s+line
 	return s
 
 def getreaend(name):
