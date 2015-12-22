@@ -1,0 +1,1005 @@
+C-----------------------------------------------------------------------
+C  nek5000 user-file template
+C
+C  user specified routines:
+C     - userbc : boundary conditions
+C     - useric : initial conditions
+C     - uservp : variable properties
+C     - userf  : local acceleration term for fluid
+C     - userq  : local source term for scalars
+C     - userchk: general purpose routine for checking errors etc.
+C
+C-----------------------------------------------------------------------
+      subroutine uservp(ix,iy,iz,eg) ! set variable properties
+      include 'SIZE'
+      include 'TOTAL'
+      include 'NEKUSE'
+
+      common /cdsmag/ ediff(lx1,ly1,lz1,lelv)
+      integer ix,iy,iz,ie,eg 
+
+      if(ifield.eq.1) then ! For the smagorinsky case 
+        ie     = gllel(eg)
+        udiff = ediff(ix,iy,iz,ie)
+        utrans = 1.
+      else if(ifield.eq.2) then ! For the temperature (or passive scalar)
+        udiff = param(2)
+        utrans = 1.
+      else  ! Should not be in use...
+        if(eg.eq.1) write(*,*) 'uservp field:',ifield
+        udiff = param(2)
+        utrans = 1.
+      end if
+     
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine userf(ix,iy,iz,eg) ! set acceleration term
+c
+c     Note: this is an acceleration term, NOT a force!
+c     Thus, ffx will subsequently be multiplied by rho(x,t).
+c
+      include 'SIZE'
+      include 'TOTAL'
+      include 'NEKUSE'
+
+      integer e,f,eg
+c     e = gllel(eg)
+
+      ffx = 0.0
+      ffy = 0.0
+      ffz = 0.0
+
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine userq(ix,iy,iz,eg) ! set source term
+      include 'SIZE'
+      include 'TOTAL'
+      include 'NEKUSE'
+
+      integer e,f,eg
+c     e = gllel(eg)
+
+      qvol   = 0.0
+      source = 0.0
+
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine userq2(q) ! set source term
+      include 'SIZE'
+      include 'TOTAL'
+      include 'NEKUSE'
+
+      real q(lx1, ly1, lz1, lelt)
+
+c      if (ifcoup) then
+c         call nekMOAB_import_vars(tTag, 0, q)
+c      elseif (ifvcoup) then
+c         call nekMOAB_import_vars(vtTag, 1, q)
+c      endif
+
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine userbc(ix,iy,iz,iside,ieg) ! set up boundary conditions
+c     NOTE ::: This subroutine MAY NOT be called by every process
+      include 'SIZE'
+      include 'TOTAL'
+      include 'NEKUSE'
+      include 'inflow.i'
+
+      integer kx1,kx2,ky1,ky2,kz1,kz2, mx,my,mz
+      integer idface, ioffs, nfaces,ix,iy,iz,ieg
+      real d 
+              
+      nfaces = 2*ndim 
+
+      call facind(kx1,kx2,ky1,ky2,kz1,kz2,nx1,ny1,nz1,iside)
+   
+      if ( abs(x) .lt. 1e-7 ) then !... west inflow boundary at x=0
+         mx = kx2-kx1+1
+         my = ky2-ky1+1
+         mz = kz2-kz1+1
+         ioffs = ix + (iy-1)*mx + (iz-1)*mx*my - 1
+   
+         idface = (gllel(ieg)-1)*nfaces + iside
+         loc = -1
+         do  i=1,maxloc
+             if ( iloc(1,i) .eq. idface ) loc = iloc(2,i) + ioffs
+         end do
+   
+         ux   = 0.0
+         uy   = 0.0
+         uz   = 0.0
+         if ( loc .gt. 0 ) then
+c...  interpolate velocity components
+            do i=1,nintpt
+               j=intj(i,loc)
+               k=intk(i,loc)
+               ux=ux + wgtint(i,loc)*vxi(j,k)
+               uy=uy + wgtint(i,loc)*vyi(j,k)
+               uz=uz + wgtint(i,loc)*vzi(j,k)
+            end do
+         end if ! ( loc .gt. 0 )
+         temp = 0.0
+      else if ( abs(z) .lt. 1.e-8 ) then  !... floor
+         d = 0.0515 ! Radius of the circle
+         if ( param(70) .gt. 0.0 .and.
+     &      ((x-0.396)**2 + y**2 ).lt. d**2 ) then
+               ux = 0.0
+               uy = 0.0
+               uz = 0.100   ! 50l/min
+               temp = 1.0
+         else
+            ux   = 0.0
+            uy   = 0.0
+            uz   = 0.0
+            temp = 0.0
+         end if
+      end if
+c     write(*,*) "ieg,x,y,z,ux,uy,uz = ",ieg,x,y,z,ux,uy,uz
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine useric(ix,iy,iz,ieg) ! set up initial conditions
+      include 'SIZE'
+      include 'TOTAL'
+      include 'NEKUSE'
+      common /cdsmag/ ediff(lx1,ly1,lz1,lelv)
+      integer ix,iy,iz,ieg,ie
+      ie     = gllel(ieg)
+      ux   = 0.0
+      uy   = 0.0
+      uz   = 0.0
+      temp = 0.0
+
+      ! Check for zero elements in ediff 
+c     ntot = lx1*ly1*lz1*lelv
+c     if(ediff(ix,iy,iz,ie).ne.param(2))
+c    &  write(*,*) 'proc',nid,'element',ieg,'diff',ediff(ix,iy,iz,ie)
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine userchk()
+      include 'SIZE'
+      include 'NEKUSE'
+      include 'TOTAL'
+      include 'AVG'
+      include 'inflow.i'
+      
+      integer dataset
+      data dataset /-1/
+      save dataset
+      integer outstep 
+      data outstep /1/
+      save outstep
+      character*128 fname
+
+      common /cdsmag/ ediff(lx1,ly1,lz1,lelv)
+   
+      integer curdat,ntot,e
+      integer i,j,k
+      real tol
+      real inittime
+      data inittime /13.0/
+      save inittime
+      real meanvisc, maxtemp, maxvisc, minvisc, maxvel
+
+      tol = DT !tolerance omaxtemp f output 
+      if (tstep.eq.1) then 
+        inittime = TIME ! Initial time
+      end if
+      curdat = nfile0 + MOD(NINT(time/dtinf),nfile1-nfile0+1)
+      IF ( curdat .NE. dataset ) THEN
+c...     read velocity data from file
+         write(fname,'(a,i5.5)') '/panfs/pana1/work/der/MODITIC/
+     &Array_case2/inflow_dt_all/TimeSeries/Profiles/prof',curdat
+         if (nid.eq.0) write(*,*) fname
+         open (unit=12,file=fname,status='OLD')
+         DO j=0,inny/3
+            DO k=1,innz
+                IF(j.NE.0) THEN
+                 READ(12,*) vxi(j,k),vyi(j,k),vzi(j,k)
+c...    Has to be done for the new inflowdata MAGNUS
+                 vxi(inny/3+j,k)  = vxi(j,k)
+                 vyi(inny/3+j,k)  = vyi(j,k)
+                 vzi(inny/3+j,k)  = vzi(j,k)
+                 vxi(2*inny/3+j,k)= vxi(j,k)
+                 vyi(2*inny/3+j,k)= vyi(j,k)
+                 vzi(2*inny/3+j,k)= vzi(j,k)
+               ELSE
+c...    Need to take away the first column of inflow
+                 READ(12,*) vxi(inny,innz),vyi(inny,innz),vzi(inny,innz)
+               END IF
+            END DO
+         END DO
+         dataset = curdat
+         CLOSE(12)
+      END IF
+ 
+c------ SMAGORINSKY SUBGRID-SCALE ----------
+      ! add SGS term to RHS (explicit treatment in plan4) 
+      if(ifsplit .and. param(30).gt.0) then 
+          ifexplvis = .true.
+          if(nio.eq.0) write(*,*) 'ifexplvis=True'
+      endif
+
+      ! Compute eddy viscosity using dynamic smagorinsky model
+      ntot = nx1*ny1*nz1*nelv
+      if(ifuservp) then
+        if(nid.eq.0) write(6,*) 'Calculating eddy visosity'
+        do e=1,nelv   
+           !call eddy_visc(ediff,e)
+           call eddy_visc_vre(ediff,e)
+        enddo
+      endif
+c------ SUBGRID-SCALE MODEL ----------
+        maxvel = glmax(vx(1,1,1,1),ntot)
+        maxvisc = glmax(ediff(1,1,1,1),ntot)
+        if(nid.eq.0) write(*,*)'Maxvel :',maxvel
+        if(nid.eq.0) write(*,*)'Maxvisc:',maxvisc
+       
+           
+c...  add monitor points Only after the gas has moved a certain distance
+c...  compute averages
+      if ( param(71) .gt. 0.0) then 
+        ntot = lx1*ly1*lz1*lelv
+        call avg_all()
+        call copy(t(1,1,1,1,2) ,TAVG  (1,1,1,1,1),ntot)
+        call copy(t(1,1,1,1,3) ,TRMS  (1,1,1,1,1),ntot)
+        call copy(t(1,1,1,1,4) ,UAVG  (1,1,1,1),ntot)
+        call copy(t(1,1,1,1,5) ,VAVG  (1,1,1,1),ntot)
+        call copy(t(1,1,1,1,6) ,WAVG  (1,1,1,1),ntot)
+        call copy(t(1,1,1,1,7) ,URMS  (1,1,1,1),ntot)
+        call copy(t(1,1,1,1,8) ,VRMS  (1,1,1,1),ntot)
+        call copy(t(1,1,1,1,9) ,WRMS  (1,1,1,1),ntot)
+        call copy(t(1,1,1,1,10),WUMS  (1,1,1,1),ntot)
+        call copy(t(1,1,1,1,11),EDIFF,ntot) 
+        if(abs(TIME-inittime-outstep*param(14)).LT.tol.and.ISTEP.gt.1)
+     $    then
+          call hpts() ! For every IO tstep
+          outstep = outstep+1
+        end if
+      end if
+
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine usrdat()   ! This routine to modify element vertices
+      include 'SIZE'
+      include 'TOTAL'
+
+      common /cdsmag/ ediff(lx1,ly1,lz1,lelv)
+      integer n
+      param(59) = 0     ! all elements are _undeformed_
+
+      n = lx1*ly1*lz1*lelv 
+      call cfill(ediff,param(2),n)  ! initialize viscosity
+      call cfill(nu_star,param(2),n)  ! initialize viscosity
+
+      ! enable stress formulation if we use PN-PN-2 
+      if(lx1.ne.lx2 .and. param(30).gt.0) IFSTRS = .true.
+
+      ! Check for zero elements in ediff 
+c     do ie = 1,lelv
+c     do ix = 1,lx1
+c     do iy = 1,ly1
+c     do iz = 1,lz1
+c     if(ediff(ix,iy,iz,ie).ne.param(2)) then
+c       write(*,*) 'proc',nid,'element',ie,'diff',ediff(ix,iy,iz,ie)
+c     endif
+c     enddo
+c     enddo
+c     enddo
+c     enddo
+
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine usrdat2()  ! This routine to modify mesh coordinates
+      include 'SIZE'
+      include 'TOTAL'
+      include 'NEKUSE'
+
+c     common /cdsmag/ ediff(lx1,ly1,lz1,lelv)
+
+c     ! Check for zero elements in ediff 
+c     ntot = lx1*ly1*lz1*lelv
+c     do ie = 1,lelv
+c     do ix = 1,lx1
+c     do iy = 1,ly1
+c     do iz = 1,lz1
+
+c     if(ediff(ix,iy,iz,ie).ne.param(2)) then
+c       write(*,*) 'proc',nid,'element',ie,'diff',ediff(ix,iy,iz,ie)
+c     endif
+c     enddo
+c     enddo
+c     enddo
+c     enddo
+
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine usrdat3()
+      include 'SIZE'
+      include 'TOTAL'
+      include 'NEKUSE'
+      include 'inflow.i'
+
+      integer loc, ii, inj, ink, itm
+      integer j,k
+      real dist, dists(nintpt)
+      character*3 cb
+      common /cdsmag/ ediff(lx1,ly1,lz1,lelv)
+
+c...  read coordinates for inflow profile
+c...  OPEN(unit=12,file='./Profiles/coords',status='OLD')
+      DO itm=0,2 ! Need to triple the inflowdata
+      OPEN(unit=12,file='/panfs/pana1/work/der/MODITIC/Array_case2
+     &/inflow_dt_all/TimeSeries/Profiles/coords',status='OLD')
+        DO j=0,inny/3
+           DO k=1,innz
+              IF(j.NE.0) THEN ! The first column is just zeroes! 
+                xi(j+itm*inny/3,k)=0
+                read(12,*) yi(j+itm*inny/3,k), zi(j+itm*inny/3,k) 
+                IF(itm.EQ.0)  yi(j+itm*inny/3,k) = 
+     &                        yi(j+itm*inny/3,k)-2.21
+                IF(itm.EQ.1)  yi(j+itm*inny/3,k) =
+     &                        yi(j+itm*inny/3,k)-0.77
+                IF(itm.EQ.2)  yi(j+itm*inny/3,k) =
+     &                        yi(j+itm*inny/3,k)+0.77
+              ELSE
+c...    Need to take away the first column of inflow
+                read(12,*) yi(inny,innz), zi(inny,innz) 
+              END IF
+           END DO
+        END DO
+        CLOSE(unit=12)
+      END DO
+
+c...  initialize interpolation variables for inflow profile
+      DO j=1,maxlist
+         DO i=1,nintpt
+            intj(i,j) = -1
+            intk(i,j) = -1
+            wgtint(i,j) = 99999.            
+         END DO
+      END DO
+
+c...  initialize inflow profile velocities
+      do k=1,innz
+      do j=1,inny
+        vxi(j,k) = 0.0   
+        vyi(j,k) = 0.0   
+        vzi(j,k) = 0.0   
+      end do
+      end do
+  
+      DO j=1,maxloc
+         iloc(1,j) = -1
+         iloc(2,j) = -1
+      END DO
+
+c...  parse bc list for inflow faces
+      ifield = 1
+      nfaces = 2*ndim
+      loc = 1
+      ii = 1
+      nel = nelfld(ifield)
+      do ie=1,nel
+         do iface=1,nfaces
+            cb = cbc(iface,ie,ifield)
+            if ( cb .eq. 'v  ' ) then
+               if ( ii .ge. maxloc ) then
+                  write(6,*) "ABORT. Increase maxloc"//
+     >                        " (in inflow.i) and recompile"
+                  call exitt
+               end if
+               iloc(1,ii) = (ie-1)*nfaces + iface
+               iloc(2,ii) = loc
+               ii = ii+1
+               !... for each point in face find interpolation points and weights
+               call facind(kx1,kx2,ky1,ky2,kz1,kz2,nx1,ny1,nz1,iface)
+               do iz=kz1,kz2
+               do iy=ky1,ky2
+               do ix=kx1,kx2
+                  call nekasgn(ix,iy,iz,ie)
+                  if ( abs(x) .lt. 1.e-7 ) then ! only do this for west inflow bdry
+                     !... compute distances and interpolation weights 
+                     do ink=1,innz
+                     do inj=1,inny
+                        if (loc .le. maxlist ) then
+                           !... calculate distance to point
+                           dist = sqrt( (x-xi(inj,ink))**2 + 
+     >                               (y-yi(inj,ink))**2 + 
+     >                               (z-zi(inj,ink))**2 ) + 1.e-6
+                           !... test for distance to point
+                           ipos = 0
+                           do i1=nintpt,1,-1
+                              if ( dist .lt. wgtint(i1,loc) ) ipos = i1
+                           end do
+                           !... if point is closer than already stored points, store and sort in list
+                           if ( ipos .gt. 0 ) then
+                              do i1=nintpt,ipos+1,-1
+                                 intj(i1,loc)   = intj(i1-1,loc)
+                                 intk(i1,loc)   = intk(i1-1,loc)
+                                 wgtint(i1,loc) = wgtint(i1-1,loc)
+                              end do
+                              intj(ipos,loc)   = inj
+                              intk(ipos,loc)   = ink
+                              wgtint(ipos,loc) = dist
+                           end if ! (ipos)
+                        else ! (loc .gt. maxlist )
+                        !... abort with error message
+                           write(6,*) "ABORT. Increase maxlist"//
+     >                       " (in inflow.i) and recompile", loc, nid
+                           call exitt
+                        end if ! (loc)
+                     end do  ! (ink, inj)
+                     end do
+                     loc = loc+1
+                  end if ! ( west inflow bdry )
+               end do ! (ix)
+               end do ! (iy)
+               end do ! (iz)
+            end if   ! (cb .eq.'v  ' )
+         end do ! (ifaces)
+      end do  ! (ie)
+ 
+c...  compute interpolations weights
+      do j=1,loc-1
+         wsum = 0.0
+         do i=1,nintpt
+            wgtint(i,j) = 1.0/wgtint(i,j)
+            wsum = wsum + wgtint(i,j)
+         end do
+         do i=1,nintpt
+            wgtint(i,j) = wgtint(i,j)/wsum
+         end do
+      end do ! (do j)
+
+      ! Check for zero elements in ediff 
+c     do ie = 1,lelv
+c     do ix = 1,lx1
+c     do iy = 1,ly1
+c     do iz = 1,lz1
+c     if(ediff(ix,iy,iz,ie).ne.param(2)) then
+c       write(*,*) 'proc',nid,'element',ie,'diff',ediff(ix,iy,iz,ie)
+c     endif
+c     enddo
+c     enddo
+c     enddo
+c     enddo
+
+      return
+      end
+C=======================================================================
+c-----------------SGS-FUNCTIONS-----------------------------------------
+C=======================================================================
+      subroutine comp_lij(lij,u,v,w,fu,fv,fw,fh,fht,e)
+c
+c     Compute Lij for dynamic Smagorinsky model:
+c                    _   _      _______
+c          L_ij  :=  u_i u_j  - u_i u_j
+c
+      include 'SIZE'
+c
+      integer e
+c
+      real lij(lx1*ly1*lz1,3*ldim-3)
+      real u  (lx1*ly1*lz1,lelv)
+      real v  (lx1*ly1*lz1,lelv)
+      real w  (lx1*ly1*lz1,lelv)
+      real fu (1) , fv (1) , fw (1)
+     $   , fh (1) , fht(1)
+
+      call tens3d1(fu,u(1,e),fh,fht,nx1,nx1)  ! fh x fh x fh x u
+      call tens3d1(fv,v(1,e),fh,fht,nx1,nx1)
+      call tens3d1(fw,w(1,e),fh,fht,nx1,nx1)
+
+      n = nx1*ny1*nz1
+      do i=1,n
+         lij(i,1) = fu(i)*fu(i)
+         lij(i,2) = fv(i)*fv(i)
+         lij(i,3) = fw(i)*fw(i)
+         lij(i,4) = fu(i)*fv(i)
+         lij(i,5) = fv(i)*fw(i)
+         lij(i,6) = fw(i)*fu(i)
+      enddo
+      
+      call col3   (fu,u(1,e),u(1,e),n)    !  _______
+      call tens3d1(fv,fu,fh,fht,nx1,nx1)  !  u_1 u_1
+      call sub2   (lij(1,1),fv,n)
+      
+      call col3   (fu,v(1,e),v(1,e),n)    !  _______
+      call tens3d1(fv,fu,fh,fht,nx1,nx1)  !  u_2 u_2
+      call sub2   (lij(1,2),fv,n)
+      
+      call col3   (fu,w(1,e),w(1,e),n)    !  _______
+      call tens3d1(fv,fu,fh,fht,nx1,nx1)  !  u_3 u_3
+      call sub2   (lij(1,3),fv,n)
+      
+      call col3   (fu,u(1,e),v(1,e),n)    !  _______
+      call tens3d1(fv,fu,fh,fht,nx1,nx1)  !  u_1 u_2
+      call sub2   (lij(1,4),fv,n)
+      
+      call col3   (fu,v(1,e),w(1,e),n)    !  _______
+      call tens3d1(fv,fu,fh,fht,nx1,nx1)   !  u_2 u_3
+      call sub2   (lij(1,5),fv,n)
+      
+      call col3   (fu,w(1,e),u(1,e),n)    !  _______
+      call tens3d1(fv,fu,fh,fht,nx1,nx1)  !  u_3 u_1
+      call sub2   (lij(1,6),fv,n)
+
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine comp_mij(mij,sij,dg2,fs,fi,fh,fht,nt,e)
+c
+c     Compute Mij for dynamic Smagorinsky model:
+c
+c                     2 _  ____     _______
+c          M_ij  :=  a  S  S_ij  -  S  S_ij
+c
+      include 'SIZE'
+c
+      integer e
+c
+      real mij(lx1*ly1*lz1,3*ldim-3)
+      real dg2(lx1*ly1*lz1,lelv)
+      real fs (1) , fi (1) , fh (1) , fht(1)
+
+      real magS(lx1*ly1*lz1)
+      real sij (lx1*ly1*lz1*ldim*ldim)
+      
+      integer imap(6)
+      data imap / 0,4,8,1,5,2 / ! upper triangular part of s_ij
+
+      n = nx1*ny1*nz1
+
+      call mag_tensor_e(magS,sij)
+      call cmult(magS,2.0,n)
+
+c     Filter S
+      call tens3d1(fs,magS,fh,fht,nx1,nx1)  ! fh x fh x fh x |S|
+
+c     a2 is the test- to grid-filter ratio, squared
+
+      a2 = nx1-1       ! nx1-1 is number of spaces in grid
+      a2 = a2 /(nt-1)  ! nt-1 is number of spaces in filtered grid
+      do k=1,6
+         jj = n*imap(k) + 1
+         call col3   (fi,magS,sij(jj),n)
+         call tens3d1(mij(1,k),fi,fh,fht,nx1,nx1)  ! fh x fh x fh x (|S| S_ij)
+         call tens3d1(fi,sij(jj),fh,fht,nx1,nx1)  ! fh x fh x fh x S_ij
+         do i=1,n
+            mij(i,k) = (a2**2 * fs(i)*fi(i) - mij(i,k))*dg2(i,e)
+         enddo
+      enddo
+
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine eddy_visc(ediff,e)
+c
+c     Compute eddy viscosity using dynamic smagorinsky model
+c
+      include 'SIZE'
+      include 'TOTAL'
+      include 'ZPER'
+
+      real ediff(nx1*ny1*nz1,nelv)
+      real alpha 
+      integer e,n,ntot
+
+      common /dynsmg/ sij (lx1*ly1*lz1,ldim,ldim)
+     $              , mij (lx1*ly1*lz1,3*ldim-3)
+     $              , lij (lx1*ly1*lz1,3*ldim-3)
+     $              , dg2 (lx1*ly1*lz1,lelv)
+     $              , num (lx1*ly1*lz1,lelv)
+     $              , den (lx1*ly1*lz1,lelv)
+     $              , snrm(lx1*ly1*lz1,lelv)
+     $              , numy(ly1*lely),deny(ly1*lely),yy(ly1*lely)
+      real sij,mij,lij,dg2,num,den,snrm,numy,deny,yy
+
+      parameter(lxyz=lx1*ly1*lz1)
+      common /xzmp0/ ur (lxyz) , us (lxyz) , ut (lxyz)
+      real           vr (lxyz) , vs (lxyz) , vt (lxyz)
+     $     ,         wr (lxyz) , ws (lxyz) , wt (lxyz)
+c      common /xzmp1/ w1(lx1*lelv),w2(lx1*lelv)
+
+      !! NOTE CAREFUL USE OF EQUIVALENCE HERE !!
+      equivalence (vr,lij(1,1)),(vs,lij(1,2)),(vt,lij(1,3))
+     $          , (wr,lij(1,4)),(ws,lij(1,5)),(wt,lij(1,6))
+
+      common /sgsflt/ fh(lx1*lx1),fht(lx1*lx1),diag(lx1)
+
+      integer nt
+      save    nt
+      data    nt / -9 /
+
+      real workarray(nx1,ny1,nz1)
+
+      ntot = nx1*ny1*nz1
+
+      if (nt.lt.0) call
+     $   set_ds_filt(fh,fht,nt,diag,nx1)! dyn. Smagorinsky filter
+
+      call comp_gije(sij,vx(1,1,1,e),vy(1,1,1,e),vz(1,1,1,e),e)
+      call comp_sije(sij)
+
+      call mag_tensor_e(snrm(1,e),sij)
+      call cmult(snrm(1,e),2.0,ntot)
+
+      call set_grid_spacing(dg2)
+      call comp_mij   (mij,sij,dg2,ur,us,fh,fht,nt,e)
+
+      call comp_lij   (lij,vx,vy,vz,ur,us,ut,fh,fht,e)
+
+c     Compute numerator (ur) & denominator (us) for Lilly contraction
+
+      n = nx1*ny1*nz1
+      do i=1,n
+         ur(i) = mij(i,1)*lij(i,1)+mij(i,2)*lij(i,2)+mij(i,3)*lij(i,3)
+     $      + 2*(mij(i,4)*lij(i,4)+mij(i,5)*lij(i,5)+mij(i,6)*lij(i,6))
+         us(i) = mij(i,1)*mij(i,1)+mij(i,2)*mij(i,2)+mij(i,3)*mij(i,3)
+     $      + 2*(mij(i,4)*mij(i,4)+mij(i,5)*mij(i,5)+mij(i,6)*mij(i,6))
+      enddo
+      
+c     smoothing numerator and denominator in time
+      call copy (vr,ur,nx1*nx1*nx1)
+      call copy (vs,us,nx1*nx1*nx1)
+
+      beta1 = 0.0                   ! Temporal averaging coefficients
+      if (istep.gt.1) beta1 = 0.999    ! Retain 90 percent of past
+      beta2 = 1. - beta1
+
+      do i=1,n
+         num (i,e) = beta1*num(i,e) + beta2*vr(i)
+         den (i,e) = beta1*den(i,e) + beta2*vs(i)
+      enddo
+
+      k = 1
+      call local_smooth(num(1,e),k)
+      call local_smooth(den(1,e),k)
+
+c     Filter num and den \\ Didnt work that well
+c     call tens3d1(workarray,num(1,e),fh,fht,nx1,nx1)  ! fh x fh x fh x |S|
+c     call copy(num(1,e),workarray,n)
+c     call tens3d1(workarray,den(1,e),fh,fht,nx1,nx1)  ! fh x fh x fh x |S|
+c     call copy(den(1,e),workarray,n)
+
+      ! Smoothing the values within each element
+      !alpha = 0.8
+      !call smooth_in_element(num(1,e),den(1,e),n,alpha) 
+
+      !write(*,*) 'Element number and lelv ',e,lelv
+      if (e.eq.nelv) then  ! looping through all elements to calculate ediff
+          ! Should this be included ?? 
+         !call dsavg(num)   ! average across element boundaries
+         !call dsavg(den)
+          ! Should this be included ?? 
+         ntot = nx1*ny1*nz1*nelv
+         do i=1,ntot
+            cdyn = 0
+            if (den(i,1).gt.0) cdyn = 0.5*num(i,1)/den(i,1)
+            cdyn = max(cdyn,0.)   ! AS ALTERNATIVE, could clip ediff
+            ediff(i,1) = param(2)+cdyn*dg2(i,1)*snrm(i,1)
+         enddo
+      endif
+      
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine set_grid_spacing(dg2)
+c
+c     Compute D^2, the grid spacing used in the DS sgs model.
+c
+      include 'SIZE'
+      include 'TOTAL'
+
+
+      real dg2(nx1,ny1,nz1,nelv)
+
+      integer e,eg,ex,ey,ez
+
+      gamma = 1.
+      gamma = gamma/ndim
+
+      n = nx1*ny1*nz1*nelv
+      call rone(dg2,n)
+      return               ! Comment this line for a non-trivial Delta defn
+
+      do e=1,nelv
+
+         do k=1,nz1
+           km = max(1  ,k-1)
+           kp = min(nz1,k+1)
+
+           do j=1,ny1
+             jm = max(1  ,j-1)
+             jp = min(ny1,j+1)
+
+             do i=1,nx1
+               im = max(1  ,i-1)
+               ip = min(nx1,i+1)
+
+               di = (xm1(ip,j,k,e)-xm1(im,j,k,e))**2
+     $            + (ym1(ip,j,k,e)-ym1(im,j,k,e))**2
+     $            + (zm1(ip,j,k,e)-zm1(im,j,k,e))**2
+
+               dj = (xm1(i,jp,k,e)-xm1(i,jm,k,e))**2
+     $            + (ym1(i,jp,k,e)-ym1(i,jm,k,e))**2
+     $            + (zm1(i,jp,k,e)-zm1(i,jm,k,e))**2
+
+               dk = (xm1(i,j,kp,e)-xm1(i,j,km,e))**2
+     $            + (ym1(i,j,kp,e)-ym1(i,j,km,e))**2
+     $            + (zm1(i,j,kp,e)-zm1(i,j,km,e))**2
+               
+               di = di/(ip-im)
+               dj = dj/(jp-jm)
+               dk = dk/(kp-km)
+               dg2(i,j,k,e) = (di*dj*dk)**gamma
+
+             enddo
+           enddo
+         enddo
+      enddo
+
+      call dsavg(dg2)  ! average neighboring elements
+
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine set_ds_filt(fh,fht,nt,diag,nx) ! setup test filter
+
+      INCLUDE 'SIZE'
+
+      real fh(nx*nx),fht(nx*nx),diag(nx)
+
+c Construct transfer function
+      call rone(diag,nx)
+
+       diag(nx-0) = 0.00   
+       diag(nx-1) = 0.01  
+       diag(nx-2) = 0.02
+       diag(nx-3) = 0.05
+       diag(nx-4) = 0.10
+       diag(nx-5) = 0.90
+c      diag(nx-6) = 0.75
+c      diag(nx-7) = 0.90
+c      diag(nx-8) = 0.95
+c      diag(nx-9) = 0.98
+c      diag(nx-10) = 0.99
+       nt = nx - 5
+
+c      diag(nx-0) = 0.00   
+c      diag(nx-1) = 0.00  
+c      diag(nx-2) = 0.00
+c      diag(nx-3) = 0.00
+c      diag(nx-4) = 0.90
+c      diag(nx-5) = 0.99
+c      diag(nx-6) = 0.99
+c      diag(nx-7) = 0.99
+c      diag(nx-8) = 0.99
+c      nt = nx - 4
+
+c      diag(nx-0) = 0.01   
+c      diag(nx-1) = 0.02  
+c      diag(nx-2) = 0.05
+c      diag(nx-3) = 0.10
+c      diag(nx-4) = 0.50
+c      diag(nx-5) = 0.90
+c      diag(nx-6) = 0.95
+c      diag(nx-7) = 0.98
+c      diag(nx-8) = 0.99
+c       nt = nx - 4
+
+c      diag(nx-0) = 0.01   
+c      diag(nx-1) = 0.10  
+c      diag(nx-2) = 0.50
+c      diag(nx-3) = 0.90
+c      diag(nx-4) = 0.99
+c      nt = nx - 2
+
+c     diag(nx-0) = 0.05   
+c     diag(nx-1) = 0.50
+c     diag(nx-2) = 0.95
+c     nt = nx - 1
+
+      call build_1d_filt(fh,fht,diag,nx,nid)
+
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine smooth_in_element(num,den,n,alpha) 
+          ! num, den are two vectors with length n
+          ! alpha is the weight of the mean
+      integer n
+      real num(n),den(n)
+      real mnum,mden
+      real alpha 
+      mnum = sum(num,n)/n
+      mden = sum(den,n)/n
+
+      do i = 1,n
+      num(i) = alpha*mnum + (1.0-alpha)*num(i)
+      den(i) = alpha*mden + (1.0-alpha)*den(i)
+      enddo
+
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine local_smooth(num,k)
+      include 'SIZE'
+      include 'TOTAL'
+      ! k is the number of neighbours to consider in each direction
+      real num(nx1,nx1,nx1),wrk(nx1,nx1,nx1),ii
+      integer k,ix,iy,iz
+      n = nx1*nx1*nx1
+
+      call rzero(wrk,n)
+
+      do ix = 1,nx1
+      do iy = 1,nx1
+      do iz = 1,nx1
+      ii = 0.0 
+      ! iterating over the neighbours
+      do iix = max(ix-k,1),min(ix+k,nx1)
+      do iiy = max(iy-k,1),min(iy+k,nx1)
+      do iiz = max(iz-k,1),min(iz+k,nx1)
+      wrk(ix,iy,iz) = wrk(ix,iy,iz)+num(iix,iiy,iiz)
+      ii = ii+1.0
+      enddo
+      enddo
+      enddo
+      wrk(ix,iy,iz) = wrk(ix,iy,iz)/ii
+      enddo
+      enddo
+      enddo
+
+      call copy(num,wrk,n)
+
+      return
+      end 
+c-----------------------------------------------------------------------
+       subroutine eddy_visc_vre(ediff,e)
+c
+c     Compute eddy viscosity using Vreman's model.
+c
+       include 'SIZE'
+       include 'TOTAL'
+       include 'ZPER'
+
+       real ediff(nx1*ny1*nz1,nelv)
+       real betaij(lx1*ly1*lz1,ldim,ldim)
+       real Bbeta(lx1*ly1*lz1)
+       real Sommeij2(lx1*ly1*lz1)
+       integer e,i,ldim1,ldim2
+
+       common /lesleo/ sij (lx1*ly1*lz1,ldim,ldim)
+     $              , dx2 (lx1*ly1*lz1,lelv,lp)
+     $              , dy2 (lx1*ly1*lz1,lelv,lp)
+     $              , dz2 (lx1*ly1*lz1,lelv,lp)
+     $              , cdiff
+       real sij,dx2,dy2,dz2,cdiff
+       integer ntot
+
+       ntot = nx1*ny1*nz1
+c     Grid spacing 
+       call set_grid_spacing_vre(dx2,dy2,dz2)
+c     Velocity gradient.
+       call comp_gije(sij,vx(1,1,1,e),vy(1,1,1,e),vz(1,1,1,e),e)
+
+c     Calculation of Beta.
+       do ldim2=1,ldim
+         do ldim1=1,ldim
+           do i=1,ntot
+             betaij(i,ldim1,ldim2) =
+     $        dx2(i,e,nid+1)*sij(i,1,ldim1)*sij(i,1,ldim2)
+     $        + dy2(i,e,nid+1)*sij(i,2,ldim1)*sij(i,2,ldim2)
+     $        + dz2(i,e,nid+1)*sij(i,3,ldim1)*sij(i,3,ldim2)
+           enddo
+         enddo
+       enddo
+
+
+c     Calculation of Bbeta.
+       do i=1,ntot
+         Bbeta(i) = betaij(i,1,1)*betaij(i,2,2) - (betaij(i,1,2)**2)
+     $           + betaij(i,2,2)*betaij(i,3,3) - (betaij(i,2,3)**2)
+     $           + betaij(i,3,3)*betaij(i,1,1) - (betaij(i,3,1)**2)
+       enddo
+
+c     Calculons Sommeij2 = Sum_{i,j} (alpha_{ij}^2) pour le modèle de
+c     Vreman. On met d'abord Sommeij2 à zero.
+       call rzero(Sommeij2,ntot)
+       do ldim2=1,ldim
+         do ldim1=1,ldim
+           do i=1,ntot
+             Sommeij2(i) = Sommeij2(i) + (sij(i,ldim1,ldim2)**2)
+           enddo
+         enddo
+       enddo
+
+c     ediff calculation.
+       do i=1,ntot
+         if (Sommeij2(i).gt.0.0) then
+           ediff(i,e) = param(2) + cdiff*sqrt(Bbeta(i)/Sommeij2(i))
+c          ediff(i,e) = param(2)
+         else
+           ediff(i,e) = param(2)
+         endif
+       enddo
+
+       return
+       end
+c-----------------------------------------------------------------------
+       subroutine set_grid_spacing_vre(dx2,dy2,dz2)
+c
+c     Compute D^2, the grid spacing used in the DS sgs model.
+c
+       include 'SIZE'
+       include 'TOTAL'
+
+
+       real dx2(nx1,ny1,nz1,nelv,np)
+       real dy2(nx1,ny1,nz1,nelv,np)
+       real dz2(nx1,ny1,nz1,nelv,np)
+       real longueur,largeur,dhlong,dhlarg,deltai,deltaj
+
+       integer e,i,j,k,im,jm,km,ip,jp,kp
+
+c      return               ! Comment this line for a non-trivial Delta defn
+
+       !write(6,*) 'LadHyX'
+
+       open (224,file='dx2dy2dz2.dat',status='old',action='write',
+     $      form='formatted',position="append")
+       do e=1,nelv
+          do k=1,nz1
+            km = max(1  ,k-1)
+            kp = min(nz1,k+1)
+            do j=1,ny1
+              jm = max(1  ,j-1)
+              jp = min(ny1,j+1)
+              do i=1,nx1
+                im = max(1  ,i-1)
+                ip = min(nx1,i+1)
+                longueur = 0.5*(abs(xm1(ip,jp,k,e) - xm1(im,jp,k,e))
+     $           + abs(xm1(ip,jm,k,e) - xm1(im,jm,k,e)))/(ip - im)
+                largeur = 0.5*(abs(ym1(ip,jp,k,e) - ym1(ip,jm,k,e))
+     $           + abs(ym1(im,jp,k,e) - ym1(im,jm,k,e)))/(jp - jm)
+                dhlong = 0.5*(abs(ym1(ip,jp,k,e) - ym1(im,jp,k,e))
+     $           + abs(ym1(ip,jm,k,e) - ym1(im,jm,k,e)))/(ip - im)
+                dhlarg = 0.5*(abs(xm1(ip,jp,k,e) - xm1(ip,jm,k,e))
+     $           + abs(xm1(im,jp,k,e) - xm1(im,jm,k,e)))/(jp - jm)
+                deltai = sqrt(longueur**2 + dhlong**2)
+                deltaj = sqrt(largeur**2 + dhlarg**2)
+
+               dx2(i,j,k,e,nid+1) = ((longueur**2)/deltai + (dhlarg**2)/
+     $                              deltaj)**2
+                dy2(i,j,k,e,nid+1) = ((dhlong**2)/deltai + (largeur**2)/
+     $                              deltaj)**2
+                dz2(i,j,k,e,nid+1) = ((zm1(i,j,kp,e)-zm1(i,j,km,e))/
+     $                              (kp-km))**2
+                write(224,*) i,j,k,e,nid,dx2(i,j,k,e,nid+1),
+     $                      dy2(i,j,k,e,nid+1),dz2(i,j,k,e,nid+1)
+              enddo
+            enddo
+          enddo
+       enddo
+       close(224)
+
+       return
+       end
+c-----------------------------------------------------------------------
+c
+c automatically added by makenek
+       subroutine usrsetvert(glo_num,nel,nx,ny,nz) ! to modify glo_num
+       integer*8 glo_num(1)
+       return
+       end
