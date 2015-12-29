@@ -41,6 +41,72 @@ In this thesis the spectral and finite element basis will be shortly stated and 
 
 
 \colorbox{green}{vær presis med den svake formuleringen!!}
+\section{Numerical Concepts on The Stokes problem}
+In the previous chapter the N-S equation was presented with a weak formulation and several solution algorithms. 
+The choice of algorithms and solution spaces required a more thourough analysis which is normally performed on the 
+Stokes problem. The (steady?) Stokes problem does not include the convection term but the highest order terms are all present
+and is therefore a valid equation to perform this necessary analysis \cite{Karniadakis}. The stokes problem is given 
+as 
+%
+\begin{align}
+    \begin{split}
+        \frac{\partial \mathbf{u}}{\partial t} - \mu \Delta \mathbf{u} + \nabla p &= \mathbf{f}, \\
+        \nabla \cdot \mathbf{u} &= 0, \\
+        \mathbf{u} &= 0 \text{  on  } \partial \Omega.
+    \end{split}
+    \label{eq:stokes}
+\end{align}
+%
+Applying the weak formulation to the Stokes problem implies a minimum requirement on the spaces for $\mathbf{u}$ and $p$,
+and their testfunctions. These spaces will be defined as 
+%
+\begin{align}
+    \begin{split}
+    H_0^1(\Omega) &= \left\{ v \in H^1(\Omega)\; |\; v = 0 \text{  on  } \partial \Omega \right\},\\
+    L_0^2(\Omega) &= \left\{ q \in L^2(\Omega)\; |\; \int_{\Omega} q dx = 0 \right\},
+    \end{split}
+    \label{eq:spaces}
+\end{align}
+%
+The formulation can easily be extended to include inhomogenous Dirchlet conditions on $\mathbf{u}$ by defining a 
+lifting function as described in \cite{Quarteroni}. Note also that the pressure is only present through its gradient 
+and is therefore not uniquely defined if the extra constraint on the mean is defined, hence the $0$ in $L_0^2$. 
+The weak form can now be stated as
+
+Find $(\mathbf{u}, p) \in H^1_0(\Omega)^3\times L^2_0(\Omega)$ such that 
+\begin{align}
+    \begin{split}
+        (\frac{\partial \mathbf{u}}{\partial t},\mathbf{v})
+        %+ \mathcal{C}(\mathbf{u};\mathbf{u},\mathbf{v})
+         + \mathcal{B}(\mathbf{v},p) 
+         +\nu\mathcal{A}(\mathbf{u},\mathbf{v}) &= (\mathbf{f},\mathbf{v}), \\
+        \mathcal{B}(\mathbf{u},q) &= 0.
+    \end{split}
+	\label{eq:NSweak}
+\end{align}
+$\forall\; (\mathbf{v}, q) \in H^1(\Omega)^3\times L^2(\Omega)$.
+%
+
+The numerical solution of this problem requires a discrete formulation of the weak form, with $(\mathbf{u}_h,p_h)\in V\times Q$
+as the discrete solution. The discrete spaces $V,Q$ are subspaces of $H_0^1,L^2_0$ equipped with the discrete $H_1$- and $L^2$-norm
+denoted $||\cdot||_V$ and $||\cdot||_Q$.
+For the discrete weak form to be well-posed it has to meet the requirements stated by the inf-sup condition, 
+%
+\begin{align}
+    \inf_{q\in Q}\sup_{\mathbf{v}\in V}\frac{\mathcal{B}(v,q)}{||\mathbf{v}||_V||q||_Q} \ge \beta.
+    \label{eq:infsup}
+\end{align}
+%
+$\beta$ is here some positive constant. For a spectral element formulation of this problem which will be elaborated in chapter
+~\ref{sem}, a common choice of subspaces $(X,Q)$ is $(P_N\cap H^1_0,P_{N-2} \cap L^{2}_{0})$. This will be referred to as the 
+$P_NP_{N-2}$-formulation where $P_N$ denotes the space of polynomials up to degree $N$.
+It was however proved by Guermond in~\cite{Guermond} that the fractional step algorithm requires a 
+form of the Stokes problem which automatically fullfills the inf-sup condition and therefore does not require any particular 
+discrete subspaces to be chosen. For the sake of convenience the polynomial degree of the pressure and the velocity will be 
+the same and the discrete pair of subspaces $(X,Q)$ is chosen to $(P_N\cap H^1_0,P_{N} \cap L^{2}_{0})$, known as the $P_NP_N$-formulation.
+
+
+
 \section{Finite element method}
 
 Finite element method (FEM) is one of the most widely used numerical methods applied on problems within construction, flow simulation and many 
@@ -215,7 +281,7 @@ while the stiffness matrix $A$ is symmetric but full.
 %	SUBSECTION 2
 %-----------------------------------
 
-\section{Spectral element method}
+\section{Spectral element method} \label{sem}
 In the early 1980's the idea to combine FEM and SM came along in order to obtain the 
 robustness and sparse properties of FEM 
 combined with the spectral convergence rate provided by SM. 
