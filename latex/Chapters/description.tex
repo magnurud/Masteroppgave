@@ -153,6 +153,43 @@ by matrices. The discretized system of equations can be stated as
     \label{eq:NSMatrixform}
 \end{align}
 %
+\section{Existance and uniqueness}
+The N-S equations are studied in detail through many years and a lot of mathematical 
+theory is developed trying to solve this. Because of its complexity most of the analysis 
+is performed on the parts of the equation and then later extrapolated onto the full 
+equation. In this section a introduction to this analysis performed on the Stokes 
+problem will be given. 
+
+\subsection{The Stokes problem}
+The Stokes problem is given as 
+\begin{align}
+    \begin{split}
+        \frac{\partial \mathbf{u}}{\partial t} - \nu \Delta \mathbf{u} + \nabla p &= 
+    \mathbf{f} , \\
+		\nabla \cdot \mathbf{u} &= 0.
+    \end{split}
+	\label{eq:Stokes}
+\end{align}
+For the sake of clarity only the steady Stokes problem will be considered, the stability regarding
+the evolution in time is a different analysis left for another (CHAPTER,BOOK).
+Transforming equation~\ref{eq:Stokes} to the weak form and applying the notation given
+in the previous chapter leaves us with the formulation
+
+Find $(\mathbf{u}, p) \in H^1(\Omega)\times L^2(\Omega)$ such that 
+\begin{align}
+    \begin{split}
+        %(\frac{\partial \mathbf{u}}{\partial t},\mathbf{v})
+        \nu\mathcal{A}(\mathbf{u},\mathbf{v})
+        +\mathcal{B}(\mathbf{v},p) &= (\mathbf{f},\mathbf{v}) \\
+        \mathcal{B}(\mathbf{u},q) &= 0.
+    \end{split}
+	\label{eq:Sweak}
+\end{align}
+$\forall\; (\mathbf{u}, p) \in H^1(\Omega)\times L^2(\Omega)$.
+%
+
+\subsection{inf-sup condition}
+
 \section{The passive scalar equation}
 The N-S equation explains how a fluid will behave and solving it provides a complete pressure-velocity field of the 
 domain of interest, but it does not provide the answer of how heat will distribute in this flow, or how a gas will spread.
