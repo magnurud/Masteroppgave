@@ -157,20 +157,21 @@ by matrices. The discretized system of equations can be stated as
 The N-S equation explains how a fluid will behave and solving it provides a complete pressure-velocity field of the 
 domain of interest, but it does not provide the answer of how heat will distribute in this flow, or how a gas will spread.
 The equation corresponding to this physical problem will be referred to as the passive scalar equation for any scalar 
-$\phi_i$ and is stated as 
+$\phi$ and is stated as 
 \begin{align}
     \begin{split}
-        (\rho c_p)_i(\frac{\partial \phi_i}{\partial t} + \mathbf{u}\cdot \nabla\phi_i) 
+        \rho c_p(\frac{\partial \phi}{\partial t} + \mathbf{u}\cdot \nabla\phi) 
         &= \nabla \cdot(k_i\nabla \phi_i)+ (q_{vol})_i.
     \end{split}
 	\label{eq:PS}
 \end{align}
-The constants  $k_i$, and $(\rho c_p)_i$ are interpreted depending on 
+The constants  $k$, and $\rho c_p$ are interpreted depending on 
 the scalar transported. For dispersion of neutral gas they 
 resemble the viscosity and mass flux. 
 
 \colorbox{green}{write more about this equation and how it is applied in this thesis}
 \section{Resolving the turbulent term using LES}
+\colorbox{green}{tydeliggjor filteret!, og bruk en annen $\tau$, filtervidde, tydeligg diff antakelse}
 When DNS is not feasible due to high Reynolds number LES is one of the most powerful tools for simulating turbulent flows.
 The idea is based on the fact that the small turbulent structures behave independently of time and location and are therefore 
 easy to model. This way the larger structures driven by geometry, inflow conditions and external forces can be simulated using a coarser 
@@ -304,6 +305,8 @@ be equivalent to the one for a fluid with viscosity $\nu'= \nu + \nu_t$.
 
 \section{Solution methods of incompressible N-S}
 \colorbox{green}{Rewrite this introduction}
+
+\colorbox{green}{Chapter 2.4 in the numerics part! time integration for NS}
 
 
 A non-linear set of equations requires a non-trivial solution method, and when the domain of the problem can be anything from a simple channel 
