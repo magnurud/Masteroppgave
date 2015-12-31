@@ -61,17 +61,17 @@ the mesh routines are further elaborated an overview of the file-structure will 
 \section{Editable files}
 In order to work with Nek there are some practical information that needs to be clarified.
 Nek is recompiled for every case and the user specify all the case specific 
-information in the three files 
-\verb|{.rea,.usr,SIZE,}|. These files along with the standard library that belongs to Nek are 
-compiled using makenek which creates the executable file \verb|nek5000|. 
+information in the three files \verb|{.rea,.usr,SIZE,}|. The \verb|.usr| and \verb|SIZE| file are 
+compiled with the standard Nek library using makenek which creates the executable file \verb|nek5000|,
+while the \verb|.rea| file contains case-specific information read during initialization.
 The user guide \cite{Nek} contains a tutorial which explains the necessary 
 steps on how to get started with Nek. The next chapters will try to give some understanding on 
 how the user is able to make the changes necessary for each case. Figure~\ref{fig:files} illustrates 
-how the program is built up from the bottom up. 
+how the files work together. 
 %
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.5\textwidth]{Figures/filestructure.png}
+	\includegraphics[width=0.5\textwidth]{Figures/filestructure2.png}
 	\caption{Visualization of how the file structure in Nek5000 is built up.}
 	\label{fig:files}
 \end{figure}
@@ -84,7 +84,8 @@ necessary to perform the calculations are mostly defined by the upper limits of 
 processors, scalars and of course the polynomial degree
 of the local Lagrange functions. These variables defines the sizes of almost all 
 the arrays used in the program so it is important to define these variables as accurately 
-as possible in order to optimize memory usage. 
+as possible in order to optimize memory usage. The \verb|SIZE| file can be considered as the necessary base 
+for Nek5000.
 %\begingroup
 %\fontsize{12pt}{14pt}
 %\begin{lstlisting}[escapechar=|,frame=none]
@@ -107,7 +108,7 @@ as possible in order to optimize memory usage.
        $E$ & CURVED SIDE DATA & All the curved sides are specified here\\
        $E$ & FLUID BC& BCtype for all elements and their faces\\
        $E$ & THERMAL BC& Thermal BCtype for all elements and their faces\\
-       $1$ & PRESOLVE/RESTART & Filename of an initialized solution \\
+       $K$ & PRESOLVE/RESTART & Filename(s) of an initialized solution \\
        $K$ & INITIAL CONDITIONS & possibilities to specify IC further \\
        $K$ & OUTPUT FIELD & information that will be written to file \\
     \end{tabular}
@@ -153,7 +154,8 @@ frequently used for this thesis are described below,
 %
 In addition to these routines all user-defined functions are specified in this file. The LES implementation in Nek is based
 on several subroutines specified in addition to those stated above. A list of some of the variables and functions 
-applied for the implementations in this thesis are stated in Appendx~\ref{AppendixB}.
+applied for the implementations in this thesis are stated in Appendix~\ref{AppendixB}.
+The \verb|.usr| file can be considered as the surface of Nek5000, easily accessible for the user.
 
 \section{Steps in the solver}
 To best understand the work flow of Nek the subroutine \verb|nek_advance| in \verb|drive1.f| should be examined.
