@@ -158,6 +158,18 @@ applied for the implementations in this thesis are stated in Appendix~\ref{Appen
 The \verb|.usr| file can be considered as the surface of Nek5000, easily accessible for the user.
 
 \section{Steps in the solver}
+The most important building blocks in Nek5000 are the \verb|fluid| and \verb|heat| functions which solves the 
+N-S and Passive scalar equations. For the sake of clarity, figure~\ref{fig:nek} shows how the different functions 
+are called from the main routine.
+%
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Figures/Nek.png}
+	\caption{Visualization of the steps in Nek5000.}
+	\label{fig:files}
+\end{figure}
+%
+
 To best understand the work flow of Nek the subroutine \verb|nek_advance| in \verb|drive1.f| should be examined.
 This routine includes all the steps in one iteration of the solver. The routine is adapted so that it is functional
 for a number of different problems and user defined settings. The most important boolean switches used in this routine are 
