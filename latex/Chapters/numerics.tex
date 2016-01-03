@@ -16,41 +16,43 @@
 
 \colorbox{green}{Dropp hattfunksjoner, make ediff pretty! figur som viser energispekteret, ha et konkret eksempel med filtrering }
 
-\section{Galerkin formulation}
+%\section{Galerkin formulation}
 
-\colorbox{green}{obs! sterk formulering, dette må rettes opp i }
-Throughout this thesis all numerical methods will be based on the Galerkin formulation. Let us consider a general boundary value problem (BVP)
-\begin{align}
-	\begin{split}
-	\mathcal{L}u =& f \;\; \text{ in } \Omega\\
-	\mathcal{B}u =& g \;\; \text{ on } \partial\Omega.
-	\end{split}
-	\label{eq:BVP}
-\end{align}
-The domain $\Omega$ is a closed subspace of $\mathbb{R}^d$, $\mathcal{L}: X(\Omega)\rightarrow Y(\Omega)$ and $\mathcal{B}: X(\partial\Omega)\rightarrow B(\partial\Omega)$ are two linear operators,
-$f\in Y(\Omega)$ and $g\in B(\partial\Omega)$ are known functions and $u \in X(\Omega)$ is the wanted solution. 
-The space $X(\Omega)$ will be denoted as the search space. A weak formulation can now be obtained by multiplying the first equation in \ref{eq:BVP} 
-by a test function $v \in X^t(\Omega)$ and integrating over the domain $\Omega$. By choosing $X^t(\Omega) = X(\Omega)$ the Galerkin formulation is obtained.
-For more examples and information on this subject the first chapters in \cite{Quarteroni} are recommended. 
+%\colorbox{green}{obs! sterk formulering, dette må rettes opp i }
+%Throughout this thesis all numerical methods will be based on the Galerkin formulation. Let us consider a general boundary value problem (BVP)
+%\begin{align}
+	%\begin{split}
+	%\mathcal{L}u =& f \;\; \text{ in } \Omega\\
+	%\mathcal{B}u =& g \;\; \text{ on } \partial\Omega.
+	%\end{split}
+	%\label{eq:BVP}
+%\end{align}
+%The domain $\Omega$ is a closed subspace of $\mathbb{R}^d$, $\mathcal{L}: X(\Omega)\rightarrow Y(\Omega)$ and $\mathcal{B}: X(\partial\Omega)\rightarrow B(\partial\Omega)$ are two linear operators,
+%$f\in Y(\Omega)$ and $g\in B(\partial\Omega)$ are known functions and $u \in X(\Omega)$ is the wanted solution. 
+%The space $X(\Omega)$ will be denoted as the search space. A weak formulation can now be obtained by multiplying the first equation in \ref{eq:BVP} 
+%by a test function $v \in X^t(\Omega)$ and integrating over the domain $\Omega$. By choosing $X^t(\Omega) = X(\Omega)$ the Galerkin formulation is obtained.
+%For more examples and information on this subject the first chapters in \cite{Quarteroni} are recommended. 
 
-By the Lax-Milgram theorem it is known that a BVP is well-posed if the Operator $\mathcal{L}$ is both bounded and coersive.   
+%By the Lax-Milgram theorem it is known that a BVP is well-posed if the Operator $\mathcal{L}$ is both bounded and coersive.   
 
-Solving the BVP numerically involves choosing discrete subsets of $X,X^t,Y,B$. These will be denoted $X_h,X_h^t,Y_h,B_h$.
-The discrete subspaces can be chosen in a number of ways and the defining basis functions vary from one numerical method to another. 
-In this thesis the spectral and finite element basis will be shortly stated and the spectral element basis will be viewed in more detail.
+%Solving the BVP numerically involves choosing discrete subsets of $X,X^t,Y,B$. These will be denoted $X_h,X_h^t,Y_h,B_h$.
+%The discrete subspaces can be chosen in a number of ways and the defining basis functions vary from one numerical method to another. 
+%In this thesis the spectral and finite element basis will be shortly stated and the spectral element basis will be viewed in more detail.
 
 
-\colorbox{green}{vær presis med den svake formuleringen!!}
+%\colorbox{green}{vær presis med den svake formuleringen!!}
 \section{Numerical Concepts on The Stokes problem}
-In the previous chapter the N-S equations was presented with a weak formulation and several solution algorithms. 
+In the previous chapter the N-S equations was presented and reformulated in several ways without any details on how to
+actually solve the equations. This chapter aims to give a more detailed description of the solution methods applied.
 The choice of algorithms and solution spaces required a more thourough analysis which is normally performed on the 
-Stokes problem. The (steady?) Stokes problem does not include the convection term but the highest order terms are all present
-and is therefore a valid equation to perform this necessary analysis \cite{Karniadakis}. The stokes problem is given 
-as 
+steady Stokes problem. The steady Stokes problem does not include the convection term but the highest order terms are all present
+and is therefore a valid equation to perform this necessary analysis \cite{Karniadakis}. Analysis of the time schemes applied
+will be left for a later chapter. The steady Stokes problem with homogenous boundary conditions is given as 
 %
 \begin{align}
     \begin{split}
-        \frac{\partial \mathbf{u}}{\partial t} - \mu \Delta \mathbf{u} + \nabla p &= \mathbf{f}, \\
+        %\frac{\partial \mathbf{u}}{\partial t} 
+        - \mu \Delta \mathbf{u} + \nabla p &= \mathbf{f}, \\
         \nabla \cdot \mathbf{u} &= 0, \\
         \mathbf{u} &= 0 \text{  on  } \partial \Omega.
     \end{split}
@@ -76,9 +78,9 @@ The weak form can now be stated as
 Find $(\mathbf{u}, p) \in H^1_0(\Omega)^3\times L^2_0(\Omega)$ such that 
 \begin{align}
     \begin{split}
-        (\frac{\partial \mathbf{u}}{\partial t},\mathbf{v})
+        %(\frac{\partial \mathbf{u}}{\partial t},\mathbf{v})
         %+ \mathcal{C}(\mathbf{u};\mathbf{u},\mathbf{v})
-         + \mathcal{B}(\mathbf{v},p) 
+           \mathcal{B}(\mathbf{v},p) 
          +\nu\mathcal{A}(\mathbf{u},\mathbf{v}) &= (\mathbf{f},\mathbf{v}), \\
         \mathcal{B}(\mathbf{u},q) &= 0.
     \end{split}
@@ -97,14 +99,21 @@ For the discrete weak form to be well-posed it has to meet the requirements stat
     \label{eq:infsup}
 \end{align}
 %
-$\beta$ is here some positive constant. For a spectral element formulation of this problem which will be elaborated in chapter
-~\ref{sem}, a common choice of subspaces $(X,Q)$ is $(P_N\cap H^1_0,P_{N-2} \cap L^{2}_{0})$. This will be referred to as the 
+$\beta$ is some positive constant. This condition often known as the Babuska-Brezzi condition is 
+often met by creating a staggered grid, such that the pressure and the velocity are 
+evaluated at different points. 
+
+\colorbox{red}{Too early for this part??}
+For a Spectral Element formulation of this problem which will be elaborated in chapter~\ref{sem},
+a common choice of subspaces $(X,Q)$ is $(P_N\cap H^1_0,P_{N-2} \cap L^{2}_{0})$. This will be referred to as the 
 $P_NP_{N-2}$-formulation where $P_N$ denotes the space of polynomials up to degree $N$.
 It was however proved by Guermond in~\cite{GuermondPnPn} that the fractional step algorithm requires a 
 form of the Stokes problem which automatically fullfills the inf-sup condition and therefore does not require any particular 
 discrete subspaces to be chosen. For the sake of convenience the polynomial degree of the pressure and the velocity will be 
 the same and the discrete pair of subspaces $(X,Q)$ is chosen to $(P_N\cap H^1_0,P_{N} \cap L^{2}_{0})$, known as the $P_NP_N$-formulation.
 
+Before the analysis of the N-S equations can be taken any further the theory behind the Spectral Element Method will be presented in the following
+subsections.
 
 
 \section{Finite element method}
@@ -115,45 +124,41 @@ it guaranties a sparse system. The decomposition of the geometrical domain into 
 wanted to solve, makes it possible to create general algorithms applicable to all kinds of geometries. 
 For the full mathematical foundation of FEM it will be referred to \cite{Quarteroni}, but some of the key properties will be stated here
 in order to provide a thorough understanding of the spectral element method (SEM). 
+Throughout this section $p$ denotes the polynomial degree of the basis-functions, $h$ represents the average grid spacing, $E$ is the total
+number of elements and $d$ is the number of dimensions. 
 
-FEM provides an algorithm for solving any well-posed BVP \ref{eq:BVP} and the mathematical formulation is obtained by first finding the Galerkin
-formulation and choosing a discrete subset $X^p_h(\Omega) \subset X(\Omega)$ spanned by the finite element basis functions ${\phi^p_i}$.
-$p$ denotes the polynomial degree of the basis-functions, in 1D and for $p=1$ the basis functions are defined as
-\[ \phi_i(x) =
-    \begin{cases}
-        \frac{x-x_i}{x_i-x_{i-1}}  & \quad \text{if } x_{i-1}\leq x \leq x_i, \\
-        \frac{x_{i+1}-x}{x_{i+1}-x_i}  & \quad \text{if } x_{i}\leq x \leq x_{i+1}, \\
-        0  & \quad \text{otherwise}. \\
-    \end{cases}
-\]
-Notice that $\text{supp}(\phi_i) = [x_{i-1},x_{i+1}]$ and as a consequence of this $(\phi_i,\phi_j)_{\Omega} = 0 \text{ if } |i-j| > 1 $. 
-These qualities is what gives rise to the resulting sparse linear system. 
+FEM provides an algorithm for solving any well-posed boundary value problem (BVP) and the mathematical 
+formulation is obtained by first finding the Galerkin
+formulation with a corresponding search space $X$ and then choosing a discrete subspace $X^p_h\subset X$ spanned by the finite element basis functions $\{\phi^p_i\}_{i\in (1,E)}$.
+The key property of the basis functions is that they only have local support in a very small part of the domain. 
+This is what gives rise to the resulting sparse linear system. 
 By increasing the polynomial order the number of grid points used to define the polynomial will need to increase as well.
 This implies either reducing the distance between the grid points or increasing the support of each basis function.
 Both approaches will reduce the sparsity of the final matrix.
-Another key aspect of FEM is the treatment of the domain $\Omega$, 
+Another important aspect of FEM is the treatment of the domain $\Omega$, 
 on which a triangulation $\{\mathcal{T}_h\}$ is defined such that the original domain is divided into elements.
-By defining a reference element $[-1,1]^d$ and a general mapping function, all the local contributions can be calculated by a 
+By defining a reference element and a general mapping function, all the local contributions can be calculated by a 
 generalized quadrature rule before being added to the global system of equations. This is a process tailored for parallelization, and can 
 be generalized for a wide range of problems.
 
-FEM is called a projection method since the solution $u_h\in X^h$ is a projection
-of the actual solution $u$ of the BVP onto the discrete space $X^h$. Provided that the initial BVP is well-posed there exists to 
+FEM is called a projection method since the solution $u_h\in X_h^p$ is a projection
+of the actual solution $u$ of the BVP onto the discrete space $X_h^p$. Provided that the initial BVP is well-posed there exists to 
 constants $M,\alpha>0$ known as the bounded and coercivity constant such that the error of the solution can be reduced to a pure 
 interpolation error. The result is known as Cea's lemma,  
 \begin{align}
     ||u-u_h||_X \leq \frac{M}{\alpha}||u-I_hu||_X.
     \label{eq:Cea}
 \end{align}
-Where $I_h$ is the projection operator. 
+Where $I_h$ is the interpolation operator. 
+
+\colorbox{red}{does this interpolation operator need to be defined or explained in any way ?}
 
 Before this section ends it is important to understand the two ways to increase accuracy and the effects these two ways have on the algorithm. 
-Assume the solution of the BVP to be infinitely smooth and let $h$ denote the general size of the elements
-and $p$ the order of the polynomial basis that defines $X^h$. Roughly speaking the error is given as $e = Ch^p$, $C$ being some positive constant.
-This is not a formal truth but rather a simple expression to get some intuition on how the error behaves. 
-Factors such as geometric complexity, condition-number,non-linear operators and the regularity of the 
+Assume the solution of the BVP to be infinitely smooth and the domain be sufficiently regular. 
+This yields an error $e = Ch^p$, $C$ being some positive constant.
+Factors such as geometric complexity, condition-number,non-linear operators and the continuity of the 
 solution will all provide slightly more complicated error estimates. 
-However for a simpler BVP such as $u,f,g \in C^{\infty}(\Omega), \Omega = [-1,1]^d, \mathcal{L} = -\Delta,\mathcal{B} = 0$ the error estimate is valid.  
+However for a simpler BVP such as the Poisson problem on the unit square, the error estimate is valid.  
 performing a $h$-refinement will lead to an algebraic convergence of order $p$, while the sparsity of the system is conserved
 and the total algorithm does not change in any other way than increasing the number of elements.
 Keeping $h$ constant and increasing $p$ will provide spectral convergence, but the sparsity will be reduced and all integrals solved will require 
@@ -162,6 +167,7 @@ quadrature rules of higher order. A formal statement and numerical validation of
 %-----------------------------------
 %	SUBSECTION 1
 %-----------------------------------
+
 \section{Spectral methods}
 Spectral methods (SM) share a some of the mathematical ideas as FEM, but are not as widely used in real life problems. 
 There are many ways to apply SM, 
@@ -203,22 +209,22 @@ basis functions $\psi_j$ can be stated as
     \psi_j(x) = \prod_{i\neq j}^{N}\frac{x-x_i}{x_j-x_i}.
     \label{eq:Lagrange}
 \end{align}
-\colorbox{yellow}{How much details on these polynomials and quadratures should be included? }
 
 $\{x_i\}$ being the solutions to \ref{eq:GLL-nodes}. Note that $\psi_j(x_i) = \delta_{ij}$.
 The expansion coefficients in \ref{eq:spectralprojection} are then chosen as $a_i = u_i :=u(x_i)$. 
-%to minimize the projection error in $L^2(\Omega)$. 
+
 This definition of the expansion coefficients is very convenient since the actual value of 
 the function in any point can just be read directly from the coefficients without having to 
 sum all the contributions from the different polynomials.
 Creating a basis for 2 and 3 dimensions is done simply by taking the tensor product 
-of the basis functions in each direction, for 3 dimensions the basis functions $\Psi$
-is given as 
+of the basis functions in each direction. let $i,j,k$ denote the one dimesional indexes in each direction running from 
+$1$ to $N$ while $m,l,n$ denote three dimensional indexes running from $1$ to $N^d$. 
+for 3 dimensions the basis functions $\Psi$ is given as 
 \begin{align}
     \Psi_{l}(\mathbf{x}) = \psi_i(x)\psi_j(y)\psi_k(z).
     \label{eq:3dbasis}
 \end{align}
-This expansion to multiple dimensions preserves the $\Psi_l(\mathbf{x}_m) = \delta_{lm}$
+This expansion to multiple dimensions preserves the $\Psi_l(\mathbf{x}_m) = \delta_{lm}$.
 In order to clarify some of the concepts the SM approach will be applied on the Helmholtz equation
 %
 \begin{align}
@@ -277,6 +283,8 @@ Where the elements in the matrices and vectors are given as
 From these equations it is clear that the mass matrix $M$ is diagonal and the right hand side vector $\tilde f$ is easily calculated, 
 while the stiffness matrix $A$ is symmetric but full.
 
+\colorbox{red}{error/ convergence theorem}
+
 %-----------------------------------
 %	SUBSECTION 2
 %-----------------------------------
@@ -301,7 +309,8 @@ Let $\hat{\Omega}$ be the reference element $[-1,1]^d$,
 the standard procedure when working on a deformed geometry $\Omega$ with SM is to first create a map 
 $\mathcal{F}:\hat{\Omega}\rightarrow\Omega$. An example of this map is the Gordon-Hall procedure 
 described in chapter~\ref{GH}.
-The Jacobian is then given as the transposed tensor derivative of $\mathcal{F}$
+The Jacobian is then given as the transposed tensor derivative of $\mathcal{F}$, which in two dimension is 
+written as 
 \begin{align}
     \mathbf{J} &= (\nabla \otimes \mathcal{F})^T =
 \begin{bmatrix}
@@ -325,10 +334,11 @@ Here $\hat u,\hat f$ are obtain by simply substituting $\mathbf{x}$ with $\mathc
 differential operator wrt. $\boldsymbol\xi$. The important thing to notice here is that whenever an integral is solved and a derivative is 
 introduced the Jacobian appears in the equation. When applying the GLL-quadrature to solve the integrals equality is guaranteed if and 
 only if the function integrated is of polynomial degree $2n-1$ or less, 
-and the error gets bigger with increasing polynomial degree.
+and the error gets bigger with increasing polynomial degree. A higher order jacobian could imply a large error in the quadrature.
 
 Although the whole domain $\Omega$ is deformed, the deformation of each
-element $\left\{ \Omega_k \right\}$ is normally a lot less crucial.
+element $\left\{ \Omega_k \right\}$ is normally a lot less crucial. This gives SEM a huge advantage and allows it to 
+obtain accurate results even in complicated domains.
 
 Let us again consider the Helmholtz problem~\ref{eq:Helmholtz}, but this time 
 on a more general domain $\Omega$. The set of elements $\left\{ \Omega_k \right\}$
@@ -345,7 +355,7 @@ For all elements $\Omega_k$ Find $u_{h,k}\in X^N_k$  such that
     \label{eq:HelmholtzweakSEM}
 \end{align}
 %
-Where $X^N_k =  H^1(\Omega_k)\bigcap\mathbb{P}^N(\Omega_k)$. The same discretization 
+Where $X^N_k =  H_0^1(\Omega_k)\bigcap\mathbb{P}^N(\Omega_k)$. The same discretization 
 procedure as performed for the pure spectral case is now done for each of the 
 sub domains $\Omega_k$,
 %
@@ -374,19 +384,16 @@ Applying the identities from~\ref{eq:transforms} to~\ref{eq:HelmholtzdiscreteSEM
     \label{eq:HelmholtzrefSEM}
 \end{align}
 %
-Notice how the integrals depend on the Jacobian $\mathbf{J}$ and its determinant $J$, 
-
-
-\colorbox{yellow}{Do a more thorough analysis of the meaning of J??}
-
-Hence the local matrices $A_k,M_k$ and the loading vector $f_k$ 
-are gathered from each element.
+\colorbox{red}{add a short argument for the danger of higher order jacobian}
+|||Notice how the integrals depend on the Jacobian $\mathbf{J}$ and its determinant $J$.|||
+the integral corresponding to the diffusion operator contains 
+The local matrices $A_k,M_k$ and the loading vector $f_k$ are gathered from each element.
 Equivalently as for FEM the global matrices has to be assembled
-from all the local matrices corresponding to each sub domain. This procedure is general and can 
+from all the local matrices corresponding to each subdomain. This procedure is general and can 
 be performed on almost any deformed domain as oppose to SM. 
 
-\colorbox{yellow}{Should direct stiffness summation be mentioned ?}
 
+\colorbox{red}{Convergence estimate!! }
 %$\Omega$ is some 2 dimensional strongly connected domain with well-defined corners and each of the edges can be described by some polynomial $\Gamma_i$.
 
 \subsection{Filtering}
