@@ -68,7 +68,7 @@ and their mathematical influence on the problem.
       and the viscous length scales. Notice how for large Reynolds number the unstable non-linear term 
       dominates the transportation.Turbulent flows are characterized by high Reynolds number.
 \end{itemize}
-For large Reynolds number the huge span in length scales requires an extremely fine mesh if the equations \ref{eq:NS} 
+For large Reynolds number the huge span in length scales requires an extremely fine mesh if \ref{eq:NS} 
 are to be solved exactly. Because a fine mesh implies a high computational cost a direct numerical solution (DNS) is not feasible for 
 problems of a certain geometrical complexity. There are many different approaches on how to resolve the turbulent term and in 
 this thesis the main approach will be through Large Eddy Simulations (LES) which will be discussed 
@@ -76,7 +76,7 @@ in the following section.
 %
 \subsection{Weak formulation of N-S}
 Let us first assume constant viscosity, enabling the simplification $\nabla \cdot \tau = -\nabla p + \nu \Delta \mathbf{u}$.
-The numerical algorithms applied in this thesis requires a weak formulation of equation~\ref{eq:NS}.
+The numerical algorithms applied in this thesis requires a weak formulation of~\ref{eq:NS}.
 Before the weak form is derived a few operators will be defined in order to simplify the final 
 expression.
 %
@@ -172,7 +172,7 @@ The Stokes problem is given as
 \end{align}
 For the sake of clarity only the steady Stokes problem will be considered, the stability regarding
 the evolution in time is a different analysis left for another (CHAPTER,BOOK).
-Transforming equation~\ref{eq:Stokes} to the weak form and applying the notation given
+Transforming~\ref{eq:Stokes} to the weak form and applying the notation given
 in the previous chapter leaves us with the formulation
 
 Find $(\mathbf{u}, p) \in H^1(\Omega)\times L^2(\Omega)$ such that 
@@ -288,7 +288,7 @@ The fact that this tensor depends on the $a$-filtered solution and not the resol
 one is very important and is what allows us to compute it exactly.
 
 Substituting the stress-tensors with their corresponding expression 
-from equation~\ref{eq:boussinesq} and assuming a dynamic constant unaffected by the filter 
+from~\ref{eq:boussinesq} and assuming a dynamic constant unaffected by the filter 
 one obtains an approximation for $L_{ij}$ which is also computable,
 \begin{align}
     \begin{split}
@@ -304,8 +304,8 @@ L_{ij} &\approx 2C_d l_b^2 \mathcal{S}^{ab} s^{ab}_{ij}
         \lambda &= l_b/l_a
     \label{eq:dynsmagderivation}
 \end{align}
-Minimizing the mean-square error between the exact $L_{ij}$ as expressed in 
-equation~\ref{eq:germanoid} and the Boussinesq-based approximation 
+Minimizing the mean-square error between the exact $L_{ij}$ as expressed in
+~\ref{eq:germanoid} and the Boussinesq-based approximation 
 in~\ref{eq:lillystress} yields the best approximation 
 for the dynamic Smagorinsky constant 
 %
@@ -352,32 +352,59 @@ has been able to prove or disprove the well-posedness of the problem. Some of th
 will be discussed in the following subsections
 
 \subsection{Operator-splitting techniques }
+In this chapter $a_j,b_j$ will denote the coefficients for some explicit and implicit scheme.
 Let us consider a simplified transient problem 
 \begin{align}
-    \frac{du}{dt} = f + g.
+    \frac{du}{dt} = f(u,t)u + g(t)u.
     \label{eq:testproblem}
 \end{align}
-both $f$ and $g$ are functions of $u$ and therefore of $t$ as well. By integrating on both sides one obtains
+$f$ is here a function of $u$ and $t$, while $g$ is only dependent of the time $t$. Let superscript denote the timestep, 
+such that $g^{n}=g(n\Delta t)$ for some fixed timestep $\Delta t$. One step applying a kth order
+Backward Difference scheme (BDFk) yields
+%
 \begin{align}
-    u(s) - u(0) = \int_0^s f dt + \int_0^s g dt.
-    \label{eq:testproblemintegrated}
+    \sum_{j = 0}^{k} \frac{b_j}{\Delta t} u^{n+1-j} =f^{n+1}u^{n+1}+g^{n+1}u^{n+1}.
+    \label{eq:imp}
 \end{align}
-The idea is then to evaluate one of the integrals by an explicit scheme and the other one with an implicit scheme.
-A general formulation of this for a time step would be on the form 
+%
+Now notice that $f^{n+1}=f(u^{n+1},t^{n+1})$ requires that $u$ is known at time $t^{n+1}$ which is not achievable at the current 
+step. This term is therefore approximated by a kth order explicit scheme leading to 
+%
 \begin{align}
-    u^{n+1}-u^{n} = \sum_{k = 0}^{N} a_k f^{n-k}+\sum_{k = 0}^{N} b_k g^{n-k+1}.
-    \label{eq:exp-imp}
+    \sum_{j = 0}^{k} \frac{b_j}{\Delta t} u^{n+1-j} =\sum_{j = 0}^{k} a_j f^{n-j}u^{n-j}+g^{n+1}u^{n+1}.
+    \label{eq:imp-exp}
 \end{align}
-In equation~\ref{eq:exp-imp} the first integral in ~\ref{eq:testproblemintegrated} is evaluated by 
-an explicit scheme and the second one by an implicit scheme. The coefficients $a_k,b_k$ corresponds to 
-the elected scheme. When operator splitting is applied in this thesis an Adam-Bashford scheme is 
-chosen for the implicitly evaluated integral while Runge-Kutta is applied for the explicit scheme. 
-Operator splitting is a very convenient strategy for 
-the N-S equations which consists of the easily invertible Laplacian
-and the demanding convection operator. 
+%
+Now the terms can be ordered such that only the implicit terms are present on the left hand side, 
+%
+\begin{align}
+    (\frac{b_0}{\Delta t} +g^{n+1})u^{n+1} =-\sum_{j = 1}^{k} \frac{b_j}{\Delta t} u^{n+1-j}+\sum_{j = 0}^{k} a_j f^{n-j}u^{n-j}.
+    \label{eq:imp-exp-ord}
+\end{align}
+%
+This way of solving~\ref{eq:testproblem} allows easy invertible terms to be solved implicitly while non-linear terms can be extrapolated.
+In the Navier-Stokes equation this strategy will be applied to split the non-linear term from the rest.
+In this thesis the schemes BDFk and EXTk for $k=2,3$ are applied, the coefficients can be found in~\cite{Nek}. 
 
-\colorbox{yellow}{Do I need a chapter about Runge-Kutta and Adam-Bashford?}
+%of $u$ and therefore of $t$ as well. Let g be easily invertible By integrating on both sides one obtains
+%\begin{align}
+    %u(s) - u(0) = \int_0^s f dt + \int_0^s g dt.
+    %\label{eq:testproblemintegrated}
+%\end{align}
+%The idea is then to evaluate one of the integrals by an explicit scheme and the other one with an implicit scheme.
+%A general formulation of this for a time step would be on the form 
+%\begin{align}
+    %u^{n+1}-u^{n} = \sum_{k = 0}^{N} a_k f^{n-k}+\sum_{k = 0}^{N} b_k g^{n-k+1}.
+    %\label{eq:exp-imp}
+%\end{align}
+%In~\ref{eq:exp-imp} the first integral in~\ref{eq:testproblemintegrated} is evaluated by 
+%an explicit scheme and the second one by an implicit scheme. The coefficients $a_k,b_k$ corresponds to 
+%the elected scheme. When operator splitting is applied in this thesis an kth order Backward difference scheme (BDFk) is 
+%chosen for the implicitly evaluated integral while an extrapolation scheme of similar order (EXTk) is applied for the explicit scheme.
 
+
+%Operator splitting is a very convenient strategy for the N-S equations which consists of the easily invertible Laplacian
+%and the demanding convection operator. 
 
 
 \subsection{Operator integrating factor schemes (OIFS)}
@@ -387,19 +414,21 @@ is presented here in a computational fashion, for a full description and derivat
 it is referred to Maday et al~\cite{raey}.
 
 By considering the NS-equation in a general operational form 
+%
 \begin{align}
-    M\frac{d \mathbf{v}}{dt} + C\mathbf{v} = -A\mathbf{v} +D_i p +Mf_i.
+    M\frac{d \mathbf{v}}{dt} + C\mathbf{v} = -A\mathbf{v} +D p +Mf.
     \label{eq:NSoperator}
 \end{align}
-Now let us define an operator $Q(t)$ such that $Q(t^{n+1}) = I$ and 
-
+%
+Now let $Q(t)$ be an operator such that $Q(t^{n+1}) = I$ and 
+%
 \begin{align}
     \frac{dQ(t)M\mathbf{v}}{dt} &=  Q(t)M\frac{d\mathbf{v}}{dt} + \frac{d}{dt}(Q(t)M)\mathbf{v},\\
     &= Q(t)M\frac{d\mathbf{v}}{dt} + Q(t)C\mathbf{v}. 
     \label{eq:integrationalfactor}
 \end{align}
 %
-This way equation~\ref{eq:NSoperator} can be written as 
+This way~\ref{eq:NSoperator} can be written as 
 \begin{align}
     \frac{d Q(t)M\mathbf{v}}{dt} =Q(t)( -A\mathbf{v} +D p +M\mathbf{f}).
     \label{eq:NSoperatorOIFS}
@@ -409,16 +438,16 @@ Evaluating this equation with a BDFk-scheme results in a system
     \sum_{j=0}^{k}\beta_jQ(t^{n+1-j})M\mathbf{v}^{n+1-j} =\Delta t \: Q(t^{n+1})( -A\mathbf{v}^{n+1} +D p^{n+1} +M\mathbf{f}^{n+1}).
     \label{eq:NSOIFS1}
 \end{align}
-Applying the fact that $Q(t^{n+1}) = I$ enables us to write equation~\ref{eq:NSOIFS1} as 
+Applying the fact that $Q(t^{n+1}) = I$ enables~\ref{eq:NSOIFS1} to be written as 
 \begin{align}
     \beta_0M\mathbf{v}^{n+1} + \sum_{j=1}^{k}\beta_jQ(t^{n+1-j})M\mathbf{v}^{n+1-j} 
     =\Delta t ( -A\mathbf{v}^{n+1} +D p^{n+1} +M\mathbf{f}^{n+1}).
     \label{eq:NSOIFS1}
 \end{align}
 Notice how all the easily invertible operators are evaluated implicitly, while the convective non-linear term is hidden in the BDFk scheme. 
-Now the OIFS method allows us to find the terms in the sum in a rather elegant fashion.  
-First of all the auxiliary variable $\tilde{\mathbf{v}}_j$ is defined such that $Q(t^{n+1-j})M\mathbf{v}^{n+1-j} = M\tilde{\mathbf{v}}_j$ thus enabling us to find
-the summation expression by solving the initial value problem 
+OIFS allows the terms in the sum to be calculated in a rather elegant fashion.
+First of all the auxiliary variable $\tilde{\mathbf{v}}_j$ is defined such that $Q(t^{n+1-j})M\mathbf{v}^{n+1-j} = M\tilde{\mathbf{v}}_j$
+thus enabling the summation expression to be found by solving the initial value problem 
 \begin{align}
     \begin{split}
     M\frac{d\tilde{\mathbf{v}}_j}{ds} &= -C(\tilde{\mathbf{v}}_j(s))\tilde{\mathbf{v}}_j(s) , \qquad t^{n+1-j}\leq s\leq t^{n+1}\\
@@ -428,11 +457,12 @@ the summation expression by solving the initial value problem
 \end{align}
 Notice how the integrational factor $Q(t)$ is never evaluated directly.
 
-The final scheme applied for solving equation~\ref{eq:NSoperator} when applying OIFS consists of one scheme for solving 
-equation~\ref{eq:NSOIFS1} and another scheme for solving equation~\ref{eq:IVP}. When applied in this thesis the 
-first scheme is an implicit BDFk-scheme while the second is an explicit kth order Runge-Kutta scheme. 
-It is important to add that the error induced by this method is non-vanishing and is only recommended for assuring stability 
-for very instable problem. 
+The final scheme applied for solving~\ref{eq:NSoperator} when applying OIFS consists of one implicit scheme for 
+solving~\ref{eq:NSOIFS1} and an explicit scheme for solving~\ref{eq:IVP}. When applied in this thesis the 
+first scheme is an implicit BDFk-scheme while the second is an explicit 4th order Runge-Kutta scheme. 
+
+%It is important to add that the error induced by this method is non-vanishing and is only recommended for assuring stability 
+%for very instable problem. 
 
 \subsection{Fractional step} 
 \label{fracstep}
