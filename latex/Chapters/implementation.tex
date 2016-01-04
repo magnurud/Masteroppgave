@@ -74,8 +74,22 @@ The inflow conditions had to be extrapolated onto the domain at each time step. 
 on the inflow was generated in CDP, in order to create a boundary layer similar to the one found
 in the wind-tunnel. The inflow velocity was written to file every 
 $0.0013$s for a total of $28$ seconds. An interpolation algorithm had to be implemented in order
-to adjust the inflow-data to each mesh.
-
+to adjust the inflow-data to each mesh. 
+%
+\begin{figure}[h]
+    %\center
+	\includegraphics[width=0.5\textwidth]{Figures/inflow_field.png}
+	\caption{X-velocity at inflow boundary, notice how the pattern copies itself}
+	\label{fig:layout}
+\end{figure}
+%
+\begin{figure}[h]
+    %\center
+	\includegraphics[width=0.5\textwidth]{Figures/inflow_field_avg.png}
+	\caption{X-velocity at inflow boundary, notice how the pattern copies itself}
+	\label{fig:layout}
+\end{figure}
+%
 \section{Case 2: Drag and lift on a cylinder}
 A standard benchmark case for flow solvers is presented in ~\cite{benchmark}.
 The case is to calculate the drag and lift coefficients on a cylinder in a rectangular channel.
