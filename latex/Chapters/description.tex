@@ -270,27 +270,30 @@ included in this thesis since all gas enters the control volume as a boundary co
 
 \section{Resolving the turbulent term using LES} \label{LES}
 \colorbox{green}{tydeliggjor filteret!, og bruk en annen $\tau$, filtervidde, tydeligg diff antakelse}
-When DNS is not feasible due to high Reynolds number LES is one of the most powerful tools for simulating turbulent flows.
+When DNS is not feasible due to high Reynolds number on large domains LES is one of the most powerful tools for simulating turbulent flows.
 The idea is based on the fact that the small turbulent structures behave homogenously and are therefore easy to model.
 This way the larger structures driven by geometry, inflow conditions and external forces can be simulated using a coarser 
-grid while the effect of the small structures are modelled. \colorbox{green}{Some source on the importance of SGS-model}
+grid while the effect of the small structures are modelled. 
+LES will be introduced here in a mathematical fashion, allthough in many practical cases the filter function is not 
+well defined. The reason for this is that the grid itself is often considered a filter, with the 
+grid size as the filter width. As pointed out by Carati et al.~\cite{Carati} the filter is in this case nothing else but 
+numerical discretization error. \colorbox{red}{for spectral element it can be considered as a low pass filter...??}
 
 \subsection{Filter}
 The idea behind LES starts with defining a filter, which separates the modelled structures from the resolved ones. 
-A filter in its general form is given as 
+A filter in its general mathematical form itroduced by Leonard~\cite{Leonard} is given as 
 \begin{align}
     U^r(\mathbf{x},t) = \int_{\Omega} G_r(\mathbf{r},\mathbf{x})U(\mathbf{x}-\mathbf{r},t)d\mathbf{r}
     \label{eq:filter}
 \end{align}
 
-\colorbox{red}{Define U!! and filter with $l_r$ }
-In order to perform a LES a filter width a certain width $\Delta$ has to be chosen, this 
-is commonly chosen to be the grid size.
+%\colorbox{red}{Define G!! and filter with $l_r$ }
 
-
+%For the test filter applied in the dynamic Smagorinsky case in the procedure described in chapter~\ref{filtering}
+ 
 It is generally assumed that the filter commutes with 
-the differential operators $\nabla$, $\Delta$ and $\partial / \partial t$, these assumptions 
-allows the filtered N-S equations to be stated as 
+the differential operators $\nabla$, $\Delta$ and $\partial / \partial t$. By applying the filter on the N-S equations
+and making the given assumptions the filtered N-S equations can be stated as 
 %
 \begin{align}
     \begin{split}
@@ -308,7 +311,8 @@ Where $\tau$ in this case denotes the subgrid-scale (SGS) stress given as
 \end{align}
 %
 This tensor is a consequence of applying the filter on the non-linear advection term, 
-and it is this term that is modelled by subgrid-scale model. \colorbox{red}{(When was this introduced?)}
+and it is this term that is modelled by a subgrid-scale model. See~\cite{Pope} for a full derivation on the 
+application of a filter on the momentum equation. 
 
 \subsection{dynamic Smagorinsky-Lilly SGS-model}
 The problem is now reduced to modelling the tensor $\tau_{ij}$, one of the most common SGS-models is the 
@@ -334,7 +338,8 @@ assumption an expression is developed for the dynamical constant.
 Let $a,b$ denote two distinct filters with corresponding filter widths $l_a,l_b$. 
 Throughout this thesis $l_a$ will be the grid size and $l_b\approx 2l_a$. Filter $b$ is
 often referred to as the test filter and is only included to provide an estimation 
-of the dynamic Smagorinsky constant.
+of the dynamic Smagorinsky constant. Remember that $l_a$ is the grid size while 
+filter $b$ is obtained by applying the filter described in chapter~\ref{filtering} with $\alpha_i=1$ for the highest modes.
 Let $\tau_{ij}$ and $T_{ij}$ denote the stresses based on single- and double filtering
 operations on the N-S equations
 \begin{align}

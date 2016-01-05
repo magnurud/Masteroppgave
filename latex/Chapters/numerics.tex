@@ -151,7 +151,7 @@ interpolation error. The result is known as Cea's lemma,
 \end{align}
 Where $I_h$ is the interpolation operator. 
 
-\colorbox{red}{does this interpolation operator need to be defined or explained in any way ?}
+\colorbox{red}{does this interpolation operator need to be defined or explained in any way ?, and does the norm need more details}
 
 Before this section ends it is important to understand the two ways to increase accuracy and the effects these two ways have on the algorithm. 
 Assume the solution of the BVP to be infinitely smooth and the domain be sufficiently regular. 
@@ -163,6 +163,8 @@ performing a $h$-refinement will lead to an algebraic convergence of order $p$, 
 and the total algorithm does not change in any other way than increasing the number of elements.
 Keeping $h$ constant and increasing $p$ will provide spectral convergence, but the sparsity will be reduced and all integrals solved will require 
 quadrature rules of higher order. A formal statement and numerical validation of the error estimate can be found in \cite{Karniadakis} chapter 2.6.  
+
+\colorbox{red}{is it OK with just a qualitative discussion here?}
 
 %-----------------------------------
 %	SUBSECTION 1
@@ -396,7 +398,7 @@ be performed on almost any deformed domain as oppose to SM.
 \colorbox{red}{Convergence estimate!! }
 %$\Omega$ is some 2 dimensional strongly connected domain with well-defined corners and each of the edges can be described by some polynomial $\Gamma_i$.
 
-\subsection{Filtering}
+\subsection{Filtering} \label{filtering}
 Although SEM provides spectral convergence in space and 2nd or 3rd order accuracy in time the stability of a straight forward
 implementation is not guaranteed, spurious nodes appear 
 as shown in chapter 2.4.1.2 in~\cite{Karniadakis}.
@@ -435,11 +437,11 @@ the highest order mode $N$ to the mode $N-2$. The rest of the coefficients remai
 For a full derivation and discussion on this matter it is referred to chapter 6.5.1 in 
 \cite{Karniadakis}.
 
-This filter in~\ref{eq:filtereffect} is often applied to the $k$ highest Legendre polynomials,
+The filter in~\ref{eq:filtereffect} is often applied to the $k$ highest Legendre polynomials,
 with a decaying coefficient $\alpha$. The action of the filter can therefore be described as 
 a matrix equation in two steps, first adding the contribution from the higher polynomials to the 
 lower ones and then subtracting the contribution from the higher polynomials. Let $u$ be the 
-vector containing the the Legendre coefficients.
+vector containing the Legendre coefficients.
 \begin{align}
     u^* &=(I+\mathcal{F}_{\alpha})u, \\
     u^{**} &= (I-I_{\alpha,k})u^*.
@@ -481,13 +483,13 @@ have been used to achieve the result in~\ref{eq:filterenergy}.
 
 \subsubsection{A physical approach to the filter}
 A good physical description of the filter has not yet been described, this 
-subsection is an attempt to show some resemblence between known properties 
+subsection is an attempt to show some resemblance between known properties 
 of some differential equations and the mathematical filter described in the previous section.
 
-Let $u$ be some smooth continuos function,$\bar u = [u_1L_1(x),u_2L_2(x), \cdots]$
-is the corresponding legendre basis with 
+Let $u$ be some smooth continuous function,$\bar u = [u_1L_1(x),u_2L_2(x), \cdots]$
+is the corresponding Legendre basis with 
 appropriate coefficients
-and $P_{N-k}$ is the diagonal matrix with ones on the $k$ last entries and $0$ on the rest.
+and $P_{k}$ is the diagonal matrix with ones on the $k$ last entries and $0$ on the rest.
 
 Let us consider the two initial value problems 
 \begin{align}
@@ -502,43 +504,43 @@ The second IVP in~\ref{eq:ivps} has a known analytical solution
 $u = u_0e^{-t}$ which decays exponentially in time. The first IVP is known 
 as the heat equation and is known to diffuse the initial condition with time. 
 Now let the operators $-1$ and $\Delta$ on the right hand sides of~\ref{eq:ivps}
-be applied only on the $k$ highest Legendre polynomials. By applying the legendre decomposition
+be applied only on the $k$ highest Legendre polynomials. By applying the Legendre decomposition
 and the truncated operators the system can then be written as 
 \begin{align}
     \begin{split}
     \frac{\partial \bar v }{\partial t}
-    &= \Delta P_{N-k}\bar v^T , \qquad v(0) = v_0, \\
+    &= \Delta P_{k}\bar v^T , \qquad v(0) = v_0, \\
         \frac{\partial \bar u }{\partial t} 
-        &=   -P_{N-k}\bar u^T , \qquad u(0) = u_0.
+        &=   -P_{k}\bar u^T , \qquad u(0) = u_0.
     \label{eq:ivps2}
     \end{split}
 \end{align}
 
-The laplace operator applied in a legendre space is known to take a sparse upper triangular form
+The Laplace operator applied in a Legendre space is known to take a sparse upper triangular form
 with entries only on even sup-diagonals. By naming this matrix $A$ the entries are given as 
 \begin{align}
     A_{ij} = ||L_i||^{-2} \sum_{k=2}^{j-i} ||L_{i+3-k}||^{-2}, \qquad \text{ if } 2 \le j-i = mod(2). 
-    \label{laplace-entries}
+    \label{Laplace-entries}
 \end{align}
-The matrix-matrix product $AP_{N-k}$ will lead to a laplacian matrix where the $N-k$ are zero
-while the last $k$ remains unchanged. This modified laplacian will be denoted $A^*$.
+The matrix-matrix product $AP_{k}$ will lead to a Laplacian matrix where the $N-k$ first columns are zero
+while the last $k$ remains unchanged. This modified Laplacian will be denoted $A^*$.
 Omitting the initial conditions, and doing a first order explicit 
 time-integration of~\ref{eq:ivps2} can be written as 
 \begin{align}
     u^{n+1} &= u^n + \Delta t A^* u^n = (I + \Delta t A^*)u^n, \\
-    u^{n+1} &= u^n - \Delta t P_{N-k}u^n = (I - \Delta t I_k)u^n.
+    u^{n+1} &= u^n - \Delta t P_{k}u^n = (I - \Delta t I_k)u^n.
     \label{eq:timestep}
 \end{align}
 Notice the resemblence to the application of the filter in~\ref{eq:filterstepwise}. The second step
-is identical if $\alpha_i = \Delta t$. The truncated laplacian $A^*$ is not equal the corresponding
+is identical if $\alpha_i = \Delta t$. The truncated Laplacian $A^*$ is not equal the corresponding
 filter matrix $\mathcal{F}_{\alpha}$, but there are some similarities between these to matrices.
 They are both upper triangular with zeros along the diagonal and non-zero entries on the second 
 sup-diagonal. The main difference is that the Laplacian applied on the Nth Legendre function 
 $L_N$ affect all the terms $L_{N-2},L_{N-4},\cdots$, while the filter only affects $L_{N-2}$.
 
 If one were to insist that the Laplacian should work locally in Legendre space, in other words 
-if $A_{ij}=0$ if $i-j>2$, then the laplacian and the filtering would have the same structure 
-and a clever choice of $\alpha_i$ would yield equality. 
+if $A_{ij}=0$ if $i-j>2$, then the Laplacian and the filtering would have the same non-zero entries 
+and a clever choice of $\alpha_i$ would yield equality.  
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -718,7 +720,7 @@ it is referred to Maday et al~\cite{raey}.
 By considering the NS-equation in a general operational form 
 %
 \begin{align}
-    M\frac{d \mathbf{v}}{dt} + C\mathbf{v} = -A\mathbf{v} +D p +Mf.
+    M\frac{d \mathbf{v}}{dt} + C\mathbf{v} = -A\mathbf{v} +D p +M\mathbf{f}.
     \label{eq:NSoperator}
 \end{align}
 %
@@ -769,13 +771,14 @@ first scheme is an implicit BDFk-scheme while the second is an explicit 4th orde
 \subsection{Fractional step} 
 \label{fracstep}
 
-Fractional step is an algorithm that can be divided into four separate steps. For simplicity let us write the N-S
-equations as 
+Fractional step is an algorithm that can be divided into four separate steps. The N-S equations will still 
+be considered in its operational form 
 \begin{align}
-    \partial_t v = -Av + Dp - Cv.
+    M\frac{d \mathbf{v}}{dt} + C\mathbf{v} = -A\mathbf{v} +D p +M\mathbf{f}.
     \label{eq:NSfracstep}
 \end{align}
-Where $\partial_t, A,D,C$ Denotes the time-derivate, linear, gradient and non-linear operator. 
+%
+Where $M, A,D,C$ Denotes the mass integral, linear, gradient and non-linear operator. 
 %The method describing one time-step can then be summarized as following
 %\begin{itemize}
     %\item solve $v^* = v^n + \Delta t Nv^n$.
@@ -793,10 +796,10 @@ A schematic overview of the method is stated below, where the equations on the r
 solved and the updated solution is stated on the left hand side.
 \begin{align}
     \begin{split}
-        v^* &\leftarrow \frac{dv}{dt}=Cv,\\
-    p^{n+1} &\leftarrow \Delta\: p = \nabla \cdot \frac{v^*}{\Delta t},\\
-    v^{**} &\leftarrow  \frac{dv^*}{dt} =Dp^{n+1},\\
-    v^{n+1} &\leftarrow \frac{dv^{**}}{dt}= -Av^{**}.
+        \mathbf{v}^* &\leftarrow \frac{d\mathbf{v}}{dt}=C\mathbf{v},\\
+    p^{n+1} &\leftarrow \Delta\: p = \nabla \cdot \frac{\mathbf{v}^*}{\Delta t},\\
+    \mathbf{v}^{**} &\leftarrow  \frac{d\mathbf{v}^*}{dt} =Dp^{n+1},\\
+    \mathbf{v}^{n+1} &\leftarrow \frac{d\mathbf{v}^{**}}{dt}= -A\mathbf{v}^{**}+M\mathbf{f}^{n+1}.
     \end{split}
     \label{eq:fracstep}
 \end{align}
@@ -805,23 +808,27 @@ As earlier mentioned this method is convenient because it allows us to handle th
 terms with different solution techniques. So since the first equation in~\ref{eq:fracstep}
 involves the non-linear skew-symmetric advection operator this equation is solved using a 
 explicit Adam Bashford scheme. The second equation is the Possion pressure equation which
-assures a divergence free velocity field. Note that $p\in L^2\supset H^1$ hence the Poisson equation 
+assures a divergence free velocity field. 
+
+\colorbox{red}{Should this note stay?}
+
+Note that $p\in L^2\supset H^1$ hence the Poisson equation 
 is somewhat different from the one normally studied in textbooks. Another difficulty is the 
 treatment of the boundary conditions. Ideally the BC's should be determined by the velocity 
-field $v^{n+1}$, but since this solution is yet to be calculated the intermediate velocity field 
-$v^{*}$ is used to impose the boundary conditions. With $p^{n+1}$ known the third equation is 
+field $\mathbf{v}^{n+1}$, but since this solution is yet to be calculated the intermediate velocity field 
+$\mathbf{v}^{*}$ is used to impose the boundary conditions. With $p^{n+1}$ known the third equation is 
 simply an update of the velocity in order to impose the divergence free condition. Now the last
 equation is solved implicitly due to its nice symmetric structure. This results in a system 
 equivalent to the Helmholtz problem which will be discussed in detail in chapter~\ref{numerics}.
 This can be easily shown by discretizing the equation, 
 \begin{align}
     \begin{split}
-    (v^{n+1}-v^{n})/\Delta t  &= -Av^{n+1},\\
-    Av^{n+1}+\frac{1}{\Delta t} v^{n+1} &= v^{n}.
+    (\mathbf{v}^{n+1}-\mathbf{v}^{n})/\Delta t  &= -A\mathbf{v}^{n+1},\\
+    A\mathbf{v}^{n+1}+\frac{1}{\Delta t} \mathbf{v}^{n+1} &= \mathbf{v}^{n}.
     \end{split}
     \label{eq:fracHelm}
 \end{align}
-Knowing that $A$ is the discrete Laplacian and $v^n$ is a known variable this is 
+Knowing that $A$ is the discrete Laplacian and $\mathbf{v}^n$ is a known variable this is 
 similar to problem~\ref{eq:Helmholtz}.
 
 
@@ -832,7 +839,7 @@ by rewriting the initial equation as described in the previous chapter. This all
 to solve the unstable advection operator with multiple substeps. Explicitly the first step 
 in~\ref{eq:fracstep} would be solved by applying the discretization used in~\ref{eq:NSOIFS1}
 with an empty right hand side since the rest of the terms are take care of in the next steps. 
-The IVP~\ref{eq:IVP} is then solved to obtain $v^{*}$.
+The IVP~\ref{eq:IVP} is then solved to obtain $\mathbf{v}^{*}$.
 
 %\subsection{Pressure-correction}
 

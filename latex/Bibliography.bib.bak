@@ -32,7 +32,7 @@
 
 @Book{Canuto,
   Title                    = {Spectral methods : evolution to complex geometries and applications to fluid dynamics},
-  Author                   = {C. Canuto and M.Y Hussaini and A. Quarteroni\ldots [et al.]},
+  Author                   = {C. Canuto and M.Y Hussaini and A. Quarteroni et al.},
   Publisher                = {Springer},
   Year                     = {2007},
 
@@ -60,6 +60,22 @@
   Publisher                = {American Mathematical Society (AMS)},
   Timestamp                = {2015.06.04},
   Url                      = {http://dx.doi.org/10.1090/S0025-5718-1982-0637287-3}
+}
+
+@Article{Carati,
+  Title                    = {On the modelling of the subgrid-scale and filtered-scale stress tensors in large-eddy simulation},
+  Author                   = {CARATI,DANIELE and WINCKELMANS,GRÉGOIRE S. and JEANMART,HERVÉ},
+  Journal                  = {Journal of Fluid Mechanics},
+  Year                     = {2001},
+
+  Month                    = {8},
+  Pages                    = {119--138},
+  Volume                   = {441},
+
+  Doi                      = {10.1017/S0022112001004773},
+  ISSN                     = {1469-7645},
+  Numpages                 = {20},
+  Url                      = {http://journals.cambridge.org/article_S0022112001004773}
 }
 
 @Article{Deville,
@@ -119,6 +135,28 @@
   Pages                    = {45--78}
 }
 
+@Article{Germano91,
+  Title                    = {A Dynamic Subgrid-Scale Eddy Viscosity Model},
+  Author                   = {Germano, M. and Piomelli, U. and Moin, P. and Cabot, W. H.},
+  Journal                  = {Phys. Fluids A},
+  Year                     = {1991},
+  Pages                    = {1760--1765},
+  Volume                   = {3},
+
+  Citeulike-article-id     = {2241074},
+  Keywords                 = {bibtex-import, yeast-paper},
+  Owner                    = {mrd},
+  Posted-at                = {2008-01-16 21:05:32},
+  Priority                 = {2},
+  Timestamp                = {2015.11.18}
+}
+
+@Misc{GuermondPnPn,
+  Title                    = {NONSTANDARD NONCONFORMING APPROXIMATION OF THE STOKES PROBLEM, I: PERIODIC BOUNDARY CONDITIONS ∗},
+
+  Author                   = {J. -l. Guermond}
+}
+
 @Article{hughes1989,
   Title                    = {A new finite element formulation for computational fluid dynamics: VIII. The Galerkin/least-squares method for advective-diffusive equations},
   Author                   = {Hughes, Thomas JR and Franca, Leopoldo P and Hulbert, Gregory M},
@@ -157,6 +195,23 @@
   Url                      = {http://dx.doi.org/10.1016/0021-9991(86)90134-8}
 }
 
+@Article{Leonard,
+  Title                    = {{Energy cascade in large eddy simulations of turbulent fluid flows}},
+  Author                   = {Leonard, A.},
+  Journal                  = {Adv. Geophys.},
+  Year                     = {1974},
+  Pages                    = {237--248},
+  Volume                   = {18A},
+
+  Citeulike-article-id     = {3021787},
+  File                     = {leonard\\_74.pdf:/leonard\\_74.pdf:PDF},
+  Keywords                 = {isotropic, les, turbulence},
+  Owner                    = {magnus},
+  Posted-at                = {2008-07-20 03:53:03},
+  Priority                 = {3},
+  Timestamp                = {2016.01.05}
+}
+
 @InProceedings{Lilly67,
   Title                    = {The representation of small scale turbulence in numerical simulation experiments},
   Author                   = {Lilly, D. K.},
@@ -191,6 +246,15 @@
   Publisher                = {Kluwer Academic Publishers-Plenum Publishers},
   Timestamp                = {2015.11.15},
   Url                      = {http://dx.doi.org/10.1007/BF01063118}
+}
+
+@InProceedings{maday1989,
+  Title                    = {Spectral element methods for the incompressible Navier-Stokes equations},
+  Author                   = {Maday, Yvon and Patera, Anthony T},
+  Booktitle                = {IN: State-of-the-art surveys on computational mechanics (A90-47176 21-64). New York, American Society of Mechanical Engineers, 1989, p. 71-143. Research supported by DARPA.},
+  Year                     = {1989},
+  Pages                    = {71--143},
+  Volume                   = {1}
 }
 
 @Article{Pasquetti,
@@ -272,6 +336,28 @@
   Timestamp                = {2015.05.08}
 }
 
+@Article{TomboulidesPnPn,
+  Title                    = {Numerical Simulation of Low Mach Number Reactive Flows},
+  Author                   = {Tomboulides, A. G. and Lee, J. C. Y. and Orszag, S. A.},
+  Journal                  = {J. Sci. Comput.},
+  Year                     = {1997},
+
+  Month                    = jun,
+  Number                   = {2},
+  Pages                    = {139--167},
+  Volume                   = {12},
+
+  Acmid                    = {277068},
+  Address                  = {New York, NY, USA},
+  Doi                      = {10.1023/A:1025669715376},
+  ISSN                     = {0885-7474},
+  Issue_date               = {June 1997},
+  Keywords                 = {Combustion, numerical simulation, opposed jet flames, porous particle combustion, splitting method},
+  Numpages                 = {29},
+  Publisher                = {Plenum Press},
+  Url                      = {http://dx.doi.org/10.1023/A:1025669715376}
+}
+
 @Misc{benchmark,
   Title                    = {Recent Benchmark Computations of Laminar Flow Around a Cylinder},
 
@@ -290,6 +376,18 @@
 
   ISBN                     = {0-07-069712-4},
   Url                      = {http://opac.inria.fr/record=b1096847}
+}
+
+@Book{Young,
+  Title                    = {An Introduction to Hilbert Space},
+  Author                   = {Young, N.},
+  Publisher                = {Cambridge University Press},
+  Year                     = {1988},
+  Series                   = {Cambridge mathematical textbooks},
+
+  ISBN                     = {9780521337175},
+  Lccn                     = {87024903},
+  Url                      = {https://books.google.no/books?id=\_igwFHKwcyYC}
 }
 
 @Manual{Nek,
