@@ -435,6 +435,31 @@ the highest order mode $N$ to the mode $N-2$. The rest of the coefficients remai
 For a full derivation and discussion on this matter it is referred to chapter 6.5.1 in 
 \cite{Karniadakis}.
 
+This filter in~\ref{eq:filtereffect} is often applied to the $k$ highest Legendre polynomials,
+with a decaying coefficient $\alpha$. The action of the filter can therefore be described as 
+a matrix equation in two steps, first adding the contribution from the higher polynomials to the 
+lower ones and then subtracting the contribution from the higher polynomials. Let $u$ be the 
+vector containing the the Legendre coefficients.
+\begin{align}
+    u^* &=(I+\mathcal{F}_{\alpha})u, \\
+    u^{**} &= (I-I_{\alpha,k})u^*.
+    \label{eq:filterstepwise}
+\end{align}
+In this case $I_{\alpha,k}$ is a diagonal matrix 
+diag$(0,0,\cdots,\alpha_k,\alpha_{k-1},\cdots,\alpha_1)$ 
+while $\mathcal{F}_{\alpha}$ is also sparse and with the same non-zero entries as $I_{\alpha,k}$,
+but this time they are located on the second sup-diagonal (removing the 2 first zeros). 
+%The non-zero diagonal part of $I_{\alpha,k}$ is given as 
+%$
+%\begin{pmatrix}
+  %\alpha_{k}&   0    & \cdots &  0      \\
+    %0       & \ddots & \ddots    & \vdots \\
+    %\vdots  & \ddots & \alpha_{2}& 0     \\
+    %0       & \cdots & 0      & \alpha_{1} 
+%\end{pmatrix}.
+%$
+In this thesis the $\alpha_k$ follows a quadratic decay from $1$ to $k$.
+
 The filter is proved to be a very effective stabilization method and it preserves the 
 spectral convergence rate. Another interesting property is that the filtering procedure 
 does not imply dissipation of energy, let the energy norm be defined as $E(u) = ||u||_{L_2}^2$.  
@@ -454,7 +479,69 @@ the deduced absolute error $\epsilon_{diff}$ of the filtered energy is of order
 $\epsilon_{diff}\sim \alpha/N$. The approximation $||L_N||^2\approx||L_{N-2}||^2\approx 1/N$
 have been used to achieve the result in~\ref{eq:filterenergy}.
 
+\subsubsection{A physical approach to the filter}
+A good physical description of the filter has not yet been described, this 
+subsection is an attempt to show some resemblence between known properties 
+of some differential equations and the mathematical filter described in the previous section.
+
+Let $u$ be some smooth continuos function,$\bar u = [u_1L_1(x),u_2L_2(x), \cdots]$
+is the corresponding legendre basis with 
+appropriate coefficients
+and $P_{N-k}$ is the diagonal matrix with ones on the $k$ last entries and $0$ on the rest.
+
+Let us consider the two initial value problems 
+\begin{align}
+    \begin{split}
+    \frac{\partial v }{\partial t} &= \Delta v, \qquad v(0) = v_0, \\
+    \frac{\partial u }{\partial t} &= -u, \qquad u(0) = u_0.
+    \end{split}
+    \label{eq:ivps}
+\end{align}
+
+The second IVP in~\ref{eq:ivps} has a known analytical solution 
+$u = u_0e^{-t}$ which decays exponentially in time. The first IVP is known 
+as the heat equation and is known to diffuse the initial condition with time. 
+Now let the operators $-1$ and $\Delta$ on the right hand sides of~\ref{eq:ivps}
+be applied only on the $k$ highest Legendre polynomials. By applying the legendre decomposition
+and the truncated operators the system can then be written as 
+\begin{align}
+    \begin{split}
+    \frac{\partial \bar v }{\partial t}
+    &= \Delta P_{N-k}\bar v^T , \qquad v(0) = v_0, \\
+        \frac{\partial \bar u }{\partial t} 
+        &=   -P_{N-k}\bar u^T , \qquad u(0) = u_0.
+    \label{eq:ivps2}
+    \end{split}
+\end{align}
+
+The laplace operator applied in a legendre space is known to take a sparse upper triangular form
+with entries only on even sup-diagonals. By naming this matrix $A$ the entries are given as 
+\begin{align}
+    A_{ij} = ||L_i||^{-2} \sum_{k=2}^{j-i} ||L_{i+3-k}||^{-2}, \qquad \text{ if } 2 \le j-i = mod(2). 
+    \label{laplace-entries}
+\end{align}
+The matrix-matrix product $AP_{N-k}$ will lead to a laplacian matrix where the $N-k$ are zero
+while the last $k$ remains unchanged. This modified laplacian will be denoted $A^*$.
+Omitting the initial conditions, and doing a first order explicit 
+time-integration of~\ref{eq:ivps2} can be written as 
+\begin{align}
+    u^{n+1} &= u^n + \Delta t A^* u^n = (I + \Delta t A^*)u^n, \\
+    u^{n+1} &= u^n - \Delta t P_{N-k}u^n = (I - \Delta t I_k)u^n.
+    \label{eq:timestep}
+\end{align}
+Notice the resemblence to the application of the filter in~\ref{eq:filterstepwise}. The second step
+is identical if $\alpha_i = \Delta t$. The truncated laplacian $A^*$ is not equal the corresponding
+filter matrix $\mathcal{F}_{\alpha}$, but there are some similarities between these to matrices.
+They are both upper triangular with zeros along the diagonal and non-zero entries on the second 
+sup-diagonal. The main difference is that the Laplacian applied on the Nth Legendre function 
+$L_N$ affect all the terms $L_{N-2},L_{N-4},\cdots$, while the filter only affects $L_{N-2}$.
+
+If one were to insist that the Laplacian should work locally in Legendre space, in other words 
+if $A_{ij}=0$ if $i-j>2$, then the laplacian and the filtering would have the same structure 
+and a clever choice of $\alpha_i$ would yield equality. 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 \subsection{Aliasing}
 
