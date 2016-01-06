@@ -131,11 +131,15 @@ computational mesh, this was done directly in the \verb|.usr| file.
 %\end{figure}
 %
 \section{Case 2: Drag and lift on a cylinder}
-A standard benchmark case for flow solvers is presented in ~\cite{benchmark}.
+A standard benchmark case for flow solvers is presented in ~\cite{benchmark}. 
 The case is to calculate the drag and lift coefficients on a cylinder in a rectangular channel.
 The setup for the domain and boundary conditions are given in figure~\ref{fig:cylinder}.
 The constants applied in the description of the geometry and the coefficient scales are listed 
 in table ~\ref{tab:case2consts}.
+Finding the drag and lift coefficient requires a calculation of the velocity field around the cylinder
+which is done by solving the N-S equations until a steady flow is reached. This implies that the
+spatial accuracy will be essential and would imply that the solution provided
+by a SEM solver such as Nek5000 should be very good compared to other FV-based solvers.
 %
 \begin{table}[h]
     \centering
@@ -153,28 +157,27 @@ in table ~\ref{tab:case2consts}.
 %
 The flow is laminar with Reynolds number $Re=20$ so all the 
 challenges arising when dealing with turbulent flow does not come to play in this case. 
-The case will yield a steady state solution at which point the drag and lift coefficients
-are calculated and compared with the reference solutions.
+%
 \begin{figure}[h]
     \centering
     \includegraphics[width = 1.0\textwidth]{Figures/cylinder.pdf}
     \caption{Computational domain and boundary conditions.}
     \label{fig:cylinder}
 \end{figure}
-The spectral element method applied in Nek is known to be an accurate
-solution method and is expected to 
-provide a very good result in a test-case like this.
+%
 The drag and lift forces on a surface $S$ are given as 
-
+%
 \begin{align}
     F_D = \int_{S}(\rho \nu \frac{\partial v_t}{\partial n}n_y-pn_x)dS 
     \qquad , \qquad
     F_L = -\int_{S}(\rho \nu \frac{\partial v_t}{\partial n}n_x+pn_y)dS.
     \label{eq:dragnlift}
 \end{align}
+%
+Surface integrals in Nek5000 are solved numerically, $\int_S f dS = \sum f_i A_i$. Where $f$ is some function and $A_i$ is the areal corresponding
+to the nodal value $f_i$. 
 
-
-\colorbox{green}{Nevne hvordan integralet løses i Nek.}
+\colorbox{green}{Nevne hvordan integralet løses i Nek?? Heller skrive i appendiks??}
 
 \colorbox{green}{Dersom det var noen probmlemer med rammeverket, nevn det kort!}
 
@@ -188,57 +191,62 @@ are given by the formulas
     c_L = \frac{2F_L}{\rho U^2 D H}.
     \label{eq:dragnliftcoeffs}
 \end{align}
+
+
 Nek provides functions for calculating lift and drag on any user-specified object.
 The function is called \verb|drag_calc(scale)|, with the input parameter 
 defined by the user, for this case \verb|scale| $=2/(\rho U^2DH)$.  
 Apart from this the function \verb|set_obj()| has to be modified in order to create an object 
 which consists of all the faces on the cylinder.
-Let $x,y$ be points in the computational domain, $x_c,y_c$ be the coordinates to the 
-center line in the cylinder and $0<tol\ll1$ be some user defined tolerance. The faces that belong to the cylinder can then be found by 
-looping over all elements and their faces evaluating $\epsilon = \sqrt{(x-x_c)^2+(y-y_c)}$.
-If $\epsilon < tol$ for an entire face then this face is known to 
-belong to the cylinder and is added to the object. Nek also allows the user to specify multiple objects 
-assigning the faces of interest to object 1, object 2 etc. The geometry and mesh 
-for this case was generated in ICEM, and the total number of elements are 2070. 
-For the final calculation polynomial degree $P = 11$ was applied leading to a 
-total of $N = 2755170$.
-
+%Let $x,y$ be points in the computational domain, $x_c,y_c$ be the coordinates to the 
+%center line in the cylinder and $0<tol\ll1$ be some user defined tolerance. The faces that belong to the cylinder can then be found by 
+%looping over all elements and their faces evaluating $\epsilon = \sqrt{(x-x_c)^2+(y-y_c)}$.
+%If $\epsilon < tol$ for an entire face then this face is known to 
+%belong to the cylinder and is added to the object. Nek also allows the user to specify multiple objects 
+%assigning the faces of interest to object 1, object 2 etc. The geometry and mesh 
+%for this case was generated in ICEM, and the total number of elements are 2070. 
+%For the final calculation polynomial degree $P = 11$ was applied leading to a 
+%total of $N = 2755170$.
 %
 \begin{figure}[h]
     \centering
-    \includegraphics[width = 0.4\textwidth]{Figures/cyl_elem.pdf}
+    \includegraphics[width = 0.3\textwidth]{Figures/cyl_elem.pdf}
     \caption{Initial mesh around cylinder.}
     \label{fig:cyl_elem}
 \end{figure}
 %
+The mesh around the cylinder is illustrated in figure~\ref{fig:cyl_elem}.
 Initially this case was solved using a second degree polynomial to describe the circle segments
-corresponding to each element. The mesh around the cylinder is illustrated in figure~\ref{fig:cyl_elem}.
-Note that these elements was split in three, in order to obtain 
-a finer mesh in the region of interest. Of the elements numbered in~\ref{fig:cyl_elem}
-only the first six contains edges on the cylinder.Hence the second order polynomials 
-describing the curved edges describe approximately $\Theta = 360^{\circ}/(6\cdot 3) = 20^{\circ}$
-of the complete circle. There is no computational reason 
-for not incorporating an order $n=P$ approximation of the circle segments eliminating 
-this approximation error. An algorithm was therefore implemented as an extension to the
-currently available features regarding curvature on edges.
-The full description of the algorithm is presented in 
-chapter~\ref{xyzarc}. The importance of the error resulting from the second degree approximation
-of the circle segments are presented in chapter~\ref{results}.
+corresponding to each element. However with the new routine implemented as described 
+in~\ref{xyzarc} the circle segments could be represented with the same order as 
+the polynomials used for the velocity space. The importance of the error resulting 
+from the second degree approximation of the circle segments are presented in chapter~\ref{results}.
+%Note that these elements was split in three, in order to obtain 
+%a finer mesh in the region of interest. Of the elements numbered in~\ref{fig:cyl_elem}
+%only the first six contains edges on the cylinder.Hence the second order polynomials 
+%describing the curved edges describe approximately $\Theta = 360^{\circ}/(6\cdot 3) = 20^{\circ}$
+%of the complete circle. 
+
+An interesting test that is performed on this case is how different settings in Nek5000 will affect the estimation of the drag and lift coefficients.
+Perhaps most curious is whether the $P_nP_n$- or $P_nP_{n-2}$ formulation is applied. Note that the pressure in the latter formulation is 
+not defined on the boundary of the cylinder and does therefore need to be extrapolated onto the surface in order for the integral to be 
+calculated. On the other side is the splitting scheme implied by the $P_nP_n$ known to produce large errors close to the boundary. 
+
+\colorbox{red}{Add some theorem addressing this error difference! }
 %
 %
 %
 \section{Advances in the mesh-generation routine} \label{xyzarc}
-The routine \verb|xyzarc()|:
 
-The Gordon Hall algorithm was already implemented as a function in Nek, with the GLL-points,polynomial degree and some initial 
-coordinates to the element. The algorithm creates a distribution of the internal GLL-points in each element. 
-If the element consists of linear edges the only necessary input are the vertices, but by specifying the points on edges and faces
-the algorithm creates a logical distribution of the internal GLL-points to a deformed element. 
+The Gordon Hall algorithm which is described in~\ref{GH} was already implemented as a function in the Nek library.
+By defining the GLL-nodes on the curved edges such that they correspond to an arc, the GH-algorithm is able to distribute 
+the internal nodes accordingly. 
 
-The curved edge is specified in the .rea file and the routine \verb|genxyz()| processes the input of each edge. 
-By specifying the radius and the circle center \verb|genxyz()| calls the routine \verb|xyzarc()| which performs the following algorithm;
+The curved edges are specified in the \verb|.rea| file and have until now been read as a second degree polynomial or as a part of a 
+spherical shell. The routine \verb|xyzarc()| was created to process curved edges specified in \verb|.rea| with a radius and center.
+The algorithm is described below and figure~\ref{fig:curvature} gives a visual representation of the situation.
 
-$a,b$ will be the two end nodes of the edge 
+$a,b$ will be the two end nodes of the edge, 
 $c$ will be the mid node, 
 $s$ will be the arc length, 
 $\theta$ will be the full angle of the circle sector,
@@ -265,29 +273,16 @@ and $r$ will be the radius.
  enddo
 \end{lstlisting}
 \endgroup
-These lines creates the wanted edge curved as a circle sector corresponding to the radius and circle center given.
-The remaining operation is to call the Gordon Hall algorithm and create the internal GLL-points defined by the edges 
-provided. The figure~\ref{fig:curvature} illustrates the geometry on which the algorithm is performed.
-Notice that the algorithm assumes that the center $c$ is somewhere on the plane defined as all the 
-points with equal distance to both $a$ and $b$.
-
-
+This code defines the GLL-nodes on a circle sector corresponding to the radius and circle center given.
+The remaining operation is to call the Gordon Hall algorithm and create the internal GLL-points.
+%
 \begin{figure}[h]
     \centering
     \includegraphics[width = 0.4\textwidth]{Figures/curvature.pdf}
     \caption{A sketch of the curved edge and the variables necessary to calculate the projection}
     \label{fig:curvature}
 \end{figure}
-
-
-\begin{itemize}
-	\item initial script
-	\item changes and modifications
-	\item performance testing
-	\item pitfalls
-\end{itemize}
-
-
+%
 \section{Additional projection algorithm}\label{surfpro}
 The routine \verb|xyzarc()| enables the user to represent circular edges with the same order as
 the Lagrange polynomials of each element. For more complex geometry such as actual 
