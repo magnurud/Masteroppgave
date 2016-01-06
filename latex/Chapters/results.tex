@@ -9,12 +9,12 @@
 %----------------------------------------------------------------------------------------
 
 \section{Drag and lift on a cylinder}
-The effect of the implemented algorithm in Nek5000 explained in Chapter~\ref{implementation} is
+The effect of the algorithm explained in Chapter~\ref{xyzarc} is
 illustrated by solving a laminar flow test problem. 
 The solution is compared with previously benchmark computations performed by a number of 
-contributors~\cite{benchmark}. The test problem considered is steady flow with Re=20 in 
-a rectangular channel past a cylinder. The drag and lift coefficients on the cylinder 
-are calculated and compared to a pair of reference values. The results can be found in 
+contributors~\cite{benchmark}. 
+
+The results can be found in 
 table~\ref{tab:testcase}. As the results clearly show the treatment of the geometry is 
 crucial, both coefficients are computed with significantly better accuracy. 
 %
@@ -55,12 +55,14 @@ flow has reached a steady state solution.
 
 \begin{table}[h]
     \centering
-    \begin{tabular}{c | c c c | c c | c c c}
+    \begin{tabular}{c | c c c c | c c | c c c}
 
-         & \multicolumn{3}{|c|}{Settings} & \multicolumn{2}{|c|}{\% Error} & \multicolumn{3}{|c}{Data} \\\hline
-         \#  & Aliasing & IOFS & Filter & $c_D$ & $c_L$ 
-         & DT & CFL & T/Tstep \\ \hline 
-         1 & No & No & No & 1.0 & 2.3 & 1e-04 & 2.03 & 2.1e-02 \\
+         & \multicolumn{4}{|c|}{Settings} & \multicolumn{2}{|c|}{\% Error} & \multicolumn{3}{|c}{Data} \\\hline
+         \#  & ifsplit & Dealiasing & IOFS & Filter & $c_D$ & $c_L$ & DT & CFL & T/Tstep \\ \hline 
+         1 & F & F & F & F & 1.0 & 2.3 & 1e-04 & 2.03 & 2.1e-02 \\
+         2 & T & T & F & F & 1.0 & 2.3 & 1e-04 & 2.03 & 2.1e-02 \\
+         3 & F & T & F & T & 1.0 & 2.3 & 1e-04 & 2.03 & 2.1e-02 \\
+         4 & F & T & T & T & 1.0 & 2.3 & 1e-04 & 2.03 & 2.1e-02 \\
     \end{tabular}
     \caption{Performance data for different settings in Nek5000}
     \label{tab:perf}
