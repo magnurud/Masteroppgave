@@ -394,10 +394,30 @@ Equivalently as for FEM the global matrices has to be assembled
 from all the local matrices corresponding to each subdomain. This procedure is general and can 
 be performed on almost any deformed domain as oppose to SM. 
 
-
-\colorbox{red}{Convergence estimate!! }
 %$\Omega$ is some 2 dimensional strongly connected domain with well-defined corners and each of the edges can be described by some polynomial $\Gamma_i$.
 
+\subsection{Convergence properties}
+This susection will present some results regarding the expected accuracy of this method.
+The Spectral Element Method can as mentioned earlier be regarded as a projection 
+method similar to FEM and SM. 
+It was proved in~\cite{MPR1987} that spectral convergence can be achieved only by requiring the solution
+$u$ to be sufficiently regular within each element. This as oppose to pure spectral methods which
+required regularity in the entire domain is a huge advantage when working with turbulent flows 
+in complex domains. 
+\begin{theorem}
+    Let $\Omega$ be a domain in $\mathbb{R}^d$ and $\left\{ \Omega_k \right\}$ 
+    be the non-overlapping elements. $X_h = H^1_0\cap\mathbb{P}_{N,K}$ is the SEM space. If $u$ is continous in the entire domain 
+    and $u_{|\Omega_k} \in H^{\sigma}(\Omega_k) \forall \; k $ the following will hold for 
+    any $\sigma \ge 1$
+\begin{align}
+    \inf_{v_{h}\in X_{k}}||u-v_h||_1 \le CN^{1-\sigma}\left( ||u||_1 + \sum_{k=1}^{K}||u||_{\sigma} \right).
+\end{align}
+    \label{thm:semconvergence}
+\end{theorem}
+%
+Note that this result is for a spatial approximation of a function $u$, allthough SEM provides 
+great error estimates the solution of the N-S equations are bound to get higher errors due to 
+temporal discretizations. This will be further discussed in chapter~\ref{timeNS}.
 \subsection{Filtering} \label{filtering}
 Although SEM provides spectral convergence in space and 2nd or 3rd order accuracy in time the stability of a straight forward
 implementation is not guaranteed, spurious nodes appear 
