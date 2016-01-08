@@ -560,8 +560,16 @@ $L_N$ affect all the terms $L_{N-2},L_{N-4},\cdots$, while the filter only affec
 
 If one were to insist that the Laplacian should work locally in Legendre space, in other words 
 if $A_{ij}=0$ if $i-j>2$, then the Laplacian and the filtering would have the same non-zero entries 
-and a clever choice of $\alpha_i$ would yield equality.  
+and a clever choice of $\alpha_i$ would yield equality. Notice in particular the similarity of 
+applying a filter and including a SGS-model, with $\nu_T$ as a constant in~\ref{eq:NSLES} the term 
+$\nabla \nu_Ts_{ij}$ reduces to $\nu_T\Delta \mathbf{u}$.
 
+This way of considering the filtering procedure is very similar to the variational multiscale (VMS) 
+approach to LES first introduced by Hughes~\cite{Hughes}. This method is based on the assumption that
+the unresolved structures have a negligible effect on the larger scales, hence the SGS-model is 
+only included for the small but still resolved scales of motion.
+
+\colorbox{red}{Issue: The Laplacian should be applied implicitly\ldots wavespace is not equivalent Legendre space}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 

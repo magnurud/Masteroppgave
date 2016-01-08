@@ -292,6 +292,19 @@
   Url                      = {http://dx.doi.org/10.1016/0021-9991(84)90128-1}
 }
 
+@Book{Pope,
+  Title                    = {Turbulent Flows},
+  Author                   = {Stephen B. Pope},
+  Publisher                = {Cambridge University Press},
+  Year                     = {2000},
+  Note                     = {Cambridge Books Online},
+
+  ISBN                     = {9780511840531},
+  Owner                    = {magnus},
+  Timestamp                = {2016.01.05},
+  Url                      = {http://dx.doi.org/10.1017/CBO9780511840531}
+}
+
 @Book{Quarteroni,
   Title                    = {Numerical Models for Differential Problems, 2. edition},
   Author                   = {Alfio Quarteroni},
@@ -396,5 +409,18 @@
 
   Owner                    = {magnus},
   Timestamp                = {2015.11.07}
+}
+
+@Book{ MPR1987,
+    author = { Maday, Y. and Patera, A. T. and Ronquist, E. M. and Langley Research Center. },
+    title = { A well-posed optimal spectral element approximation for the Stokes problem [microform] / Y. Maday, A.T. Patera and E.M. Ronquist },
+    publisher = { National Aeronautics and Space Administration, Langley Research Center ; For sale by the National Technical Information Service Hampton, Va. : [Springfield, Va },
+    pages = { 1 v. },
+    year = { 1987 },
+    type = { Book, Microform },
+    language = { English },
+    subjects = { Fluid mechanics.; Numerical analysis. },
+    life-dates = { 1987 - 1987 },
+    catalogue-url = { http://nla.gov.au/nla.cat-vn4026519 },
 }
 

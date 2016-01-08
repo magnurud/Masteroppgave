@@ -14,9 +14,8 @@ illustrated by solving a laminar flow test problem.
 The solution is compared with previously benchmark computations performed by a number of 
 contributors~\cite{benchmark}. 
 
-The results can be found in 
-table~\ref{tab:testcase}. As the results clearly show the treatment of the geometry is 
-crucial, both coefficients are computed with significantly better accuracy. 
+The results are presented in table~\ref{tab:testcase}, and they confirm that the treatment of the geometry is 
+essential, both coefficients are computed with significantly better accuracy. 
 %
 \begin{table}
 \centering
@@ -31,55 +30,50 @@ crucial, both coefficients are computed with significantly better accuracy.
 		\bottomrule	
 	\end{tabular}
 	\caption{Results for the drag and lift coefficients with reference values 
-	$c_D = 6.18533$ and $c_L = 0.009401$.}
+	$c_D = 6.18533$ and $c_L = 0.009401$. $p=11$ for the simulations in Nek.}
 \label{tab:testcase}
 \end{table}
 %
-The polynomial degree used in the calculations with Nek5000 was chosen as $p = 11 $ 
-in all directions. The explicit number of cells is therefore $2070\cdot11^{3} = 2755170$,
-approximately $88\%$ of the number of cells used for the benchmark simulations. Compared 
-with the results from the other softwares applied in~\cite{benchmark} Nek5000 performs 
-just as well or better in most cases. It should be mentioned that the division of the grid is done 
-differently for Nek5000 so the comparison is not as direct as it may seem from the table.
-
-
-\colorbox{yellow}{add more info about the mesh for this case??}
+Compared with the results from the other softwares applied in~\cite{benchmark} Nek5000 performs 
+just as well or better in most cases. It should be mentioned that the division of the grid is created
+in a different manner for Nek5000 so the comparison is not as direct as it may seem from the table.
 
 \subsection{Parameter adjustments in Nek5000}
 As discussed in chapter~\ref{nek} there are many adjustments available in Nek. 
-In order to enlighten the actual effect on the results, several different settings have 
-been investigated and the results are presented in table~\ref{tab:perf}. The spectral convergence
-is also confirmed in figure~\ref{fig:liftconv}. 
+In order to enlighten the actual effect on the results, several different settings was
+investigated for this case and the results are presented in table~\ref{tab:perf}. 
+The spectral convergence is also confirmed in figure~\ref{fig:liftconv} by calculating the 
+lift coefficient error for increasing polynomial degree. 
 %
 \begin{figure}[h]
 	\centerline{
         \includegraphics[trim=0.5cm 7cm 0.5cm 7cm, width=0.8\textwidth]{Figures/lift_coef2.pdf}}
 	\caption{The logarithm of the error plotted against the polynomial degree. All results 
         are with $P_nP_{n-2}$ and dealiasing, and they are solved without using the 
-    characteristic scheme or any filtering.}
+    characteristic scheme or any filtering. A line illustrating a second order convergence is 
+    plotted to verify the convergence rate.}
 	\label{fig:liftconv}
 \end{figure}
 %
 
-The settings that sticks out in this test is the $P_nP_n$ scheme which clearly performs 
+The setting that has the biggest impact on the result is the $P_nP_n$ scheme which clearly performs 
 worse than the others. This is as expected because of the splitting scheme applied, which 
-induces nonvanishing errors in the pressure close to the boundary.
-Use of the IOFS method also has a negative effect on the accuracy, at least for the lift coefficient,
-this is also as expected because of its stability properties, it is important to mention that with 
-this scheme a much higher time step is allowed. The filtering is the least significant change
-which confirms the analytical results from~\ref{eq:filterenergy}. The effect is suspected to 
-increase if the same test was performed for a smaller $N$.
+induces nonvanishing errors in the pressure close to the boundary. 
+Use of the IOFS method also has a negative effect on the accuracy,
+this is also as expected because of the stability-accuracy tradeoff for this method.
+Remember that this scheme allows a much higher time step. The filtering is the least significant change
+which confirms the analytical results from~\ref{eq:filterenergy}. 
 %
 \begin{table}[h]
     \centering
     \begin{tabular}{c | c c c c | c c }
-         & \multicolumn{4}{|c|}{Settings} & \multicolumn{2}{|c|}{\% Error} \\\hline
-         \#  & ifsplit & Dealiasing & IOFS & Filter & $c_D$ & $c_L$ &  \hline 
-         1 & F & T & F & F & 0.005 & 0.102 \\
-         2 & T & T & F & F & 0.013 & 2.349 \\
-         3 & F & T & F & T & 0.005 & 0.431 \\
-         4 & F & T & T & F & 0.005 & 0.179 \\
-         5 & F & F & F & F & NaN   & NaN   \\
+         & \multicolumn{4}{|c|}{Settings} & \multicolumn{2}{|c}{\% Error} \\\hline
+         \#  & ifsplit & Dealiasing & IOFS & Filter & $c_D$ & $c_L$ \\  \hline 
+         1 & No & Yes& No & No & 0.005 & 0.10\\
+         2 & Yes& Yes& No & No & 0.013 & 2.35\\
+         3 & No & Yes& No & Yes& 0.005 & 0.43\\
+         4 & No & Yes& Yes& No & 0.005 & 0.18\\
+         5 & No & No & No & No & 0.005 & 0.03\\
     \end{tabular}
     %\begin{tabular}{c | c c c c | c c | c c c}
          %& \multicolumn{4}{|c|}{Settings} & \multicolumn{2}{|c|}{\% Error} & \multicolumn{3}{|c}{Data} \\\hline
@@ -90,7 +84,7 @@ increase if the same test was performed for a smaller $N$.
          %4 & F & T & T & F & 0.005 & 0.179 & 1e-04 & 2.03 & 2.1e-02 \\
          %5 & F & F & F & F & NaN   & NaN   & 1e-04 & 2.03 & 2.1e-02 \\
     %\end{tabular}
-    \caption{Test of solver settings in Nek5000}
+    \caption{Test of solver settings in Nek5000.}
     \label{tab:perf}
 \end{table}
 %
@@ -107,12 +101,7 @@ the $P_nP_n$ formulation with the fractional step method, IOFS with a target Cou
 equal 2 was enabled to maximize the time step as recommended in~\cite{Nek}. It should be 
 mentioned that the stability properties when activating the SGS-model and deactivating the 
 filtering was greatly reduced. This effect is captured in~\ref{fig:maxvel} which shows how 
-spurious velocity modes are not dampened in the same degree as with the Smagorinsky model. 
-
-An initial attempt to simulate the 
-dispersion of gas was performed in Nek5000 with fairly coarse element sizes, but without
-any subgrid-scale model. Only applying filtering on the last 3 modes made the solution 
-sufficiently stable and the results together with the Smagorinsky model can be seen in figures~\ref{fig:cHfilter} and~\ref{fig:cHfilter}.
+the Smagorinsky model does not damp spurious velocity modes in the same degree as with filtering. 
 %
 \begin{figure}[h]
 	\centering
@@ -132,26 +121,24 @@ sufficiently stable and the results together with the Smagorinsky model can be s
 \end{figure}
 %
 %
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.8\textwidth]{Figures/NekcH.pdf}
-	\caption{Time-averaged concentration with a sample time of $18.00$ s at $z/H = 0.025$ plotted horizontally and scaled 
-	with the free-stream velocity and emission rate. Compared against wind tunnel data.
-Two dashed lines on either side of the centerline represent the canyon.}
-	\label{fig:cHfilter}
-\end{figure}
+%\begin{figure}[h]
+	%\centering
+	%\includegraphics[width=0.8\textwidth]{Figures/NekcH.pdf}
+	%\caption{Time-averaged concentration with a sample time of $18.00$ s at $z/H = 0.025$ plotted horizontally and scaled 
+	%with the free-stream velocity and emission rate. Compared against wind tunnel data.
+%Two dashed lines on either side of the centerline represent the canyon.}
+	%\label{fig:cHfilter}
+%\end{figure}
 %
-Discuss the plot... 
-
 %
-\begin{figure}[h]
-	\centerline{\includegraphics[width=0.8\textwidth]{Figures/vel_field.png}}
-	\caption{velocity field for $z= 0.02$m, around the source and the cubes.}
-	\label{fig:vel_field}
-\end{figure}
+%\begin{figure}[h]
+	%\centerline{\includegraphics[width=0.8\textwidth]{Figures/vel_field.png}}
+	%\caption{velocity field for $z= 0.02$m, around the source and the cubes.}
+	%\label{fig:vel_field}
+%\end{figure}
 %
 
-\colorbox{green}{redo these simulation in case they were started to early.}
+%\colorbox{green}{redo these simulation in case they were started to early.}
 %
 %\begin{figure}[h]
 	%\centering
@@ -164,49 +151,67 @@ Discuss the plot...
 %\end{figure}
 %
 %
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.8\textwidth]{Figures/Nek_smag_cV.pdf}
-	\caption{Time-averaged concentration with a sample time of $22.00$ s at $y = 0$ plotted
-    vertically and scaled 
-	with the free-stream velocity and emission rate. Compared against wind tunnel data.
-Two dashed lines on either side of the centerline represent the canyon.}
-	\label{fig:cVsmag}
-\end{figure}
-%
-%
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.8\textwidth]{Figures/Nek_smag_cH.pdf}
-	\caption{Time-averaged concentration with a sample time of $22.00$ s at $y = 0$ plotted
-    vertically and scaled 
-	with the free-stream velocity and emission rate. Compared against wind tunnel data.
-Two dashed lines on either side of the centerline represent the canyon.}
-	\label{fig:cVsmag}
-\end{figure}
-%
-
-
 %\begin{figure}[h]
-    %\centering
-    %\includegraphics[width=0.8\textwidth]{Figures/Nek_smag_cV.pdf}
-    %\caption{Time-averaged concentration with a sample time of $22.00$ s at $y = 0$ plotted
+	%\centering
+	%\includegraphics[width=0.8\textwidth]{Figures/Nek_smag_cV.pdf}
+	%\caption{Time-averaged concentration with a sample time of $22.00$ s at $y = 0$ plotted
     %vertically and scaled 
-    %with the free-stream velocity and emission rate. Compared against wind tunnel data.
+	%with the free-stream velocity and emission rate. Compared against wind tunnel data.
 %Two dashed lines on either side of the centerline represent the canyon.}
-    %\label{fig:cVsmag}
+	%\label{fig:cVsmag}
 %\end{figure}
-
-
+%
+%
 %\begin{figure}[h]
-    %\centering
-    %\includegraphics[width=0.8\textwidth]{Figures/Nek_smag_cH.pdf}
-    %\caption{Time-averaged concentration with a sample time of $22.00$ s at $y = 0$ plotted
+	%\centering
+	%\includegraphics[width=0.8\textwidth]{Figures/Nek_smag_cH.pdf}
+	%\caption{Time-averaged concentration with a sample time of $22.00$ s at $y = 0$ plotted
     %vertically and scaled 
-    %with the free-stream velocity and emission rate. Compared against wind tunnel data.
+	%with the free-stream velocity and emission rate. Compared against wind tunnel data.
 %Two dashed lines on either side of the centerline represent the canyon.}
-    %\label{fig:cVsmag}
+	%\label{fig:cVsmag}
 %\end{figure}
+%
+\newpage
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Figures/NekcH_all.pdf}
+    \caption{Time-averaged concentration with a sample time of $22.00$ s at $y = 0$ plotted
+    vertically and scaled 
+    with the free-stream velocity and emission rate. Compared against wind tunnel data.
+Two dashed lines on either side of the centerline represent the canyon.}
+    \label{fig:cHall}
+\end{figure}
+
+Figure~\ref{fig:cHall} shows the scaled concentration along the dotted lines in~\ref{fig:layout}. 
+According to this figure Nek does indeed capture the important features of the mean concentration.
+At the two first measurement lines the results are slightly skewed to the right, this is to some degree 
+also the case for the CDP simulations but not for the experiment. A possible explanation could be that 
+the inflow condition favours one of the sides of the domain, or simply that the sampling time is not 
+sufficiently long. 
+%Along the second measurement line which is placed in the middle of the 4 cubes Nek5000 
+%estimates a concentration peak lower than both the reference solutions.  
+
+The results also indicate that the difference between the SGS-model and filtering are not that large,
+if anything the SGS-model shows a tendency to estimate lower concentration peaks. This could be a 
+result of too much smoothing due to the turbulent viscosity.
+
+\newpage
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Figures/NekcV_all.pdf}
+    \caption{Time-averaged concentration with a sample time of $22.00$ s at $y = 0$ plotted
+    vertically and scaled 
+    with the free-stream velocity and emission rate. Compared against wind tunnel data.
+Two dashed lines on either side of the centerline represent the canyon.}
+    \label{fig:cVall}
+\end{figure}
+The concentration along the vertical measurement lines is plotted in figure~\ref{fig:cVall} and overall 
+Nek5000 provides good results according to the reference solutions. The largest difference is found close 
+to the wall right in the middle of the cubes. In particular the simulation including the SGS-model 
+underestimates the concentration in this domain. It is known that the Dynamic smagorinsky model does not 
+perform that well close to the wall which could be a partial explanation to this. Along with the fact that 
+the $P_nP_n$ spitting errors also could be significant close to the wall.
 
 
 %\begin{figure}[h]
