@@ -173,7 +173,7 @@ N-S and Passive scalar equations. The N-S solver works very distinctly depending
 enabled whereas the PS equation which does not depend on the pressure is solved similarly for the two cases. 
 For the sake of clarity, figure~\ref{fig:files} shows how the algorithms are called from the main routine.
 This is a very simplified flow chart which does not include choices such as filters, preconditioners, LES-model, 
-de-aliasing etc. but it captures the fundamental idea of the solver.
+de-aliasing etc. but it captures the fundamental idea of the solver. 
 %
 \begin{figure}[h]
 	\centering
@@ -182,6 +182,11 @@ de-aliasing etc. but it captures the fundamental idea of the solver.
 	\label{fig:files}
 \end{figure}
 %
+
+For further description of the implementation of the two methods and their implementation in Nek5000 it is referred to \cite{Fischer_hybridschwarz-multigrid}
+for $P_NP_{N-2}$ and \cite{TomboulidesPnPn} for $P_NP_N$. An important difference between these to implementations is the fact that the $P_NP_N$ 
+implementation is based on an analytical splitting algorithm which introduces a non-vanishing error in the pressure along the boundaries of the 
+domain while the $P_NP_{N-2}$ algorithm is a discrete splitting which does not compromise the convergence of the pressure on the boundary.
 
 %To best understand the work flow of Nek the subroutine \verb|nek_advance| in \verb|drive1.f| should be examined.
 %This routine includes all the steps in one iteration of the solver. The routine is adapted so that it is functional

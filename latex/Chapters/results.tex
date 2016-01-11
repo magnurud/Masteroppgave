@@ -49,14 +49,14 @@ lift coefficient error for increasing polynomial degree.
 	\centerline{
         \includegraphics[trim=0.5cm 7cm 0.5cm 7cm, width=0.8\textwidth]{Figures/lift_coef2.pdf}}
 	\caption{The logarithm of the error plotted against the polynomial degree. All results 
-        are with $P_nP_{n-2}$ and dealiasing, and they are solved without using the 
+        are with $P_NP_{N-2}$ and dealiasing, and they are solved without using the 
     characteristic scheme or any filtering. A line illustrating a second order convergence is 
     plotted to verify the convergence rate.}
 	\label{fig:liftconv}
 \end{figure}
 %
 
-The setting that has the biggest impact on the result is the $P_nP_n$ scheme which clearly performs 
+The setting that has the biggest impact on the result is the $P_NP_N$ scheme which clearly performs 
 worse than the others. This is as expected because of the splitting scheme applied, which 
 induces nonvanishing errors in the pressure close to the boundary. 
 Use of the IOFS method also has a negative effect on the accuracy,
@@ -73,7 +73,7 @@ which confirms the analytical results from~\ref{eq:filterenergy}.
          2 & Yes& Yes& No & No & 0.013 & 2.35\\
          3 & No & Yes& No & Yes& 0.005 & 0.43\\
          4 & No & Yes& Yes& No & 0.005 & 0.18\\
-         5 & No & No & No & No & 0.005 & 0.03\\
+         !!!5 & No & No & No & No & 0.005 & 0.03\\
     \end{tabular}
     %\begin{tabular}{c | c c c c | c c | c c c}
          %& \multicolumn{4}{|c|}{Settings} & \multicolumn{2}{|c|}{\% Error} & \multicolumn{3}{|c}{Data} \\\hline
@@ -97,7 +97,7 @@ of how the different settings can affect the solution.
 \section{Gas dispersion in a simplified urban area} 
 This case is a part of a larger project designed to evaluate different solvers 
 ability to perform simulations of gas dispersion. The N-S equations are solved using
-the $P_nP_n$ formulation with the fractional step method, IOFS with a target Courant number 
+the $P_NP_N$ formulation with the fractional step method, IOFS with a target Courant number 
 equal 2 was enabled to maximize the time step as recommended in~\cite{Nek}. It should be 
 mentioned that the stability properties when activating the SGS-model and deactivating the 
 filtering was greatly reduced. This effect is captured in~\ref{fig:maxvel} which shows how 
@@ -109,15 +109,6 @@ the Smagorinsky model does not damp spurious velocity modes in the same degree a
 	\caption{A average iso-surface of the released gas at $C=0.03$ 
     after 30 seconds of sampling.}
 	\label{fig:maxvel}
-\end{figure}
-%
-%
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.6\textwidth]{Figures/plume.png}
-	\caption{A average iso-surface of the released gas at $C=0.03$ 
-    after 30 seconds of sampling.}
-	\label{fig:plume}
 \end{figure}
 %
 %
@@ -211,7 +202,7 @@ Nek5000 provides good results according to the reference solutions. The largest 
 to the wall right in the middle of the cubes. In particular the simulation including the SGS-model 
 underestimates the concentration in this domain. It is known that the Dynamic smagorinsky model does not 
 perform that well close to the wall which could be a partial explanation to this. Along with the fact that 
-the $P_nP_n$ spitting errors also could be significant close to the wall.
+the $P_NP_N$ spitting errors also could be significant close to the wall.
 
 
 %\begin{figure}[h]

@@ -18,7 +18,7 @@
 
 This chapter aims to present the implementation done in this thesis. The main motivation 
 behind the work was to see how Nek5000 works for complex geometries and to develope 
-necessary tools in order to improve the functionality. 
+necessary tools in order to improve its functionality. 
 
 The main tools in addition to Nek5000 needed to perform the simulations presented in this 
 chapter are \textit{ANSYS ICEM} and \textit{python}. For post-prosessing \textit{Visit} and
@@ -61,8 +61,8 @@ Scaling the domain with the size of the boundary layer $H =1$m restricts it to
 the box $0.0\leq x/H \leq 4.96,-1.75\leq y/H \leq 1.75, 0\leq z/H \leq 1.5$.
 The four cubic boxes are centered around $(1.4315,0)$ with a distance $h$ between each box.
 The source is placed with its center in $(0.396,0)$ and radius $r = 0.0515$.
-The grid used for the computations consists of 4425 elements and with a polynomial degree of
-12 the total number of nodes $N\approx 7,6$mill. 
+The grid used for the computations consists of 14747 elements and with a polynomial degree of
+8 the total number of nodes $N\approx 7,6$mill. 
 
 
 The simulations are performed using Large Eddy Simulation (LES) 
@@ -91,15 +91,14 @@ stated explicitly in table~\ref{tab:simplevariables}.
     \label{tab:simplevariables}
 \end{table}
 
-The inflow conditions had to be extrapolated onto the domain at each time step. The velocity field
-on the inflow was generated in CDP, in order to create a boundary layer similar to the one found
-in the wind-tunnel. The inflow velocity was written to file every 
-$0.0013$s for a total of $28$s. The right plot in figure~\ref{fig:inflow} is an instantanous 
-picture of the velocity in x-direction, notice how the pattern repeats itself along the 
-y-axis. This is because the inflow data was generated in a smaller channel, $\approx 1/3$ of the 
-width of the computational domain used for the data sampling. 
-An interpolation algorithm had to be implemented in order to adjust the inflow-data to the 
-computational mesh, this was done directly in the \verb|.usr| file. 
+The inflow conditions had to be extrapolated onto the domain at each time step. To mimic the situation in the wind-tunnel the velocity field
+on the inflow was generated in a different simulation performed in CDP. The inflow velocity was written to file every 
+$0.0013$s for a total of $28$s and had to be interpolated onto the domain for the simulations in Nek5000 since the grid was not identical.
+The right plot in figure~\ref{fig:inflow} is an instantanous picture of the inflow velocity in x-direction, 
+notice how the pattern repeats itself along the y-axis. This is because the inflow data was generated in a smaller channel, $\approx 1/3$ of the 
+width of the computational domain used for the data sampling. An interpolation algorithm had to be implemented in order to adjust 
+the inflow-data to the computational mesh, this was done directly in \verb|.usr|. 
+%
 \begin{figure}
 \centering
   \centerline{
@@ -116,30 +115,27 @@ computational mesh, this was done directly in the \verb|.usr| file.
   \label{fig:inflow}
 \end{figure}
 %
-%\begin{figure}[h]
-    %%\center
-	%\includegraphics[width=0.5\textwidth]{Figures/inflow_field.png}
-	%\caption{X-velocity at inflow boundary, notice how the pattern copies itself}
-	%\label{fig:layout}
-%\end{figure}
-%%
-%\begin{figure}[h]
-    %%\center
-	%\includegraphics[width=0.5\textwidth]{Figures/inflow_field_avg.png}
-	%\caption{X-velocity at inflow boundary, notice how the pattern copies itself}
-	%\label{fig:layout}
-%\end{figure}
+
+The simulation in Nek5000 was performed in the following manner; first 6 seconds of initialization of the velocity field in the 
+channel, followed by 8 seconds of gas release to initialize the gas-concentration. After assuring that the wind-field was 
+correctly created and the released gas had reached the measurement lines furthest from the source the data sampling of 22 seconds 
+started.
 %
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{Figures/plume.png}
+	\caption{A average iso-surface of the released gas at $C=0.03$ 
+    after 30 seconds of sampling.}
+	\label{fig:plume}
+\end{figure}
+%
+
 \section{Case 2: Drag and lift on a cylinder}
 A standard benchmark case for flow solvers is presented in ~\cite{benchmark}. 
 The case is to calculate the drag and lift coefficients on a cylinder in a rectangular channel.
 The setup for the domain and boundary conditions are given in figure~\ref{fig:cylinder}.
 The constants applied in the description of the geometry and the coefficient scales are listed 
 in table ~\ref{tab:case2consts}.
-Finding the drag and lift coefficient requires a calculation of the velocity field around the cylinder
-which is done by solving the N-S equations until a steady flow is reached. This implies that the
-spatial accuracy will be essential and would imply that the solution provided
-by a SEM solver such as Nek5000 should be very good compared to other FV-based solvers.
 %
 \begin{table}[h]
     \centering
@@ -155,6 +151,11 @@ by a SEM solver such as Nek5000 should be very good compared to other FV-based s
     \label{tab:case2consts}
 \end{table}
 %
+Finding the drag and lift coefficient requires a calculation of the velocity field around the cylinder
+which is done by solving the unsteady N-S equations until a steady flow is reached. This implies that the
+spatial accuracy will dominate the error and one would expect great results in Nek5000 
+due to its spectral convergence rate.
+
 The flow is laminar with Reynolds number $Re=20$ so all the 
 challenges arising when dealing with turbulent flow does not come to play in this case. 
 %
@@ -179,10 +180,6 @@ to the nodal value $f_i$.
 
 \colorbox{green}{Nevne hvordan integralet løses i Nek?? Heller skrive i appendiks??}
 
-\colorbox{green}{Dersom det var noen probmlemer med rammeverket, nevn det kort!}
-
-\colorbox{green}{konsisten eq. bruk! }
-
 The coefficients corresponding to these forces known as the drag and lift coefficients 
 are given by the formulas 
 \begin{align}
@@ -197,7 +194,7 @@ Nek provides functions for calculating lift and drag on any user-specified objec
 The function is called \verb|drag_calc(scale)|, with the input parameter 
 defined by the user, for this case \verb|scale| $=2/(\rho U^2DH)$.  
 Apart from this the function \verb|set_obj()| has to be modified in order to create an object 
-which consists of all the faces on the cylinder.
+which consists of pointers to all the faces on the cylinder.
 %Let $x,y$ be points in the computational domain, $x_c,y_c$ be the coordinates to the 
 %center line in the cylinder and $0<tol\ll1$ be some user defined tolerance. The faces that belong to the cylinder can then be found by 
 %looping over all elements and their faces evaluating $\epsilon = \sqrt{(x-x_c)^2+(y-y_c)}$.
@@ -227,22 +224,21 @@ from the second degree approximation of the circle segments are presented in cha
 %describing the curved edges describe approximately $\Theta = 360^{\circ}/(6\cdot 3) = 20^{\circ}$
 %of the complete circle. 
 
-An interesting test that is performed on this case is how different settings in Nek5000 will affect the estimation of the drag and lift coefficients.
-Perhaps most curious is whether the $P_nP_n$- or $P_nP_{n-2}$ formulation is applied. Note that the pressure in the latter formulation is 
+An additional test that is performed on this case is how different settings in Nek5000 will affect the estimation of the drag and lift coefficients.
+Perhaps most curious is whether the $P_NP_N$- or $P_NP_{N-2}$ formulation is applied. Note that the pressure in the latter formulation is 
 not defined on the boundary of the cylinder and does therefore need to be extrapolated onto the surface in order for the integral to be 
-calculated. On the other side is the splitting scheme implied by the $P_nP_n$ known to produce large errors close to the boundary. 
+calculated. On the other side is the splitting scheme implied by the $P_NP_N$ known to produce large errors close to the boundary. 
 
 \colorbox{red}{Add some theorem addressing this error difference! }
 %
-%
-%
+
 \section{Advances in the mesh-generation routine} \label{xyzarc}
 
-The Gordon Hall algorithm which is described in~\ref{GH} was already implemented as a function in the Nek library.
+The Gordon Hall (GH) algorithm which is described in~\ref{GH} was already implemented as a function in the Nek library.
 By defining the GLL-nodes on the curved edges such that they correspond to an arc, the GH-algorithm is able to distribute 
 the internal nodes accordingly. 
 
-The curved edges are specified in the \verb|.rea| file and have until now been read as a second degree polynomial or as a part of a 
+The curved edges are specified in \verb|.rea| and have until now been read as a second degree polynomial or as a part of a 
 spherical shell. The routine \verb|xyzarc()| was created to process curved edges specified in \verb|.rea| with a radius and center.
 The algorithm is described below and figure~\ref{fig:curvature} gives a visual representation of the situation.
 
@@ -293,7 +289,7 @@ to Nek5000. The idea is to create an additional fine surface mesh in ICEM such
 that the nodes in this mesh describes the surface as fine or finer that the final mesh in Nek5000.
 During the initialization of the mesh in Nek5000 the program can read this information and project the GLL-nodes onto 
 the provided surface. 
-The routine was made as automatic as possible, and can be summed up in these simple steps
+The routine was made as automatic as possible, and can be summed up in these four steps
 \begin{enumerate}
     \item Create initial Mesh and convert to .rea applying nmshconvert.
         \item Create refined surface mesh on the non-regular surface.
@@ -424,7 +420,7 @@ With the routine described in chapter~\ref{surfpro} the surface was approximated
 \end{figure}
 %
 The algorithm restricts itself to relatively smooth surfaces.
-\colorbox{red}{lack a verification case}
+\colorbox{red}{add this section to the results part with other applications as well??}
 \section{Spatial averaging routine}
 A dynamic Smagorinsky model has previously been implemented in Nek5000 for flow in a channel. 
 The SGS-model as described in chapter~\ref{description} depends on an averaging routine to calculate
@@ -435,7 +431,7 @@ in the entire plane, hence only applicable to flows in idealized geometries.
 
 When applying dynamical Smagorinsky to Case 1 a new spatial mean routine had to be applied for it to be stable. 
 It was first attempted to average only in time, but this proved not to be sufficient. It was
-therefore implemented a simple routine for taking the average within each element, let 
+therefore implemented a routine for taking the average within each element, let 
 $c_{num}^e,c_{den}^e$ denote the numerator and the denominator in equation~\ref{eq:dynsmag}.
 The means are then calculated as 
 \begin{align}

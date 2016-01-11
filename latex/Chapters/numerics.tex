@@ -463,8 +463,10 @@ a matrix equation in two steps, first adding the contribution from the higher po
 lower ones and then subtracting the contribution from the higher polynomials. Let $u$ be the 
 vector containing the Legendre coefficients.
 \begin{align}
+    \begin{split}
     u^* &=(I+\mathcal{F}_{\alpha})u, \\
     u^{**} &= (I-I_{\alpha,k})u^*.
+    \end{split}
     \label{eq:filterstepwise}
 \end{align}
 In this case $I_{\alpha,k}$ is a diagonal matrix 
@@ -496,7 +498,7 @@ and the filtered solution is given as
     \label{eq:filterenergy}
 \end{align}
 Which can take both positive and negative values depending on the sign and size of
-$\hat{u}_N\hat{u}_{N-1}$. By applying the known norm of the Legendre polynomials 
+$\hat{u}_N\hat{u}_{N-2}$. By applying the known norm of the Legendre polynomials 
 the deduced absolute error $\epsilon_{diff}$ of the filtered energy is of order 
 $\epsilon_{diff}\sim \alpha/N$. The approximation $||L_N||^2\approx||L_{N-2}||^2\approx 1/N$
 have been used to achieve the result in~\ref{eq:filterenergy}.
@@ -544,13 +546,18 @@ with entries only on even sup-diagonals. By naming this matrix $A$ the entries a
 \end{align}
 The matrix-matrix product $AP_{k}$ will lead to a Laplacian matrix where the $N-k$ first columns are zero
 while the last $k$ remains unchanged. This modified Laplacian will be denoted $A^*$.
-Omitting the initial conditions, and doing a first order explicit 
-time-integration of~\ref{eq:ivps2} can be written as 
+Omitting the initial conditions, and doing a first order implicit 
+Euler of~\ref{eq:ivps2} can be written as 
 \begin{align}
-    u^{n+1} &= u^n + \Delta t A^* u^n = (I + \Delta t A^*)u^n, \\
-    u^{n+1} &= u^n - \Delta t P_{k}u^n = (I - \Delta t I_k)u^n.
+    \begin{split}
+    (I-\Delta t A^*)u^{n+1} &= u^n  \implies u^{n+1}= (I-\Delta t A^*)^{-1}u^{n}, \\
+    (I+\Delta t P_{k})u^{n+1} &= u^n \implies u^n = (I+\Delta t P_{k})^{-1}u^{n}.
     \label{eq:timestep}
+    \end{split}
 \end{align}
+
+\colorbox{red}{add a matrix entry photo from matlab}
+
 Notice the resemblence to the application of the filter in~\ref{eq:filterstepwise}. The second step
 is identical if $\alpha_i = \Delta t$. The truncated Laplacian $A^*$ is not equal the corresponding
 filter matrix $\mathcal{F}_{\alpha}$, but there are some similarities between these to matrices.
@@ -569,7 +576,7 @@ approach to LES first introduced by Hughes~\cite{Hughes}. This method is based o
 the unresolved structures have a negligible effect on the larger scales, hence the SGS-model is 
 only included for the small but still resolved scales of motion.
 
-\colorbox{red}{Issue: The Laplacian should be applied implicitly\ldots wavespace is not equivalent Legendre space}
+\colorbox{red}{Issue: wavespace is not equivalent Legendre space}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
