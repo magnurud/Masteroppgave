@@ -183,8 +183,10 @@ de-aliasing etc. but it captures the fundamental idea of the solver.
 \end{figure}
 %
 
-For further description of the implementation of the two methods and their implementation in Nek5000 it is referred to \cite{Fischer_hybridschwarz-multigrid}
-for $P_NP_{N-2}$ and \cite{TomboulidesPnPn} for $P_NP_N$. An important difference between these to implementations is the fact that the $P_NP_N$ 
+The description of the routines corresponding to Pressure-correction and fractional step are found in 
+chapters~\ref{prescorr} and~\ref{fracstep}. For further details regarding the 
+implementation in Nek5000 it is referred to \cite{Fischer_hybridschwarz-multigrid}
+and \cite{TomboulidesPnPn}. An important difference between these to implementations is the fact that the $P_NP_N$ 
 implementation is based on an analytical splitting algorithm which introduces a non-vanishing error in the pressure along the boundaries of the 
 domain while the $P_NP_{N-2}$ algorithm is a discrete splitting which does not compromise the convergence of the pressure on the boundary.
 

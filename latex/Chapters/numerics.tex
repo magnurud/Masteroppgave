@@ -564,7 +564,19 @@ filter matrix $\mathcal{F}_{\alpha}$, but there are some similarities between th
 They are both upper triangular with zeros along the diagonal and positive entries on the second 
 sup-diagonal. The main difference is that the Laplacian applied on the Nth Legendre function 
 $L_N$ affect all the terms $L_{N-2},L_{N-4},\cdots$, while the filter only affects $L_{N-2}$.
-
+In order to illustrate this effect~\ref{fig:entries} shows the non-zero entries of the
+Laplacian matrix, the red dots indicate the non-zero entries which is not present in the filtering
+matrix.
+%
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Figures/matrix.png}
+	\caption{The non-zero entries of the laplacian matrix applied on the last eight legendre modes.
+    The blue dots are present in both the laplacian matrix and the filter matrix
+    while the red dots are only non-zero for the Laplacian.}
+	\label{fig:entries}
+\end{figure}
+%
 If one were to insist that the Laplacian should work locally in Legendre space, in other words 
 if $A_{ij}=0$ if $i-j>2$, then the Laplacian and the filtering would have the same non-zero entries 
 and a clever choice of $\alpha_i$ would yield equality. Notice in particular the similarity of 
@@ -896,7 +908,7 @@ To start the explanation of the method the incompressible N-S equations is state
 The outline of the method is based on~\ref{eq:NSweak}, but with some changes. Since this 
 is a method for the unsteady N-S equation the time derivative has to be included, and the 
 non-linear term which is treated explicitly as studied in chapter~\ref{opsplitting} and~\ref{OIFS}
-is added as a part of the right hand side function. So $M\mathbf{f}^{n+1}}$ does in this equation 
+is added as a part of the right hand side function. So $M\mathbf{f}^{n+1}$ does in this equation 
 incorporate both the original loading function, the non-linear term and the explicit part of the 
 time-derivative. 
 
