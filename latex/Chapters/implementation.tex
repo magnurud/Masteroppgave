@@ -432,7 +432,7 @@ in the entire plane, hence only applicable to flows in idealized geometries.
 When applying dynamical Smagorinsky to Case 1 a new spatial mean routine had to be applied for it to be stable. 
 It was first attempted to average only in time, but this proved not to be sufficient. It was
 therefore implemented a routine for taking the average within each element, let 
-$c_{num}^e,c_{den}^e$ denote the numerator and the denominator in equation~\ref{eq:dynsmag}.
+$c_{num}^e,c_{den}^e$ denote the numerator and the denominator in equation\eref{eq:dynsmag}.
 The means are then calculated as 
 \begin{align}
     c_{num}^e = \frac{1}{V}\int_{\Omega_e}c_{num}^e d\: \Omega 

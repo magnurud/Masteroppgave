@@ -83,7 +83,7 @@ Because a fine mesh implies a high computational cost a direct numerical solutio
 problems of a certain geometrical complexity. There are many different approaches on how to resolve the turbulent term and in 
 this thesis the main approach will be through Large Eddy Simulations (LES) which will be discussed 
 in section~\ref{LES}. The Navier-Stokes equations can only be solved if the boundary conditions are given. 
-The boundary conditions are not stated explicitly with in~\ref{eq:NS} because they depend on the physical 
+The boundary conditions are not stated explicitly with in\eref{eq:NS} because they depend on the physical 
 situation and belong as a specification to each individual case. The next subsection gives a quick overview of the different 
 boundary conditions applied in this thesis.
 %
@@ -125,7 +125,7 @@ I,O,SYM and W for Inflow, Outflow, Symmetry and Wall. Their mathematical formula
 %
 \subsection{Weak formulation of N-S}
 %Let us first assume constant viscosity, enabling the simplification $\nabla \cdot \tau = -\nabla p + \nu \Delta \mathbf{u}$.
-The numerical algorithms applied in this thesis requires a weak formulation of~\ref{eq:NS}.
+The numerical algorithms applied in this thesis requires a weak formulation of\eref{eq:NS}.
 Before the weak form is derived a few operators will be defined in order to simplify the final 
 expression.
 %
@@ -181,7 +181,7 @@ last force term. \colorbox{red}{Does the boundary integral needs to be adressed?
 The choice of search spaces for the velocity and pressure will be justified in chapter~\ref{numerics}, and will 
 just be stated here in order to present the weak formulation. Let $V \subset H^1(\Omega)^3$ and $Q \subset L^2(\Omega)$ 
 be subspaces that include the boundary conditions given by any particular flow situation.
-By using the notation introduced in~\ref{eq:weakoperators} the weak formulation of the incompressible
+By using the notation introduced in\eref{eq:weakoperators} the weak formulation of the incompressible
 N-S equations can be stated as: 
 
 Find $(\mathbf{u}, p) \in V\times Q$ such that 
@@ -231,7 +231,7 @@ by matrices. The discretized system of equations can be stated as
 %\end{align}
 %For the sake of clarity only the steady Stokes problem will be considered, the stability regarding
 %the evolution in time is a different analysis left for chapter~\ref{timeNS}.
-%Transforming~\ref{eq:Stokes} to the weak form and applying the notation given
+%Transforming\eref{eq:Stokes} to the weak form and applying the notation given
 %in the previous chapter leaves us with the formulation
 
 %Find $(\mathbf{u}, p) \in H^1(\Omega)\times L^2(\Omega)$ such that 
@@ -331,7 +331,7 @@ Where $l$ denotes the filter width, which for this thesis is equivalent to the g
 The resolved strain rate $s^r_{ij}$ can be calculated from the filtered velocity and the problem is now reduced to determining
 the constant $C_s$. There were several attempts to determine this constant for the entire domain,
 but finally in 1991~\cite{Germano91} a dynamic subgrid-scale model was presented calculating a 
-$C_d$ which replaces $C_sl^2$ in~\ref{eq:boussinesq}. $C_d$ is called the dynamic Smagorinsky constant, and varies in both time and space.
+$C_d$ which replaces $C_sl^2$ in\eref{eq:boussinesq}. $C_d$ is called the dynamic Smagorinsky constant, and varies in both time and space.
 The general idea is that $C_d$ is independent of the filter width and from this 
 assumption an expression is developed for the dynamical constant.
 
@@ -351,7 +351,7 @@ operations on the N-S equations
 \end{align}
 %By defining $a_{ij}=l_a^2\mathcal{S}^a = l_a^2\sqrt{2s^{a}_{ij}s^{a}_{ij}}$ the subgrid scale tensor can 
 %be written as $\tau^a_{ij} = 2C_da_{ij} $. 
-Applying the $b$ filter on the first tensor in eq~\ref{eq:stresstensors} allows us to define 
+Applying the $b$ filter on the first tensor in eq\eref{eq:stresstensors} allows us to define 
 a new tensor $L_{ij}$ which depends only on the $a$-filtered variables. The identity 
 is known as the Germano identity and was first introduced in 1991~\cite{Germano91},
 \begin{align}
@@ -360,10 +360,10 @@ is known as the Germano identity and was first introduced in 1991~\cite{Germano9
     \label{eq:germanoid}
 \end{align}
 This tensor now depends on the $a$-filtered solution and not the resolved 
-one, hence the identity in~\ref{eq:germanoid} provides a computable expression for $L_{ij}$.
+one, hence the identity in\eref{eq:germanoid} provides a computable expression for $L_{ij}$.
 
 Substituting the stress-tensors with their corresponding expression 
-from~\ref{eq:boussinesq} and assuming a dynamic constant unaffected by the filter 
+from\eref{eq:boussinesq} and assuming a dynamic constant unaffected by the filter 
 one obtains an approximation for $L_{ij}$ which is also computable,
 \begin{align}
     \begin{split}
@@ -379,9 +379,9 @@ L_{ij} &\approx 2C_s l_b^2 \mathcal{S}^{ab} s^{ab}_{ij}
         \lambda &= l_b/l_a
     \label{eq:dynsmagderivation}
 \end{align}
-Minimizing the mean-square error between the exact $L_{ij}$ as expressed in~\ref{eq:germanoid}
+Minimizing the mean-square error between the exact $L_{ij}$ as expressed in\eref{eq:germanoid}
 and the Boussinesq-based approximation 
-in~\ref{eq:lillystress} yields the best approximation 
+in\eref{eq:lillystress} yields the best approximation 
 for the dynamic Smagorinsky constant 
 %
 \begin{align}
@@ -392,7 +392,7 @@ for the dynamic Smagorinsky constant
 Note that the double indices implies summing. This expression is however not a 
 stable option and to deal with this most implementations apply some sort of mean or smoothening 
 in either time and/or space when calculating the constant. In this thesis the smoothening is done in 
-both time and space for the denominator and the numerator in~\ref{eq:dynsmag}. Another interesting property 
+both time and space for the denominator and the numerator in\eref{eq:dynsmag}. Another interesting property 
 is that the constant $C_d$ and the final SGS-tensor $\tau = -2C_d\mathcal{S}^as_{ij}^a$ are 
 independent of the filter width, the only necessary variable is the coefficient $\lambda = l_b/l_a$.
 The assumption made in this model is that turbulence behaves 
@@ -420,7 +420,7 @@ simple derivation from physical principles.
 
 %\subsection{Decoupling the pressure} 
 
-%A common way to approach equation~\ref{eq:NS} is to solve the pressure and velocity field
+%A common way to approach equation\eref{eq:NS} is to solve the pressure and velocity field
 %seperatly. The mathematical reasoning for this approach is obtained by taking the 
 %divergence on both sides, 
 %\begin{align}

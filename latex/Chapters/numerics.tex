@@ -342,11 +342,11 @@ Although the whole domain $\Omega$ is deformed, the deformation of each
 element $\left\{ \Omega_k \right\}$ is normally a lot less crucial. This gives SEM a huge advantage and allows it to 
 obtain accurate results even in complicated domains.
 
-Let us again consider the Helmholtz problem~\ref{eq:Helmholtz}, but this time 
+Let us again consider the Helmholtz problem\eref{eq:Helmholtz}, but this time 
 on a more general domain $\Omega$. The set of elements $\left\{ \Omega_k \right\}$
 is defined such that $\Omega_i\bigcap\Omega_j$ is either empty, a vertex or a line and 
 $\Omega = \bigcup^K_{k=1}\Omega_k$.
-The weak formulation in equation~\ref{eq:Helmholtzweak} can then be written according 
+The weak formulation in equation\eref{eq:Helmholtzweak} can then be written according 
 to the SEM formulation
 
 For all elements $\Omega_k$ Find $u_{h,k}\in X^N_k$  such that
@@ -370,7 +370,7 @@ sub domains $\Omega_k$,
 %
 Since the elements can be deformed a Gordon-Hall map is 
 constructed to map the coordinates to the reference element $\hat{\Omega}=[-1,1]^d$.
-Applying the identities from~\ref{eq:transforms} to~\ref{eq:HelmholtzdiscreteSEM} yields
+Applying the identities from\eref{eq:transforms} to\eref{eq:HelmholtzdiscreteSEM} yields
 %
 \begin{align}
     \begin{split}
@@ -457,7 +457,7 @@ the highest order mode $N$ to the mode $N-2$. The rest of the coefficients remai
 For a full derivation and discussion on this matter it is referred to chapter 6.5.1 in 
 \cite{Karniadakis}.
 
-The filter in~\ref{eq:filtereffect} is often applied to the $k$ highest Legendre polynomials,
+The filter in\eref{eq:filtereffect} is often applied to the $k$ highest Legendre polynomials,
 with a decaying coefficient $\alpha$. The action of the filter can therefore be described as 
 a matrix equation in two steps, first adding the contribution from the higher polynomials to the 
 lower ones and then subtracting the contribution from the higher polynomials. Let $u$ be the 
@@ -501,7 +501,7 @@ Which can take both positive and negative values depending on the sign and size 
 $\hat{u}_N\hat{u}_{N-2}$. By applying the known norm of the Legendre polynomials 
 the deduced absolute error $\epsilon_{diff}$ of the filtered energy is of order 
 $\epsilon_{diff}\sim \alpha/N$. The approximation $||L_N||^2\approx||L_{N-2}||^2\approx 1/N$
-have been used to achieve the result in~\ref{eq:filterenergy}.
+have been used to achieve the result in\eref{eq:filterenergy}.
 
 \subsubsection{A physical approach to the filter}
 A good physical description of the filter has not yet been described, this 
@@ -522,10 +522,10 @@ Let us consider the two initial value problems
     \label{eq:ivps}
 \end{align}
 
-The second IVP in~\ref{eq:ivps} has a known analytical solution 
+The second IVP in\eref{eq:ivps} has a known analytical solution 
 $u = u_0e^{-t}$ which decays exponentially in time. The first IVP is known 
 as the heat equation and is known to diffuse the initial condition with time. 
-Now let the operators $-1$ and $\Delta$ on the right hand sides of~\ref{eq:ivps}
+Now let the operators $-1$ and $\Delta$ on the right hand sides of\eref{eq:ivps}
 be applied only on the $k$ highest Legendre polynomials. By applying the Legendre decomposition
 and the truncated operators the system can then be written as 
 \begin{align}
@@ -547,7 +547,7 @@ with entries only on even sup-diagonals. By naming this matrix $A$ the entries a
 The matrix-matrix product $AP_{k}$ will lead to a Laplacian matrix where the $N-k$ first columns are zero
 while the last $k$ remains unchanged. This modified Laplacian will be denoted $A^*$.
 Omitting the initial conditions, and doing a first order implicit 
-Euler of~\ref{eq:ivps2} can be written as 
+Euler of\eref{eq:ivps2} can be written as 
 \begin{align}
     \begin{split}
     (I-\Delta t A^*)u^{n+1} &= u^n  \implies u^{n+1}= (I-\Delta t A^*)^{-1}u^{n}, \\
@@ -558,7 +558,7 @@ Euler of~\ref{eq:ivps2} can be written as
 
 \colorbox{red}{add a matrix entry photo from matlab}
 
-Notice the resemblence to the application of the filter in~\ref{eq:filterstepwise}. The second step
+Notice the resemblence to the application of the filter in\eref{eq:filterstepwise}. The second step
 is identical if $\alpha_i = \Delta t/(1+\Delta t)$. The truncated Laplacian $A^*$ is not equal the corresponding
 filter matrix $\mathcal{F}_{\alpha}$, but there are some similarities between these to matrices.
 They are both upper triangular with zeros along the diagonal and positive entries on the second 
@@ -580,7 +580,7 @@ matrix.
 If one were to insist that the Laplacian should work locally in Legendre space, in other words 
 if $A_{ij}=0$ if $i-j>2$, then the Laplacian and the filtering would have the same non-zero entries 
 and a clever choice of $\alpha_i$ would yield equality. Notice in particular the similarity of 
-applying a filter and including a SGS-model, with $\nu_T$ as a constant in~\ref{eq:NSLES} the term 
+applying a filter and including a SGS-model, with $\nu_T$ as a constant in\eref{eq:NSLES} the term 
 $\nabla \nu_Ts_{ij}$ reduces to $\nu_T\Delta \mathbf{u}$.
 
 This way of considering the filtering procedure is very similar to the variational multiscale (VMS) 
@@ -656,7 +656,7 @@ $\Gamma_{0,0},\Gamma_{0,N},\Gamma_{N,0}\Gamma_{N,N}$. Let $\phi_0,\phi_N$ be def
 %
 Let $\left\{ \xi_0, \ldots ,\xi_N \right\}_{N+1} = \left\{ -1 ,\ldots ,1 \right\}_{N+1}$
 be the GLL-points corresponding to the Lagrange polynomial of order $N$. 
-An important property for the functions in~\ref{eq:interpolationoperator} is that
+An important property for the functions in\eref{eq:interpolationoperator} is that
 $\phi_0(\xi_0) =\phi_N(\xi_N) = 1$ and $\phi_0(\xi_N) =\phi_N(\xi_0) = 0$.
 
 The algorithm provides a stepwise routine depending on the complexity of the domain. The first step is to create 
@@ -733,7 +733,7 @@ Now the terms can be ordered such that only the implicit terms are present on th
     \label{eq:imp-exp-ord}
 \end{align}
 %
-This way of solving~\ref{eq:testproblem} allows easy invertible terms to be solved implicitly while non-linear terms can be extrapolated.
+This way of solving\eref{eq:testproblem} allows easy invertible terms to be solved implicitly while non-linear terms can be extrapolated.
 In the Navier-Stokes equation this strategy will be applied to split the non-linear term from the rest.
 In this thesis the schemes BDFk and EXTk for $k=2,3$ are applied, the coefficients can be found in~\cite{Nek}. 
 
@@ -748,7 +748,7 @@ In this thesis the schemes BDFk and EXTk for $k=2,3$ are applied, the coefficien
     %u^{n+1}-u^{n} = \sum_{k = 0}^{N} a_k f^{n-k}+\sum_{k = 0}^{N} b_k g^{n-k+1}.
     %\label{eq:exp-imp}
 %\end{align}
-%In~\ref{eq:exp-imp} the first integral in~\ref{eq:testproblemintegrated} is evaluated by 
+%In\eref{eq:exp-imp} the first integral in\eref{eq:testproblemintegrated} is evaluated by 
 %an explicit scheme and the second one by an implicit scheme. The coefficients $a_k,b_k$ corresponds to 
 %the elected scheme. When operator splitting is applied in this thesis an kth order Backward difference scheme (BDFk) is 
 %chosen for the implicitly evaluated integral while an extrapolation scheme of similar order (EXTk) is applied for the explicit scheme.
@@ -779,7 +779,7 @@ Now let $Q(t)$ be an operator such that $Q(t^{n+1}) = I$ and
     \label{eq:integrationalfactor}
 \end{align}
 %
-This way~\ref{eq:NSoperator} can be written as 
+This way\eref{eq:NSoperator} can be written as 
 \begin{align}
     \frac{d Q(t)M\mathbf{v}}{dt} =Q(t)( -A\mathbf{v} +D p +M\mathbf{f}).
     \label{eq:NSoperatorOIFS}
@@ -789,7 +789,7 @@ Evaluating this equation with a BDFk-scheme results in a system
     \sum_{j=0}^{k}\beta_jQ(t^{n+1-j})M\mathbf{v}^{n+1-j} =\Delta t \: Q(t^{n+1})( -A\mathbf{v}^{n+1} +D p^{n+1} +M\mathbf{f}^{n+1}).
     \label{eq:NSOIFS1}
 \end{align}
-Applying the fact that $Q(t^{n+1}) = I$ enables~\ref{eq:NSOIFS1} to be written as 
+Applying the fact that $Q(t^{n+1}) = I$ enables\eref{eq:NSOIFS1} to be written as 
 \begin{align}
     \beta_0M\mathbf{v}^{n+1} + \sum_{j=1}^{k}\beta_jQ(t^{n+1-j})M\mathbf{v}^{n+1-j} 
     =\Delta t ( -A\mathbf{v}^{n+1} +D p^{n+1} +M\mathbf{f}^{n+1}).
@@ -808,8 +808,8 @@ thus enabling the summation expression to be found by solving the initial value 
 \end{align}
 Notice how the integrational factor $Q(t)$ is never evaluated directly.
 
-The final scheme applied for solving~\ref{eq:NSoperator} when applying OIFS consists of one implicit scheme for 
-solving~\ref{eq:NSOIFS1} and an explicit scheme for solving~\ref{eq:IVP}. When applied in this thesis the 
+The final scheme applied for solving\eref{eq:NSoperator} when applying OIFS consists of one implicit scheme for 
+solving\eref{eq:NSOIFS1} and an explicit scheme for solving\eref{eq:IVP}. When applied in this thesis the 
 first scheme is an implicit BDFk-scheme while the second is an explicit 4th order Runge-Kutta scheme. 
 
 %It is important to add that the error induced by this method is non-vanishing and is only recommended for assuring stability 
@@ -852,7 +852,7 @@ solved and the updated solution is stated on the left hand side.
 \end{align}
 
 As earlier mentioned this method is convenient because it allows us to handle the different 
-terms with different solution techniques. So since the first equation in~\ref{eq:fracstep}
+terms with different solution techniques. So since the first equation in\eref{eq:fracstep}
 involves the non-linear skew-symmetric advection operator this equation is solved using a 
 explicit Adam Bashford scheme. The second equation is the Possion pressure equation which
 assures a divergence free velocity field. 
@@ -876,7 +876,7 @@ This can be easily shown by discretizing the equation,
     \label{eq:fracHelm}
 \end{align}
 Knowing that $A$ is the discrete Laplacian and $\mathbf{v}^n$ is a known variable this is 
-similar to problem~\ref{eq:Helmholtz}.
+similar to problem\eref{eq:Helmholtz}.
 
 
 This method provides an efficient algorithm, but is known to produce errors of order O(1).
@@ -884,9 +884,9 @@ The problem is the pressure Poisson equation which is solved with incorrect boun
 conditions. The first step can also be evaluated in an OIFS-way to gain stability,
 by rewriting the initial equation as described in the previous chapter. This allows you 
 to solve the unstable advection operator with multiple substeps. Explicitly the first step 
-in~\ref{eq:fracstep} would be solved by applying the discretization used in~\ref{eq:NSOIFS1}
+in\eref{eq:fracstep} would be solved by applying the discretization used in\eref{eq:NSOIFS1}
 with an empty right hand side since the rest of the terms are take care of in the next steps. 
-The IVP~\ref{eq:IVP} is then solved to obtain $\mathbf{v}^{*}$.
+The IVP\eref{eq:IVP} is then solved to obtain $\mathbf{v}^{*}$.
 
 %\subsection{Pressure-correction}
 
@@ -905,7 +905,7 @@ To start the explanation of the method the incompressible N-S equations is state
     \qquad D\mathbf{u}^{n+1}    = 0.
     \label{eq:DiscreteStart}
 \end{align}
-The outline of the method is based on~\ref{eq:NSweak}, but with some changes. Since this 
+The outline of the method is based on\eref{eq:NSweak}, but with some changes. Since this 
 is a method for the unsteady N-S equation the time derivative has to be included, and the 
 non-linear term which is treated explicitly as studied in chapter~\ref{opsplitting} and~\ref{OIFS}
 is added as a part of the right hand side function. So $M\mathbf{f}^{n+1}$ does in this equation 
@@ -931,7 +931,7 @@ can be written as
     \label{eq:Matform}
 \end{equation}
 It is convenient for the splitting that will be done in the next step to introduce the 
-pressure difference $\delta p^{n+1} = p^{n+1}-p^n$.~\ref{eq:Matform} can be restated as 
+pressure difference $\delta p^{n+1} = p^{n+1}-p^n$.\eref{eq:Matform} can be restated as 
 \begin{equation}
 \begin{pmatrix}
     H & -D^T \\ 
@@ -951,7 +951,7 @@ pressure difference $\delta p^{n+1} = p^{n+1}-p^n$.~\ref{eq:Matform} can be rest
 
 Solving this exactly is known as the Uzawa algorithm and is known to be 
 computationally demanding and converge slowly. 
-the system is rewritten using a LU-factorization of the matrix in~\ref{eq:Matform}, 
+the system is rewritten using a LU-factorization of the matrix in\eref{eq:Matform}, 
 which will allow the solution to be found in two separate steps. This 
 requires the inverse of $H$ which will be replaced by an approximation $Q\approx H^{-1}$.
 The Matrix decomposition is given as
@@ -1008,14 +1008,14 @@ Applying these two matrices leads to a two step algorithm on the form
 \end{align}
 
 In order to clarify what is actually going on a brief description of each step is given,
-The first step in~\ref{eq:PCstep1} corresponds to an initial solution of the velocity using 
+The first step in\eref{eq:PCstep1} corresponds to an initial solution of the velocity using 
 the old pressure value, notice that this will not guarantee a divergence free velocity.
-The second step in~\ref{eq:PCstep1} is the discrete pressure poisson equation and will 
+The second step in\eref{eq:PCstep1} is the discrete pressure poisson equation and will 
 make sure that the pressure corresponds to a divergence free flow. When solved in practice 
 the velocity used in this equation is the updated velocity from the first step. This way of 
 updating the pressure is the reason why this method is often referred to as a pressure 
 correction method.
-The first step in~\ref{eq:PCstep2} is just an projection of a velocity field
+The first step in\eref{eq:PCstep2} is just an projection of a velocity field
 onto a divergence free space. The final step is of no real value and will instead be replaced 
 by an update of the pressure $p^{n+1} = p^{n}+\delta p^{n+1}$.
 
@@ -1025,10 +1025,10 @@ a very convenient definition since $M$ is a diagonal matrix.
 
 Unlike the fractional step method this way of solving the N-S equations  
 requires the discrete spaces for velocity and pressure
-to meet the inf-sup condition~\ref{eq:infsup}, and does not suffer from the same splitting 
+to meet the inf-sup condition\eref{eq:infsup}, and does not suffer from the same splitting 
 errors. In addition the way of treating the pressure yields an algorithm which works well 
 for steady flows. Notice that the error surging 
-from the splitting in~\ref{eq:LUfactorization} is proportional to $\delta p^n$ instead of $p^n$
+from the splitting in\eref{eq:LUfactorization} is proportional to $\delta p^n$ instead of $p^n$
 as it would be for a straight forward derivation. 
 
 The method yields a second order scheme 
