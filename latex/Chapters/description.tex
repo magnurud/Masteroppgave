@@ -9,33 +9,38 @@
 %----------------------------------------------------------------------------------------
 %	SECTION 1
 %----------------------------------------------------------------------------------------
-\colorbox{yellow}{What should be said about the stokes problem and the infsup condition??}
+This chapter will present the Incompressible Navier-Stokes equations and give a thorough 
+analysis of the physical effects of each term. It will also present the idea behind turbulence 
+modelling, and prepare the mathematical formulations which will be further analysed in \cref{numerics}.
+
 \section{The Incompressible Navier-Stokes equations}
 
-The physics regarding fluids in motion are described mathematically by the Navier-Stokes (N-S) equations. 
-The equations can be derived in many ways, and it is referred to \cite{White} for a complete 
-description of the necessary assumptions and simplifications.
-The general idea is to conserve momentum and mass in a control domain providing a system of two equations.
-In this thesis only the incompressible N-S equations will be considered, 
-with the assumption of an incompressible flow the conservation of mass 
-results in a divergence free restriction on the solution $\mathbf{u}$.
-Without further introduction the incompressible N-S equations are stated as  
+%The physics regarding fluids in motion are described mathematically by the Navier-Stokes (N-S) equations. 
+%The equations can be derived in many ways, and it is referred to \cite{White} for a complete 
+%description of the necessary assumptions and simplifications.
+%The general idea is to conserve momentum and mass in a control domain providing a system of two equations.
+%In this thesis only the incompressible N-S equations will be considered, 
+With the assumption of an incompressible flow the conservation of mass 
+results in a divergence free restriction on the velocity $\mathbf{u}$
+and the incompressible N-S equations on a domain $\Omega\subset\mathbb{R}^d$ can be stated as  
 %
 \begin{align}
     \begin{split}
-    \frac{\partial \mathbf{u}}{\partial t} + \mathbf{u}\cdot \nabla\mathbf{u} &= 
-    -\nabla p + \frac{1}{Re} \Delta\mathbf{u} + \mathbf{f}, \\
-		\nabla \cdot \mathbf{u} &= 0.
+    \frac{\partial \mathbf{u}}{\partial t} + \mathbf{u}\cdot \nabla\mathbf{u} = 
+    -\nabla p + \frac{1}{Re} \Delta\mathbf{u} + \mathbf{f}, \qquad 
+    \nabla \cdot \mathbf{u} = 0, \qquad \text{ on } \Omega.
     \end{split}
-	\label{eq:NS}
+    \label{eq:NS}
 \end{align}
 %
-These equations have been studied for centuries and different physical situations
-lead to different simplifications and sets of equations.
+%These equations have been studied for centuries and different physical situations
+%lead to different simplifications and sets of equations.
 %Examples are the Euler equations,
 %Stokes problem and Darcy flow.
-A common simplification is to ommit the convective term, the resulting set of equations are referred to as the Stokes problem
-and is a common starting point for analysis of the full problem.
+
+A commonly studied simplification of this problem is the Stokes problem which
+is achieved by ommiting the convective term. This thesis will use the Stokes 
+problem as a starting point for analysis of the full problem in \cref{stokes}.
 Before attempting to solve these equations it is important to understand the role of each term 
 and their mathematical influence on the problem. 
 \begin{itemize}
@@ -68,7 +73,7 @@ and their mathematical influence on the problem.
     The corresponding mathematical operator stabilizes the system and it is therefore generally easier
     to solve the N-S equations for high-viscosity fluids. It should be mentioned that this term is actually a simplification 
     of the reynolds stress tensor which can be made under the assumption of incompressibility. The more general formulation which 
-    will be used in chapter~\ref{LES} is $2 \nabla s_{ij}$, the tensor $s_{ij}$ is known as the strain-rate tensor. 
+    will be used in \cref{LES} is $2 \nabla s_{ij}$, the tensor $s_{ij}$ is known as the strain-rate tensor. 
 
 \item $\mathbf{f}$ 
     - General term describing external body forces such as gravity. For incompressible flow the
@@ -78,35 +83,35 @@ and their mathematical influence on the problem.
     - The divergence free condition from the mass equation.
 \end{itemize}
 For large Reynolds number the huge span in length scales requires mesh that is both very fine and very large
-if \ref{eq:NS} are to be solved exactly.
+if \eref{eq:NS} are to be solved exactly.
 Because a fine mesh implies a high computational cost a direct numerical solution (DNS) is not feasible for 
 problems of a certain geometrical complexity. There are many different approaches on how to resolve the turbulent term and in 
 this thesis the main approach will be through Large Eddy Simulations (LES) which will be discussed 
-in section~\ref{LES}. The Navier-Stokes equations can only be solved if the boundary conditions are given. 
-The boundary conditions are not stated explicitly with in\eref{eq:NS} because they depend on the physical 
+in \cref{LES}. The Navier-Stokes equations can only be solved if the boundary conditions are given. 
+The boundary conditions are not stated explicitly in \eref{eq:NS} because they depend on the physical 
 situation and belong as a specification to each individual case. The next subsection gives a quick overview of the different 
 boundary conditions applied in this thesis.
 %
 \subsection{Boundary conditions}
 Depending on the kind of flow and geometry a particular problem different boundary conditions are applied. In this section 
 $\mathbf{n}$ and $\mathbf{t}$ will denote the normal and tangent vector to the surface.
-\colorbox{red}{tangent vector to a twodimensional surface}
+\colorbox{red}{tangent vector to a twodimensional surface??}
 The boundary conditions applied for the cases investigated in this thesis will be given the names 
 I,O,SYM and W for Inflow, Outflow, Symmetry and Wall. Their mathematical formulation and physical interpretation are given as 
 \begin{itemize}
     \item I 
-        - Inflow, defining the velocity field at a particular boundary. Mathematically this is equivalent to 
+        - Inflow, defining the velocity field on the boundary. Mathematically this is equivalent to 
         non-homogenous Dirchlet conditions. 
         \begin{align}
             \mathbf{u} = \mathbf{g}(\mathbf{x},t).
         \end{align}
     \item O 
-        - Outflow, letting the fluid flow ``effortlessly'' out through this boundary. Formally stated as
+        - Outflow, letting the fluid flow ``effortlessly'' out through the boundary. Formally stated as
         \begin{align}
             \frac{1}{Re} \nabla\mathbf{u}\cdot \mathbf{n}-p\mathbf{n}= 0.
         \end{align}
     \item SYM 
-        - Symmetry, denying any flux through this boundary without disturbing the tangential velocity. Convenient
+        - Symmetry, denying any flux through ths boundary without disturbing the tangential velocity. Convenient
         to apply in an open channel where the streamwise direction is parallell to the boundary. Mathematically this is 
         described as 
         \begin{align}
@@ -125,14 +130,14 @@ I,O,SYM and W for Inflow, Outflow, Symmetry and Wall. Their mathematical formula
 %
 \subsection{Weak formulation of N-S}
 %Let us first assume constant viscosity, enabling the simplification $\nabla \cdot \tau = -\nabla p + \nu \Delta \mathbf{u}$.
-The numerical algorithms applied in this thesis requires a weak formulation of\eref{eq:NS}.
+The numerical algorithms applied in this thesis requires a weak formulation of \eref{eq:NS}.
 Before the weak form is derived a few operators will be defined in order to simplify the final 
 expression.
 %
 \begin{align}
     ( \mathbf{u},\mathbf{v})_{L_2} &= \int_{\Omega}\mathbf{u} \cdot \mathbf{v} d\Omega\\
     \mathcal{A}(\mathbf{u},\mathbf{v}) &= (\nabla \mathbf{u},\nabla \mathbf{v})_{L_2}\\
-    \mathcal{B}(\mathbf{u},p) &= (\nabla \cdot \mathbf{u},p)_{L_2}\\
+    \mathcal{B}(\mathbf{u},p) &= -(\nabla \cdot \mathbf{u},p)_{L_2}\\
     \mathcal{C}(\mathbf{w};\mathbf{u},\mathbf{v}) &= (\mathbf{w}\cdot \nabla \mathbf{u},\mathbf{v})_{L_2}
     \label{eq:weakoperators}
 \end{align}
@@ -165,7 +170,7 @@ the first equation yields
 \end{align}
 %
 The contributions from the boundary as a result from the application of the divergence theorem is included in the 
-last force term. \colorbox{red}{Does the boundary integral needs to be adressed?}
+last force term. \colorbox{red}{Does the boundary integral need to be adressed?}
 %Writing the covective term in conservational form $\nabla \cdot \mathbf{u}\mathbf{u}$ and applying the 
 %divergence theorem on the terms leaves us with 
 %\begin{align}
@@ -178,10 +183,10 @@ last force term. \colorbox{red}{Does the boundary integral needs to be adressed?
     %\end{split}
 	%\label{eq:NSweak}
 %\end{align}
-The choice of search spaces for the velocity and pressure will be justified in chapter~\ref{numerics}, and will 
+The choice of search spaces for the velocity and pressure will be justified in \cref{numerics}, and will 
 just be stated here in order to present the weak formulation. Let $V \subset H^1(\Omega)^3$ and $Q \subset L^2(\Omega)$ 
 be subspaces that include the boundary conditions given by any particular flow situation.
-By using the notation introduced in\eref{eq:weakoperators} the weak formulation of the incompressible
+By using the notation introduced in \eref{eq:weakoperators} the weak formulation of the incompressible
 N-S equations can be stated as: 
 
 Find $(\mathbf{u}, p) \in V\times Q$ such that 
@@ -189,7 +194,7 @@ Find $(\mathbf{u}, p) \in V\times Q$ such that
     \begin{split}
         (\frac{\partial \mathbf{u}}{\partial t},\mathbf{v})
         + \mathcal{C}(\mathbf{u};\mathbf{u},\mathbf{v})
-        &= \mathcal{B}(\mathbf{v},p) 
+        &= -\mathcal{B}(\mathbf{v},p) 
         -\nu\mathcal{A}(\mathbf{u},\mathbf{v})
         + (\mathbf{f},\mathbf{v}), \\
         \mathcal{B}(\mathbf{u},q) &= 0,
@@ -200,15 +205,14 @@ $\forall\; (\mathbf{v}, q) \in V\times Q$.
 %
 
 In order to solve this equation numerically, everything has to be discretized and expressed 
-using a particular set of basis functions. This procedure will be discussed more thoroughly
-in chapter~\ref{numerics}, but the idea is that the solution $(\mathbf{u},p)$ is approximated 
+using a particular set of basis functions. The idea is that the solution $(\mathbf{u},p)$ is approximated 
 by a discretized solution $(\mathbf{u}_h,p_h)$ and the bilinear operators can be represented 
 by matrices. The discretized system of equations can be stated as
 %
 \begin{align}
     M\frac{\partial \mathbf{u}_h}{\partial t} +C(\mathbf{u}_h)\mathbf{u}_h 
-    &= Dp_h-\nu A\mathbf{u}_h +M\mathbf{f}_h,\\
-    D^T\mathbf{u}_h &= 0.
+    &= D^Tp_h-\nu A\mathbf{u}_h +M\mathbf{f}_h,\\
+    D\mathbf{u}_h &= 0.
     \label{eq:NSMatrixform}
 \end{align}
 %
@@ -230,8 +234,8 @@ by matrices. The discretized system of equations can be stated as
 	%\label{eq:Stokes}
 %\end{align}
 %For the sake of clarity only the steady Stokes problem will be considered, the stability regarding
-%the evolution in time is a different analysis left for chapter~\ref{timeNS}.
-%Transforming\eref{eq:Stokes} to the weak form and applying the notation given
+%the evolution in time is a different analysis left for \cref{timeNS}.
+%Transforming \eref{eq:Stokes} to the weak form and applying the notation given
 %in the previous chapter leaves us with the formulation
 
 %Find $(\mathbf{u}, p) \in H^1(\Omega)\times L^2(\Omega)$ such that 
@@ -266,10 +270,13 @@ the scalar transported. For dispersion of neutral gas with $\phi$ as the volume 
 they resemble the viscosity and mass flux. The last term on the right hand side $q_{vol}$ is the source term and is not 
 included in this thesis since all gas enters the control volume as a boundary condition.
 
-\colorbox{green}{write more about this equation and how it is solved \ldots}
+The passive scalar equation is solved as a Helmholtz problem, by applying a explicit scheme on the convection term and an implicit 
+scheme on the diffusion term. This is similar to the discretization performed on the momentum equation which will be discussed in 
+detail in \cref{numerics}. 
+%\colorbox{green}{write more about this equation and how it is solved \ldots}
 
 \section{Resolving the turbulent term using LES} \label{LES}
-\colorbox{green}{tydeliggjor filteret!, og bruk en annen $\tau$, filtervidde, tydeligg diff antakelse}
+%\colorbox{green}{tydeliggjor filteret!, og bruk en annen $\tau$, filtervidde, tydeligg diff antakelse}
 When DNS is not feasible due to high Reynolds number on large domains LES is one of the most powerful tools for simulating turbulent flows.
 The idea is based on the fact that the small turbulent structures behave homogenously and are therefore easy to model.
 This way the larger structures driven by geometry, inflow conditions and external forces can be simulated using a coarser 
@@ -277,7 +284,8 @@ grid while the effect of the small structures are modelled.
 LES will be introduced here in a mathematical fashion, allthough in many practical cases the filter function is not 
 well defined. The reason for this is that the grid itself is often considered a filter, with the 
 grid size as the filter width. As pointed out by Carati et al.~\cite{Carati} the filter is in this case nothing else but 
-numerical discretization error. \colorbox{red}{for spectral element it can be considered as a low pass filter...??}
+numerical discretization error. 
+%\colorbox{red}{for spectral element it can be considered as a low pass filter...??}
 
 \subsection{Filter}
 The idea behind LES starts with defining a filter, which separates the modelled structures from the resolved ones. 
@@ -289,7 +297,7 @@ A filter in its general mathematical form itroduced by Leonard~\cite{Leonard} is
 
 %\colorbox{red}{Define G!! and filter with $l_r$ }
 
-%For the test filter applied in the dynamic Smagorinsky case in the procedure described in chapter~\ref{filtering}
+%For the test filter applied in the dynamic Smagorinsky case in the procedure described in \cref{filtering}
  
 It is generally assumed that the filter commutes with 
 the differential operators $\nabla$, $\Delta$ and $\partial / \partial t$. By applying the filter on the N-S equations
@@ -311,27 +319,29 @@ Where $\tau$ in this case denotes the subgrid-scale (SGS) stress given as
 \end{align}
 %
 This tensor is a consequence of applying the filter on the non-linear advection term, 
-and it is this term that is modelled by a subgrid-scale model. See~\cite{Pope} for a full derivation on the 
+and it is this tensor that is modelled by a subgrid-scale model. See~\cite{Pope} for a full derivation on the 
 application of a filter on the momentum equation. 
 
 \subsection{dynamic Smagorinsky-Lilly SGS-model}
 The problem is now reduced to modelling the tensor $\tau_{ij}$, one of the most common SGS-models is the 
-dynamic Smagorinsky-Lilly model. The initial progress of this model was made by 
+dynamic Smagorinsky-Lilly model which is the one applied in this thesis. The initial progress of this model was made by 
 Lilly in 1967~\cite{Lilly67} suggesting the following model for the SGS-tensor
 %
 \begin{align}
+    \begin{split}
     \tau_{ij} &= -2C_sl^2\mathcal{S}^rs_{ij}^r,\\
     s^r_{ij} &= \frac{1}{2}\left( \frac{\partial u^r_i}{\partial x_j} +
     \frac{\partial u^r_j}{\partial x_i}\right),\\
     \mathcal{S}^r &= \sqrt{2s^r_{ij}s^r_{ij}}.
+    \end{split}
     \label{eq:boussinesq}
 \end{align}
 %
 Where $l$ denotes the filter width, which for this thesis is equivalent to the grid size.
 The resolved strain rate $s^r_{ij}$ can be calculated from the filtered velocity and the problem is now reduced to determining
-the constant $C_s$. There were several attempts to determine this constant for the entire domain,
-but finally in 1991~\cite{Germano91} a dynamic subgrid-scale model was presented calculating a 
-$C_d$ which replaces $C_sl^2$ in\eref{eq:boussinesq}. $C_d$ is called the dynamic Smagorinsky constant, and varies in both time and space.
+the constant $C_s$. There were several attempts to determine this constant for the entire domain, but in lack of a general 
+geometry independent constant Germano presented in 1991 ~\cite{Germano91} a dynamic subgrid-scale model was presented calculating a 
+$C_d$ which replaces $C_sl^2$ in \eref{eq:boussinesq}. $C_d$ is called the dynamic Smagorinsky constant, and varies in both time and space.
 The general idea is that $C_d$ is independent of the filter width and from this 
 assumption an expression is developed for the dynamical constant.
 
@@ -339,7 +349,7 @@ Let $a,b$ denote two distinct filters with corresponding filter widths $l_a,l_b$
 Throughout this thesis $l_a$ will be the grid size and $l_b\approx 2l_a$. Filter $b$ is
 often referred to as the test filter and is only included to provide an estimation 
 of the dynamic Smagorinsky constant. Remember that $l_a$ is the grid size while 
-filter $b$ is obtained by applying the filter described in chapter~\ref{filtering} with $\alpha_i=1$ for the highest modes.
+filter $b$ is obtained by applying the filter described in \cref{filtering} with $\alpha_i=1$ for the highest modes.
 Let $\tau_{ij}$ and $T_{ij}$ denote the stresses based on single- and double filtering
 operations on the N-S equations
 \begin{align}
@@ -351,7 +361,7 @@ operations on the N-S equations
 \end{align}
 %By defining $a_{ij}=l_a^2\mathcal{S}^a = l_a^2\sqrt{2s^{a}_{ij}s^{a}_{ij}}$ the subgrid scale tensor can 
 %be written as $\tau^a_{ij} = 2C_da_{ij} $. 
-Applying the $b$ filter on the first tensor in eq\eref{eq:stresstensors} allows us to define 
+Applying the $b$ filter on the first tensor in eq \eref{eq:stresstensors} allows us to define 
 a new tensor $L_{ij}$ which depends only on the $a$-filtered variables. The identity 
 is known as the Germano identity and was first introduced in 1991~\cite{Germano91},
 \begin{align}
@@ -360,10 +370,10 @@ is known as the Germano identity and was first introduced in 1991~\cite{Germano9
     \label{eq:germanoid}
 \end{align}
 This tensor now depends on the $a$-filtered solution and not the resolved 
-one, hence the identity in\eref{eq:germanoid} provides a computable expression for $L_{ij}$.
+one, hence the identity in \eref{eq:germanoid} provides a computable expression for $L_{ij}$.
 
 Substituting the stress-tensors with their corresponding expression 
-from\eref{eq:boussinesq} and assuming a dynamic constant unaffected by the filter 
+from \eref{eq:boussinesq} and assuming a dynamic constant unaffected by the filter 
 one obtains an approximation for $L_{ij}$ which is also computable,
 \begin{align}
     \begin{split}
@@ -379,9 +389,9 @@ L_{ij} &\approx 2C_s l_b^2 \mathcal{S}^{ab} s^{ab}_{ij}
         \lambda &= l_b/l_a
     \label{eq:dynsmagderivation}
 \end{align}
-Minimizing the mean-square error between the exact $L_{ij}$ as expressed in\eref{eq:germanoid}
+Minimizing the mean-square error between the exact $L_{ij}$ as expressed in \eref{eq:germanoid}
 and the Boussinesq-based approximation 
-in\eref{eq:lillystress} yields the best approximation 
+in \eref{eq:lillystress} yields the best approximation 
 for the dynamic Smagorinsky constant 
 %
 \begin{align}
@@ -392,7 +402,7 @@ for the dynamic Smagorinsky constant
 Note that the double indices implies summing. This expression is however not a 
 stable option and to deal with this most implementations apply some sort of mean or smoothening 
 in either time and/or space when calculating the constant. In this thesis the smoothening is done in 
-both time and space for the denominator and the numerator in\eref{eq:dynsmag}. Another interesting property 
+both time and space for the denominator and the numerator in \eref{eq:dynsmag}. Another interesting property 
 is that the constant $C_d$ and the final SGS-tensor $\tau = -2C_d\mathcal{S}^as_{ij}^a$ are 
 independent of the filter width, the only necessary variable is the coefficient $\lambda = l_b/l_a$.
 The assumption made in this model is that turbulence behaves 
@@ -420,7 +430,7 @@ simple derivation from physical principles.
 
 %\subsection{Decoupling the pressure} 
 
-%A common way to approach equation\eref{eq:NS} is to solve the pressure and velocity field
+%A common way to approach equation \eref{eq:NS} is to solve the pressure and velocity field
 %seperatly. The mathematical reasoning for this approach is obtained by taking the 
 %divergence on both sides, 
 %\begin{align}

@@ -217,7 +217,7 @@ Initially this case was solved using a second degree polynomial to describe the 
 corresponding to each element. However with the new routine implemented as described 
 in~\ref{xyzarc} the circle segments could be represented with the same order as 
 the polynomials used for the velocity space. The importance of the error resulting 
-from the second degree approximation of the circle segments are presented in chapter~\ref{results}.
+from the second degree approximation of the circle segments are presented in \cref{results}.
 %Note that these elements was split in three, in order to obtain 
 %a finer mesh in the region of interest. Of the elements numbered in~\ref{fig:cyl_elem}
 %only the first six contains edges on the cylinder.Hence the second order polynomials 
@@ -410,7 +410,7 @@ spectral elements. Since the initial element-mesh is relatively coarse it does n
 the details in the geometry and the GLL-nodes distributed on the faces corresponding to the 
 unstructured surface will be misplaced. 
 %It is however no theoretical problem to reconstruct the surface with with a polynomial of order $P$. 
-With the routine described in chapter~\ref{surfpro} the surface was approximated accurately by higher order polynomials.
+With the routine described in \cref{surfpro} the surface was approximated accurately by higher order polynomials.
 %
 \begin{figure}[t]
     \centering
@@ -423,7 +423,7 @@ The algorithm restricts itself to relatively smooth surfaces.
 \colorbox{red}{add this section to the results part with other applications as well??}
 \section{Spatial averaging routine}
 A dynamic Smagorinsky model has previously been implemented in Nek5000 for flow in a channel. 
-The SGS-model as described in chapter~\ref{description} depends on an averaging routine to calculate
+The SGS-model as described in \cref{description} depends on an averaging routine to calculate
 the dynamic Smagorinsky constant. The previous implementation in Nek applies an average routine in the plane,
 assuming that the Smagorinsky constant is the same for all points with equal distance to the walls 
 of the channel. This is a rather specific averaging routine based on the assumption of homogenous turbulence 
@@ -432,7 +432,7 @@ in the entire plane, hence only applicable to flows in idealized geometries.
 When applying dynamical Smagorinsky to Case 1 a new spatial mean routine had to be applied for it to be stable. 
 It was first attempted to average only in time, but this proved not to be sufficient. It was
 therefore implemented a routine for taking the average within each element, let 
-$c_{num}^e,c_{den}^e$ denote the numerator and the denominator in equation\eref{eq:dynsmag}.
+$c_{num}^e,c_{den}^e$ denote the numerator and the denominator in \eref{eq:dynsmag}.
 The means are then calculated as 
 \begin{align}
     c_{num}^e = \frac{1}{V}\int_{\Omega_e}c_{num}^e d\: \Omega 

@@ -158,7 +158,7 @@ frequently used for this thesis are described below,
     \item \verb|uservp| - Impose the eddy viscosity when applying LES. 
     \item \verb|userchk| - Read inflow-data, and specify the output.
     \item \verb|usrdat2| - Project the geometry onto a deformed general surface. The details of how this routine is used will be 
-    specified further in chapter~\ref{implementation}. 
+    specified further in \cref{implementation}. 
     \item \verb|usrdat3| - Defines the interpolation algorithm that is applied to the inflow-data. 
 \end{itemize}
 %
@@ -204,9 +204,9 @@ domain while the $P_NP_{N-2}$ algorithm is a discrete splitting which does not c
 %\end{itemize}
 %%
 %further the routines of interests are \verb|fluid| and \verb|heat|, the solvers for N-S equations and passive scalars respectively.
-%Both subroutines are found in \verb|drive2.f|. The understanding of these solvers are best achieved by studying equation \eref{eq:NS} 
-%and\eref{eq:PS}. For the settings chosen in this thesis a fractional step procedure as described in 
-%chapter~\ref{fracstep} is applied.
+%Both subroutines are found in \verb|drive2.f|. The understanding of these solvers are best achieved by studying equation  \eref{eq:NS} 
+%and \eref{eq:PS}. For the settings chosen in this thesis a fractional step procedure as described in 
+%\cref{fracstep} is applied.
 
 %\colorbox{yellow}{what are fluidp() and heatp( )? solve for pertubated field and then project onto div-free space ? }
 
@@ -216,7 +216,7 @@ domain while the $P_NP_{N-2}$ algorithm is a discrete splitting which does not c
 %\section{Incompressible N-S solvers in Nek}
 %Nek offer several implementations depending on the mathematical formulation wanted by the user.
 %The most standard, and the algorithm applied in this thesis is the fractional step procedure 
-%described in detail in chapter~\ref{description}.
+%described in detail in \cref{description}.
 
 
 %A Convection-Diffusion problem can be stated as 
@@ -290,4 +290,4 @@ The first part is a fully automatic procedure which projects any edge to a circl
 convenient method when working with cylinder geometries and other similar shapes. The second part
 is an attempt to include general boundary surfaces by creating a semi-automatic procedure allowing 
 the user to represent any geometry with polynomials of the same order as applied for the basis functions.
-The algorithms are presented in chapter~\ref{implementation}. 
+The algorithms are presented in \cref{implementation}. 

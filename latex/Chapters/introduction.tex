@@ -10,5 +10,43 @@
 %	SECTION 1
 %----------------------------------------------------------------------------------------
 
-Sed ullamcorper quam eu nisl interdum at interdum enim egestas. Aliquam placerat justo sed lectus lobortis ut porta nisl porttitor. Vestibulum mi dolor, lacinia molestie gravida at, tempus vitae ligula. Donec eget quam sapien, in viverra eros. Donec pellentesque justo a massa fringilla non vestibulum metus vestibulum. Vestibulum in orci quis felis tempor lacinia. Vivamus ornare ultrices facilisis. Ut hendrerit volutpat vulputate. Morbi condimentum venenatis augue, id porta ipsum vulputate in. Curabitur luctus tempus justo. Vestibulum risus lectus, adipiscing nec condimentum quis, condimentum nec nisl. Aliquam dictum sagittis velit sed iaculis. Morbi tristique augue sit amet nulla pulvinar id facilisis ligula mollis. Nam elit libero, tincidunt ut aliquam at, molestie in quam. Aenean rhoncus vehicula hendrerit.
+%The Navier-Stokes equations have been studied for centuries and describes any fluid in motion. Depending on the properties of the fluid 
+%and the circumstances of the flow different variants of these equations are studied. This thesis will restrict itself to the numerical 
+%solutions of the incompressible N-S equations.  
+
+The physics regarding fluids in motion are described mathematically by the Navier-Stokes (N-S) equations. 
+The equations can be derived in many ways, and it is referred to \cite{White} for a complete 
+description of the necessary assumptions and simplifications.
+The general idea is to conserve momentum and mass in a control domain which provides a system of two equations.
+This thesis is restricted to numerical solutions of the incompressible N-S equations.
+Without further introduction the incompressible N-S equations are stated as  
+%
+\begin{align}
+    \begin{split}
+    \frac{\partial \mathbf{u}}{\partial t} + \mathbf{u}\cdot \nabla\mathbf{u} &= 
+    -\nabla p + \frac{1}{Re} \Delta\mathbf{u} + \mathbf{f}, \\
+		\nabla \cdot \mathbf{u} &= 0.
+    \end{split}
+	\label{eq:NS}
+\end{align}
+%
+$\mathbf{u}$ and $p$ denotes the velocity of the fluid and the pressure, while $\mathbf{f}$ is some external force. 
+The Reynolds number $Re$ describes the relation between the viscous scales and the mean stream velocity scale.
+For large Reynolds numbers the flow becomes turbulent and a large range of scales needs to be resolved. A lot 
+of research has been devoted to determine the amount of energy present at the different scales of motion, and 
+the interaction between them. This approach to \eref{eq:NS} leads to turbulence modelling which is based on the 
+idea that the effect of the smallest turbulent motions can be modelled while the larger motions are resolved by 
+the numerical grid. 
+In this thesis both laminar and turbulent flows will be solved numerically, and a turbulence model will also 
+be compared to a mathematical filter meant to stabilize the flow. In addition to solving the N-S equations the 
+transport of a passive scalar will also be analysed and compared to a set of reference solutions. 
+The software applied in this thesis is Nek5000 which is an implementation of the spectral element method initialized in the 80's.
+A part of the work done in this thesis is also devoted to implementing routines for working with more complex geometry than previously 
+have been possible. 
+
+The thesis is divided in 3 parts. The first part which includes the two following chapters are devoted to the physical understanding 
+of \eref{eq:NS}, the solution methods and a thorough presentation of the spectral element method. \cref{nek} gives the reader a brief 
+introduction to the functionalities of the solver Nek5000 to motivate some of the implementation performed. The last two chapters 
+describes the work performed by the author, first a presentation of the different cases followed by the results and the discussion
+of these.
 
