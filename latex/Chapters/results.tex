@@ -74,6 +74,7 @@ which confirms the analytical results from~\ref{eq:filterenergy}.
          3 & No & Yes& No & Yes& 0.005 & 0.43\\
          4 & No & Yes& Yes& No & 0.005 & 0.18\\
          !!!5 & No & No & No & No & 0.005 & 0.03\\
+         6 & Yes tstep=3e-4& Yes& No & No & 0.004 & 0.487\\
     \end{tabular}
     %\begin{tabular}{c | c c c c | c c | c c c}
          %& \multicolumn{4}{|c|}{Settings} & \multicolumn{2}{|c|}{\% Error} & \multicolumn{3}{|c}{Data} \\\hline
@@ -106,8 +107,9 @@ the Smagorinsky model does not damp spurious velocity modes in the same degree a
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.6\textwidth]{Figures/maxvel.png}
-	\caption{A average iso-surface of the released gas at $C=0.03$ 
-    after 30 seconds of sampling.}
+    \caption{$||\mathbf{u}||_{\infty}$ as a function of time, the green line represents the 
+simulation with the dynamic smagorinsky SGS-model and the blue line represents the filtering 
+with $\alpha = 0.05$ and a quadratic decay on the last 3 modes.}
 	\label{fig:maxvel}
 \end{figure}
 %

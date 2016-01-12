@@ -559,9 +559,9 @@ Euler of~\ref{eq:ivps2} can be written as
 \colorbox{red}{add a matrix entry photo from matlab}
 
 Notice the resemblence to the application of the filter in~\ref{eq:filterstepwise}. The second step
-is identical if $\alpha_i = \Delta t$. The truncated Laplacian $A^*$ is not equal the corresponding
+is identical if $\alpha_i = \Delta t/(1+\Delta t)$. The truncated Laplacian $A^*$ is not equal the corresponding
 filter matrix $\mathcal{F}_{\alpha}$, but there are some similarities between these to matrices.
-They are both upper triangular with zeros along the diagonal and non-zero entries on the second 
+They are both upper triangular with zeros along the diagonal and positive entries on the second 
 sup-diagonal. The main difference is that the Laplacian applied on the Nth Legendre function 
 $L_N$ affect all the terms $L_{N-2},L_{N-4},\cdots$, while the filter only affects $L_{N-2}$.
 
@@ -690,7 +690,7 @@ to a moving turbine there are many considerations that needs to be made. Althoug
 has been able to prove or disprove the well-posedness of the problem. Some of the most common algorithms 
 will be discussed in the following subsections
 
-\subsection{Operator-splitting techniques }
+\subsection{Operator-splitting techniques } \label{opsplitting}
 In this chapter $a_j,b_j$ will denote the coefficients for some explicit and implicit scheme.
 Let us consider a simplified transient problem 
 \begin{align}
@@ -746,7 +746,7 @@ In this thesis the schemes BDFk and EXTk for $k=2,3$ are applied, the coefficien
 %and the demanding convection operator. 
 
 
-\subsection{Operator integrating factor schemes (OIFS)}
+\subsection{Operator integrating factor schemes (OIFS)}\label{OIFS}
 The operator-splitting method described in the previous chapter may lead to an unstable scheme,
 OIFS is a similar method but it offers a more stable scheme. The presentation of the method 
 is presented here in a computational fashion, for a full description and derivation of the method 
@@ -877,4 +877,148 @@ with an empty right hand side since the rest of the terms are take care of in th
 The IVP~\ref{eq:IVP} is then solved to obtain $\mathbf{v}^{*}$.
 
 %\subsection{Pressure-correction}
+
+\subsection{Discrete pressure correction method based on the Stokes problem} \label{prescorr}
+The fractional step method is a splitting method based on the idea that two analytical 
+operators can be applied in sequence and still provide a good result. The method presented 
+in this section makes no such assumption and splits the discrete system of equation instead 
+of applying the operators in sequence. The algorithm presented here is similar to the Uzawa
+algorithm CITATION, but with some adjustments to make it more efficient. The detailed 
+description regarding the implementation in Nek5000 is found
+in~\cite{Fischer_hybridschwarz-multigrid}.
+
+To start the explanation of the method the incompressible N-S equations is stated on the form
+\begin{align}
+    \frac{1}{\Delta t} M \mathbf{u}^{n+1}-D^Tp^{n+1}+\nu A \mathbf{u}^{n+1} = M\mathbf{f}^{n+1},
+    \qquad D\mathbf{u}^{n+1}    = 0.
+    \label{eq:DiscreteStart}
+\end{align}
+The outline of the method is based on~\ref{eq:NSweak}, but with some changes. Since this 
+is a method for the unsteady N-S equation the time derivative has to be included, and the 
+non-linear term which is treated explicitly as studied in chapter~\ref{opsplitting} and~\ref{OIFS}
+is added as a part of the right hand side function. So $M\mathbf{f}^{n+1}}$ does in this equation 
+incorporate both the original loading function, the non-linear term and the explicit part of the 
+time-derivative. 
+
+By defining the matrix $H = 1/\Delta t M + \nu A$ The system of equations \ref{eq:DiscreteStart} 
+can be written as 
+\begin{equation}
+\begin{pmatrix}
+    H & -D^T \\ 
+    D & 0
+\end{pmatrix}
+\begin{pmatrix}
+    \mathbf{u}^{n+1}  \\ 
+    p^{n+1} 
+\end{pmatrix}
+=
+\begin{pmatrix}
+    Mf^{n+1}  \\ 
+    0 
+    \end{pmatrix}.
+    \label{eq:Matform}
+\end{equation}
+It is convenient for the splitting that will be done in the next step to introduce the 
+pressure difference $\delta p^{n+1} = p^{n+1}-p^n$.~\ref{eq:Matform} can be restated as 
+\begin{equation}
+\begin{pmatrix}
+    H & -D^T \\ 
+    D & 0
+\end{pmatrix}
+\begin{pmatrix}
+    \mathbf{u}^{n+1}  \\ 
+    \delta p^{n+1} 
+\end{pmatrix}
+=
+\begin{pmatrix}
+    Mf^{n+1} +D^Tp^n  \\ 
+    0 
+    \end{pmatrix}.
+    \label{eq:Matform}
+\end{equation}
+
+Solving this exactly is known as the Uzawa algorithm and is known to be 
+computationally demanding and converge slowly. 
+the system is rewritten using a LU-factorization of the matrix in~\ref{eq:Matform}, 
+which will allow the solution to be found in two separate steps. This 
+requires the inverse of $H$ which will be replaced by an approximation $Q\approx H^{-1}$.
+The Matrix decomposition is given as
+%
+\begin{equation}
+\begin{pmatrix}
+    H & -D^T \\ 
+    D & 0
+\end{pmatrix}
+\approx
+\begin{pmatrix}
+    H & 0 \\ 
+    -D & -DQD^{-1}
+\end{pmatrix}
+\begin{pmatrix}
+    I & -QD^T \\ 
+    0 & I
+\end{pmatrix}.
+    \label{eq:LUfactorization}
+\end{equation}
+%
+
+Applying these two matrices leads to a two step algorithm on the form 
+\begin{align}
+\begin{pmatrix}
+    H & 0 \\ 
+    -D & -DQD^{-1}
+\end{pmatrix}
+\begin{pmatrix}
+    \mathbf{u}^{*}  \\ 
+    \delta p^{n+1} 
+\end{pmatrix}
+&=
+\begin{pmatrix}
+    Mf^{n+1} +D^Tp^n  \\ 
+    0 
+    \end{pmatrix}
+    \label{eq:PCstep1}
+    ,\\
+\begin{pmatrix}
+    I & -QD^T \\ 
+    0 & I
+\end{pmatrix}
+\begin{pmatrix}
+    \mathbf{u}^{n+1}  \\ 
+    \delta p^{n+1} 
+\end{pmatrix}
+&=
+\begin{pmatrix}
+    \mathbf{u}^{*}  \\ 
+    \delta p^{n+1} 
+\end{pmatrix}
+    \label{eq:PCstep2}
+\end{align}
+
+In order to clarify what is actually going on a brief description of each step is given,
+The first step in~\ref{eq:PCstep1} corresponds to an initial solution of the velocity using 
+the old pressure value, notice that this will not guarantee a divergence free velocity.
+The second step in~\ref{eq:PCstep1} is the discrete pressure poisson equation and will 
+make sure that the pressure corresponds to a divergence free flow. When solved in practice 
+the velocity used in this equation is the updated velocity from the first step. This way of 
+updating the pressure is the reason why this method is often referred to as a pressure 
+correction method.
+The first step in~\ref{eq:PCstep2} is just an projection of a velocity field
+onto a divergence free space. The final step is of no real value and will instead be replaced 
+by an update of the pressure $p^{n+1} = p^{n}+\delta p^{n+1}$.
+
+In this thesis the approximation of the inverse Helmholtz matrix was of first order, 
+$Q = \Delta t M^{-1}$. It is possible to make higher order approximations, but this is 
+a very convenient definition since $M$ is a diagonal matrix.
+
+Unlike the fractional step method this way of solving the N-S equations  
+requires the discrete spaces for velocity and pressure
+to meet the inf-sup condition~\ref{eq:infsup}, and does not suffer from the same splitting 
+errors. In addition the way of treating the pressure yields an algorithm which works well 
+for steady flows. Notice that the error surging 
+from the splitting in~\ref{eq:LUfactorization} is proportional to $\delta p^n$ instead of $p^n$
+as it would be for a straight forward derivation. 
+
+The method yields a second order scheme 
+as proved by~\cite{vanKan}, provided that the time discretization is of the same or higher order.
 
