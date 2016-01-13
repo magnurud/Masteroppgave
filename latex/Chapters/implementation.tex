@@ -404,51 +404,6 @@ surfmesh\_myFlow. The following commands are then executed
     %int a[4];
     %p = a;
 %\end{lstlisting}
-\subsection{Application on the hill of Ekeberg}
-As an initial test of the algorithm a mesh was created based on the hill of Ekeberg.
-The surface was loaded as a \verb|.tin| file in ICEM and a simple box was created with 
-the described terrain as floor. The domain with the initial mesh in given in 
-figure~\ref{fig:ekeberg}. This geometry was chosen because it resembles a typical problem with 
-spectral elements. Since the initial element-mesh is relatively coarse it does not capture all 
-the details in the geometry and the GLL-nodes distributed on the faces corresponding to the 
-unstructured surface will be misplaced. 
-%It is however no theoretical problem to reconstruct the surface with with a polynomial of order $P$. 
-With the routine described in \cref{surfpro} the surface was approximated accurately by higher order polynomials.
-%
-\begin{figure}[t]
-    \centering
-	\includegraphics[width=0.7\textwidth]{Figures/mesh_ekebergaasen2.png}
-    \caption{The initial mesh of the hill}
-	\label{fig:ekeberg}
-\end{figure}
-%
-%
-\begin{figure}[t]
-    \centering
-	\includegraphics[width=0.7\textwidth]{Figures/helicopter.jpg}
-    \caption{Body of a helicopter}
-	\label{fig:helicopter}
-\end{figure}
-%
-%
-\begin{figure}
-\centering
-  \centerline{
-\begin{minipage}{.6\textwidth}
-  \includegraphics[width=1.0\linewidth]{Figures/helicopter.jpg}
-  %\captionof{figure}{A figure}
-\end{minipage}%
-\begin{minipage}{.6\textwidth}
-  \centering
-  \includegraphics[width=1.0\linewidth]{Figures/mesh_ekebergaasen2.png}
-\end{minipage}
-}
-  \caption{The averaged (left) and instantaneous (right) x-velocity on the inflow boundary.}
-  \label{fig:surfpro}
-\end{figure}
-%
-The algorithm restricts itself to relatively smooth surfaces.
-\colorbox{red}{add this section to the results part with other applications as well??}
 \section{Spatial averaging routine}
 A dynamic Smagorinsky model has previously been implemented in Nek5000 for flow in a channel. 
 The SGS-model as described in \cref{description} depends on an averaging routine to calculate
