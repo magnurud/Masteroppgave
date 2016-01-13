@@ -10,10 +10,12 @@
 
 
 \section{Mesh projection routine}
-As an initial test of the algorithm a mesh was created based on the hill of Ekeberg.
-The surface was loaded as a \verb|.tin| file in ICEM and a simple box was created with 
-the described terrain as floor. The domain with the initial mesh in given in 
-figure~\ref{fig:surfpro}. This geometry was chosen because it resembles a typical problem with 
+As a test of the algorithm a mesh was created based on the hill of Ekeberg in Oslo and
+and on a helicopter body.
+The surfaces was loaded as a \verb|.tin| file in ICEM and a coarse hexmesh was created 
+around the surfaces. The domains are presented in given in 
+figure~\ref{fig:surfpro}, notice the coarse element sizes in the figure to the right.
+These geometries were chosen because they resemble a typical problem with 
 spectral elements. Since the initial element-mesh is relatively coarse it does not capture all 
 the details in the geometry and the GLL-nodes distributed on the faces corresponding to the 
 unstructured surface will be misplaced. 
@@ -38,6 +40,8 @@ With the routine described in \cref{surfpro} the surface was approximated accura
 \end{figure}
 %
 The algorithm restricts itself to relatively smooth surfaces.
+%
+%
 \section{Drag and lift on a cylinder}
 The effect of the algorithm explained in Chapter~\ref{xyzarc} is
 illustrated by solving a laminar flow test problem. 
@@ -52,8 +56,8 @@ essential, both coefficients are computed with significantly better accuracy.
 \begin{tabular}{l l c c c c}
 		\toprule
 		\# of Cells & Software & $c_D$ & $c_L$ & \%\textbf{Err} $c_D$ &\%\textbf{Err} $c_L$ \\ \midrule 
-		2070 & Nek5000 (mid) & 6.18349 & 0.008939 & 0.030 & 4.19 \\ 
-		2070 & Nek5000 (arc) & 6.18498 & 0.009413 & 0.006 & 0.13 \\
+		2755170& Nek5000 (mid) & 6.18349 & 0.008939 & 0.030 & 4.19 \\ 
+		2755170& Nek5000 (arc) & 6.18498 & 0.009413 & 0.006 & 0.13 \\
 		3145728 & CFX 		 & 6.18287 & 0.009387 & 0.04 &0.15 \\
 		3145728 & OF	     & 6.18931 & 0.00973 & 0.06 &3.5 \\
 		3145728 & FEATFLOW   & 6.18465 & 0.009397 & 0.01 &0.05 \\
@@ -81,7 +85,7 @@ lift coefficient error for increasing polynomial degree.
 	\caption{The logarithm of the error plotted against the polynomial degree. All results 
         are with $P_NP_{N-2}$ and dealiasing, and they are solved without using the 
     characteristic scheme or any filtering. A line illustrating a second order convergence is 
-    plotted to verify the convergence rate.}
+    plotted to illustrate the convergence rate.}
 	\label{fig:liftconv}
 \end{figure}
 %
@@ -103,8 +107,8 @@ which confirms the analytical results from \eref{eq:filterenergy}.
          2 & Yes& Yes& No & No & 0.013 & 2.35\\
          3 & No & Yes& No & Yes& 0.005 & 0.43\\
          4 & No & Yes& Yes& No & 0.005 & 0.18\\
-         !!!5 & No & No & No & No & 0.005 & 0.03\\
-         6 & Yes tstep=3e-4& Yes& No & No & 0.004 & 0.487\\
+         %!!!5 & No & No & No & No & 0.005 & 0.03\\
+         %6 & Yes tstep=3e-4& Yes& No & No & 0.004 & 0.487\\
     \end{tabular}
     %\begin{tabular}{c | c c c c | c c | c c c}
          %& \multicolumn{4}{|c|}{Settings} & \multicolumn{2}{|c|}{\% Error} & \multicolumn{3}{|c}{Data} \\\hline
@@ -217,7 +221,10 @@ sufficiently long.
 
 The results also indicate that the difference between the SGS-model and filtering are not that large,
 if anything the SGS-model shows a tendency to estimate lower concentration peaks. This could be a 
-result of too much smoothing due to the turbulent viscosity.
+result of too much smoothing due to the turbulent viscosity. An important difference between the 
+filtering and the SGS-model is the fact that the filter works based on the current state of the flow 
+whereas the amount of diffusion added by the SGS-model is mostly decided by the previous states of the 
+flow. This could lead to either too much or too little smoothening locally.
 
 \newpage
 \begin{figure}[h]
@@ -232,7 +239,7 @@ Two dashed lines on either side of the centerline represent the canyon.}
 The concentration along the vertical measurement lines is plotted in figure~\ref{fig:cVall} and overall 
 Nek5000 provides good results according to the reference solutions. The largest difference is found close 
 to the wall right in the middle of the cubes. In particular the simulation including the SGS-model 
-underestimates the concentration in this domain. It is known that the Dynamic smagorinsky model does not 
+underestimates the concentration in this domain. It is known that the Dynamic Smagorinsky model does not 
 perform that well close to the wall which could be a partial explanation to this. Along with the fact that 
 the $P_NP_N$ spitting errors also could be significant close to the wall.
 

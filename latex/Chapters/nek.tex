@@ -19,7 +19,7 @@ There are many numerical solvers for turbulent flows available on the market.
 From large commercial softwares such as Fluent which runs as a 
 black-box solver, to full open-source codes such as Nek5000 and openFOAM. 
 The solvers can vary in the numerical method; Finite volume, Finite Differences, 
-Finite Element Method, Spectral Element Method etc. The particular algorithm 
+Finite Element Method, Spectral Element Method etc., The particular algorithm 
 for resolving the Pressure-Velocity coupling, for instance Fractional Step, Poisson pressure and 
 Uzawa. The type of simulation available also varies from solver to solver, whether
 they apply RANS, LES, DNS or something else. Although most solvers offer multiple of the settings
@@ -44,7 +44,7 @@ With SEM as the numerical method applied it is possible to obtain very accurate 
 %The possibility to make a mesh through a visual gui is provided through for instance ICEM.
 %This mesh can then later be transformed to the inputfile required by Nek5000. 
 
-Nek provides a basic tool for generation of mesh. For more complex geometries this tool cannot compare with more visualized-based softwares 
+Nek5000 provides some basic tools for generation of mesh. For more complex geometries this tool cannot compare with more visualized-based softwares 
 such as ICEM from ANSYS which exports mesh to several numerical solvers such as Fluent and Nastran.
 It is therefore very useful to have an automatic way of converting a mesh created in ICEM to the format required by Nek5000. 
 The way the mesh is created in this thesis is visualized in figure~\ref{fig:mesh}.
@@ -57,7 +57,7 @@ The way the mesh is created in this thesis is visualized in figure~\ref{fig:mesh
 	\label{fig:mesh}
 \end{figure}
 %
-%In order for Nek to run optimally the elements should be as homogenous and as similar to the reference element as possible. 
+%In order for Nek5000 to run optimally the elements should be as homogenous and as similar to the reference element as possible. 
 %It is therefore of great interest to be able to propagate curved geometries into the neighbour-elements in order to have a smooth as 
 %possible transition from a boundary with high curvature.
 
@@ -77,10 +77,10 @@ the mesh routines are further elaborated an overview of the file-structure will 
 	\label{fig:files}
 \end{figure}
 %
-In order to work with Nek there are some practical information that needs to be clarified.
-Nek is recompiled for every case and the user specify all the case specific 
+In order to work with Nek5000 there are some practical information that needs to be clarified.
+Nek5000 is recompiled for every case and the user specify all the case specific 
 information in the three files \verb|{.rea,.usr,SIZE,}|. The \verb|.usr| and \verb|SIZE| file are 
-compiled with the standard Nek library using makenek which creates the executable file \verb|nek5000|,
+compiled with the standard Nek5000 library using makenek which creates the executable file \verb|nek5000|,
 while the \verb|.rea| file contains case-specific information read during initialization.
 The user guide \cite{Nek} contains a tutorial which explains the necessary 
 steps on how to get started with Nek. The next chapters will try to give some understanding on 
@@ -88,11 +88,11 @@ how the user is able to make the changes necessary for each case. Figure~\ref{fi
 how the files work together. 
 %
 \subsection{SIZE}
-Since Nek is mostly based on Fortran77 all memory allocations are done statically and should be specified explicitly 
-before runtime. Most of these variables are stated in \verb|SIZE|. The size of the working arrays 
+Since Nek5000 is mostly based on Fortran77 all memory allocations are done statically and must be specified explicitly 
+before runtime. These variables are stated in \verb|SIZE|. The size of the working arrays 
 necessary to perform the calculations are mostly defined by the upper limits of elements, 
 processors, scalars and of course the polynomial degree
-of the local Lagrange functions. These variables defines the sizes of almost all 
+of the local Lagrange functions. These variables define the sizes of almost all 
 the arrays used in the program so it is important to define these variables as accurately 
 as possible in order to optimize memory usage. The \verb|SIZE| file can be considered as the necessary base 
 for Nek5000.
@@ -128,8 +128,8 @@ while the \verb|.usr| needs to be applied for more advanced implementations.
        $K$ & INITIAL CONDITIONS & possibilities to specify IC further \\
        $K$ & OUTPUT FIELD & information that will be written to file \\
     \end{tabular}
-    \caption{An overview of the different sections in .rea. $E$ is a predefined number depending on your problem
-    which scales roughly as the number of elements, while $K\approx 1-25$ is user defined.}
+    \caption{An overview of the different sections in .rea. $E$ represents a predefined number depending on your problem
+    which scales roughly as the number of elements, while $K\approx 1-25$ are user defined numbers.}
     \label{tab:reafile}
 \end{table}
 %
@@ -155,14 +155,14 @@ frequently used for this thesis are described below,
 %
 \begin{itemize}
     \item \verb|userbc| - Define the boundary conditions on the inflow-boundary. 
-    \item \verb|uservp| - Impose the eddy viscosity when applying LES. 
+    \item \verb|uservp| - Define variable properties, impose the eddy viscosity when applying LES. 
     \item \verb|userchk| - Read inflow-data, and specify the output.
     \item \verb|usrdat2| - Project the geometry onto a deformed general surface. The details of how this routine is used will be 
     specified further in \cref{implementation}. 
     \item \verb|usrdat3| - Defines the interpolation algorithm that is applied to the inflow-data. 
 \end{itemize}
 %
-In addition to these routines all user-defined functions are specified in this file. The LES implementation in Nek is based
+In addition to these routines all user-defined functions are specified in this file. The LES implementation in Nek5000 is based
 on several subroutines specified in addition to those stated above. A list of some of the variables and functions 
 applied for the implementations in this thesis are stated in Appendix~\ref{AppendixB}.
 The \verb|.usr| file can be considered as the surface of Nek5000, easily accessible for the user.
@@ -170,7 +170,7 @@ The \verb|.usr| file can be considered as the surface of Nek5000, easily accessi
 \section{The basics of the solver}
 The most important building blocks in Nek5000 are the \verb|fluid| and \verb|heat| functions which solves the 
 N-S and Passive scalar equations. The N-S solver works very distinctly depending on the mathematical formulation
-enabled whereas the PS equation which does not depend on the pressure is solved similarly for the two cases. 
+enabled whereas the PS equation, which does not depend on the pressure, is solved similarly for $P_NP_N$ and $P_NP_{N-2}$. 
 For the sake of clarity, figure~\ref{fig:files} shows how the algorithms are called from the main routine.
 This is a very simplified flow chart which does not include choices such as filters, preconditioners, LES-model, 
 de-aliasing etc. but it captures the fundamental idea of the solver. 
@@ -188,9 +188,10 @@ chapters~\ref{prescorr} and~\ref{fracstep}. For further details regarding the
 implementation in Nek5000 it is referred to \cite{Fischer_hybridschwarz-multigrid}
 and \cite{TomboulidesPnPn}. An important difference between these to implementations is the fact that the $P_NP_N$ 
 implementation is based on an analytical splitting algorithm which introduces a non-vanishing error in the pressure along the boundaries of the 
-domain while the $P_NP_{N-2}$ algorithm is a discrete splitting which does not compromise the convergence of the pressure on the boundary.
+domain while the $P_NP_{N-2}$ algorithm is a discrete splitting which does not explicitly force a wrong boundary condition.
+It was however shown in~\cite{Guermond2006} that the discrete splitting also introduces a erroneous boundary condition weakly. 
 
-%To best understand the work flow of Nek the subroutine \verb|nek_advance| in \verb|drive1.f| should be examined.
+%To best understand the work flow of Nek5000 the subroutine \verb|nek_advance| in \verb|drive1.f| should be examined.
 %This routine includes all the steps in one iteration of the solver. The routine is adapted so that it is functional
 %for a number of different problems and user defined settings. The most important boolean switches used in this routine are 
 %described in the list below 
@@ -214,7 +215,7 @@ domain while the $P_NP_{N-2}$ algorithm is a discrete splitting which does not c
 
 %
 %\section{Incompressible N-S solvers in Nek}
-%Nek offer several implementations depending on the mathematical formulation wanted by the user.
+%Nek5000 offer several implementations depending on the mathematical formulation wanted by the user.
 %The most standard, and the algorithm applied in this thesis is the fractional step procedure 
 %described in detail in \cref{description}.
 
@@ -271,7 +272,7 @@ demands that the user has knowledge to Fortran77 and the structure of Nek5000.
 The necessary implementation consists of two steps 
 %
 \begin{enumerate}
-    \item determine the faces that belongs to the deformed surface
+    \item determine the faces that belong to the deformed surface
     \item project the predefined GLL-points onto the deformed surface
 \end{enumerate}
 %
@@ -279,13 +280,13 @@ This can be done without too much work for shapes with a known analytical
 expression such as a cylinder or a sphere, but for some general CAD geometry 
 it is no way to perform this projection routine. This is a vulnerable point 
 for a SEM solver since the elements generated by the mesh are relatively coarse.
-Many Finite volume based solvers does not support curved elements simply because the 
+Many Finite volume based solvers do not support curved elements simply because the 
 complex geometries are resolved with a sufficiently high resolution and it 
 is of no interest to approximate them any better. However for a spectral element
 solver it is necessary to address this problem since the initial grid is a lot coarser
 compared to equivalent settings in other solvers.
 
-As a part of this thesis two advancements was made regarding complex geometries. 
+As a part of this thesis two advancements have been made regarding complex geometries. 
 The first part is a fully automatic procedure which projects any edge to a circle. This is a
 convenient method when working with cylinder geometries and other similar shapes. The second part
 is an attempt to include general boundary surfaces by creating a semi-automatic procedure allowing 

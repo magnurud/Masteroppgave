@@ -10,11 +10,11 @@
 %	SECTION 1
 %----------------------------------------------------------------------------------------
 
-\colorbox{green}{Ta med konkrete konvergensteoremer! }
+%\colorbox{green}{Ta med konkrete konvergensteoremer! }
 
-\colorbox{green}{Rettskrivning! }
+%\colorbox{green}{Rettskrivning! }
 
-\colorbox{green}{make ediff pretty! figur som viser energispekteret, ha et konkret eksempel med filtrering }
+%\colorbox{green}{make ediff pretty! figur som viser energispekteret, ha et konkret eksempel med filtrering }
 
 %\section{Galerkin formulation}
 
@@ -393,7 +393,7 @@ The local matrices $A_k,M_k$ and the loading vector $f_k$ are gathered from each
 Equivalently as for FEM the global matrices has to be assembled
 from all the local matrices corresponding to each subdomain. This procedure is general and 
 if the elements are chosen to be sufficiently small it can 
-be performed on almost any deformed domain as oppose to SM. 
+be performed on almost any deformed domain as opposed to SM. 
 
 %$\Omega$ is some 2 dimensional strongly connected domain with well-defined corners and each of the edges can be described by some polynomial $\Gamma_i$.
 
@@ -402,8 +402,8 @@ This subsection will present some results regarding the expected accuracy of thi
 The Spectral Element Method can as mentioned earlier be regarded as a projection 
 method similar to FEM and SM. 
 It was proved in~\cite{MPR1987} that spectral convergence can be achieved only by requiring the solution
-$u$ to be sufficiently regular within each element. This as oppose to pure spectral methods which
-required regularity in the entire domain is a huge advantage when working with turbulent flows 
+$u$ to be sufficiently regular within each element. This as opposed to pure spectral methods which
+requires regularity in the entire domain is a huge advantage when working with turbulent flows 
 in complex domains. 
 \begin{theorem}
     Let $\Omega$ be a domain in $\mathbb{R}^d$ and $\left\{ \Omega_k \right\}$ 
@@ -420,12 +420,12 @@ Note that this result is for a spatial approximation of a function $u$, allthoug
 great error estimates the solution of the N-S equations are also restricted by the errors due to 
 temporal discretizations. This will be further discussed in \cref{timeNS}.
 \subsection{Filtering} \label{filtering}
-Although SEM provides spectral convergence in space and 2nd or 3rd order accuracy in time the stability of a straight forward
-implementation is not guaranteed, spurious nodes appear 
-as shown in chapter 2.4.1.2 in~\cite{Karniadakis}.
-In \cite{FischerMullen} a filter-based stabilization is introduced for SEM applied on 
+Although SEM provides spectral convergence in spatial approximation and 2nd or 3rd order accuracy
+in time the stability of a straight forward implementation is not guaranteed, spurious nodes appear 
+as shown in chapter 2.4.1.2 in~\cite{Karniadakis}. In \cite{FischerMullen} a filter-based 
+stabilization is introduced for SEM applied on 
 Navier Stokes equation. The idea is to project a part $ 0 <\alpha < 1$ 
-of the highest mode onto a polynomial space of lower order, 
+of the of the solution onto a polynomial space of lower order, 
 explicitly they define the filter $F_{\alpha}$ as 
 %
 \begin{align}
@@ -495,10 +495,10 @@ and the filtered solution is given as
                 &= 2\alpha\hat{u}_N(\hat{u}_N||L_N||^2+\hat{u}_{N-2}||L_{N-2}||^2)
     - \alpha^2\hat{u}^2_N(||L_N||^2+||L_{N-2}||^2)\\
     &\approx \frac{2\alpha}{N}\left[  (1-\frac{\alpha}{2})\hat{u}_N^2 + 
-    \hat{u}_N\hat{u}_{N-2}\right].
+    \hat{u}_N\hat{u}_{N-2}\right],
     \label{eq:filterenergy}
 \end{align}
-Which can take both positive and negative values depending on the sign and size of
+which can take both positive and negative values depending on the sign and size of
 $\hat{u}_N\hat{u}_{N-2}$. By applying the known norm of the Legendre polynomials 
 the deduced absolute error $\epsilon$ of the filtered energy is of order 
 $\epsilon\sim \alpha/N$. The approximation $||L_N||^2\approx||L_{N-2}||^2\approx 1/N$
@@ -511,7 +511,7 @@ of some differential equations and the mathematical filter described in the prev
 
 Let $u$ be some smooth continuous function,$\bar u = [u_1L_1(x),u_2L_2(x), \cdots]$
 is the corresponding Legendre basis with 
-appropriate coefficients
+appropriate coefficients such that $u = sum(\bar u)$
 and $P_{k}$ is the diagonal matrix with ones on the $k$ last entries and $0$ on the rest.
 
 Let us consider the two initial value problems 
@@ -548,6 +548,8 @@ with entries only on even sup-diagonals. By naming this matrix $A$ the entries a
     \label{Laplace-entries}
 \end{align}
 %
+\colorbox{red}{Show this in appendix?}
+
 The matrix-matrix product $AP_{k}$ will lead to a Laplacian matrix where the $N-k$ first columns are zero
 while the last $k$ remains unchanged. This modified Laplacian will be denoted $A^*$.
 Omitting the initial conditions, and doing a first order implicit 
@@ -563,7 +565,7 @@ Euler of \eref{eq:ivps2} can be written as
 %
 
 Notice the resemblence to the application of the filter in \eref{eq:filterstepwise}. The second step
-is identical if $\alpha_i = \Delta t/(1+\Delta t)$. The truncated Laplacian $A^*$ is not equal the corresponding
+is identical if $\alpha_i = \Delta t/(1+\Delta t)$. The truncated Laplacian $A^*$ is not equal to the corresponding
 filter matrix $\mathcal{F}_{\alpha}$, but there are some similarities between these to matrices.
 They are both upper triangular with zeros along the diagonal and positive entries on the second 
 sup-diagonal. The main difference is that the Laplacian applied on the Nth Legendre function 
@@ -592,7 +594,7 @@ approach to LES first introduced by Hughes~\cite{Hughes}. This method is based o
 the unresolved structures have a negligible effect on the larger scales, hence the SGS-model is 
 only included for the small but still resolved scales of motion.
 
-\colorbox{red}{Issue: wavespace is not equivalent Legendre space}
+%\colorbox{red}{Issue: wavespace is not equivalent Legendre space}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -699,7 +701,7 @@ for a third coordinate $t_k$ and the number of vertices, and edges are 8 and 12 
 
 
 \section{Time integration for incompressible N-S} \label{timeNS}
-\colorbox{green}{Rewrite this introduction}
+%\colorbox{green}{Rewrite this introduction}
 
 So far the spatial discretization by SEM has been described in detail and so far been proved to yield spectral convergence,
 but for unsteady flows the development in time is determined by the temporal discretization and puts an additional 

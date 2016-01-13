@@ -17,25 +17,25 @@
 %\colorbox{green}{Ta med et turbulensbilde, og bilde av plumen.}
 
 This chapter aims to present the implementation done in this thesis. The main motivation 
-behind the work was to see how Nek5000 works for complex geometries and to develope 
+behind the work was to see how Nek5000 works for complex geometries and to develop 
 necessary tools in order to improve its functionality. 
 
 The main tools in addition to Nek5000 needed to perform the simulations presented in this 
-chapter are \textit{ANSYS ICEM} and \textit{python}. For post-prosessing \textit{Visit} and
-\textit{Matlab} was used.
+chapter are \textit{ANSYS ICEM} and \textit{python}. For post-processing \textit{Visit} and
+\textit{Matlab} were used.
 
 As shown in figure~\ref{fig:mesh} the coarse element grid is created
 in ICEM and then converted using the python script \verb|mshconvert| while the
 distribution of GLL-nodes and the simulation itself was 
 performed in Nek5000. This procedure to generate a mesh had some limitations
 for complex geometries and one part of this thesis has been to develop solutions that makes it 
-possible to work with complex geometries in Nek5000.
+easier to work with complex geometries in Nek5000.
 
 The other part of the thesis has been to understand and apply Nek5000 with and without 
 LES to turbulent flow with gas dispersion and compare the results with reference 
 solutions from experiments and other solvers.
 
-The implementation is presented in 4 chapters. The first two chapters describe two flow situations 
+The implementation is presented in 4 sections. The first two chapters describe two flow situations 
 used to compare Nek5000 with equivalent solvers and the two last chapters describe two distinct
 contributions to the mesh creating routine. 
 
@@ -48,7 +48,7 @@ set of buildings forming a street canyon. The gas is released from a circular so
 ground level and
 is translated by the wind field through the canyon, see figure~\ref{fig:layout}.
 In this figure $h$ have been used as the length scale. The dotted lines
-indicates the positions where data is collected.
+indicate the positions where data is collected.
 %
 \begin{figure}[h]
 	\includegraphics[width=1.1\textwidth]{Figures/layout.eps}
@@ -72,8 +72,6 @@ The release of gas will result in a plume that is advected with the wind field,
 see figure~\ref{fig:plume}. The concentration of the released gas at the 
 indicated positions in figure~\ref{fig:layout} are compared with 
 experimental data and simulations performed in CDP\@. 
-The wind-field in the tunnel is created by an inflow condition that is defined from previous 
-simulations in CDP~\cite{eriksson}.
 For clarification some of the variables repeatedly mentioned throughout this thesis will be 
 stated explicitly in table~\ref{tab:simplevariables}.
 \begin{table}
@@ -87,16 +85,16 @@ stated explicitly in table~\ref{tab:simplevariables}.
     \end{tabular}
     \caption{Essential variables, *this value is calculated as a time average of the velocity in 
         x-direction at a point far away from the floor and walls and will therefore 
-        vary a small amount from case to case. }
+        vary by a small amount from case to case. }
     \label{tab:simplevariables}
 \end{table}
 
 The inflow conditions had to be extrapolated onto the domain at each time step. To mimic the situation in the wind-tunnel the velocity field
 on the inflow was generated in a different simulation performed in CDP. The inflow velocity was written to file every 
 $0.0013$s for a total of $28$s and had to be interpolated onto the domain for the simulations in Nek5000 since the grid was not identical.
-The right plot in figure~\ref{fig:inflow} is an instantanous picture of the inflow velocity in x-direction, 
+The right plot in figure~\ref{fig:inflow} is an instantaneous picture of the inflow velocity in x-direction, 
 notice how the pattern repeats itself along the y-axis. This is because the inflow data was generated in a smaller channel, $\approx 1/3$ of the 
-width of the computational domain used for the data sampling. An interpolation algorithm had to be implemented in order to adjust 
+width of the computational domain used for the data sampling. An interpolation algorithm implemented at FFI was applied in order to adjust 
 the inflow-data to the computational mesh, this was done directly in \verb|.usr|. 
 %
 \begin{figure}
@@ -116,7 +114,7 @@ the inflow-data to the computational mesh, this was done directly in \verb|.usr|
 \end{figure}
 %
 
-The simulation in Nek5000 was performed in the following manner; first 6 seconds of initialization of the velocity field in the 
+The simulation in Nek5000 were performed in the following manner; first 6 seconds of initialization of the velocity field in the 
 channel, followed by 8 seconds of gas release to initialize the gas-concentration. After assuring that the wind-field was 
 correctly created and the released gas had reached the measurement lines furthest from the source the data sampling of 22 seconds 
 started.
@@ -175,13 +173,11 @@ The drag and lift forces on a surface $S$ are given as
     \label{eq:dragnlift}
 \end{align}
 %
-$v_t$ is the tangential velocity, $\mathbf{n}=[n_x,n_y,0]$ and the tangent velocity vector is 
-defined as $\mathbf{t} = [n_y,-n_x,0]$.
-is the unit vector normal to the surface $S$ 
-Surface integrals in Nek5000 are solved numerically, $\int_S f dS = \sum f_i A_i$. Where $f$ is some function and $A_i$ is the areal corresponding
-to the nodal value $f_i$. 
-
-\colorbox{green}{Nevne hvordan integralet løses i Nek?? Heller skrive i appendiks??}
+$v_t$ is the tangential velocity, $\mathbf{n}=[n_x,n_y,0]$ is the unit vector normal to the surface $S$ 
+and the tangent velocity vector is defined as $\mathbf{t} = [n_y,-n_x,0]$.
+ 
+Surface integrals in Nek5000 are solved numerically, $\int_S f dS = \sum f_i A_i$, where $f$ is some function and $A_i$ is the area corresponding
+to the nodal value $f_i$. $A_i$ corresponds to a two dimensional mass matrix in Nek5000 available for all elements.
 
 The coefficients corresponding to these forces known as the drag and lift coefficients 
 are given by the formulas 
@@ -230,11 +226,8 @@ from the second degree approximation of the circle segments are presented in \cr
 An additional test that is performed on this case is how different settings in Nek5000 will affect the estimation of the drag and lift coefficients.
 Perhaps most curious is whether the $P_NP_N$- or $P_NP_{N-2}$ formulation is applied. Note that the pressure in the latter formulation is 
 not defined on the boundary of the cylinder and does therefore need to be extrapolated onto the surface in order for the integral to be 
-calculated. On the other side is the splitting scheme implied by the $P_NP_N$ known to produce large errors close to the boundary. 
-
-\colorbox{red}{Add some theorem addressing this error difference! }
+calculated. On the other side is the splitting scheme implied by the $P_NP_N$ forces the erroneous boundary condition on the pressure.
 %
-
 \section{Advances in the mesh-generation routine} \label{xyzarc}
 
 The Gordon Hall (GH) algorithm which is described in~\ref{GH} was already implemented as a function in the Nek library.
@@ -285,7 +278,7 @@ The remaining operation is to call the Gordon Hall algorithm and create the inte
 \section{Additional projection algorithm}\label{surfpro}
 The routine \verb|xyzarc()| enables the user to more accurately represent circular edges.
 For more complex geometry such as actual terrain and other surfaces without any analytic
-expression the large element sizes makes the geometrical representation difficult. 
+expression the large element sizes make the geometrical representation difficult. 
 Theoretically the GLL-points can be projected onto a non-analytical surface, but since 
 the element mesh is created in a different program the necessary information is not available
 to Nek5000. The idea is to create an additional fine surface mesh in ICEM such
@@ -294,7 +287,7 @@ During the initialization of the mesh in Nek5000 the program can read this infor
 the provided surface. 
 The routine was made as automatic as possible, and can be summed up in these four steps
 \begin{enumerate}
-    \item Create initial Mesh and convert to .rea applying nmshconvert.
+    \item Create initial Mesh and convert to \verb|.rea| applying mshconvert.
         \item Create refined surface mesh on the non-regular surface.
         \item Enable projection by setting param(33) = 1.
         \item Choose number of interpolation points by modifying param(34)= (1,2,3)
@@ -304,8 +297,8 @@ In addition to the standard Nek library the file \verb|surfpro.f| needs to be ad
 the folder \verb|/trunk/nek/| along with all the other scripts applied by Nek5000.
 This implementation could be done directly in \verb|.usr|, but it is of practical 
 interest to keep this file as tidy as possible.
-Two external files are also generated by the modified nmshconvert script for the algorithm to work.
-\verb|surf.i| contains all the coordinated to the points on the refined surface. 
+Two external files are also generated by the modified mshconvert script for the algorithm to work.
+\verb|surf.i| contains all the coordinates to the points on the refined surface. 
 \verb|bdry.i| contains the element, and face number to all the faces to be projected onto the surface.
 %When generated they automatically alter the local \verb|SIZE| file to contain some key variables 
 %applied in the algorithm in \verb|surfpro.f|.
@@ -419,7 +412,7 @@ $c_{num}^e,c_{den}^e$ denote the numerator and the denominator in \eref{eq:dynsm
 The means are then calculated as 
 \begin{align}
     c_{num}^e = \frac{1}{V}\int_{\Omega_e}c_{num}^e d\: \Omega 
-    = \frac{1}{V}\sum_{i = 1}^{N^3}\rho_{i,e}c_{num,i}^{e}.
+    \approx \frac{1}{V}\sum_{i = 1}^{N^3}\rho_{i,e}c_{num,i}^{e}.
     \label{eq:averageroutine}
 \end{align}
 And similarly for $c_{den}^e$.
