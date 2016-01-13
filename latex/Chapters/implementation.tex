@@ -123,7 +123,7 @@ started.
 %
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.6\textwidth]{Figures/plume.png}
+	\includegraphics[width=0.6\textwidth]{Figures/plume2.png}
 	\caption{An iso-surface of the average concentration with $C=0.03$ 
     after 30 seconds of sampling.}
 	\label{fig:plume}
@@ -175,6 +175,9 @@ The drag and lift forces on a surface $S$ are given as
     \label{eq:dragnlift}
 \end{align}
 %
+$v_t$ is the tangential velocity, $\mathbf{n}=[n_x,n_y,0]$ and the tangent velocity vector is 
+defined as $\mathbf{t} = [n_y,-n_x,0]$.
+is the unit vector normal to the surface $S$ 
 Surface integrals in Nek5000 are solved numerically, $\int_S f dS = \sum f_i A_i$. Where $f$ is some function and $A_i$ is the areal corresponding
 to the nodal value $f_i$. 
 
@@ -417,6 +420,31 @@ With the routine described in \cref{surfpro} the surface was approximated accura
 	\includegraphics[width=0.7\textwidth]{Figures/mesh_ekebergaasen2.png}
     \caption{The initial mesh of the hill}
 	\label{fig:ekeberg}
+\end{figure}
+%
+%
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=0.7\textwidth]{Figures/helicopter.jpg}
+    \caption{Body of a helicopter}
+	\label{fig:helicopter}
+\end{figure}
+%
+%
+\begin{figure}
+\centering
+  \centerline{
+\begin{minipage}{.6\textwidth}
+  \includegraphics[width=1.0\linewidth]{Figures/helicopter.jpg}
+  %\captionof{figure}{A figure}
+\end{minipage}%
+\begin{minipage}{.6\textwidth}
+  \centering
+  \includegraphics[width=1.0\linewidth]{Figures/mesh_ekebergaasen2.png}
+\end{minipage}
+}
+  \caption{The averaged (left) and instantaneous (right) x-velocity on the inflow boundary.}
+  \label{fig:surfpro}
 \end{figure}
 %
 The algorithm restricts itself to relatively smooth surfaces.

@@ -14,7 +14,7 @@
 
 \colorbox{green}{Rettskrivning! }
 
-\colorbox{green}{Dropp hattfunksjoner, make ediff pretty! figur som viser energispekteret, ha et konkret eksempel med filtrering }
+\colorbox{green}{make ediff pretty! figur som viser energispekteret, ha et konkret eksempel med filtrering }
 
 %\section{Galerkin formulation}
 
@@ -491,7 +491,7 @@ does not imply dissipation of energy, let the energy norm be defined as $E(u) = 
 By applying Parseval's identity~\cite{Young} the difference in energy between the original solution
 and the filtered solution is given as 
 \begin{align}
-   \epsilon_{diff}&=E(u) - E(F_{\alpha}u) \\
+   \epsilon&=E(u) - E(F_{\alpha}u) \\
                 &= 2\alpha\hat{u}_N(\hat{u}_N||L_N||^2+\hat{u}_{N-2}||L_{N-2}||^2)
     - \alpha^2\hat{u}^2_N(||L_N||^2+||L_{N-2}||^2)\\
     &\approx \frac{2\alpha}{N}\left[  (1-\frac{\alpha}{2})\hat{u}_N^2 + 
@@ -500,8 +500,8 @@ and the filtered solution is given as
 \end{align}
 Which can take both positive and negative values depending on the sign and size of
 $\hat{u}_N\hat{u}_{N-2}$. By applying the known norm of the Legendre polynomials 
-the deduced absolute error $\epsilon_{diff}$ of the filtered energy is of order 
-$\epsilon_{diff}\sim \alpha/N$. The approximation $||L_N||^2\approx||L_{N-2}||^2\approx 1/N$
+the deduced absolute error $\epsilon$ of the filtered energy is of order 
+$\epsilon\sim \alpha/N$. The approximation $||L_N||^2\approx||L_{N-2}||^2\approx 1/N$
 have been used to achieve the result in \eref{eq:filterenergy}.
 
 \subsubsection{A physical approach to the filter}
@@ -897,7 +897,7 @@ The IVP \eref{eq:IVP} is then solved to obtain $\mathbf{v}^{*}$.
 
 %\subsection{Pressure-correction}
 
-\subsection{Discrete pressure correction method based on the Stokes problem} \label{prescorr}
+\subsection{Inexact factorization / pressure correction method} \label{prescorr}
 The fractional step method is a splitting method based on the idea that two analytical 
 operators can be applied in sequence and still provide a good result. The method presented 
 in this section makes no such assumption and splits the discrete system of equation instead 

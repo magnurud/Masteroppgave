@@ -383,7 +383,28 @@ Sed ullamcorper quam eu nisl interdum at interdum enim egestas. Aliquam placerat
 \textbf{CONVENTION} & we let subscript $h$ denote the discretized variables \\
 %$u$ & Solution of the partial differential equation\\
 %$\mathbf{w} = [w_1 \; w_2 ] $ & Negative gradient of $u$ \\
-%$\mathbf{u} = [ \mathbf{w} \; u ]^T$ & Solution to the first order transformation \\ 
+$\mathbf{u}$ &  the velocity field \\ 
+$p$ & pressure \\
+$\mathbf{f}$ & source function / loading function \\
+$\nu$ & kinematic viscosity \\
+$U$ & Freestream velocity / velocity scale \\
+$L$ & Length scale \\
+$Re = UL/\nu$ & Reynolds number \\
+$d$ & The dimension of the problem, in this thesis $d=3$ \\
+$\Omega$ & Some general domain in $\mathbb{R}^d$ \\
+$s_{ij} = 1/2(\nabla \mathbf{u} + \nabla^T \mathbf{u})$ & Strain-rate tensor \\
+$\mathcal{S} = |s_{ij}|= \sqrt{2s_{ij}s_{ij}}$ & Absolute value of the strain-rate tensor \\
+$\tau_{ij} $   & subgrid-scale tensor \\
+$\mathcal{A}$  & The bilinear Laplace operator \\
+$\mathcal{B} $ & The bilinear divergence operators \\
+$\mathcal{C} $ & The trilinear convection operators \\
+$A$ & The stiffness matrix \\
+$D$ & The divergence matrix \\
+$C$ & The convection matrix \\
+$M$ & The mass matrix \\
+$H$ & The Helmholtz matrix \\
+
+
 %$ R_g $ & Lifting function \\
 %$\tilde{\mathbf{u}} = \mathbf{u}-R_g $ & Solution to the first order transformation minus the lifting function \\ 
 %$\mathbf{b}$ & Two dimensional vector field \\
@@ -398,9 +419,6 @@ Sed ullamcorper quam eu nisl interdum at interdum enim egestas. Aliquam placerat
 %$\tilde{F}(\cdot)$ & Linear form obtained from the least squares approach including BC's \\
 %$\mathring{F}(\cdot)$ & Linear form obtained from the combined GLS-method \\
 %\textbf{Linear Algebra} \\
-%$A$ & The stiffness matrix \\
-%$G$ & The gradient matrix \\
-%$R$ & The reaction matrix \\
 %$F$ & The vector obtained from the linear functional $F(\cdot)$ \\ 
 %$W$ 	& The diagonal matrix with the GLL-weights \\ 
 %$L$ 	& The matrix with the derivative of the lagrange functions in each node \\ 
