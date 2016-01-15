@@ -1,4 +1,4 @@
-% Chapter 5
+% Chapter 6
 
 \chapter{Results} % Main chapter title
 
@@ -10,9 +10,9 @@
 
 
 \section{Mesh projection routine}
-As a test of the algorithm a mesh was created based on the hill of Ekeberg in Oslo and
+As a test of the algorithm a mesh was created based on the hill of Ekeberg in Oslo 
 and on a helicopter body.
-The surfaces was loaded as a \verb|.tin| file in ICEM and a coarse hexmesh was created 
+The surfaces were loaded as \verb|.tin| files in ICEM and coarse hex meshes were created 
 around the surfaces. The domains are presented in given in 
 figure~\ref{fig:surfpro}, notice the coarse element sizes in the figure to the right.
 These geometries were chosen because they resemble a typical problem with 
@@ -20,7 +20,8 @@ spectral elements. Since the initial element-mesh is relatively coarse it does n
 the details in the geometry and the GLL-nodes distributed on the faces corresponding to the 
 unstructured surface will be misplaced. 
 %It is however no theoretical problem to reconstruct the surface with with a polynomial of order $P$. 
-With the routine described in \cref{surfpro} the surface was approximated accurately by higher order polynomials.
+With the routine described in \cref{surfpro} the surface is approximated accurately 
+by higher order polynomials.
 %
 \begin{figure}
 \centering
@@ -64,7 +65,7 @@ essential, both coefficients are computed with significantly better accuracy.
 		\bottomrule	
 	\end{tabular}
 	\caption{Results for the drag and lift coefficients with reference values 
-	$c_D = 6.18533$ and $c_L = 0.009401$. $p=11$ for the simulations in Nek.}
+	$c_D = 6.18533$ and $c_L = 0.009401$. $p=11$ for the simulations in Nek5000.}
 \label{tab:testcase}
 \end{table}
 %
@@ -73,8 +74,8 @@ just as well or better in most cases. It should be mentioned that the division o
 in a different manner for Nek5000 so the comparison is not as direct as it may seem from the table.
 
 \subsection{Parameter adjustments in Nek5000}
-As discussed in \cref{nek} there are many adjustments available in Nek. 
-In order to enlighten the actual effect on the results, several different settings was
+As discussed in \cref{nek} there are many adjustments available in Nek5000. 
+In order to enlighten the actual effect on the results, several different settings were 
 investigated for this case and the results are presented in table~\ref{tab:perf}. 
 The spectral convergence is also confirmed in figure~\ref{fig:liftconv} by calculating the 
 lift coefficient error for increasing polynomial degree. 
@@ -92,9 +93,9 @@ lift coefficient error for increasing polynomial degree.
 
 The setting that has the biggest impact on the result is the $P_NP_N$ scheme which clearly performs 
 worse than the others. This is as expected because of the splitting scheme applied, which 
-induces nonvanishing errors in the pressure close to the boundary. 
+induces non-vanishing errors in the pressure close to the boundary. 
 Use of the IOFS method also has a negative effect on the accuracy,
-this is also as expected because of the stability-accuracy tradeoff for this method.
+this is also as expected because of the stability-accuracy trade-off for this method.
 Remember that this scheme allows a much higher time step. The filtering is the least significant change
 which confirms the analytical results from \eref{eq:filterenergy}. 
 %
@@ -142,7 +143,7 @@ the Smagorinsky model does not damp spurious velocity modes in the same degree a
 	\centering
 	\includegraphics[width=0.6\textwidth]{Figures/maxvel.png}
     \caption{$||\mathbf{u}||_{\infty}$ as a function of time, the green line represents the 
-simulation with the dynamic smagorinsky SGS-model and the blue line represents the filtering 
+simulation with the dynamic Smagorinsky SGS-model and the blue line represents the filtering 
 with $\alpha = 0.05$ and a quadratic decay on the last 3 modes.}
 	\label{fig:maxvel}
 \end{figure}
@@ -211,7 +212,7 @@ Two dashed lines on either side of the centerline represent the canyon.}
 \end{figure}
 
 Figure~\ref{fig:cHall} shows the scaled concentration along the dotted lines in~\ref{fig:layout}. 
-According to this figure Nek does indeed capture the important features of the mean concentration.
+According to this figure Nek5000 does indeed capture the important features of the mean concentration.
 At the two first measurement lines the results are slightly skewed to the right, this is to some degree 
 also the case for the CDP simulations but not for the experiment. A possible explanation could be that 
 the inflow condition favours one of the sides of the domain, or simply that the sampling time is not 
@@ -219,7 +220,8 @@ sufficiently long.
 %Along the second measurement line which is placed in the middle of the 4 cubes Nek5000 
 %estimates a concentration peak lower than both the reference solutions.  
 
-The results also indicate that the difference between the SGS-model and filtering are not that large,
+The results also indicate that the difference between the SGS-model and filtering
+is not that large,
 if anything the SGS-model shows a tendency to estimate lower concentration peaks. This could be a 
 result of too much smoothing due to the turbulent viscosity. An important difference between the 
 filtering and the SGS-model is the fact that the filter works based on the current state of the flow 
@@ -256,5 +258,5 @@ the $P_NP_N$ spitting errors also could be significant close to the wall.
 
 
 \section{Discussion and Conclusion}
-\colorbox{green}{How did Nek perform overall, user-friendly ?,correctness,speed etc.}
+\colorbox{green}{How did Nek5000 perform overall, user-friendly ?,correctness,speed etc.}
 

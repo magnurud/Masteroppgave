@@ -42,12 +42,12 @@
 
 %\colorbox{green}{vær presis med den svake formuleringen!!}
 \section{Numerical Concepts on The Stokes problem} \label{stokes}
-In the previous chapter the N-S equations was presented and reformulated in several ways without any details on how to
+In the previous chapter the N-S equations were presented and reformulated in several ways without any details on how to
 actually solve the equations. This chapter aims to give a more detailed description of the solution methods applied.
-The choice of algorithms and solution spaces required a more thourough analysis which is normally performed on the 
+The choice of algorithms and solution spaces required a more thorough analysis which is normally performed on the 
 steady Stokes problem. The steady Stokes problem does not include the convection term but the highest order terms are all present
-and is therefore a valid equation to perform this necessary analysis \cite{Karniadakis}. Analysis of the time schemes applied
-will be left for a later chapter. The steady Stokes problem with homogenous boundary conditions is given as 
+and is therefore a valid problem to perform this necessary analysis \cite{Karniadakis}. Analysis of the time schemes applied
+will be left for a later chapter. The steady Stokes problem with homogeneous boundary conditions is given as 
 %
 \begin{align}
     \begin{split}
@@ -60,7 +60,7 @@ will be left for a later chapter. The steady Stokes problem with homogenous boun
 \end{align}
 %
 Applying the weak formulation to the Stokes problem implies a minimum requirement on the spaces for $\mathbf{u}$ and $p$,
-and their testfunctions. These spaces will be defined as 
+and their test functions. These spaces will be defined as 
 %
 \begin{align}
     \begin{split}
@@ -70,7 +70,7 @@ and their testfunctions. These spaces will be defined as
     \label{eq:spaces}
 \end{align}
 %
-The formulation can easily be extended to include inhomogenous Dirchlet conditions on $\mathbf{u}$ by defining a 
+The formulation can easily be extended to include inhomogeneous Dirichlet conditions on $\mathbf{u}$ by defining a 
 lifting function as described in \cite{Quarteroni}. Note also that the pressure is only present through its gradient 
 and is therefore not uniquely defined unless the extra constraint on the mean is defined, hence the $0$ in $L_0^2$. 
 The weak form can now be stated as
@@ -108,7 +108,7 @@ For a Spectral Element formulation of this problem which will be elaborated in \
 a common choice of subspaces $(X,Q)$ is $(P_N\cap H^1_0,P_{N-2} \cap L^{2}_{0})$. This will be referred to as the 
 $P_NP_{N-2}$-formulation where $P_N$ denotes the space of polynomials up to degree $N$.
 It was however proved by Guermond in~\cite{GuermondPnPn} that the fractional step algorithm requires a 
-form of the Stokes problem which automatically fullfills the inf-sup condition and therefore does not require any particular 
+form of the Stokes problem which automatically fulfills the inf-sup condition and therefore does not require any particular 
 discrete subspaces to be chosen. For the sake of convenience the polynomial degree of the pressure and the velocity will be 
 the same and the discrete pair of subspaces $(X,Q)$ is chosen to $(P_N\cap H^1_0,P_{N} \cap L^{2}_{0})$, known as the $P_NP_N$-formulation.
 
@@ -142,7 +142,7 @@ generalized quadrature rule before being added to the global system of equations
 be generalized for a wide range of problems.
 
 FEM is called a projection method since the solution $u_h\in X_h^p$ is a projection
-of the actual solution $u$ of the BVP onto the discrete space $X_h^p$. Provided that the initial BVP is well-posed there exists to 
+of the actual solution $u$ of the BVP onto the discrete space $X_h^p$. Provided that the initial BVP is well-posed there exists two 
 constants $M,\alpha>0$ known as the bounded and coercivity constant such that the error of the solution can be reduced to a pure 
 interpolation error. The result is known as Cea's lemma,  
 \begin{align}
@@ -175,7 +175,7 @@ quadrature rules of higher order. A formal statement and numerical validation of
 \section{Spectral methods}
 Spectral methods (SM) share a some of the mathematical ideas as FEM, but are not as widely used in real life problems. 
 There are many ways to apply SM, 
-and in this thesis only the Galerkin version with numerical integration (known as G-NI) will be considered and will be referred to only as SM. 
+and in this thesis only the Galerkin version with numerical integration (sometimes referred to as G-NI) will be considered and will be referred to only as SM. 
 For a full introduction to SM and its applications to BVP see~\cite{Canuto}.
 SM can be reduced to a interpolation problem such as FEM, and are very interesting from a theoretical point of view due to its 
 spectral convergence rate which allows you to obtain solutions of extremely high accuracy. 
@@ -221,9 +221,9 @@ This definition of the expansion coefficients is very convenient since the actua
 the function in any point can just be read directly from the coefficients without having to 
 sum all the contributions from the different polynomials.
 Creating a basis for 2 and 3 dimensions is done simply by taking the tensor product 
-of the basis functions in each direction. let $i,j,k$ denote the one dimesional indexes in each direction running from 
+of the basis functions in each direction. Let $i,j,k$ denote the one dimensional indexes in each direction running from 
 $1$ to $N$ while $m,l,n$ denote three dimensional indexes running from $1$ to $N^d$. 
-for 3 dimensions the basis functions $\Psi$ is given as 
+for 3 dimensions the basis functions $\Psi_{l}$ are given as 
 \begin{align}
     \Psi_{l}(\mathbf{x}) = \psi_i(x)\psi_j(y)\psi_k(z).
     \label{eq:3dbasis}
@@ -301,7 +301,7 @@ The result was the Spectral element method. Several formulations were investigat
 Patera and Maday in the papers \cite{maday1989}, \cite{Patera1984}, \cite{Patera1986} with 
 important contributions from Fischer, Rønquist and several more.
 It is important to understand that when solving the N-S equations the efficiency of the solution 
-method is extremely important. The algorithm has to be parallelizable and the development of the
+method is crucial. The algorithm has to be parallelizable and the development of the
 super computers and computational clusters has played an important role in 
 deciding the method applied today. 
 The idea is to divide the domain of the BVP into elements as in FEM and then use spectral basis 
@@ -336,9 +336,9 @@ domain corresponding to $\mathbf{x} = [x,y]^T$ in the deformed domain. The trans
 \end{align}
 Here $\hat u,\hat f$ are obtain by simply substituting $\mathbf{x}$ with $\mathcal{F}(\boldsymbol{\xi})$ and $\hat \nabla $ is the partial 
 differential operator wrt. $\boldsymbol\xi$. The important thing to notice here is that whenever an integral is solved and a derivative is 
-introduced the Jacobian appears in the equation. When applying the GLL-quadrature to solve the integrals equality is guaranteed if and 
+introduced the Jacobian appears in the equation. When applying the GLL-quadrature to solve the integrals, equality is guaranteed if and 
 only if the function integrated is of polynomial degree $2n-1$ or less, 
-and the error gets bigger with increasing polynomial degree. A higher order jacobian could imply a large error in the quadrature.
+and the error gets bigger with increasing polynomial degree. A higher order Jacobian could imply a large error in the quadrature.
 
 Although the whole domain $\Omega$ is deformed, the deformation of each
 element $\left\{ \Omega_k \right\}$ is normally a lot less crucial. This gives SEM a huge advantage and allows it to 
@@ -391,7 +391,7 @@ Applying the identities from \eref{eq:transforms} to \eref{eq:HelmholtzdiscreteS
 Notice how the integrals depend on the Jacobian $\mathbf{J}$ and its determinant $J$.
 The local matrices $A_k,M_k$ and the loading vector $f_k$ are gathered from each element.
 Equivalently as for FEM the global matrices has to be assembled
-from all the local matrices corresponding to each subdomain. This procedure is general and 
+from all the local matrices corresponding to each sub domain. This procedure is general and 
 if the elements are chosen to be sufficiently small it can 
 be performed on almost any deformed domain as opposed to SM. 
 
@@ -407,7 +407,7 @@ requires regularity in the entire domain is a huge advantage when working with t
 in complex domains. 
 \begin{theorem}
     Let $\Omega$ be a domain in $\mathbb{R}^d$ and $\left\{ \Omega_k \right\}$ 
-    be the non-overlapping elements. $X_h = H^1_0\cap\mathbb{P}_{N,K}$ is the SEM space. If $u$ is continous in the entire domain 
+    be the non-overlapping elements. $X_h = H^1_0\cap\mathbb{P}_{N,K}$ is the SEM space. If $u$ is continuous in the entire domain 
     and $u_{|\Omega_k} \in H^{\sigma}(\Omega_k) \forall \; k $ the following will hold for 
     any $\sigma \ge 1$
 \begin{align}
@@ -416,7 +416,7 @@ in complex domains.
     \label{thm:semconvergence}
 \end{theorem}
 %
-Note that this result is for a spatial approximation of a function $u$, allthough SEM provides 
+Note that this result is for a spatial approximation of a function $u$, although SEM provides 
 great error estimates the solution of the N-S equations are also restricted by the errors due to 
 temporal discretizations. This will be further discussed in \cref{timeNS}.
 \subsection{Filtering} \label{filtering}
@@ -564,7 +564,7 @@ Euler of \eref{eq:ivps2} can be written as
 \end{align}
 %
 
-Notice the resemblence to the application of the filter in \eref{eq:filterstepwise}. The second step
+Notice the resemblance to the application of the filter in \eref{eq:filterstepwise}. The second step
 is identical if $\alpha_i = \Delta t/(1+\Delta t)$. The truncated Laplacian $A^*$ is not equal to the corresponding
 filter matrix $\mathcal{F}_{\alpha}$, but there are some similarities between these to matrices.
 They are both upper triangular with zeros along the diagonal and positive entries on the second 
@@ -577,8 +577,8 @@ matrix.
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.5\textwidth]{Figures/matrix.png}
-	\caption{The non-zero entries of the laplacian matrix applied on the last eight legendre modes.
-    The blue dots are present in both the laplacian matrix and the filter matrix
+	\caption{The non-zero entries of the Laplacian matrix applied on the last eight Legendre modes.
+    The blue dots are present in both the Laplacian matrix and the filter matrix
     while the red dots are only non-zero for the Laplacian.}
 	\label{fig:entries}
 \end{figure}
@@ -863,7 +863,7 @@ solved and the updated solution is stated on the left hand side.
 As earlier mentioned this method is convenient because it allows us to handle the different 
 terms with different solution techniques. So since the first equation in \eref{eq:fracstep}
 involves the non-linear skew-symmetric advection operator this equation is solved using a 
-explicit Adam Bashford scheme. The second equation is the Possion pressure equation which
+explicit Adam Bashford scheme. The second equation is the Poisson pressure equation which
 assures a divergence free velocity field. 
 
 \colorbox{red}{Should this note stay?}
@@ -892,7 +892,7 @@ This method provides an efficient algorithm, but is known to produce errors of o
 The problem is the pressure Poisson equation which is solved with incorrect boundary 
 conditions. The first step can also be evaluated in an OIFS-way to gain stability,
 by rewriting the initial equation as described in the previous chapter. This allows you 
-to solve the unstable advection operator with multiple substeps. Explicitly the first step 
+to solve the unstable advection operator with multiple sub steps. Explicitly the first step 
 in \eref{eq:fracstep} would be solved by applying the discretization used in \eref{eq:NSOIFS1}
 with an empty right hand side since the rest of the terms are take care of in the next steps. 
 The IVP \eref{eq:IVP} is then solved to obtain $\mathbf{v}^{*}$.
@@ -1019,7 +1019,7 @@ Applying these two matrices leads to a two step algorithm on the form
 In order to clarify what is actually going on a brief description of each step is given,
 The first step in \eref{eq:PCstep1} corresponds to an initial solution of the velocity using 
 the old pressure value, notice that this will not guarantee a divergence free velocity.
-The second step in \eref{eq:PCstep1} is the discrete pressure poisson equation and will 
+The second step in \eref{eq:PCstep1} is the discrete pressure Poisson equation and will 
 make sure that the pressure corresponds to a divergence free flow. When solved in practice 
 the velocity used in this equation is the updated velocity from the first step. This way of 
 updating the pressure is the reason why this method is often referred to as a pressure 

@@ -79,11 +79,11 @@ the mesh routines are further elaborated an overview of the file-structure will 
 %
 In order to work with Nek5000 there are some practical information that needs to be clarified.
 Nek5000 is recompiled for every case and the user specify all the case specific 
-information in the three files \verb|{.rea,.usr,SIZE,}|. The \verb|.usr| and \verb|SIZE| file are 
+information in the three files \verb|{.rea,.usr,SIZE,}|. \verb|.usr| and \verb|SIZE| are 
 compiled with the standard Nek5000 library using makenek which creates the executable file \verb|nek5000|,
 while the \verb|.rea| file contains case-specific information read during initialization.
 The user guide \cite{Nek} contains a tutorial which explains the necessary 
-steps on how to get started with Nek. The next chapters will try to give some understanding on 
+steps on how to get started with Nek5000. The next chapters will try to give some understanding on 
 how the user is able to make the changes necessary for each case. Figure~\ref{fig:files} illustrates 
 how the files work together. 
 %
@@ -122,11 +122,11 @@ while the \verb|.usr| needs to be applied for more advanced implementations.
        $K$ & LOGICAL SWITCHES & Boolean variables defining the solution method \\ 
        $E$ & MESH DATA & All nodes and elements are specified here\\
        $E$ & CURVED SIDE DATA & All the curved sides are specified here\\
-       $E$ & FLUID BC& BCtype for all elements and their faces\\
-       $E$ & THERMAL BC& Thermal BCtype for all elements and their faces\\
+       $E$ & FLUID BC& BC type for all elements and their faces\\
+       $E$ & THERMAL BC& Thermal BC type for all elements and their faces\\
        $K$ & PRESOLVE/RESTART & Filename(s) of an initialized solution \\
        $K$ & INITIAL CONDITIONS & possibilities to specify IC further \\
-       $K$ & OUTPUT FIELD & information that will be written to file \\
+       $K$ & OUTPUT FIELD & information that will be written to file\\
     \end{tabular}
     \caption{An overview of the different sections in .rea. $E$ represents a predefined number depending on your problem
     which scales roughly as the number of elements, while $K\approx 1-25$ are user defined numbers.}
@@ -263,7 +263,7 @@ It was however shown in~\cite{Guermond2006} that the discrete splitting also int
 
 
 \section{Nek5000 for complex geometries}
-For complex curved geometries such as bent cylinders, spheres, ellipsoidals etc.
+For complex curved geometries such as bent cylinders, spheres, ellipsoids etc.
 the user has to be able to express these surfaces analytically and write a routine
 in \verb|usrdat2| that projects the points of interest onto the surface.
 Even for a simple shape such as a sphere some implementation has to be done and it 
@@ -287,7 +287,7 @@ solver it is necessary to address this problem since the initial grid is a lot c
 compared to equivalent settings in other solvers.
 
 As a part of this thesis two advancements have been made regarding complex geometries. 
-The first part is a fully automatic procedure which projects any edge to a circle. This is a
+The first part is a fully automatic procedure which projects any edge onto a circle. This is a
 convenient method when working with cylinder geometries and other similar shapes. The second part
 is an attempt to include general boundary surfaces by creating a semi-automatic procedure allowing 
 the user to represent any geometry with polynomials of the same order as applied for the basis functions.

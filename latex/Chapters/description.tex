@@ -39,7 +39,7 @@ and the incompressible N-S equations on a domain $\Omega\subset\mathbb{R}^d$ can
 %Stokes problem and Darcy flow.
 
 A commonly studied simplification of this problem is the Stokes problem which
-is achieved by ommiting the convective term. This thesis will use the Stokes 
+is achieved by omitting the convective term. This thesis will use the Stokes 
 problem as a starting point for analysis of the full problem in \cref{stokes}.
 Before attempting to solve these equations it is important to understand the role of each term 
 and their mathematical influence on the problem. 
@@ -72,7 +72,7 @@ and their mathematical influence on the problem.
     is inversely proportional to the Reynolds number.
     The corresponding mathematical operator stabilizes the system and it is therefore generally easier
     to solve the N-S equations for high-viscosity fluids. It should be mentioned that this term is actually a simplification 
-    of the reynolds stress tensor which can be made under the assumption of incompressibility. The more general formulation which 
+    of the Reynolds stress tensor which can be made under the assumption of incompressibility. The more general formulation which 
     will be used in \cref{LES} is $2 \nabla s_{ij}$, the tensor $s_{ij}$ is known as the strain-rate tensor. 
 
 \item $\mathbf{f}$ 
@@ -101,7 +101,7 @@ I,O,SYM and W for Inflow, Outflow, Symmetry and Wall. Their mathematical formula
 \begin{itemize}
     \item I 
         - Inflow, defining the velocity field on the boundary. Mathematically this is equivalent to 
-        non-homogenous Dirchlet conditions. 
+        non-homogeneous Dirichlet conditions. 
         \begin{align}
             \mathbf{u} = \mathbf{g}(\mathbf{x},t).
         \end{align}
@@ -111,8 +111,8 @@ I,O,SYM and W for Inflow, Outflow, Symmetry and Wall. Their mathematical formula
             \frac{1}{Re} \nabla\mathbf{u}\cdot \mathbf{n}-p\mathbf{n}= 0.
         \end{align}
     \item SYM 
-        - Symmetry, denying any flux through ths boundary without disturbing the tangential velocity. Convenient
-        to apply in an open channel where the streamwise direction is parallell to the boundary. Mathematically this is 
+        - Symmetry, denying any flux through the boundary without disturbing the tangential velocity. Convenient
+        to apply in an open channel where the stream wise direction is parallel to the boundary. Mathematically this is 
         described as 
         \begin{align}
             \mathbf{u}\cdot \mathbf{n} = 0 \; \; , \; \; (\nabla\mathbf{u}\cdot \mathbf{t})\cdot \mathbf{n} = 0.
@@ -121,7 +121,7 @@ I,O,SYM and W for Inflow, Outflow, Symmetry and Wall. Their mathematical formula
         - Wall, Representing a physical object. Also known as the no-slip condition which is based on the assumption 
         that the fluid closest to the object moves with the same speed as the object itself. In this thesis all objects and 
         geometries is kept still so mathematically this is equivalent to 
-        homogenous Dirchlet conditions. 
+        homogeneous Dirichlet conditions. 
         \begin{align}
             \mathbf{u} = 0.
         \end{align}
@@ -278,10 +278,10 @@ detail in \cref{numerics}.
 \section{Resolving the turbulent term using LES} \label{LES}
 %\colorbox{green}{tydeliggjor filteret!, og bruk en annen $\tau$, filtervidde, tydeligg diff antakelse}
 When DNS is not feasible due to high Reynolds number on large domains LES is one of the most powerful tools for simulating turbulent flows.
-The idea is based on the fact that the small turbulent structures behave homogenously and are therefore easy to model.
+The idea is based on the fact that the small turbulent structures behave homogeneously and are therefore easy to model.
 This way the larger structures driven by geometry, inflow conditions and external forces can be simulated using a coarser 
 grid while the effect of the small structures are modelled. 
-LES will be introduced here in a mathematical fashion, allthough in many practical cases the filter function is not 
+LES will be introduced here in a mathematical fashion, although in many practical cases the filter function is not 
 well defined. The reason for this is that the grid itself is often considered a filter, with the 
 grid size as the filter width. As pointed out by Carati et al.~\cite{Carati} the filter is in this case nothing else but 
 numerical discretization error. 
@@ -289,7 +289,7 @@ numerical discretization error.
 
 \subsection{Filter}
 The idea behind LES starts with defining a filter, which separates the modelled structures from the resolved ones. 
-A filter in its general mathematical form itroduced by Leonard~\cite{Leonard} is given as 
+A filter in its general mathematical form introduced by Leonard~\cite{Leonard} is given as 
 \begin{align}
     U^r(\mathbf{x},t) = \int_{\Omega} G_r(\mathbf{r},\mathbf{x})U(\mathbf{x}-\mathbf{r},t)d\mathbf{r}
     \label{eq:filter}
@@ -361,7 +361,7 @@ operations on the N-S equations
 \end{align}
 %By defining $a_{ij}=l_a^2\mathcal{S}^a = l_a^2\sqrt{2s^{a}_{ij}s^{a}_{ij}}$ the subgrid scale tensor can 
 %be written as $\tau^a_{ij} = 2C_da_{ij} $. 
-Applying the $b$ filter on the first tensor in eq \eref{eq:stresstensors} allows us to define 
+Applying the $b$ filter on the first tensor in \eref{eq:stresstensors} allows us to define 
 a new tensor $L_{ij}$ which depends only on the $a$-filtered variables. The identity 
 is known as the Germano identity and was first introduced in 1991~\cite{Germano91},
 \begin{align}
@@ -422,7 +422,7 @@ in general terms as $2\nabla \cdot \nu s_{ij}$.
 	\label{eq:NSLES}
 \end{align}
 %
-Notice that if $v_t$ were to be a constant in the entire domain this equation would 
+Notice that if $v_t$ is a constant in the entire domain this equation would 
 be equivalent to the one for a fluid with viscosity $\nu'= \nu + \nu_t$. The idea is 
 that $\nu_t$ will be larger when the subgrid-structures are significant and closer to zero 
 when the flow is laminar. This is just one of many types of models but is attractive due to its
