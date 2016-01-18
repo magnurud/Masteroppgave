@@ -91,19 +91,20 @@ $\forall\; (\mathbf{v}, q) \in H^1(\Omega)^3\times L^2(\Omega)$.
 
 The numerical solution of this problem requires a discrete formulation of the weak form, with $(\mathbf{u}_h,p_h)\in V\times Q$
 as the discrete solution. The discrete spaces $V,Q$ are subspaces of $H_0^1,L^2_0$ equipped with the discrete $H_1$- and $L^2$-norm
-denoted $||\cdot||_V$ and $||\cdot||_Q$.
-For the discrete weak form to be well-posed it has to meet the requirements stated by the inf-sup condition, 
+denoted $||\cdot||_V$ and $||\cdot||_Q$. 
+For the discrete weak form to be well-posed it has to meet the requirements stated by the
+inf-sup condition. This condition is known from the study of saddle-point problems, and 
+is often referred to as the Babuska-Brezzi condition due to their important results
+in~\cite{Babuska} and~\cite{Brezzi}. The name inf-sup is a result of the
+following way of writing it,
 %
 \begin{align}
     \inf_{q\in Q}\sup_{\mathbf{v}\in V}\frac{\mathcal{B}(v,q)}{||\mathbf{v}||_V||q||_Q} \ge b.
     \label{eq:infsup}
 \end{align}
 %
-$b$ is some positive constant. This condition often known as the Babuska-Brezzi condition is 
-often met by creating a staggered grid, such that the pressure and the velocity are 
-evaluated at different points. 
-
-\colorbox{red}{Too early for this part??}
+Where $b$ denotes some positive constant. Fulfilling this condition often implies
+a staggered grid, such that the pressure and the velocity are evaluated at different points. 
 For a Spectral Element formulation of this problem which will be elaborated in \cref{sem},
 a common choice of subspaces $(X,Q)$ is $(P_N\cap H^1_0,P_{N-2} \cap L^{2}_{0})$. This will be referred to as the 
 $P_NP_{N-2}$-formulation where $P_N$ denotes the space of polynomials up to degree $N$.
@@ -267,7 +268,7 @@ is then given as
     \label{eq:Helmholtzquad}
 \end{align}
 %
-$\rho_n$ is the quadrature weight for the nth node, and $\mathbf{x}_n$ is the vector containing the coordinates to the nth node.
+$\rho_n$ is the quadrature weight for the $n$th node, and $\mathbf{x}_n$ is the vector containing the coordinates to the $n$th node.
 Note that all the indices $l,m,n=1,\cdots,N_xN_y$.
 This can be written in a compact matrix form as 
 \begin{align}
@@ -392,7 +393,7 @@ Applying the identities from \eref{eq:transforms} to \eref{eq:HelmholtzdiscreteS
 Notice how the integrals depend on the Jacobian $\mathbf{J}$ and its determinant $J$.
 The local matrices $A_k,M_k$ and the loading vector $f_k$ are gathered from each element.
 Equivalently as for FEM the global matrices has to be assembled
-from all the local matrices corresponding to each sub domain. This procedure is general and 
+from all the local matrices corresponding to each sub-domain. This procedure is general and 
 if the elements are chosen to be sufficiently small it can 
 be performed on almost any deformed domain as opposed to SM. 
 
@@ -570,7 +571,7 @@ Notice the resemblance to the application of the filter in \eref{eq:filterstepwi
 is identical if $\alpha_i = \Delta t/(1+\Delta t)$. The truncated Laplacian $A^*$ is not equal to the corresponding
 filter matrix $\mathcal{F}_{\alpha}$, but there are some similarities between these to matrices.
 They are both upper triangular with zeros along the diagonal and positive entries on the second 
-sup-diagonal. The main difference is that the Laplacian applied on the Nth Legendre function 
+sup-diagonal. The main difference is that the Laplacian applied on the $N$th Legendre function 
 $L_N$ affect all the terms $L_{N-2},L_{N-4},\cdots$, while the filter only affects $L_{N-2}$.
 In order to illustrate this effect~\fref{fig:entries} shows the non-zero entries of the
 Laplacian matrix, the red dots indicate the non-zero entries which is not present in the filtering
@@ -647,7 +648,7 @@ Let $\mathbf{\tilde{x}}$ be the mapping function from the reference domain to th
     \label{eq:mapping}
 \end{align}
 %
-$l_i$ being the ith Lagrange polynomial.
+$l_i$ being the $i$th Lagrange polynomial.
 The full description of the algorithm with helpful figures can be found in \cite{Deville} chapter 4.
 Without going to much into the mathematical foundation of this method a more intuitive and implementable
 presentation of the method will be provided in this chapter. 
@@ -721,7 +722,7 @@ Let us consider a simplified transient problem
     \label{eq:testproblem}
 \end{align}
 $f$ is here a function of $u$ and $t$, while $g$ is only dependent of the time $t$. Let superscript denote the timestep, 
-such that $g^{n}=g(n\Delta t)$ for some fixed timestep $\Delta t$. One step applying a kth order
+such that $g^{n}=g(n\Delta t)$ for some fixed timestep $\Delta t$. One step applying a $k$th order
 Backward Difference scheme (BDFk) yields
 %
 \begin{align}
@@ -730,7 +731,7 @@ Backward Difference scheme (BDFk) yields
 \end{align}
 %
 Now notice that $f^{n+1}=f(u^{n+1},t^{n+1})$ requires that $u$ is known at time $t^{n+1}$ which is not achievable at the current 
-step. This term is therefore approximated by a kth order explicit scheme leading to 
+step. This term is therefore approximated by a $k$th order explicit scheme leading to 
 %
 \begin{align}
     \sum_{j = 0}^{k} \frac{b_j}{\Delta t} u^{n+1-j} =\sum_{j = 0}^{k} a_j f^{n-j}u^{n-j}+g^{n+1}u^{n+1}.
@@ -890,11 +891,12 @@ Knowing that $A$ is the discrete Laplacian and $\mathbf{v}^n$ is a known variabl
 similar to problem \eref{eq:Helmholtz}.
 
 
-This method provides an efficient algorithm, but is known to produce errors of order O(1).
+This method provides an efficient algorithm, but is known to produce errors of order
+$\mathcal{O}(1)$.
 The problem is the pressure Poisson equation which is solved with incorrect boundary 
 conditions. The first step can also be evaluated in an OIFS-way to gain stability,
 by rewriting the initial equation as described in the previous chapter. This allows you 
-to solve the unstable advection operator with multiple sub steps. Explicitly the first step 
+to solve the unstable advection operator with multiple sub-steps. Explicitly the first step 
 in \eref{eq:fracstep} would be solved by applying the discretization used in \eref{eq:NSOIFS1}
 with an empty right hand side since the rest of the terms are take care of in the next steps. 
 The IVP \eref{eq:IVP} is then solved to obtain $\mathbf{v}^{*}$.
