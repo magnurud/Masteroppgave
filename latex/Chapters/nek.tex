@@ -47,7 +47,7 @@ With SEM as the numerical method applied it is possible to obtain very accurate 
 Nek5000 provides some basic tools for generation of mesh. For more complex geometries this tool cannot compare with more visualized-based softwares 
 such as ICEM from ANSYS which exports mesh to several numerical solvers such as Fluent and Nastran.
 It is therefore very useful to have an automatic way of converting a mesh created in ICEM to the format required by Nek5000. 
-The way the mesh is created in this thesis is visualized in figure~\ref{fig:mesh}.
+The way the mesh is created in this thesis is visualized in \fref{fig:mesh}.
 %
 \begin{figure}[h]
 	\centering
@@ -84,7 +84,7 @@ compiled with the standard Nek5000 library using makenek which creates the execu
 while the \verb|.rea| file contains case-specific information read during initialization.
 The user guide \cite{Nek} contains a tutorial which explains the necessary 
 steps on how to get started with Nek5000. The next chapters will try to give some understanding on 
-how the user is able to make the changes necessary for each case. Figure~\ref{fig:files} illustrates 
+how the user is able to make the changes necessary for each case. \fref{fig:files} illustrates 
 how the files work together. 
 %
 \subsection{SIZE}
@@ -108,7 +108,7 @@ for Nek5000.
 
 In \verb|.rea| all the problem specific parameters are given. While the content in \verb|SIZE| 
 is an absolute necessity to even compile the program the \verb|.rea| file contains variables 
-that are not used until the initialization of the case. The structure of the file is given in table~\ref{tab:reafile}.
+that are not used until the initialization of the case. The structure of the file is given in \tref{tab:reafile}.
 Of the 103 variables specified in the beginning of the file there are roughly 50 of them that are used. 
 Note that apart from the mesh information the \verb|.rea| file restricts itself to single variables and boolean flags 
 while the \verb|.usr| needs to be applied for more advanced implementations. 
@@ -137,7 +137,7 @@ while the \verb|.usr| needs to be applied for more advanced implementations.
 This file contains a series of standard routines open for modification by the user. In addition the user is free to specify 
 new routines if needed. A description of these routines are given in the Nek5000 User manual~\cite{Nek}. A list of those 
 frequently used for this thesis are described below, 
-%routines used for this thesis are stated in table~\ref{tab:userfile}.
+%routines used for this thesis are stated in \tref{tab:userfile}.
 %
 %\begin{table}
     %\centering
@@ -171,7 +171,7 @@ The \verb|.usr| file can be considered as the surface of Nek5000, easily accessi
 The most important building blocks in Nek5000 are the \verb|fluid| and \verb|heat| functions which solves the 
 N-S and Passive scalar equations. The N-S solver works very distinctly depending on the mathematical formulation
 enabled whereas the PS equation, which does not depend on the pressure, is solved similarly for $P_NP_N$ and $P_NP_{N-2}$. 
-For the sake of clarity, figure~\ref{fig:files} shows how the algorithms are called from the main routine.
+For the sake of clarity, \fref{fig:files} shows how the algorithms are called from the main routine.
 This is a very simplified flow chart which does not include choices such as filters, preconditioners, LES-model, 
 de-aliasing etc. but it captures the fundamental idea of the solver. 
 %
@@ -184,7 +184,7 @@ de-aliasing etc. but it captures the fundamental idea of the solver.
 %
 
 The description of the routines corresponding to Pressure-correction and fractional step are found in 
-chapters~\ref{prescorr} and~\ref{fracstep}. For further details regarding the 
+\cref{prescorr} and~\ref{fracstep}. For further details regarding the 
 implementation in Nek5000 it is referred to \cite{Fischer_hybridschwarz-multigrid}
 and \cite{TomboulidesPnPn}. An important difference between these to implementations is the fact that the $P_NP_N$ 
 implementation is based on an analytical splitting algorithm which introduces a non-vanishing error in the pressure along the boundaries of the 

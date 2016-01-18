@@ -29,7 +29,7 @@
 %\end{align}
 %The domain $\Omega$ is a closed subspace of $\mathbb{R}^d$, $\mathcal{L}: X(\Omega)\rightarrow Y(\Omega)$ and $\mathcal{B}: X(\partial\Omega)\rightarrow B(\partial\Omega)$ are two linear operators,
 %$f\in Y(\Omega)$ and $g\in B(\partial\Omega)$ are known functions and $u \in X(\Omega)$ is the wanted solution. 
-%The space $X(\Omega)$ will be denoted as the search space. A weak formulation can now be obtained by multiplying the first equation in \ref{eq:BVP} 
+%The space $X(\Omega)$ will be denoted as the search space. A weak formulation can now be obtained by multiplying the first equation in \eref{eq:BVP} 
 %by a test function $v \in X^t(\Omega)$ and integrating over the domain $\Omega$. By choosing $X^t(\Omega) = X(\Omega)$ the Galerkin formulation is obtained.
 %For more examples and information on this subject the first chapters in \cite{Quarteroni} are recommended. 
 
@@ -120,8 +120,8 @@ subsections.
 
 Finite element method (FEM) is one of the most widely used numerical methods applied on problems within construction, flow simulation and many 
 other areas. It offers a precise mathematical foundation and due to the connectivity properties of the elements 
-it guaranties a sparse system. The decomposition of the geometrical domain into a finite amount of elements chosen according to the problem 
-wanted to solve, makes it possible to create general algorithms applicable to all kinds of geometries. 
+it guaranties a sparse system. The decomposition of the geometrical domain into a finite amount of elements,
+makes it possible to create general algorithms applicable to all kinds of geometries. 
 For the full mathematical foundation of FEM it will be referred to \cite{Quarteroni}, but some of the key properties will be stated here
 in order to provide a thorough understanding of the spectral element method (SEM). 
 Throughout this section $p$ denotes the polynomial degree of the basis-functions, $h$ represents the average grid spacing, $E$ is the total
@@ -157,11 +157,11 @@ Where $I_h$ is the interpolation operator.
 
 Before this section ends it is important to understand the two ways to increase accuracy and the effects these two ways have on the algorithm. 
 Assume the solution of the BVP to be infinitely smooth and the domain be sufficiently regular. 
-This yields an error $e = Ch^p$, $C$ being some positive constant.
-Factors such as geometric complexity, condition-number,non-linear operators and the continuity of the 
+This yields an error $e = Ch^p$, being some positive constant.
+Factors such as geometric complexity, condition-number, non-linear operators and the continuity of the 
 solution will all provide slightly more complicated error estimates. 
 However for a simpler BVP such as the Poisson problem on the unit square, the error estimate is valid.  
-performing a $h$-refinement will lead to an algebraic convergence of order $p$, while the sparsity of the system is conserved
+A $h$-refinement will lead to an algebraic convergence of order $p$, while the sparsity of the system is conserved
 and the total algorithm does not change in any other way than increasing the number of elements.
 Keeping $h$ constant and increasing $p$ will provide spectral convergence, but the sparsity will be reduced and all integrals solved will require 
 quadrature rules of higher order. A formal statement and numerical validation of the error estimate can be found in \cite{Karniadakis} chapter 2.6.  
@@ -202,20 +202,20 @@ The GLL-nodes $\left\{ \xi_i \right\}_{N+1}$ are given as the solutions of the e
     (1-\xi^2)L_N'(\xi) = 0.
     \label{eq:GLL-nodes}
 \end{align}
-$L_N$ being the Legendre polynomial of degree $N$, defined from the Sturm-Louville problem
+$L_N$ being the Legendre polynomial of degree $N$, defined from the Sturm-Liouville problem
 \begin{align}
     \frac{d}{dx}\left[  (1-x^2)\frac{d}{dx}L_n(x)\right]+n(n+1)L_n(x) = 0.
     \label{eq:Legendre}
 \end{align}
-With equations \ref{eq:GLL-nodes} and \ref{eq:Legendre} the local spectral 
+With equations \eref{eq:GLL-nodes} and \eref{eq:Legendre} the local spectral 
 basis functions $\psi_j$ can be stated as 
 \begin{align}
     \psi_j(x) = \prod_{i\neq j}^{N}\frac{x-x_i}{x_j-x_i}.
     \label{eq:Lagrange}
 \end{align}
 
-$\{x_i\}$ being the solutions to \ref{eq:GLL-nodes}. Note that $\psi_j(x_i) = \delta_{ij}$.
-The expansion coefficients in \ref{eq:spectralprojection} are then chosen as $a_i = u_i :=u(x_i)$. 
+$\{x_i\}$ being the solutions to \eref{eq:GLL-nodes}. Note that $\psi_j(x_i) = \delta_{ij}$.
+The expansion coefficients in \eref{eq:spectralprojection} are then chosen as $a_i = u_i :=u(x_i)$. 
 
 This definition of the expansion coefficients is very convenient since the actual value of 
 the function in any point can just be read directly from the coefficients without having to 
@@ -302,7 +302,7 @@ Patera and Maday in the papers \cite{maday1989}, \cite{Patera1984}, \cite{Patera
 important contributions from Fischer, Rønquist and several more.
 It is important to understand that when solving the N-S equations the efficiency of the solution 
 method is crucial. The algorithm has to be parallelizable and the development of the
-super computers and computational clusters has played an important role in 
+super-computers and computational clusters has played an important role in 
 deciding the method applied today. 
 The idea is to divide the domain of the BVP into elements as in FEM and then use spectral basis 
 functions of higher degree with support only within one single element. 
@@ -354,14 +354,15 @@ to the SEM formulation
 For all elements $\Omega_k$ Find $u_{h,k}\in X^N_k$  such that
 %
 \begin{align}
-    \int_{\Omega_k}\nabla u \cdot \nabla v d \Omega + \lambda \int_{\Omega_k} u vd \Omega 
-    &= \int_{\Omega_k}f vd \Omega \qquad \forall v \in X_k^N.
+    \int_{\Omega_k}\nabla u_{h,k} \cdot \nabla v_{h,k} d \Omega
+    + \lambda \int_{\Omega_k} u_{h,k} v_{h,k} d \Omega 
+    &= \int_{\Omega_k}f v_{h,k}d \Omega \qquad \forall v_{h,k} \in X_k^N.
     \label{eq:HelmholtzweakSEM}
 \end{align}
 %
 Where $X^N_k =  H_0^1(\Omega_k)\bigcap\mathbb{P}^N(\Omega_k)$. The same discretization 
 procedure as performed for the pure spectral case is now done for each of the 
-sub domains $\Omega_k$,
+sub-domains $\Omega_k$,
 %
 \begin{align}
     \sum_i\left(  u_i\int_{\Omega_k}\nabla \psi_i \cdot \nabla \psi_j d \Omega + 
@@ -420,11 +421,12 @@ Note that this result is for a spatial approximation of a function $u$, although
 great error estimates the solution of the N-S equations are also restricted by the errors due to 
 temporal discretizations. This will be further discussed in \cref{timeNS}.
 \subsection{Filtering} \label{filtering}
-Although SEM provides spectral convergence in spatial approximation and 2nd or 3rd order accuracy
-in time the stability of a straight forward implementation is not guaranteed, spurious nodes appear 
+Although SEM provides spectral convergence in space,
+a non-sufficient resolution of the smallest structures
+often leads to spurious nodes and an unstable scheme 
 as shown in chapter 2.4.1.2 in~\cite{Karniadakis}. In \cite{FischerMullen} a filter-based 
 stabilization is introduced for SEM applied on 
-Navier Stokes equation. The idea is to project a part $ 0 <\alpha < 1$ 
+the Navier-Stokes equations. The idea is to project a part $ 0 <\alpha < 1$ 
 of the of the solution onto a polynomial space of lower order, 
 explicitly they define the filter $F_{\alpha}$ as 
 %
@@ -434,10 +436,10 @@ explicitly they define the filter $F_{\alpha}$ as
 \end{align}
 %
 Where $I_{N-1}$ is the projector from $\mathbb{P}_N$ to $\mathbb{P}_{N-1}$ and $ I_d$ is the identity operator.
-$\alpha$ is recommended to be somewhere in the interval $(0.05,0.3)$.
+The parameter $\alpha$ is recommended to be somewhere in the interval $(0.05,0.3)$.
 
-The explication of why $F_{\alpha}$ has a filtering effect is best explained by considering the 
-more general explication by Pasquetti and Xu in~\cite{Pasquetti}. A quick demonstration of 
+The effect of $F_{\alpha}$ in Legendre space is analysed
+by Pasquetti and Xu in~\cite{Pasquetti}. A quick demonstration of 
 how the filter works will however be given here. 
 
 Let $u = \sum_{i=0}^{N} \hat{u}_i L_i$ be the solution to some PDE, where $L_i$ denote the Lagrange
@@ -570,7 +572,7 @@ filter matrix $\mathcal{F}_{\alpha}$, but there are some similarities between th
 They are both upper triangular with zeros along the diagonal and positive entries on the second 
 sup-diagonal. The main difference is that the Laplacian applied on the Nth Legendre function 
 $L_N$ affect all the terms $L_{N-2},L_{N-4},\cdots$, while the filter only affects $L_{N-2}$.
-In order to illustrate this effect~\ref{fig:entries} shows the non-zero entries of the
+In order to illustrate this effect~\fref{fig:entries} shows the non-zero entries of the
 Laplacian matrix, the red dots indicate the non-zero entries which is not present in the filtering
 matrix.
 %
@@ -963,7 +965,7 @@ computationally demanding and converge slowly.
 the system is rewritten using a LU-factorization of the matrix in \eref{eq:Matform}, 
 which will allow the solution to be found in two separate steps. This 
 requires the inverse of $H$ which will be replaced by an approximation $Q\approx H^{-1}$.
-The Matrix decomposition is given as
+The matrix decomposition is given as
 %
 \begin{equation}
 \begin{pmatrix}

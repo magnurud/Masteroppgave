@@ -59,7 +59,7 @@ and their mathematical influence on the problem.
        %It is a symmetric tensor, hence another 6 unknowns is introduced.
 
     \item $\nabla p$
-    - The pressure gradient, Removal of this term results in a pure advection diffusion problem.
+    - The pressure gradient, removal of this term results in a pure advection diffusion problem.
 
     \item $Re$ 
     - The Reynolds number defined as $UL/\nu$ where $U$ is the velocity scale, $L$ is the length scale and $\nu$ 
@@ -115,7 +115,7 @@ I,O,SYM and W for Inflow, Outflow, Symmetry and Wall. Their mathematical formula
         to apply in an open channel where the stream wise direction is parallel to the boundary. Mathematically this is 
         described as 
         \begin{align}
-            \mathbf{u}\cdot \mathbf{n} = 0 \; \; , \; \; (\nabla\mathbf{u}\cdot \mathbf{t})\cdot \mathbf{n} = 0.
+            \mathbf{u}\cdot \mathbf{n} = 0, \qquad (\nabla\mathbf{u}\cdot \mathbf{t})\cdot \mathbf{n} = 0.
         \end{align}
     \item W 
         - Wall, Representing a physical object. Also known as the no-slip condition which is based on the assumption 
@@ -151,7 +151,7 @@ the entire domain.
         &= -\int_{\Omega}\nabla p\cdot \mathbf{v} d\Omega 
         + \nu \int_{\Omega}\Delta\mathbf{u}\cdot\mathbf{v}d\Omega
         + \int_{\Omega}\mathbf{f},\mathbf{v}d\Omega \\
-		\int_{\Omega}(\nabla \cdot \mathbf{u}) \mathbf{q}d\Omega &= 0.
+		\int_{\Omega}(\nabla \cdot \mathbf{u}) qd\Omega &= 0.
     \end{split}
 	\label{eq:NSweak1}
 \end{align}
@@ -170,7 +170,7 @@ the first equation yields
 \end{align}
 %
 The contributions from the boundary as a result from the application of the divergence theorem is included in the 
-last force term. \colorbox{red}{Does the boundary integral need to be adressed?}
+last force term.
 %Writing the covective term in conservational form $\nabla \cdot \mathbf{u}\mathbf{u}$ and applying the 
 %divergence theorem on the terms leaves us with 
 %\begin{align}
@@ -265,7 +265,7 @@ $\phi$ and is stated as
     \end{split}
 	\label{eq:PS}
 \end{align}
-The constants $k$, and $\rho c_p$ are interpreted depending on 
+The constants $k$ and $\rho c_p$ are interpreted depending on 
 the scalar transported. For dispersion of neutral gas with $\phi$ as the volume concentration of the gas
 they resemble the viscosity and mass flux. The last term on the right hand side $q_{vol}$ is the source term and is not 
 included in this thesis since all gas enters the control volume as a boundary condition.
@@ -306,7 +306,7 @@ and making the given assumptions the filtered N-S equations can be stated as
 \begin{align}
     \begin{split}
         \frac{\partial \mathbf{u}^r}{\partial t} + \mathbf{u}^r\cdot \nabla\mathbf{u}^r
-        &= -\nabla p^r +\nu\Delta \mathbf{u}^r-\nabla \cdot \tau, \\
+        &= -\nabla p^r +\nu\Delta \mathbf{u}^r+\mathbf{f}^r-\nabla \cdot \tau, \\
         \nabla \cdot \mathbf{u}^r &= 0.
     \end{split}
 	\label{eq:NSfiltered}
@@ -340,7 +340,7 @@ Lilly in 1967~\cite{Lilly67} suggesting the following model for the SGS-tensor
 Where $l$ denotes the filter width, which for this thesis is equivalent to the grid size.
 The resolved strain rate $s^r_{ij}$ can be calculated from the filtered velocity and the problem is now reduced to determining
 the constant $C_s$. There were several attempts to determine this constant for the entire domain, but in lack of a general 
-geometry independent constant Germano presented in 1991 ~\cite{Germano91} a dynamic subgrid-scale model was presented calculating a 
+geometry independent constant Germano presented in 1991~\cite{Germano91} a dynamic subgrid-scale model was presented calculating a 
 $C_d$ which replaces $C_sl^2$ in \eref{eq:boussinesq}. $C_d$ is called the dynamic Smagorinsky constant, and varies in both time and space.
 The general idea is that $C_d$ is independent of the filter width and from this 
 assumption an expression is developed for the dynamical constant.
@@ -416,7 +416,7 @@ in general terms as $2\nabla \cdot \nu s_{ij}$.
 \begin{align}
     \begin{split}
         \frac{\partial \mathbf{u}^a}{\partial t} + \mathbf{u}^a\cdot \nabla\mathbf{u}^a
-        &= -\nabla p^a +2\nabla \cdot (\nu + \nu_t) s^a_{ij} \\
+        &= -\nabla p^a+\mathbf{f}^a +2\nabla \cdot (\nu + \nu_t) s^a_{ij} \\
         \nabla \cdot \mathbf{u}^a &= 0.
     \end{split}
 	\label{eq:NSLES}

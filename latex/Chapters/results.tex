@@ -10,11 +10,11 @@
 
 
 \section{Mesh projection routine}
-As a test of the algorithm a mesh was created based on the hill of Ekeberg in Oslo 
+As a test of the algorithm described in~\cref{surfpro} a mesh was created based on the hill of Ekeberg in Oslo 
 and on a helicopter body.
 The surfaces were loaded as \verb|.tin| files in ICEM and coarse hex meshes were created 
 around the surfaces. The domains are presented in given in 
-figure~\ref{fig:surfpro}, notice the coarse element sizes in the figure to the right.
+\fref{fig:surfpro}, notice the coarse element sizes in the figure to the right.
 These geometries were chosen because they resemble a typical problem with 
 spectral elements. Since the initial element-mesh is relatively coarse it does not capture all 
 the details in the geometry and the GLL-nodes distributed on the faces corresponding to the 
@@ -44,12 +44,12 @@ The algorithm restricts itself to relatively smooth surfaces.
 %
 %
 \section{Drag and lift on a cylinder}
-The effect of the algorithm explained in Chapter~\ref{xyzarc} is
+The effect of the algorithm explained in \cref{xyzarc} is
 illustrated by solving a laminar flow test problem. 
 The solution is compared with previously benchmark computations performed by a number of 
 contributors~\cite{benchmark}. 
 
-The results are presented in table~\ref{tab:testcase}, and they confirm that the treatment of the geometry is 
+The results are presented in \tref{tab:testcase}, and they confirm that the treatment of the geometry is 
 essential, both coefficients are computed with significantly better accuracy. 
 %
 \begin{table}
@@ -76,8 +76,8 @@ in a different manner for Nek5000 so the comparison is not as direct as it may s
 \subsection{Parameter adjustments in Nek5000}
 As discussed in \cref{nek} there are many adjustments available in Nek5000. 
 In order to enlighten the actual effect on the results, several different settings were 
-investigated for this case and the results are presented in table~\ref{tab:perf}. 
-The spectral convergence is also confirmed in figure~\ref{fig:liftconv} by calculating the 
+investigated for this case and the results are presented in \tref{tab:perf}. 
+The spectral convergence is also confirmed in \fref{fig:liftconv} by calculating the 
 lift coefficient error for increasing polynomial degree. 
 %
 \begin{figure}[h]
@@ -136,7 +136,7 @@ ability to perform simulations of gas dispersion. The N-S equations are solved u
 the $P_NP_N$ formulation with the fractional step method, IOFS with a target Courant number 
 equal 2 was enabled to maximize the time step as recommended in~\cite{Nek}. It should be 
 mentioned that the stability properties when activating the SGS-model and deactivating the 
-filtering was greatly reduced. This effect is captured in~\ref{fig:maxvel} which shows how 
+filtering was greatly reduced. This effect is captured in~\fref{fig:maxvel} which shows how 
 the Smagorinsky model does not damp spurious velocity modes in the same degree as with filtering. 
 %
 \begin{figure}[h]
@@ -211,7 +211,7 @@ Two dashed lines on either side of the centerline represent the canyon.}
     \label{fig:cHall}
 \end{figure}
 
-Figure~\ref{fig:cHall} shows the scaled concentration along the dotted lines in~\ref{fig:layout}. 
+\fref{fig:cHall} shows the scaled concentration along the dotted lines in~\fref{fig:layout}. 
 According to this figure Nek5000 does indeed capture the important features of the mean concentration.
 At the two first measurement lines the results are slightly skewed to the right, this is to some degree 
 also the case for the CDP simulations but not for the experiment. A possible explanation could be that 
@@ -238,7 +238,7 @@ flow. This could lead to either too much or too little smoothening locally.
 Two dashed lines on either side of the centerline represent the canyon.}
     \label{fig:cVall}
 \end{figure}
-The concentration along the vertical measurement lines is plotted in figure~\ref{fig:cVall} and overall 
+The concentration along the vertical measurement lines is plotted in \fref{fig:cVall} and overall 
 Nek5000 provides good results according to the reference solutions. The largest difference is found close 
 to the wall right in the middle of the cubes. In particular the simulation including the SGS-model 
 underestimates the concentration in this domain. It is known that the Dynamic Smagorinsky model does not 
