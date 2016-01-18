@@ -41,7 +41,7 @@
 
 
 %\colorbox{green}{vær presis med den svake formuleringen!!}
-\section{Numerical Concepts on The Stokes problem} \label{stokes}
+\section{Numerical concepts on the Stokes problem} \label{stokes}
 In the previous chapter the N-S equations were presented and reformulated in several ways without any details on how to
 actually solve the equations. This chapter aims to give a more detailed description of the solution methods applied.
 The choice of algorithms and solution spaces required a more thorough analysis which is normally performed on the 
@@ -547,11 +547,11 @@ The Laplace operator applied in a Legendre space is known to take a sparse upper
 with entries only on even sup-diagonals. By naming this matrix $A$ the entries are given as 
 %
 \begin{align}
-    A_{ij} = ||L_i||^{-2} \sum_{k=2}^{j-i} ||L_{i+3-k}||^{-2}, \qquad \text{ if } 2 \le j-i = mod(2). 
+    A_{ij} = 4||L_i||^{-2} \sum_{k=1}^{(j-i)/2+1} ||L_{j+1-2k}||^{-2}, \qquad \text{ if } 2 \le j-i = mod(2). 
     \label{Laplace-entries}
 \end{align}
 %
-\colorbox{red}{Show this in appendix?}
+This relation is derived in Appendix~\ref{legpols}.
 
 The matrix-matrix product $AP_{k}$ will lead to a Laplacian matrix where the $N-k$ first columns are zero
 while the last $k$ remains unchanged. This modified Laplacian will be denoted $A^*$.

@@ -39,7 +39,7 @@ and the incompressible N-S equations on a domain $\Omega\subset\mathbb{R}^d$ can
 %Stokes problem and Darcy flow.
 
 A commonly studied simplification of this problem is the Stokes problem which
-is achieved by omitting the convective term. This thesis will use the Stokes 
+is obtained by omitting the convective term. This thesis will use the Stokes 
 problem as a starting point for analysis of the full problem in \cref{stokes}.
 Before attempting to solve these equations it is important to understand the role of each term 
 and their mathematical influence on the problem. 
@@ -64,8 +64,8 @@ and their mathematical influence on the problem.
     \item $Re$ 
     - The Reynolds number defined as $UL/\nu$ where $U$ is the velocity scale, $L$ is the length scale and $\nu$ 
       is the viscosity of the fluid. $Re$ describes the relation between the largest length scales of the flow
-      and the viscous length scales. Notice that for large Reynolds number the unstable non-linear term 
-      dominates the transportation. Turbulent flows are characterized by high Reynolds number.
+      and the viscous length scales. Notice that for large Reynolds numbers the unstable non-linear term 
+      dominates the transportation. Turbulent flows are characterized by a high Reynolds number.
 
     \item $\Delta \mathbf{u}$ 
     - The diffusive term describes the natural diffusion of the fluid. The contribution of the diffusional term 
@@ -80,9 +80,9 @@ and their mathematical influence on the problem.
     gravity term is incorporated in the pressure term, $\nabla p = \nabla p + \rho \mathbf{g}$. 
 
     \item $\nabla \cdot \mathbf{u}$ 
-    - The divergence free condition from the mass equation.
+    - The divergence free condition appears naturally from the conservation of mass in an incompressible flow.
 \end{itemize}
-For large Reynolds number the huge span in length scales requires mesh that is both very fine and very large
+For large Reynolds numbers the huge span in length scales requires a very fine mesh 
 if \eref{eq:NS} are to be solved exactly.
 Because a fine mesh implies a high computational cost a direct numerical solution (DNS) is not feasible for 
 problems of a certain geometrical complexity. There are many different approaches on how to resolve the turbulent term and in 
@@ -95,7 +95,6 @@ boundary conditions applied in this thesis.
 \subsection{Boundary conditions}
 Depending on the kind of flow and geometry a particular problem different boundary conditions are applied. In this section 
 $\mathbf{n}$ and $\mathbf{t}$ will denote the normal and tangent vector to the surface.
-\colorbox{red}{tangent vector to a twodimensional surface??}
 The boundary conditions applied for the cases investigated in this thesis will be given the names 
 I,O,SYM and W for Inflow, Outflow, Symmetry and Wall. Their mathematical formulation and physical interpretation are given as 
 \begin{itemize}
@@ -135,10 +134,10 @@ Before the weak form is derived a few operators will be defined in order to simp
 expression.
 %
 \begin{align}
-    ( \mathbf{u},\mathbf{v})_{L_2} &= \int_{\Omega}\mathbf{u} \cdot \mathbf{v} d\Omega\\
-    \mathcal{A}(\mathbf{u},\mathbf{v}) &= (\nabla \mathbf{u},\nabla \mathbf{v})_{L_2}\\
-    \mathcal{B}(\mathbf{u},p) &= -(\nabla \cdot \mathbf{u},p)_{L_2}\\
-    \mathcal{C}(\mathbf{w};\mathbf{u},\mathbf{v}) &= (\mathbf{w}\cdot \nabla \mathbf{u},\mathbf{v})_{L_2}
+    ( \mathbf{u},\mathbf{v}) &= \int_{\Omega}\mathbf{u} \cdot \mathbf{v} d\Omega\\
+    \mathcal{A}(\mathbf{u},\mathbf{v}) &= \nu(\nabla \mathbf{u},\nabla \mathbf{v})\\
+    \mathcal{B}(\mathbf{u},p) &= -(\nabla \cdot \mathbf{u},p)\\
+    \mathcal{C}(\mathbf{w};\mathbf{u},\mathbf{v}) &= (\mathbf{w}\cdot \nabla \mathbf{u},\mathbf{v})
     \label{eq:weakoperators}
 \end{align}
 %
@@ -170,7 +169,7 @@ the first equation yields
 \end{align}
 %
 The contributions from the boundary as a result from the application of the divergence theorem is included in the 
-last force term.
+force term.
 %Writing the covective term in conservational form $\nabla \cdot \mathbf{u}\mathbf{u}$ and applying the 
 %divergence theorem on the terms leaves us with 
 %\begin{align}
@@ -195,7 +194,7 @@ Find $(\mathbf{u}, p) \in V\times Q$ such that
         (\frac{\partial \mathbf{u}}{\partial t},\mathbf{v})
         + \mathcal{C}(\mathbf{u};\mathbf{u},\mathbf{v})
         &= -\mathcal{B}(\mathbf{v},p) 
-        -\nu\mathcal{A}(\mathbf{u},\mathbf{v})
+        -\mathcal{A}(\mathbf{u},\mathbf{v})
         + (\mathbf{f},\mathbf{v}), \\
         \mathcal{B}(\mathbf{u},q) &= 0,
     \end{split}
@@ -205,7 +204,7 @@ $\forall\; (\mathbf{v}, q) \in V\times Q$.
 %
 
 In order to solve this equation numerically, everything has to be discretized and expressed 
-using a particular set of basis functions. The idea is that the solution $(\mathbf{u},p)$ is approximated 
+using a set of basis functions. The idea is that the solution $(\mathbf{u},p)$ is approximated 
 by a discretized solution $(\mathbf{u}_h,p_h)$ and the bilinear operators can be represented 
 by matrices. The discretized system of equations can be stated as
 %
@@ -255,9 +254,9 @@ by matrices. The discretized system of equations can be stated as
 
 \section{The passive scalar equation}
 The N-S equations explains how a fluid will behave and solving it provides a complete pressure-velocity field of the 
-domain of interest, but it does not provide the answer of how heat will distribute in this flow, or how a gas will spread.
-The equation corresponding to this physical problem will be referred to as the passive scalar equation for any scalar 
-$\phi$ and is stated as 
+domain of interest, but it does not provide the answer of how a scalar such as heat or a neutral gas will move in this flow.
+The equation corresponding to the motion of a scalar $\phi$ in a velocity field $\mathbf{u}$
+will be referred to as the passive scalar (PS) equation and is stated as 
 \begin{align}
     \begin{split}
         \rho c_p(\frac{\partial \phi}{\partial t} + \mathbf{u}\cdot \nabla\phi) 
@@ -340,10 +339,10 @@ Lilly in 1967~\cite{Lilly67} suggesting the following model for the SGS-tensor
 Where $l$ denotes the filter width, which for this thesis is equivalent to the grid size.
 The resolved strain rate $s^r_{ij}$ can be calculated from the filtered velocity and the problem is now reduced to determining
 the constant $C_s$. There were several attempts to determine this constant for the entire domain, but in lack of a general 
-geometry independent constant Germano presented in 1991~\cite{Germano91} a dynamic subgrid-scale model was presented calculating a 
-$C_d$ which replaces $C_sl^2$ in \eref{eq:boussinesq}. $C_d$ is called the dynamic Smagorinsky constant, and varies in both time and space.
-The general idea is that $C_d$ is independent of the filter width and from this 
-assumption an expression is developed for the dynamical constant.
+constant applicable to all flow situations a dynamic constant $C_d$ was presented to replaces $C_sl^2$ in \eref{eq:boussinesq}.
+$C_d$ is called the dynamic Smagorinsky constant, and is both time and space dependent.
+The general idea is that $C_d$ is unaffected by the filter and from this 
+assumption an computable expression is developed for the dynamical constant.
 
 Let $a,b$ denote two distinct filters with corresponding filter widths $l_a,l_b$. 
 Throughout this thesis $l_a$ will be the grid size and $l_b\approx 2l_a$. Filter $b$ is
@@ -402,8 +401,8 @@ for the dynamic Smagorinsky constant
 Note that the double indices implies summing. This expression is however not a 
 stable option and to deal with this most implementations apply some sort of mean or smoothening 
 in either time and/or space when calculating the constant. In this thesis the smoothening is done in 
-both time and space for the denominator and the numerator in \eref{eq:dynsmag}. Another interesting property 
-is that the constant $C_d$ and the final SGS-tensor $\tau = -2C_d\mathcal{S}^as_{ij}^a$ are 
+both time and space for the denominator and the numerator in \eref{eq:dynsmag}. Another property 
+of this expression is that the constant $C_d$ is 
 independent of the filter width, the only necessary variable is the coefficient $\lambda = l_b/l_a$.
 The assumption made in this model is that turbulence behaves 
 as diffusion, similar to the kinematic viscosity a turbulent viscosity $\nu_t$ is defined which for this case is given as 

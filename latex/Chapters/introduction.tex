@@ -15,9 +15,8 @@
 %solutions of the incompressible N-S equations.  
 
 The physics regarding fluids in motion are described mathematically by the Navier-Stokes (N-S) equations. 
-The equations can be derived in many ways, and it is referred to~\cite{White} for a complete 
-description of the necessary assumptions and simplifications.
-The general idea is to conserve momentum and mass in a control domain which provides a system of two equations.
+They are a result of the conservation of momentum and mass, and it is referred to~\cite{White} for a complete 
+description of the necessary assumptions and simplifications. 
 This thesis is restricted to numerical solutions of the incompressible N-S equations.
 Without further introduction the incompressible N-S equations are stated as  
 %
@@ -41,8 +40,8 @@ In this thesis both laminar and turbulent flows will be solved numerically, and 
 be compared to a mathematical filter meant to stabilize the flow. In addition to solving the N-S equations the 
 transport of a passive scalar will also be analysed and compared to a set of reference solutions. 
 The software applied in this thesis is Nek5000 which is an implementation of the spectral element method initialized in the 80's.
-A part of the work done in this thesis is also devoted to implementing routines for working with more complex geometry than previously 
-have been possible. 
+In addition to validate Nek5000 as a software for analyzing gas dispersion it is also as a part of this thesis 
+attempted to make Nek5000 more applicable to cases consisting of more complex geometry. 
 
 The thesis is divided in 3 parts. The first part which includes the two following chapters are devoted to the physical understanding 
 of \eref{eq:NS}, the solution methods and a thorough presentation of the spectral element method. \cref{nek} gives the reader a brief 
