@@ -39,7 +39,7 @@ This is due to the fact that
 
 \section{Project edges onto a specified arc} \label{xyzarc}
 
-The Gordon Hall (GH) algorithm which is described in \cref{GH} was already implemented as a function in the Nek library.
+The Gordon Hall (GH) algorithm that is described in \cref{GH} was already implemented as a function in the Nek library.
 By defining the GLL-nodes on the curved edges such that they correspond to an arc, the GH-algorithm is able to distribute 
 the internal nodes accordingly. 
 
@@ -90,7 +90,7 @@ The remaining operation is to call the Gordon Hall algorithm and create the inte
 To make this implementation fully automatic a small change in the script \verb|mshconvert| was also necessary. 
 Since ICEM provides the midpoints of the curved edges, a function was added to convert the midpoint information 
 originally provided to a circle center and its correspoding radius.
-\section{Additional projection algorithm}\label{surfpro}
+\section{General surface projection}\label{surfpro}
 The routine \verb|xyzarc()| enables the user to more accurately represent circular edges.
 For more complex geometry such as actual terrain and other surfaces without any analytic
 expression the large element sizes make the geometrical representation difficult. 
@@ -162,7 +162,7 @@ given in the list below
     \item fix\_GLL() -- There is a risk after distributing the GLL-points on the surface that
         some of the internal GLL-points falls outside the element. This function distributes 
         all internal GLL-points correctly between the newly projected face and the opposite.
-    \item fix\_geom() -- An already existing Nek routine which redistributes the GLL-points to 
+    \item fix\_geom() -- An already existing Nek routine that redistributes the GLL-points to 
         assure that the distance between them on the new surface is correct.
 \end{itemize}
 

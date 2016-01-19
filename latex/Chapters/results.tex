@@ -41,7 +41,7 @@ The grid used for the computations consists of 14747 elements and with a polynom
 
 The simulations are performed using Large Eddy Simulation (LES) 
 with the dynamic Smagorinsky-Lilly subgrid-scale model and by applying the polynomial filtering
-routine which is available in Nek5000. 
+routine that is available in Nek5000. 
 The release of gas will result in a plume that is advected with the wind field,
 see \fref{fig:plume}. The concentration of the released gas at the 
 indicated positions in \fref{fig:layout} are compared with 
@@ -102,13 +102,13 @@ started.
 \end{figure}
 %
 
-\subsection{Results from Case 1} 
+\subsection{Results - Gas dispersion} 
 This case is a part of a larger project designed to evaluate different solvers 
 ability to perform simulations of gas dispersion. The N-S equations are solved using
 the $P_NP_N$ formulation with the fractional step method, IOFS with a target Courant number 
 equal 2 was enabled to maximize the time step as recommended in~\cite{Nek}. It should be 
 mentioned that the stability properties when activating the SGS-model and deactivating the 
-filtering was greatly reduced. This effect is captured in~\fref{fig:maxvel} which shows how 
+filtering was greatly reduced. This effect is captured in~\fref{fig:maxvel} that shows how 
 the Smagorinsky model does not damp spurious velocity modes in the same degree as the filter. 
 %
 \begin{figure}[h]
@@ -293,7 +293,7 @@ Nek5000 provides functions for calculating lift and drag on any user-specified o
 The function is called \verb|drag_calc(scale)|, with the input parameter 
 defined by the user, for this case \verb|scale| $=2/(\rho U^2DH)$.  
 Apart from this the function \verb|set_obj()| has to be modified in order to create an object 
-which consists of pointers to all the faces on the cylinder.
+that consists of pointers to all the faces on the cylinder.
 %Let $x,y$ be points in the computational domain, $x_c,y_c$ be the coordinates to the 
 %center line in the cylinder and $0<tol\ll1$ be some user defined tolerance. The faces that belong to the cylinder can then be found by 
 %looping over all elements and their faces evaluating $\epsilon = \sqrt{(x-x_c)^2+(y-y_c)}$.
@@ -416,7 +416,7 @@ suggest any optimal adjustment for Nek5000. An important example of this is the 
 deactivating de-aliasing yields better results. For a coarser mesh or a more turbulent flow 
 this would not be the case, and that the result is actually better is probably due to 
 the accuracy, which are very close to the accuracy given by the reference solution. 
-The resuslts do however give an indication to the general effect of these settings which 
+The resuslts do however give an indication to the general effect of these settings that 
 are worth noticing.
 
 %----------------------------------------------------------------------------------------

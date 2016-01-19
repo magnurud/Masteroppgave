@@ -11,7 +11,7 @@
 %----------------------------------------------------------------------------------------
 This chapter will present the Incompressible Navier-Stokes equations and give a thorough 
 analysis of the physical effects of each term. It will also present the idea behind turbulence 
-modelling, and prepare the mathematical formulations which will be further analysed in \cref{numerics}.
+modelling, and prepare the mathematical formulations that will be further analysed in \cref{numerics}.
 
 \section{The Incompressible Navier-Stokes equations}
 
@@ -72,7 +72,7 @@ and their mathematical influence on the problem.
     is inversely proportional to the Reynolds number.
     The corresponding mathematical operator stabilizes the system and it is therefore generally easier
     to solve the N-S equations for high-viscosity fluids. It should be mentioned that this term is actually a simplification 
-    of the Reynolds stress tensor which can be made under the assumption of incompressibility. The more general formulation which 
+    of the Reynolds stress tensor that can be made under the assumption of incompressibility. The more general formulation that 
     will be used in \cref{LES} is $2 \nabla s_{ij}$, the tensor $s_{ij}$ is known as the strain-rate tensor. 
 
 \item $\mathbf{f}$ 
@@ -321,7 +321,7 @@ This tensor is a consequence of applying the filter on the non-linear advection 
 and it is this tensor that is modelled by a subgrid-scale model. See~\cite{Pope} for a full derivation on the 
 application of a filter on the momentum equation. 
 
-\subsection{dynamic Smagorinsky-Lilly SGS-model}
+\subsection{Dynamic Smagorinsky-Lilly SGS-model}
 The problem is now reduced to modelling the tensor $\tau_{ij}$, one of the most common SGS-models is the 
 dynamic Smagorinsky-Lilly model which is the one applied in this thesis. The initial progress of this model was made by 
 Lilly in 1967~\cite{Lilly67} suggesting the following model for the SGS-tensor
@@ -361,7 +361,7 @@ operations on the N-S equations
 %By defining $a_{ij}=l_a^2\mathcal{S}^a = l_a^2\sqrt{2s^{a}_{ij}s^{a}_{ij}}$ the subgrid scale tensor can 
 %be written as $\tau^a_{ij} = 2C_da_{ij} $. 
 Applying the $b$ filter on the first tensor in \eref{eq:stresstensors} allows us to define 
-a new tensor $L_{ij}$ which depends only on the $a$-filtered variables. The identity 
+a new tensor $L_{ij}$ that depends only on the $a$-filtered variables. The identity 
 is known as the Germano identity and was first introduced in 1991~\cite{Germano91},
 \begin{align}
     L_{ij} = T_{ij} - (\tau_{ij})^b

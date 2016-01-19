@@ -44,7 +44,7 @@
 \section{Numerical concepts on the Stokes problem} \label{stokes}
 In the previous chapter the N-S equations were presented and reformulated in several ways without any details on how to
 actually solve the equations. This chapter aims to give a more detailed description of the solution methods applied.
-The choice of algorithms and solution spaces required a more thorough analysis which is normally performed on the 
+The choice of algorithms and solution spaces requires a more thorough analysis which is normally performed on the 
 steady Stokes problem. The steady Stokes problem does not include the convection term or the time derivative 
 but the highest order terms are all present and is therefore a valid problem to perform this necessary
 analysis \cite{Karniadakis}. The time schemes applied will be discussed in \cref{timeNS}.
@@ -587,7 +587,7 @@ They are both upper triangular with zeros along the diagonal and positive entrie
 sup-diagonal. The main difference is that the Laplacian applied on the $N$th Legendre function 
 $L_N$ affect all the terms $L_{N-2},L_{N-4},\cdots$, while the filter only affects $L_{N-2}$.
 In order to illustrate this effect~\fref{fig:entries} shows the non-zero entries of the
-Laplacian matrix, the red dots indicate the non-zero entries which is not present in the filtering
+Laplacian matrix, the red dots indicate the non-zero entries that are not present in the filtering
 matrix.
 %
 \begin{figure}[h]
@@ -726,7 +726,7 @@ but for unsteady flows the development in time is determined by the temporal dis
 restriction on the convergence rate. Because the N-S equations are very computationally demanding to solve exactly 
 a large number of splitting methods have been developed, all attempting to find the ideal balance between speed 
 and accuracy. The most common set of solution methods are called projection methods, which first calculates 
-a velocity field which does not fulfill the divergence free condition and then projecting this field onto a 
+a velocity field that does not fulfill the divergence free condition and then projecting this field onto a 
 divergence free space. For an extensive discussion regarding projection methods it is referred to~\cite{Guermond2006}.
 The projection is done by solving a Poisson equation for the pressure (PPE). 
 
@@ -789,7 +789,7 @@ In this thesis the schemes BDFk and a $k$th order extrapolation (EXTk) for $k=2,
 \subsection{Operator integrating factor schemes (OIFS)}\label{OIFS}
 The operator-splitting method described in the previous chapter may lead to an unstable scheme, 
 and require very small time-steps.
-OIFS is a similar method but it offers a more stable scheme and is more efficient by using a multi-step method which allows 
+OIFS is a similar method but it offers a more stable scheme and is more efficient by using a multi-step method that allows 
 larger advances in time. The presentation of the method is presented here in a computational fashion,
 for a full description and derivation of the method it is referred to Maday et al~\cite{raey}.
 
@@ -886,7 +886,7 @@ As earlier mentioned this method is convenient because it allows us to handle th
 terms with different solution techniques. So since the first equation in \eref{eq:fracstep}
 involves the non-linear skew-symmetric advection operator this equation is solved using a 
 explicit Adam Bashford scheme. The second equation is the Poisson pressure equation which
-assures a divergence free velocity field, and it is this step along with step three which 
+assures a divergence free velocity field, and it is this step along with step three that 
 allows this to be classified as a projection method.
 
 Note that $p\in L^2\supset H^1$ hence the Poisson equation 
@@ -988,7 +988,7 @@ simplifications and reformulations are made which saves a lot of computational t
 at the cost of accuracy.
 The system is rewritten using a LU-factorization of the matrix in \eref{eq:Matform}, 
 which will allow the solution to be found in two separate steps. This 
-requires the inverse of $H$ which will be replaced by an approximation $Q\approx H^{-1}$.
+requires the inverse of $H$ that will be replaced by an approximation $Q\approx H^{-1}$.
 The matrix decomposition is given as
 %
 \begin{equation}
