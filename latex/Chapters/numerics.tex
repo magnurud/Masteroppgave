@@ -846,7 +846,7 @@ time can be made and the overall efficiency improves.
 %It is important to add that the error induced by this method is non-vanishing and is only recommended for assuring stability 
 %for very instable problem. 
 
-\subsection{Fractional step} 
+\subsection{Fractional step - ($P_NP_N$)} 
 \label{fracstep}
 
 Fractional step is an algorithm that can be divided into four separate steps. The N-S equations will still 
@@ -921,7 +921,7 @@ The IVP \eref{eq:IVP} is then solved to obtain $\mathbf{u}^{*}$.
 
 %\subsection{Pressure-correction}
 
-\subsection{Inexact factorization / pressure correction method} \label{prescorr}
+\subsection{Discrete splitting - ($P_NP_{N-2}$)} \label{prescorr}
 The fractional step method is a splitting method based on the idea that two analytical 
 operators can be applied in sequence and still provide a good result. The method presented 
 in this section makes no such assumption and splits the discrete system of equation instead 
