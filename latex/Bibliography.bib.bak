@@ -2,9 +2,25 @@
 % Encoding: UTF-8
 
 
+@Article{Abdallah,
+  Title                    = {Comments on the Fractional Step Method },
+  Author                   = {Shaaban Abdallah},
+  Journal                  = {Journal of Computational Physics },
+  Year                     = {1995},
+  Number                   = {1},
+  Pages                    = {179 - 180},
+  Volume                   = {117},
+
+  Doi                      = {http://dx.doi.org/10.1006/jcph.1995.1055},
+  ISSN                     = {0021-9991},
+  Owner                    = {magnus},
+  Timestamp                = {2016.01.19},
+  Url                      = {http://www.sciencedirect.com/science/article/pii/S0021999185710558}
+}
+
 @Article{arnold1985mixed,
   Title                    = {Mixed and nonconforming finite element methods: implementation, postprocessing and error estimates},
-  Author                   = {Arnold, Douglas N and Brezzi, Franco},
+  Author                   = {Arnold, D. N. and Brezzi, F.},
   Journal                  = {RAIRO-Mod{\'e}lisation math{\'e}matique et analyse num{\'e}rique},
   Year                     = {1985},
   Number                   = {1},
@@ -12,9 +28,20 @@
   Volume                   = {19}
 }
 
+@Article{Babuska,
+  Title                    = {The Finite Element Method with Lagrangian Multipliers.},
+  Author                   = {Babuska, I.},
+  Journal                  = {Numerische Mathematik},
+  Year                     = {1972/73},
+  Pages                    = {179-192},
+  Volume                   = {20},
+
+  Url                      = {http://eudml.org/doc/132183}
+}
+
 @Article{Bayraktar2012,
   Title                    = {Benchmark computations of {3D} laminar flow around a cylinder with CFX, OpenFOAM and FeatFlow},
-  Author                   = {Bayraktar, Evren and Mierka, Otto and Turek, Stefan},
+  Author                   = {Bayraktar, E. and Mierka, O. and Turek, S. },
   Journal                  = {International Journal of Computational Science and Engineering},
   Year                     = {2012},
   Number                   = {3},
@@ -30,9 +57,23 @@
   Url                      = {http://dx.doi.org/10.1504/IJCSE.2012.048245}
 }
 
+@Article{Brezzi,
+  Title                    = {On the existence, uniqueness and approximation of saddle-point problems arising from lagrangian multipliers},
+  Author                   = {Brezzi, F.},
+  Journal                  = {ESAIM: Mathematical Modelling and Numerical Analysis - Modélisation Mathématique et Analyse Numérique},
+  Year                     = {1974},
+  Number                   = {R2},
+  Pages                    = {129-151},
+  Volume                   = {8},
+
+  Language                 = {eng},
+  Publisher                = {EDP Sciences},
+  Url                      = {http://eudml.org/doc/193255}
+}
+
 @Book{Canuto,
   Title                    = {Spectral methods : evolution to complex geometries and applications to fluid dynamics},
-  Author                   = {C. Canuto and M.Y Hussaini and A. Quarteroni et al.},
+  Author                   = {Canuto, C. and Hussaini, M. Y. and Quarteroni et al.i, A. },
   Publisher                = {Springer},
   Year                     = {2007},
 
@@ -64,7 +105,7 @@
 
 @Article{Carati,
   Title                    = {On the modelling of the subgrid-scale and filtered-scale stress tensors in large-eddy simulation},
-  Author                   = {CARATI,DANIELE and WINCKELMANS,GRÉGOIRE S. and JEANMART,HERVÉ},
+  Author                   = {Carati,D. and Winckelmans,G. S. and Jeanmart, H.},
   Journal                  = {Journal of Fluid Mechanics},
   Year                     = {2001},
 
@@ -94,7 +135,7 @@
 
 @Article{eriksson,
   Title                    = {Neutrally Buoyant gas dispersion within an urban street canyon.},
-  Author                   = {Eriksson, Daniel},
+  Author                   = {Eriksson, D. },
   Journal                  = {MekIT'15.},
   Year                     = {2015},
 
@@ -102,9 +143,25 @@
   Timestamp                = {2015.07.20}
 }
 
+@Article{Fischer96,
+  Title                    = {Projection Techniques for Iterative Solution of Ax=b with successive right-hand sides},
+  Author                   = {Fischer, P. F. },
+  Journal                  = {Comp. Meth. in Appl. Mech},
+  Year                     = {1993},
+  Pages                    = {193--204},
+  Volume                   = {163}
+}
+
+@Article{Fischer_hybridschwarz-multigrid,
+  Title                    = {Hybrid {S}chwarz-multigrid methods for the spectral element method},
+  Author                   = {Fischer, P. F. and Lottes, J. W. },
+  Journal                  = {J. Sci. Comput},
+  Pages                    = {45--78}
+}
+
 @Article{FischerMullen,
   Title                    = {Filter-based stabilization of spectral element methods },
-  Author                   = {Paul Fischer and Julia Mullen},
+  Author                   = {Fischer, P. F. and Mullen, J.},
   Journal                  = {Comptes Rendus de l'Académie des Sciences - Series I - Mathematics },
   Year                     = {2001},
   Number                   = {3},
@@ -117,22 +174,6 @@
   Owner                    = {magnus},
   Timestamp                = {2015.11.12},
   Url                      = {http://www.sciencedirect.com/science/article/pii/S0764444200017638}
-}
-
-@Article{Fischer96,
-  Title                    = {Projection Techniques for Iterative Solution of Ax=b with successive right-hand sides},
-  Author                   = {Paul F. Fischer},
-  Journal                  = {Comp. Meth. in Appl. Mech},
-  Year                     = {1993},
-  Pages                    = {193--204},
-  Volume                   = {163}
-}
-
-@Article{Fischer_hybridschwarz-multigrid,
-  Title                    = {Hybrid Schwarz-multigrid methods for the spectral element method},
-  Author                   = {Paul F. Fischer and James W. Lottes},
-  Journal                  = {J. Sci. Comput},
-  Pages                    = {45--78}
 }
 
 @Article{Germano91,
@@ -154,12 +195,12 @@
 @Misc{GuermondPnPn,
   Title                    = {NONSTANDARD NONCONFORMING APPROXIMATION OF THE STOKES PROBLEM, I: PERIODIC BOUNDARY CONDITIONS},
 
-  Author                   = {J. -l. Guermond}
+  Author                   = {J. L. Guermond}
 }
 
 @Article{Guermond2006,
   Title                    = {An overview of projection methods for incompressible flows },
-  Author                   = {J.L. Guermond and P. Minev and Jie Shen},
+  Author                   = {Guermond, J. L. and Minev, P. and Jie Shen},
   Journal                  = {Computer Methods in Applied Mechanics and Engineering },
   Year                     = {2006},
   Number                   = {44–47},
@@ -176,7 +217,7 @@
 
 @Article{hughes1989,
   Title                    = {A new finite element formulation for computational fluid dynamics: VIII. The Galerkin/least-squares method for advective-diffusive equations},
-  Author                   = {Hughes, Thomas JR and Franca, Leopoldo P and Hulbert, Gregory M},
+  Author                   = {Hughes, T. J. R. and Franca, L. P. and Hulbert, G. M.},
   Journal                  = {Computer Methods in Applied Mechanics and Engineering},
   Year                     = {1989},
   Number                   = {2},
@@ -188,7 +229,7 @@
 
 @Article{Hughes,
   Title                    = {Large Eddy Simulation and the variational multiscale method},
-  Author                   = {Hughes, Thomas J.R. and Mazzei, Luca and Jansen, Kenneth E.},
+  Author                   = {Hughes, T. J. R. and Mazzei, L. and Jansen, K. E.},
   Journal                  = {Computing and Visualization in Science},
   Year                     = {2000},
   Number                   = {1-2},
@@ -206,14 +247,14 @@
 
 @Book{karniadakis,
   Title                    = {Spectral/hp element methods for computational fluid dynamics},
-  Author                   = {Karniadakis, George and Sherwin, Spencer},
+  Author                   = {Karniadakis, G. and Sherwin, S.},
   Publisher                = {Oxford University Press},
   Year                     = {2013}
 }
 
 @Article{Patera1986,
-  Title                    = {An isoparametric spectral element method for solution of the Navier-Stokes equations in complex geometry},
-  Author                   = {Korczak, Karol Z. and Patera, Anthony T.},
+  Title                    = {An isoparametric spectral element method for solution of the {N}avier-{S}tokes equations in complex geometry},
+  Author                   = {Korczak, K. Z. and Patera, A. T.},
   Journal                  = {Journal of Computational Physics},
   Year                     = {1986},
 
@@ -264,9 +305,32 @@
   Timestamp                = {2015.11.18}
 }
 
+@InProceedings{maday1989,
+  Title                    = {Spectral element methods for the incompressible Navier-Stokes equations},
+  Author                   = {Maday, Y. and Patera, A. T.},
+  Booktitle                = {IN: State-of-the-art surveys on computational mechanics (A90-47176 21-64). New York, American Society of Mechanical Engineers, 1989, p. 71-143. Research supported by DARPA.},
+  Year                     = {1989},
+  Pages                    = {71--143},
+  Volume                   = {1}
+}
+
+@Book{MPR1987,
+  Title                    = { A well-posed optimal spectral element approximation for the Stokes problem.},
+  Author                   = { Maday, Y. and Patera, A. T. and Ronquist, E. M. and Langley Research Center. },
+  Publisher                = { National Aeronautics and Space Administration, Langley Research Center},
+  Year                     = { 1987 },
+
+  Catalogue-url            = { http://nla.gov.au/nla.cat-vn4026519 },
+  Language                 = { English },
+  Life-dates               = { 1987 - 1987 },
+  Pages                    = { 1 v. },
+  Subjects                 = { Fluid mechanics.; Numerical analysis. },
+  Type                     = { Book, Microform }
+}
+
 @Article{raey,
   Title                    = {An Operator-integration-factor splitting method for time-dependent problems: Application to incompressible fluid flow},
-  Author                   = {Maday, Y. and Patera, AnthonyT. and Rønquist, EinarM.},
+  Author                   = {Maday, Y. and Patera, A. T. and Rønquist, E. M.},
   Journal                  = {Journal of Scientific Computing},
   Year                     = {1990},
   Number                   = {4},
@@ -283,32 +347,9 @@
   Url                      = {http://dx.doi.org/10.1007/BF01063118}
 }
 
-@InProceedings{maday1989,
-  Title                    = {Spectral element methods for the incompressible Navier-Stokes equations},
-  Author                   = {Maday, Yvon and Patera, Anthony T},
-  Booktitle                = {IN: State-of-the-art surveys on computational mechanics (A90-47176 21-64). New York, American Society of Mechanical Engineers, 1989, p. 71-143. Research supported by DARPA.},
-  Year                     = {1989},
-  Pages                    = {71--143},
-  Volume                   = {1}
-}
-
-@Book{MPR1987,
-  Title                    = { A well-posed optimal spectral element approximation for the Stokes problem [microform] / Y. Maday, A.T. Patera and E.M. Ronquist },
-  Author                   = { Maday, Y. and Patera, A. T. and Ronquist, E. M. and Langley Research Center. },
-  Publisher                = { National Aeronautics and Space Administration, Langley Research Center ; For sale by the National Technical Information Service Hampton, Va. : [Springfield, Va },
-  Year                     = { 1987 },
-
-  Catalogue-url            = { http://nla.gov.au/nla.cat-vn4026519 },
-  Language                 = { English },
-  Life-dates               = { 1987 - 1987 },
-  Pages                    = { 1 v. },
-  Subjects                 = { Fluid mechanics.; Numerical analysis. },
-  Type                     = { Book, Microform }
-}
-
 @Article{Pasquetti,
   Title                    = {Comments on “Filter-Based Stabilization of Spectral Element Methods” },
-  Author                   = {R. Pasquetti and C.J. Xu},
+  Author                   = {Pasquetti, R. and Xu, C.J. },
   Journal                  = {Journal of Computational Physics },
   Year                     = {2002},
   Number                   = {2},
@@ -324,7 +365,7 @@
 
 @Article{Patera1984,
   Title                    = {A spectral element method for fluid dynamics: Laminar flow in a channel expansion},
-  Author                   = {Patera, Anthony T},
+  Author                   = {Patera, A. T.},
   Journal                  = {Journal of Computational Physics},
   Year                     = {1984},
 
@@ -341,9 +382,41 @@
   Url                      = {http://dx.doi.org/10.1016/0021-9991(84)90128-1}
 }
 
+@Article{Perotcomments,
+  Title                    = {Comments on the Fractional Step Method },
+  Author                   = {J.Blair Perot},
+  Journal                  = {Journal of Computational Physics },
+  Year                     = {1995},
+  Number                   = {1},
+  Pages                    = {190 - 191},
+  Volume                   = {121},
+
+  Doi                      = {http://dx.doi.org/10.1006/jcph.1995.1189},
+  ISSN                     = {0021-9991},
+  Owner                    = {magnus},
+  Timestamp                = {2016.01.19},
+  Url                      = {http://www.sciencedirect.com/science/article/pii/S0021999185711898}
+}
+
+@Article{Perot,
+  Title                    = {An Analysis of the Fractional Step Method },
+  Author                   = {J.Blair Perot},
+  Journal                  = {Journal of Computational Physics },
+  Year                     = {1993},
+  Number                   = {1},
+  Pages                    = {51 - 58},
+  Volume                   = {108},
+
+  Doi                      = {http://dx.doi.org/10.1006/jcph.1993.1162},
+  ISSN                     = {0021-9991},
+  Owner                    = {magnus},
+  Timestamp                = {2016.01.19},
+  Url                      = {http://www.sciencedirect.com/science/article/pii/S0021999183711629}
+}
+
 @Book{Pope,
   Title                    = {Turbulent Flows},
-  Author                   = {Stephen B. Pope},
+  Author                   = {Pope, S. B.},
   Publisher                = {Cambridge University Press},
   Year                     = {2000},
   Note                     = {Cambridge Books Online},
@@ -356,7 +429,7 @@
 
 @Book{Quarteroni,
   Title                    = {Numerical Models for Differential Problems, 2. edition},
-  Author                   = {Alfio Quarteroni},
+  Author                   = {Quarteroni, A.},
   Publisher                = {Springer},
   Year                     = {2014},
 
@@ -366,7 +439,7 @@
 
 @Book{Saad,
   Title                    = {Iterative Methods for Sparse Linear Systems, Second Edition},
-  Author                   = {Yousef Saad},
+  Author                   = {Saad, Y.},
   Publisher                = {Society for Industrial and Applied Mathematics},
   Year                     = {2003},
 
@@ -390,7 +463,7 @@
 
 @Book{SM,
   Title                    = {An Introduction to Numerical Analysis},
-  Author                   = {Endre Süli and David F. Mayers},
+  Author                   = {Süli, E. and Mayers, D. F. },
   Publisher                = {Cambridge},
   Year                     = {2006},
 
@@ -423,7 +496,7 @@
 @Misc{benchmark,
   Title                    = {Recent Benchmark Computations of Laminar Flow Around a Cylinder},
 
-  Author                   = {S. Turek and M. Schäfer},
+  Author                   = {Turek, S. and Schäfer, M. },
   Year                     = {1996}
 }
 
@@ -453,7 +526,7 @@
 
 @Book{White,
   Title                    = {Viscous fluid flow},
-  Author                   = {White, Frank M.},
+  Author                   = {White, F. M.},
   Publisher                = {McGraw-Hill},
   Year                     = {1991},
 
@@ -474,6 +547,13 @@
   ISBN                     = {9780521337175},
   Lccn                     = {87024903},
   Url                      = {https://books.google.no/books?id=\_igwFHKwcyYC}
+}
+
+@Manual{CDP,
+  Title                    = {CDP User's/Reference Manual v.2.4 - Stanford University},
+
+  Owner                    = {magnus},
+  Timestamp                = {2016.01.14}
 }
 
 @Manual{Nek,

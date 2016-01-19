@@ -45,16 +45,16 @@
 In the previous chapter the N-S equations were presented and reformulated in several ways without any details on how to
 actually solve the equations. This chapter aims to give a more detailed description of the solution methods applied.
 The choice of algorithms and solution spaces required a more thorough analysis which is normally performed on the 
-steady Stokes problem. The steady Stokes problem does not include the convection term but the highest order terms are all present
-and is therefore a valid problem to perform this necessary analysis \cite{Karniadakis}. Analysis of the time schemes applied
-will be left for a later chapter. The steady Stokes problem with homogeneous boundary conditions is given as 
+steady Stokes problem. The steady Stokes problem does not include the convection term or the time derivative 
+but the highest order terms are all present and is therefore a valid problem to perform this necessary
+analysis \cite{Karniadakis}. The time schemes applied will be discussed in \cref{timeNS}.
+The steady Stokes problem with homogeneous boundary conditions is given as 
 %
 \begin{align}
     \begin{split}
         %\frac{\partial \mathbf{u}}{\partial t} 
-        - \mu \Delta \mathbf{u} + \nabla p &= \mathbf{f}, \\
-        \nabla \cdot \mathbf{u} &= 0, \\
-        \mathbf{u} &= 0 \text{  on  } \partial \Omega.
+        - \mu \Delta \mathbf{u} + \nabla p &= \mathbf{f}, \qquad \nabla \cdot \mathbf{u} = 0, \\
+        \mathbf{u} &= \mathbf{0} \text{  on  } \partial \Omega.
     \end{split}
     \label{eq:stokes}
 \end{align}
@@ -64,7 +64,8 @@ and their test functions. These spaces will be defined as
 %
 \begin{align}
     \begin{split}
-    H_0^1(\Omega) &= \left\{ v \in H^1(\Omega)\; |\; v = 0 \text{  on  } \partial \Omega \right\},\\
+        H_0^1(\Omega)^{3} &= \left\{ \mathbf{v} \in H^1(\Omega)^{3}\; |
+        \; \mathbf{v} = \mathbf{0} \text{  on  } \partial \Omega \right\},\\
     L_0^2(\Omega) &= \left\{ q \in L^2(\Omega)\; |\; \int_{\Omega} q dx = 0 \right\},
     \end{split}
     \label{eq:spaces}
@@ -90,8 +91,8 @@ $\forall\; (\mathbf{v}, q) \in H^1(\Omega)^3\times L^2(\Omega)$.
 %
 
 The numerical solution of this problem requires a discrete formulation of the weak form, with $(\mathbf{u}_h,p_h)\in V\times Q$
-as the discrete solution. The discrete spaces $V,Q$ are subspaces of $H_0^1,L^2_0$ equipped with the discrete $H_1$- and $L^2$-norm
-denoted $||\cdot||_V$ and $||\cdot||_Q$. 
+as the discrete solution. The discrete spaces $V,Q$ are subspaces of $ H_0^1(\Omega)^{3},L^2_0(\Omega)$ equipped with the discrete
+$ H^1(\Omega) ^3$- and $L^2(\Omega)$-norm denoted $||\cdot||_V$ and $||\cdot||_Q$. 
 For the discrete weak form to be well-posed it has to meet the requirements stated by the
 inf-sup condition. This condition is known from the study of saddle-point problems, and 
 is often referred to as the Babuska-Brezzi condition due to their important results
@@ -106,12 +107,13 @@ following way of writing it,
 Where $b$ denotes some positive constant. Fulfilling this condition often implies
 a staggered grid, such that the pressure and the velocity are evaluated at different points. 
 For a Spectral Element formulation of this problem which will be elaborated in \cref{sem},
-a common choice of subspaces $(X,Q)$ is $(P_N\cap H^1_0,P_{N-2} \cap L^{2}_{0})$. This will be referred to as the 
+a valid choice of subspaces $(V,Q)$ is $(\left[  P_N\cap H^1_0\right]^3,P_{N-2} \cap L^{2}_{0})$. This will be referred to as the 
 $P_NP_{N-2}$-formulation where $P_N$ denotes the space of polynomials up to degree $N$.
-It was however proved by Guermond in~\cite{GuermondPnPn} that the fractional step algorithm requires a 
+It was however proved by Guermond in~\cite{GuermondPnPn} that the fractional step algorithm applies a 
 form of the Stokes problem which automatically fulfills the inf-sup condition and therefore does not require any particular 
 discrete subspaces to be chosen. For the sake of convenience the polynomial degree of the pressure and the velocity will be 
-the same and the discrete pair of subspaces $(X,Q)$ is chosen to $(P_N\cap H^1_0,P_{N} \cap L^{2}_{0})$, known as the $P_NP_N$-formulation.
+the same and the discrete pair of subspaces $(V,Q)$ is chosen to $(\left[ P_N\cap H^1_0 \right]^3,P_{N} \cap L^{2}_{0})$,
+known as the $P_NP_N$-formulation.
 
 Before the analysis of the N-S equations can be taken any further the theory behind the Spectral Element Method will be presented in the following
 subsections.
@@ -130,7 +132,8 @@ number of elements and $d$ is the number of dimensions.
 
 FEM provides an algorithm for solving any well-posed boundary value problem (BVP) and the mathematical 
 formulation is obtained by first finding the Galerkin
-formulation with a corresponding search space $X$ and then choosing a discrete subspace $X^p_h\subset X$ spanned by the finite element basis functions $\{\phi^p_i\}_{i\in (1,E)}$.
+formulation with a corresponding search space $X$ and then choosing a discrete subspace $X^p_h\subset X$ 
+spanned by the finite element basis functions $\{\phi^p_i\}$.
 The key property of the basis functions is that they only have local support in a very small part of the domain. 
 This is what gives rise to the resulting sparse linear system. 
 By increasing the polynomial order the number of grid points used to define the polynomial will need to increase as well.
@@ -145,16 +148,13 @@ be generalized for a wide range of problems.
 FEM is called a projection method since the solution $u_h\in X_h^p$ is a projection
 of the actual solution $u$ of the BVP onto the discrete space $X_h^p$. Provided that the initial BVP is well-posed there exists two 
 constants $M,\alpha>0$ known as the bounded and coercivity constant such that the error of the solution can be reduced to a pure 
-interpolation error. The result is known as Cea's lemma,  
+projection error. The result is known as Cea's lemma,  
 \begin{align}
-    ||u-u_h||_X \leq \frac{M}{\alpha}||u-I_hu||_X.
+    ||u-u_h||_X \leq \frac{M}{\alpha}\min_{v_h\in X_h^p}||u-v_h||_X,
     \label{eq:Cea}
 \end{align}
-Where $I_h$ is the interpolation operator. 
 
-\colorbox{red}{does this interpolation operator need to be explained in any way ?}
-
-\colorbox{red}{and does the norm need more details?}
+the solution $u_h$ provided by the Galerkin method is known as the orthogonal projection of $u$ onto $X_h^p$. 
 
 Before this section ends it is important to understand the two ways to increase accuracy and the effects these two ways have on the algorithm. 
 Assume the solution of the BVP to be infinitely smooth and the domain be sufficiently regular. 
@@ -167,7 +167,17 @@ and the total algorithm does not change in any other way than increasing the num
 Keeping $h$ constant and increasing $p$ will provide spectral convergence, but the sparsity will be reduced and all integrals solved will require 
 quadrature rules of higher order. A formal statement and numerical validation of the error estimate can be found in \cite{Karniadakis} chapter 2.6.  
 
-\colorbox{red}{is it OK with just a qualitative discussion here?}
+To sum up the discussion above a general error estimate from~\cite{Quarteroni} is stated as a theorem, 
+\begin{theorem}
+    Let $\Omega$ be a domain in $\mathbb{R}^d$ and $\left\{ \Omega_k \right\}$ 
+    be the non-overlapping elements. $X_h^p \subset H^1_0$ is the FEM space, and $u \in H^{\sigma}(\Omega)$ is continuous 
+    in the entire domain the following will hold for any $\sigma \ge 1$
+\begin{align}
+    ||u-u_h||_1 \le Ch^{s} |u|_{s},\qquad s = \min\left\{ r,p \right\}
+\end{align}
+    \label{thm:femconvergence}
+\end{theorem}
+%
 
 %-----------------------------------
 %	SUBSECTION 1
@@ -222,8 +232,10 @@ This definition of the expansion coefficients is very convenient since the actua
 the function in any point can just be read directly from the coefficients without having to 
 sum all the contributions from the different polynomials.
 Creating a basis for 2 and 3 dimensions is done simply by taking the tensor product 
-of the basis functions in each direction. Let $i,j,k$ denote the one dimensional indexes in each direction running from 
-$1$ to $N$ while $m,l,n$ denote three dimensional indexes running from $1$ to $N^d$. 
+of the basis functions in each direction. In order to keep track of indices in this section
+$i,j,k = 1,\cdots,N$ is used to keep track of Lagrange polynomials in one direction 
+while $m,l,n = 1,\cdots,N^d$ will be used for the tensor product of the Lagrange polynomials spanning
+an entire element.
 for 3 dimensions the basis functions $\Psi_{l}$ are given as 
 \begin{align}
     \Psi_{l}(\mathbf{x}) = \psi_i(x)\psi_j(y)\psi_k(z).
@@ -239,7 +251,8 @@ In order to clarify some of the concepts the SM approach will be applied on the 
 \end{align}
 %
 $\Omega$ will for this example be defined as the unit square $[-1,1]^2$. 
-Let us start by defining the space $V =H^1_0(\Omega)$ and assuming $f\in L^2(\Omega)$. The weak formulation after applying the divergence theorem is the given as
+Let us start by defining the space $V =H^1_0(\Omega)$ and assuming $f\in L^2(\Omega)$. 
+The weak formulation after applying the divergence theorem can now be stated.
 
 Find $u\in V$ st. 
 %
@@ -259,7 +272,7 @@ Find $u_h\in V_h$ st.
     \label{eq:Helmholtzdiscrete}
 \end{align}
 %
-The following step of this particular SM method is evaluating the integrals by using the GLL-quadrature rule, the resulting system of equations 
+The following step of this particular spectral method is evaluating the integrals by using the GLL-quadrature rule, the resulting system of equations 
 is then given as 
 %
 \begin{align}
@@ -296,15 +309,15 @@ while the stiffness matrix $A$ is symmetric but full.
 
 \section{Spectral element method} \label{sem}
 In the early 1980's the idea to combine FEM and SM came along in order to obtain the 
-robustness and sparse properties of FEM 
+flexibility and sparse properties of FEM 
 combined with the spectral convergence rate provided by SM. 
-The result was the Spectral element method. Several formulations were investigated mainly by 
+The result was the Spectral element method (SEM). Several formulations were investigated mainly by 
 Patera and Maday in the papers \cite{maday1989}, \cite{Patera1984}, \cite{Patera1986} with 
 important contributions from Fischer, Rønquist and several more.
 It is important to understand that when solving the N-S equations the efficiency of the solution 
 method is crucial. The algorithm has to be parallelizable and the development of the
 super-computers and computational clusters has played an important role in 
-deciding the method applied today. 
+deciding which variants of SEM is applied today. 
 The idea is to divide the domain of the BVP into elements as in FEM and then use spectral basis 
 functions of higher degree with support only within one single element. 
 
@@ -321,8 +334,8 @@ written as
 \begin{bmatrix}
     \frac{\partial \mathcal{F}_1}{\partial x} &  \frac{\partial \mathcal{F}_1}{\partial y}  \\ 	
 	\frac{\partial \mathcal{F}_2}{\partial x} &  \frac{\partial \mathcal{F}_2}{\partial y} \\ 	
-\end{bmatrix},\\
-J &= \text{det}(\mathbf{J}).
+\end{bmatrix},\qquad
+J = \text{det}(\mathbf{J}).
     \label{eq:jaobian}
 \end{align}
 This allows us to transform both derivatives and integrals to the reference domain, let $\boldsymbol\xi = [\xi,\eta]^T$ denote the axis in the reference 
@@ -349,8 +362,7 @@ Let us again consider the Helmholtz problem \eref{eq:Helmholtz}, but this time
 on a more general domain $\Omega$. The set of elements $\left\{ \Omega_k \right\}$
 is defined such that $\Omega_i\bigcap\Omega_j$ is either empty, a vertex or a line and 
 $\Omega = \bigcup^K_{k=1}\Omega_k$.
-The weak formulation in \eref{eq:Helmholtzweak} can then be written according 
-to the SEM formulation
+By applying SEM to~\eref{eq:Helmholtz} the corresponding weak formulation can be stated.
 
 For all elements $\Omega_k$ Find $u_{h,k}\in X^N_k$  such that
 %
@@ -361,7 +373,7 @@ For all elements $\Omega_k$ Find $u_{h,k}\in X^N_k$  such that
     \label{eq:HelmholtzweakSEM}
 \end{align}
 %
-Where $X^N_k =  H_0^1(\Omega_k)\bigcap\mathbb{P}^N(\Omega_k)$. The same discretization 
+Where $X^N_k =  H_0^1(\Omega_k)\bigcap\mathbb{P}_N(\Omega_k)$. The same discretization 
 procedure as performed for the pure spectral case is now done for each of the 
 sub-domains $\Omega_k$,
 %
@@ -405,11 +417,11 @@ The Spectral Element Method can as mentioned earlier be regarded as a projection
 method similar to FEM and SM. 
 It was proved in~\cite{MPR1987} that spectral convergence can be achieved only by requiring the solution
 $u$ to be sufficiently regular within each element. This as opposed to pure spectral methods which
-requires regularity in the entire domain is a huge advantage when working with turbulent flows 
+requires regularity in the entire domain is an advantage when working with turbulent flows 
 in complex domains. 
 \begin{theorem}
     Let $\Omega$ be a domain in $\mathbb{R}^d$ and $\left\{ \Omega_k \right\}$ 
-    be the non-overlapping elements. $X_h = H^1_0\cap\mathbb{P}_{N,K}$ is the SEM space. If $u$ is continuous in the entire domain 
+    be the set of non-overlapping elements. $X_h = H^1_0\cap\mathbb{P}_{N,K}$ is the SEM space. If $u$ is continuous in the entire domain 
     and $u_{|\Omega_k} \in H^{\sigma}(\Omega_k) \forall \; k $ the following will hold for 
     any $\sigma \ge 1$
 \begin{align}
@@ -456,13 +468,14 @@ can be given as
     \label{eq:filtereffect}
 \end{align}
 %
-From this identity the effect of the filter becomes clear, it is simply removing a part of 
-the highest order mode $N$ to the mode $N-2$. The rest of the coefficients remain unchanged.
+From this identity the effect of the filter becomes clear, it is simply removing a part $\alpha $
+from the highest order mode $N$ to the mode $N-2$. The rest of the coefficients remain unchanged.
 For a full derivation and discussion on this matter it is referred to chapter 6.5.1 in 
 \cite{Karniadakis}.
 
-The filter in \eref{eq:filtereffect} is often applied to the $k$ highest Legendre polynomials,
-with a decaying coefficient $\alpha$. The action of the filter can therefore be described as 
+The filter in \eref{eq:filtereffect} is in this thesis applied such that the $k$ highest Legendre modes
+are dampened with coefficients $\alpha_i = (\frac{k+1-i}{k+1})^2\alpha_0 $. With $\alpha_0$ being the filter constant
+for the highest mode. The action of the filter can therefore be described as 
 a matrix equation in two steps, first adding the contribution from the higher polynomials to the 
 lower ones and then subtracting the contribution from the higher polynomials. Let $u$ be the 
 vector containing the Legendre coefficients.
@@ -509,7 +522,7 @@ have been used to achieve the result in \eref{eq:filterenergy}.
 
 \subsubsection{A physical approach to the filter}
 A good physical description of the filter has not yet been described, this 
-subsection is an attempt to show some resemblance between known properties 
+subsection is an attempt to show the resemblance between known properties 
 of some differential equations and the mathematical filter described in the previous section.
 
 Let $u$ be some smooth continuous function,$\bar u = [u_1L_1(x),u_2L_2(x), \cdots]$
@@ -551,7 +564,7 @@ with entries only on even sup-diagonals. By naming this matrix $A$ the entries a
     \label{Laplace-entries}
 \end{align}
 %
-This relation is derived in Appendix~\ref{legpols}.
+This relation is derived in~\ref{legpols}.
 
 The matrix-matrix product $AP_{k}$ will lead to a Laplacian matrix where the $N-k$ first columns are zero
 while the last $k$ remains unchanged. This modified Laplacian will be denoted $A^*$.
@@ -603,17 +616,19 @@ only included for the small but still resolved scales of motion.
 
 \subsection{Aliasing}
 
-%\colorbox{green}{add an illustrative example}
 When evaluating the integral surging from the non-linear term in the N-S equations 
-the polynomial to be integrated is order $2N+(N-1)$. The quadrature rule applied to solve the 
-integrals are only exact up to an order $2N-1$, hence the error surging from this evaluation 
-can be of significant size. Applying a non-sufficient quadrature to an integral like this is called a ``variational
+the polynomial to be integrated can be of order $2N+(N-1)$ or even higher depending of the jacobian.
+The quadrature rule applied to solve the integrals are only exact up to an order $2N-1$
+hence the error surging from this evaluation can be of significant size.
+Applying a non-sufficient quadrature to an integral like this is called a ``variational
 crime''. Applying a quadrature rule of a not sufficiently high order results in an 
 aliasing effect of the lower modes, attempting to compensate for the higher order modes omitted. 
 Since a spectral element method arguably has a good accuracy these variational crimes should 
 not be committed and it is therefore common practice to solve this particular integral using a
 quadrature of order $3N$. The concept and illustrative examples are given in Chapter 2.4 in 
-\cite{Karniadakis}. The effect of aliasing is made clear in \cref{results}.
+\cite{Karniadakis}. It is worth to note that aliasing is not always a necessity depending on 
+the size of the smallest structures compared to the grid resolution, an example of this
+is presented in \cref{results}.
 This is one of the time vs.\ accuracy questions one have to decide for each problem. 
 instead of applying the GLL-quadrature "designed" for the basis-functions the functions
 has to be evaluated in a new set of GLL-points with $3/2$ as many nodes. This is a costly 
@@ -630,10 +645,10 @@ process and should only be applied when absolutely necessary.
 	\centering
 	\includegraphics[width=1.0\textwidth]{Figures/GordonHall5.png}
 	\caption{An illustration of how the Gordon-Hall algorithm creates a map from the 
-    deformed element to the reference element. The GLL-points are drawn along the edge
+    reference element to the deformed element. The GLL-points are drawn along the edge
     $\Gamma_{k,0}$ on the deformed element which corresponds to $s=-1$ on the reference
     element.}
-	\label{fig:cHfilter}
+	\label{fig:GH}
 \end{figure}
 %
 
@@ -653,7 +668,7 @@ The full description of the algorithm with helpful figures can be found in \cite
 Without going to much into the mathematical foundation of this method a more intuitive and implementable
 presentation of the method will be provided in this chapter. 
 For simplicity a two-dimensional domain will be considered here, and the 3D case will be an easy expansion 
-of the algorithm presented here. Consider a deformed domain $\Omega \in \mathbb{R}^2$, with $\Gamma_{i,j}$ representing 
+of the algorithm presented here. Consider a deformed domain $\Omega \in \mathbb{R}^2$ (~\fref{fig:GH}), with $\Gamma_{i,j}$ representing 
 the discrete boundary coordinates. The four vertices can then be expressed as 
 $\Gamma_{0,0},\Gamma_{0,N},\Gamma_{N,0}\Gamma_{N,N}$. Let $\phi_0,\phi_N$ be defined as 
 %
@@ -713,6 +728,7 @@ a large number of splitting methods have been developed, all attempting to find 
 and accuracy. The most common set of solution methods are called projection methods, which first calculates 
 a velocity field which does not fulfill the divergence free condition and then projecting this field onto a 
 divergence free space. For an extensive discussion regarding projection methods it is referred to~\cite{Guermond2006}.
+The projection is done by solving a Poisson equation for the pressure (PPE). 
 
 \subsection{Operator-splitting techniques } \label{opsplitting}
 In this chapter $a_j,b_j$ will denote the coefficients for some explicit and implicit scheme.
@@ -747,7 +763,7 @@ Now the terms can be ordered such that only the implicit terms are present on th
 %
 This way of solving \eref{eq:testproblem} allows easy invertible terms to be solved implicitly while non-linear terms can be extrapolated.
 In the Navier-Stokes equation this strategy will be applied to split the non-linear term from the rest.
-In this thesis the schemes BDFk and EXTk for $k=2,3$ are applied, the coefficients can be found in~\cite{Nek}. 
+In this thesis the schemes BDFk and a $k$th order extrapolation (EXTk) for $k=2,3$ are applied, the coefficients can be found in~\cite{Nek}. 
 
 %of $u$ and therefore of $t$ as well. Let g be easily invertible By integrating on both sides one obtains
 %\begin{align}
@@ -771,22 +787,23 @@ In this thesis the schemes BDFk and EXTk for $k=2,3$ are applied, the coefficien
 
 
 \subsection{Operator integrating factor schemes (OIFS)}\label{OIFS}
-The operator-splitting method described in the previous chapter may lead to an unstable scheme,
-OIFS is a similar method but it offers a more stable scheme. The presentation of the method 
-is presented here in a computational fashion, for a full description and derivation of the method 
-it is referred to Maday et al~\cite{raey}.
+The operator-splitting method described in the previous chapter may lead to an unstable scheme, 
+and require very small time-steps.
+OIFS is a similar method but it offers a more stable scheme and is more efficient by using a multi-step method which allows 
+larger advances in time. The presentation of the method is presented here in a computational fashion,
+for a full description and derivation of the method it is referred to Maday et al~\cite{raey}.
 
-Throughout this section the NS-equation will be considered in its operational form 
+Throughout this section the NS-equation will be considered in its operational form as introduced in~\ref{eq:NSMatrixform}
 %
 \begin{align}
-    M\frac{d \mathbf{v}}{dt} + C\mathbf{v} = -A\mathbf{v} +D^T p +M\mathbf{f}.
+    M\frac{d \mathbf{v}}{dt} + C\mathbf{v} = -A\mathbf{v} +D^T p +M\mathbf{f}, \qquad D\mathbf{v} = 0
     \label{eq:NSoperator}
 \end{align}
 %
 Now let $Q(t)$ be an operator such that $Q(t^{n+1}) = I$ and 
 %
 \begin{align}
-    \frac{dQ(t)M\mathbf{v}}{dt} &=  Q(t)M\frac{d\mathbf{v}}{dt} + \frac{d}{dt}(Q(t)M)\mathbf{v},\\
+    \frac{dQ(t)M\mathbf{v}}{dt} &=  Q(t)M\frac{d\mathbf{v}}{dt} + \frac{d}{dt}\left[  Q(t)M\right]\mathbf{v},\\
     &= Q(t)M\frac{d\mathbf{v}}{dt} + Q(t)C\mathbf{v}. 
     \label{eq:integrationalfactor}
 \end{align}
@@ -822,7 +839,9 @@ Notice how the integrational factor $Q(t)$ is never evaluated directly.
 
 The final scheme applied for solving \eref{eq:NSoperator} when applying OIFS consists of one implicit scheme for 
 solving \eref{eq:NSOIFS1} and an explicit scheme for solving \eref{eq:IVP}. When applied in this thesis the 
-first scheme is an implicit BDFk-scheme while the second is an explicit 4th order Runge-Kutta scheme. 
+first scheme corresponding to the $b_j$ coefficients is an implicit BDFk-scheme while the second is an explicit 4th order Runge-Kutta scheme. 
+Solving~\eref{eq:IVP} with a multi-step method implies a bit more work per time-step, but as it stabilizes the routine larger advances in 
+time can be made and the overall efficiency improves.
 
 %It is important to add that the error induced by this method is non-vanishing and is only recommended for assuring stability 
 %for very instable problem. 
@@ -833,11 +852,11 @@ first scheme is an implicit BDFk-scheme while the second is an explicit 4th orde
 Fractional step is an algorithm that can be divided into four separate steps. The N-S equations will still 
 be considered in its operational form 
 \begin{align}
-    M\frac{d \mathbf{v}}{dt} + C\mathbf{v} = -A\mathbf{v} +D^T p +M\mathbf{f}.
+    M\frac{d \mathbf{u}}{dt} + C\mathbf{u} = -A\mathbf{u} +D^T p +M\mathbf{f}.
     \label{eq:NSfracstep}
 \end{align}
 %
-Where $M, A,D,C$ Denotes the mass integral, linear, gradient and non-linear operator. 
+Where $M, A,D,C$ Denotes the mass integral, Laplacian, gradient and non-linear operator. 
 %The method describing one time-step can then be summarized as following
 %\begin{itemize}
     %\item solve $v^* = v^n + \Delta t Nv^n$.
@@ -855,10 +874,10 @@ A schematic overview of the method is stated below, where the equations on the r
 solved and the updated solution is stated on the left hand side.
 \begin{align}
     \begin{split}
-        \mathbf{v}^* &\leftarrow \frac{d\mathbf{v}}{dt}=C\mathbf{v},\\
-    p^{n+1} &\leftarrow \Delta\: p = \nabla \cdot \frac{\mathbf{v}^*}{\Delta t},\\
-    \mathbf{v}^{**} &\leftarrow  \frac{d\mathbf{v}^*}{dt} =D^Tp^{n+1},\\
-    \mathbf{v}^{n+1} &\leftarrow \frac{d\mathbf{v}^{**}}{dt}= -A\mathbf{v}^{**}+M\mathbf{f}^{n+1}.
+        \mathbf{u}^* &\leftarrow \frac{d\mathbf{u}}{dt}=C\mathbf{u},\\
+    p^{n+1} &\leftarrow \Delta\: p = \nabla \cdot \frac{\mathbf{u}^*}{\Delta t},\\
+    \mathbf{u}^{**} &\leftarrow  \frac{d\mathbf{u}^*}{dt} =D^Tp^{n+1},\\
+    \mathbf{u}^{n+1} &\leftarrow \frac{d\mathbf{u}^{**}}{dt}= -A\mathbf{u}^{**}+M\mathbf{f}^{n+1}.
     \end{split}
     \label{eq:fracstep}
 \end{align}
@@ -867,27 +886,26 @@ As earlier mentioned this method is convenient because it allows us to handle th
 terms with different solution techniques. So since the first equation in \eref{eq:fracstep}
 involves the non-linear skew-symmetric advection operator this equation is solved using a 
 explicit Adam Bashford scheme. The second equation is the Poisson pressure equation which
-assures a divergence free velocity field. 
-
-\colorbox{red}{Should this note stay?}
+assures a divergence free velocity field, and it is this step along with step three which 
+allows this to be classified as a projection method.
 
 Note that $p\in L^2\supset H^1$ hence the Poisson equation 
 is somewhat different from the one normally studied in textbooks. Another difficulty is the 
 treatment of the boundary conditions. Ideally the BC's should be determined by the velocity 
-field $\mathbf{v}^{n+1}$, but since this solution is yet to be calculated the intermediate velocity field 
-$\mathbf{v}^{*}$ is used to impose the boundary conditions. With $p^{n+1}$ known the third equation is 
+field $\mathbf{u}^{n+1}$, but since this solution is yet to be calculated the intermediate velocity field 
+$\mathbf{u}^{*}$ is used to impose the boundary conditions. With $p^{n+1}$ known the third equation is 
 simply an update of the velocity in order to impose the divergence free condition. Now the last
 equation is solved implicitly due to its nice symmetric structure. This results in a system 
 equivalent to the Helmholtz problem which will be discussed in detail in \cref{numerics}.
 This can be easily shown by discretizing the equation, 
 \begin{align}
     \begin{split}
-    (\mathbf{v}^{n+1}-\mathbf{v}^{n})/\Delta t  &= -A\mathbf{v}^{n+1},\\
-    A\mathbf{v}^{n+1}+\frac{1}{\Delta t} \mathbf{v}^{n+1} &= \mathbf{v}^{n}.
+    (\mathbf{u}^{n+1}-\mathbf{u}^{n})/\Delta t  &= -A\mathbf{u}^{n+1},\\
+    A\mathbf{u}^{n+1}+\frac{1}{\Delta t} \mathbf{u}^{n+1} &= \mathbf{u}^{n}.
     \end{split}
     \label{eq:fracHelm}
 \end{align}
-Knowing that $A$ is the discrete Laplacian and $\mathbf{v}^n$ is a known variable this is 
+Knowing that $A$ is the discrete Laplacian and $\mathbf{u}^n$ is a known variable this is 
 similar to problem \eref{eq:Helmholtz}.
 
 
@@ -899,7 +917,7 @@ by rewriting the initial equation as described in the previous chapter. This all
 to solve the unstable advection operator with multiple sub-steps. Explicitly the first step 
 in \eref{eq:fracstep} would be solved by applying the discretization used in \eref{eq:NSOIFS1}
 with an empty right hand side since the rest of the terms are take care of in the next steps. 
-The IVP \eref{eq:IVP} is then solved to obtain $\mathbf{v}^{*}$.
+The IVP \eref{eq:IVP} is then solved to obtain $\mathbf{u}^{*}$.
 
 %\subsection{Pressure-correction}
 
@@ -908,23 +926,25 @@ The fractional step method is a splitting method based on the idea that two anal
 operators can be applied in sequence and still provide a good result. The method presented 
 in this section makes no such assumption and splits the discrete system of equation instead 
 of applying the operators in sequence. The algorithm presented here is similar to the Uzawa
-algorithm CITATION, but with some adjustments to make it more efficient. The detailed 
+algorithm, but with some adjustments to make it more efficient. The detailed 
 description regarding the implementation in Nek5000 is found
 in~\cite{Fischer_hybridschwarz-multigrid}.
 
-To start the explanation of the method the incompressible N-S equations is stated on the form
+To start the explanation of the method we continue considering the incompressible N-S equations in their 
+operational form 
 \begin{align}
-    \frac{1}{\Delta t} M \mathbf{u}^{n+1}-D^Tp^{n+1}+\nu A \mathbf{u}^{n+1} = M\mathbf{f}^{n+1},
+    \frac{1}{\Delta t} M \mathbf{u}^{n+1}-D^Tp^{n+1}+\nu A \mathbf{u}^{n+1} = M\mathbf{\tilde f}^{n+1},
     \qquad D\mathbf{u}^{n+1}    = 0.
     \label{eq:DiscreteStart}
 \end{align}
 The outline of the method is based on \eref{eq:NSweak}, but with some changes. Since this 
 is a method for the unsteady N-S equation the time derivative has to be included, and the 
 non-linear term which is treated explicitly as studied in \cref{opsplitting} and~\ref{OIFS}
-is added as a part of the right hand side function. So $M\mathbf{f}^{n+1}$ does in this equation 
+is added as a part of the right hand side function. So $M\mathbf{\tilde f}^{n+1}$ does in this equation 
 incorporate both the original loading function, the non-linear term and the explicit part of the 
-time-derivative. 
-
+time-derivative from the BDFk-scheme. 
+By doing this reformulation the unsteady Stokes problem is obtained and algorithms studied 
+for this problem can be applied.
 By defining the matrix $H = 1/\Delta t M + \nu A$ \eref{eq:DiscreteStart} 
 can be written as 
 \begin{equation}
@@ -938,7 +958,7 @@ can be written as
 \end{pmatrix}
 =
 \begin{pmatrix}
-    Mf^{n+1}  \\ 
+    M\mathbf{\tilde f}^{n+1}  \\ 
     0 
     \end{pmatrix}.
     \label{eq:Matform}
@@ -956,15 +976,17 @@ pressure difference $\delta p^{n+1} = p^{n+1}-p^n$. \eref{eq:Matform} can be res
 \end{pmatrix}
 =
 \begin{pmatrix}
-    Mf^{n+1} +D^Tp^n  \\ 
+    M\mathbf{\tilde f}^{n+1} +D^Tp^n  \\ 
     0 
     \end{pmatrix}.
     \label{eq:Matform}
 \end{equation}
 
 Solving this exactly is known as the Uzawa algorithm and is known to be 
-computationally demanding and converge slowly. 
-the system is rewritten using a LU-factorization of the matrix in \eref{eq:Matform}, 
+computationally demanding and converge slowly. To overcome this issue
+simplifications and reformulations are made which saves a lot of computational time 
+at the cost of accuracy.
+The system is rewritten using a LU-factorization of the matrix in \eref{eq:Matform}, 
 which will allow the solution to be found in two separate steps. This 
 requires the inverse of $H$ which will be replaced by an approximation $Q\approx H^{-1}$.
 The matrix decomposition is given as
@@ -1023,12 +1045,12 @@ Applying these two matrices leads to a two step algorithm on the form
 In order to clarify what is actually going on a brief description of each step is given,
 The first step in \eref{eq:PCstep1} corresponds to an initial solution of the velocity using 
 the old pressure value, notice that this will not guarantee a divergence free velocity.
-The second step in \eref{eq:PCstep1} is the discrete pressure Poisson equation and will 
+The second step in \eref{eq:PCstep1} is referred to as the discrete pressure Poisson equation and will 
 make sure that the pressure corresponds to a divergence free flow. When solved in practice 
 the velocity used in this equation is the updated velocity from the first step. This way of 
 updating the pressure is the reason why this method is often referred to as a pressure 
 correction method.
-The first step in \eref{eq:PCstep2} is just an projection of a velocity field
+The first step in \eref{eq:PCstep2} is just a projection of the velocity field
 onto a divergence free space. The final step is of no real value and will instead be replaced 
 by an update of the pressure $p^{n+1} = p^{n}+\delta p^{n+1}$.
 
@@ -1038,12 +1060,15 @@ a very convenient definition since $M$ is a diagonal matrix.
 
 Unlike the fractional step method this way of solving the N-S equations  
 requires the discrete spaces for velocity and pressure
-to meet the inf-sup condition \eref{eq:infsup}, and does not suffer from the same splitting 
-errors. In addition the way of treating the pressure yields an algorithm which works well 
-for steady flows. Notice that the error surging 
-from the splitting in \eref{eq:LUfactorization} is proportional to $\delta p^n$ instead of $p^n$
-as it would be for a straight forward derivation. 
+to meet the inf-sup condition stated in \eref{eq:infsup}. 
+It also induces a discrete splitting error. The splitting error induced by this scheme 
+has been a topic of discussion for many years, see for instance the discussion between Perot and Abdallah in
+~\cite{Perot},~\cite{Abdallah} and~\cite{Perotcomments}. The author will not choose sides in this debate, 
+but rather state that there will be some numerical differences between these two methods which will be presented 
+in~\cref{results}.
 
-The method yields a second order scheme 
-as proved by~\cite{vanKan}, provided that the time discretization is of the same or higher order.
-
+It is however apparent from the treatment of the pressure that this yields an algorithm that works well 
+for steady flows. Notice that the error surging from the splitting in \eref{eq:LUfactorization}
+is proportional to $\delta p^n$ instead of $p^n$ as it would be for a straight forward derivation. 
+The method yields a second order scheme as proved by~\cite{vanKan},
+provided that the time discretization is of the same or higher order.

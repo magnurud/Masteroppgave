@@ -22,9 +22,9 @@ The solvers can vary in the numerical method; Finite volume, Finite Differences,
 Finite Element Method, Spectral Element Method etc., The particular algorithm 
 for resolving the Pressure-Velocity coupling, for instance Fractional Step, Poisson pressure and 
 Uzawa. The type of simulation available also varies from solver to solver, whether
-they apply RANS, LES, DNS or something else. Although most solvers offer multiple of the settings
+they apply RANS, LES, DNS or a variety of these. Although most solvers offer multiple of the settings
 listed above it is important to be aware of their strengths and weaknesses before choosing which 
-one to use. This section will be devoted to the handling of Nek5000 in particular, and can serve
+one to use. This section will be devoted to the handling of Nek5000, and can serve
 as a brief introduction to the code.
 
 \section{Nek5000 basics}
@@ -33,7 +33,7 @@ Nek5000 is a turbulent flow solver developed mainly by Paul Fischer
 and has through the past 20 years had several contributors. 
 It is an open-source code applicable to many different types of flow 
 and it has been put a lot of effort into the parallelization of the code, 
-guaranteeing great speedup. All the parallelization is accessed through subroutines
+guaranteeing optimal speedup. All the parallelization is accessed through subroutines
 and functions, enabling the user to make advanced functions without having to 
 deal directly with the functions from the MPI library.
 With SEM as the numerical method applied it is possible to obtain very accurate results.  
@@ -53,7 +53,7 @@ The way the mesh is created in this thesis is visualized in \fref{fig:mesh}.
 	\centering
 	\includegraphics[width=0.6\textwidth]{Figures/mesh.pdf}
 	\caption{Visualization of how the mesh is created. The elemental mesh is first generated using ICEM, the script mshconvert
-    converts this to a Nek5000 mesh and finally the distribution of the GLL-nodes is done during the initialization in Nek5000}
+    converts this to a .rea-file and finally the distribution of the GLL-nodes is done during the initialization in Nek5000}
 	\label{fig:mesh}
 \end{figure}
 %
@@ -81,16 +81,17 @@ In order to work with Nek5000 there are some practical information that needs to
 Nek5000 is recompiled for every case and the user specify all the case specific 
 information in the three files \verb|{.rea,.usr,SIZE,}|. \verb|.usr| and \verb|SIZE| are 
 compiled with the standard Nek5000 library using makenek which creates the executable file \verb|nek5000|,
-while the \verb|.rea| file contains case-specific information read during initialization.
-The user guide \cite{Nek} contains a tutorial which explains the necessary 
+they can be considered the surface and the core of the entire program. 
+The \verb|.rea| file contains case-specific information read during the initialization of the 
+compiled program. The user guide \cite{Nek} contains a tutorial which explains the necessary 
 steps on how to get started with Nek5000. The next chapters will try to give some understanding on 
 how the user is able to make the changes necessary for each case. \fref{fig:files} illustrates 
 how the files work together. 
 %
 \subsection{SIZE}
 Since Nek5000 is mostly based on Fortran77 all memory allocations are done statically and must be specified explicitly 
-before runtime. These variables are stated in \verb|SIZE|. The size of the working arrays 
-necessary to perform the calculations are mostly defined by the upper limits of elements, 
+before runtime. Most of the variables used to determine the memory usage are stated in \verb|SIZE|.
+The size of the working arrays necessary to perform the calculations are mostly defined by the upper limits of elements, 
 processors, scalars and of course the polynomial degree
 of the local Lagrange functions. These variables define the sizes of almost all 
 the arrays used in the program so it is important to define these variables as accurately 
@@ -173,7 +174,7 @@ N-S and Passive scalar equations. The N-S solver works very distinctly depending
 enabled whereas the PS equation, which does not depend on the pressure, is solved similarly for $P_NP_N$ and $P_NP_{N-2}$. 
 For the sake of clarity, \fref{fig:files} shows how the algorithms are called from the main routine.
 This is a very simplified flow chart which does not include choices such as filters, preconditioners, LES-model, 
-de-aliasing etc. but it captures the fundamental idea of the solver. 
+de-aliasing etc. but it explains how the two main algorithms are selected using the boolean variable \verb|ifsplit|. 
 %
 \begin{figure}[h]
 	\centering
@@ -186,10 +187,11 @@ de-aliasing etc. but it captures the fundamental idea of the solver.
 The description of the routines corresponding to Pressure-correction and fractional step are found in 
 \cref{prescorr} and~\ref{fracstep}. For further details regarding the 
 implementation in Nek5000 it is referred to \cite{Fischer_hybridschwarz-multigrid}
-and \cite{TomboulidesPnPn}. An important difference between these to implementations is the fact that the $P_NP_N$ 
+and \cite{TomboulidesPnPn}. As mentioned before an important difference between these two implementations is the fact that the $P_NP_N$ 
 implementation is based on an analytical splitting algorithm which introduces a non-vanishing error in the pressure along the boundaries of the 
 domain while the $P_NP_{N-2}$ algorithm is a discrete splitting which does not explicitly force a wrong boundary condition.
-It was however shown in~\cite{Guermond2006} that the discrete splitting also introduces a erroneous boundary condition weakly. 
+It is however argumented in for instance~\cite{Guermond2006} that the discrete splitting also
+introduces an erroneous boundary condition weakly.
 
 %To best understand the work flow of Nek5000 the subroutine \verb|nek_advance| in \verb|drive1.f| should be examined.
 %This routine includes all the steps in one iteration of the solver. The routine is adapted so that it is functional
@@ -283,8 +285,9 @@ for a SEM solver since the elements generated by the mesh are relatively coarse.
 Many Finite volume based solvers do not support curved elements simply because the 
 complex geometries are resolved with a sufficiently high resolution and it 
 is of no interest to approximate them any better. However for a spectral element
-solver it is necessary to address this problem since the initial grid is a lot coarser
-compared to equivalent settings in other solvers.
+solver it is necessary to address this problem since spectral convergence 
+for the approximated solution in $\mathbb{P}_N$ is not achievable 
+if the geometry is only represented in $\mathbb{P}_{1}$ or $\mathbb{P}_{2}$.
 
 As a part of this thesis two advancements have been made regarding complex geometries. 
 The first part is a fully automatic procedure which projects any edge onto a circle. This is a
