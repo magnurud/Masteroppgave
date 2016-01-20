@@ -169,12 +169,10 @@ quadrature rules of higher order. A formal statement and numerical validation of
 
 To sum up the discussion above a general error estimate from~\cite{Quarteroni} is stated as a theorem, 
 \begin{theorem}
-    Let $\Omega$ be a domain in $\mathbb{R}^d$ and $\left\{ \Omega_k \right\}$ 
+    Let $\Omega = [-1,1]$ and $\left\{ \Omega_k \right\}$ 
     be the non-overlapping elements with a corresponding element size $h_k$.
-    The function $u$ is locally regular within each element,
-    $u_{|\Omega_k} \in H^{\sigma}(\Omega_k)$. 
-    Approximating this function with $u_h \in X_h^p \subset H^1_0$, where $X_h^p$ 
-    is the FEM space, yields the following error estimate for $ \sigma > p \ge 1$ 
+    If $u\in C^{0}(\Omega)$ and $u_{|\Omega_k} \in H^{\sigma}(\Omega_k)$, 
+    then the following error estimate will hold for any $ \sigma > p \ge 1$ 
 \begin{align}
     \inf_{u_h \in X_h^p} ||u-u_h||_1 \le C\left( \sum_{k} h_k^{2p}|u|^2_{p+1,k} \right)^{1/2}.
 \end{align}
@@ -309,13 +307,14 @@ but by applying a different set of basis functions the projection error is diffe
 as well. 
 
 \begin{theorem}
-    Let $\Omega \subset \mathbb{R}^d$ and  $u \in H^{\sigma}(\Omega)$. The projection 
+    Let $\Omega [-1,1]$ and  $u \in H^{\sigma}(\Omega)$. The projection 
     of $u$ onto $\mathbb{P}_N$ for any $\sigma \ge 1$ is given as  
     \begin{equation}
-        \inf_{u_h\in P_N}||u-u_h||_1 \le CN^{1-\sigma}|u|_{\sigma}.
+        \inf_{v_h\in \mathbb{P}_N}||u-v_h||_1 \le CN^{1-\sigma}|u|_{\sigma}.
     \end{equation}
     \label{thm:smconvergence}
 \end{theorem}
+% 5.4.35 in CHZQ.
 
 %-----------------------------------
 %	SUBSECTION 2
@@ -434,15 +433,18 @@ It was proved in~\cite{MPR1987} that spectral convergence can be achieved only b
 $u$ to be sufficiently regular within each element. This as opposed to pure spectral methods which
 requires regularity in the entire domain is an advantage when working with turbulent flows 
 in complex domains.
-Let $\mathbb{P}_{N,K} = \left\{ v \in L^2(\Omega),v_{|\Omega_k} \in \mathbb{P}_N(\Omega_K) \right\}$.
+For the sake of clarity the relevant spaces for the following error estimates are 
+repeated here, $X^N_k =  H_0^1(\Omega_k)\bigcap\mathbb{P}_N(\Omega_k)$, and 
+$\mathbb{P}_{N,K} = \left\{ v \in L^2(\Omega),v_{|\Omega_k} \in \mathbb{P}_N(\Omega_K) \right\}$.
 \begin{theorem}
-    Let $\Omega$ be a domain in $\mathbb{R}^d$ and $\left\{ \Omega_k \right\}$ 
-    be the set of non-overlapping elements. $X_h = H^1_0\cap\mathbb{P}_{N,K}$ is the SEM space. If $u$ is continuous in the entire domain 
-    and $u_{|\Omega_k} \in H^{\sigma}(\Omega_k) \forall \; k $ the following will hold for 
+    Let $\Omega = [-1,1]$ and $\left\{ \Omega_k \right\}_K$ be the set of non-overlapping elements. 
+    If $u \in C^0(\Omega)$ 
+    and $u_{|\Omega_k} \in H^{\sigma}(\Omega_k)\; \forall \; k $, the following will hold for 
     any $\sigma \ge 1$
 \begin{align}
-    \inf_{v_{h}\in X_{k}}||u-v_h||_1 \le CN^{1-\sigma}\left( ||u||_1 + \sum_{k=1}^{K}||u||_{\sigma,k} \right).
+    \inf_{v_{h}\in X_{k}^N}||u-v_h||_1 \le CN^{1-\sigma}\left( ||u||_1 + \sum_{k=1}^{K}||u||_{\sigma,k} \right).
 \end{align}
+
     \label{thm:semconvergence}
 \end{theorem}
 %
