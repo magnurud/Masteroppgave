@@ -82,7 +82,7 @@ Find $(\mathbf{u}, p) \in H^1_0(\Omega)^3\times L^2_0(\Omega)$ such that
         %(\frac{\partial \mathbf{u}}{\partial t},\mathbf{v})
         %+ \mathcal{C}(\mathbf{u};\mathbf{u},\mathbf{v})
            \mathcal{B}(\mathbf{v},p) 
-         +\nu\mathcal{A}(\mathbf{u},\mathbf{v}) &= (\mathbf{f},\mathbf{v}), \\
+         +\mathcal{A}(\mathbf{u},\mathbf{v}) &= (\mathbf{f},\mathbf{v}), \\
         \mathcal{B}(\mathbf{u},q) &= 0.
     \end{split}
 	\label{eq:NSweak}
@@ -170,10 +170,13 @@ quadrature rules of higher order. A formal statement and numerical validation of
 To sum up the discussion above a general error estimate from~\cite{Quarteroni} is stated as a theorem, 
 \begin{theorem}
     Let $\Omega$ be a domain in $\mathbb{R}^d$ and $\left\{ \Omega_k \right\}$ 
-    be the non-overlapping elements. $X_h^p \subset H^1_0$ is the FEM space, and $u \in H^{\sigma}(\Omega)$ is continuous 
-    in the entire domain the following will hold for any $\sigma \ge 1$
+    be the non-overlapping elements with a corresponding element size $h_k$.
+    The function $u$ is locally regular within each element,
+    $u_{|\Omega_k} \in H^{\sigma}(\Omega_k)$. 
+    Approximating this function with $u_h \in X_h^p \subset H^1_0$, where $X_h^p$ 
+    is the FEM space, yields the following error estimate for $ \sigma > p \ge 1$ 
 \begin{align}
-    ||u-u_h||_1 \le Ch^{s} |u|_{s},\qquad s = \min\left\{ r,p \right\}
+    \inf_{u_h \in X_h^p} ||u-u_h||_1 \le C\left( \sum_{k} h_k^{2p}|u|^2_{p+1,k} \right)^{1/2}.
 \end{align}
     \label{thm:femconvergence}
 \end{theorem}
@@ -301,7 +304,18 @@ Where the elements in the matrices and vectors are given as
 From these equations it is clear that the mass matrix $M$ is diagonal and the right hand side vector $\tilde f$ is easily calculated, 
 while the stiffness matrix $A$ is symmetric but full.
 
-\colorbox{red}{should add error/ convergence theorem to FEM and SM}
+The method oulined in this section is similarly to FEM also a projection method, 
+but by applying a different set of basis functions the projection error is different 
+as well. 
+
+\begin{theorem}
+    Let $\Omega \subset \mathbb{R}^d$ and  $u \in H^{\sigma}(\Omega)$. The projection 
+    of $u$ onto $\mathbb{P}_N$ for any $\sigma \ge 1$ is given as  
+    \begin{equation}
+        \inf_{u_h\in P_N}||u-u_h||_1 \le CN^{1-\sigma}|u|_{\sigma}.
+    \end{equation}
+    \label{thm:smconvergence}
+\end{theorem}
 
 %-----------------------------------
 %	SUBSECTION 2
@@ -412,24 +426,27 @@ be performed on almost any deformed domain as opposed to SM.
 %$\Omega$ is some 2 dimensional strongly connected domain with well-defined corners and each of the edges can be described by some polynomial $\Gamma_i$.
 
 \subsection{Convergence properties}
-This subsection will present some results regarding the expected accuracy of this method.
+This subsection will present a brief error estimate which in can be 
+compared to \thref{thm:femconvergence} and~\ref{thm:smconvergence}.
 The Spectral Element Method can as mentioned earlier be regarded as a projection 
 method similar to FEM and SM. 
 It was proved in~\cite{MPR1987} that spectral convergence can be achieved only by requiring the solution
 $u$ to be sufficiently regular within each element. This as opposed to pure spectral methods which
 requires regularity in the entire domain is an advantage when working with turbulent flows 
-in complex domains. 
+in complex domains.
+Let $\mathbb{P}_{N,K} = \left\{ v \in L^2(\Omega),v_{|\Omega_k} \in \mathbb{P}_N(\Omega_K) \right\}$.
 \begin{theorem}
     Let $\Omega$ be a domain in $\mathbb{R}^d$ and $\left\{ \Omega_k \right\}$ 
     be the set of non-overlapping elements. $X_h = H^1_0\cap\mathbb{P}_{N,K}$ is the SEM space. If $u$ is continuous in the entire domain 
     and $u_{|\Omega_k} \in H^{\sigma}(\Omega_k) \forall \; k $ the following will hold for 
     any $\sigma \ge 1$
 \begin{align}
-    \inf_{v_{h}\in X_{k}}||u-v_h||_1 \le CN^{1-\sigma}\left( ||u||_1 + \sum_{k=1}^{K}||u||_{\sigma} \right).
+    \inf_{v_{h}\in X_{k}}||u-v_h||_1 \le CN^{1-\sigma}\left( ||u||_1 + \sum_{k=1}^{K}||u||_{\sigma,k} \right).
 \end{align}
     \label{thm:semconvergence}
 \end{theorem}
 %
+
 Note that this result is for a spatial approximation of a function $u$, although SEM provides 
 great error estimates the solution of the N-S equations are also restricted by the errors due to 
 temporal discretizations. This will be further discussed in \cref{timeNS}.
@@ -839,7 +856,7 @@ Notice how the integrational factor $Q(t)$ is never evaluated directly.
 
 The final scheme applied for solving \eref{eq:NSoperator} when applying OIFS consists of one implicit scheme for 
 solving \eref{eq:NSOIFS1} and an explicit scheme for solving \eref{eq:IVP}. When applied in this thesis the 
-first scheme corresponding to the $b_j$ coefficients is an implicit BDFk-scheme while the second is an explicit 4th order Runge-Kutta scheme. 
+first scheme corresponding to the $b_j$ coefficients is an implicit BDFk-scheme while the second is an explicit 4th order Runge-Kutta scheme (RK4). 
 Solving~\eref{eq:IVP} with a multi-step method implies a bit more work per time-step, but as it stabilizes the routine larger advances in 
 time can be made and the overall efficiency improves.
 
@@ -871,21 +888,47 @@ Where $M, A,D,C$ Denotes the mass integral, Laplacian, gradient and non-linear o
     %\item Calculate $v^{n+1}$ by solving $\partial_t v^{n+1}=v^{**} + \Delta t Lv^{n+1}$.
 %\end{itemize}
 A schematic overview of the method is stated below, where the equations on the right hand side are 
-solved and the updated solution is stated on the left hand side.
+solved and the updated solution is stated on the left hand side. By performing these 
+steps the solution $(\mathbf{u},p)$ is deveoped one time-step
+from $(\mathbf{u}^n,p^n)$ to $(\mathbf{u}^{n+1},p^{n+1})$. 
+%\begin{align}
+    %\begin{split}
+        %\mathbf{u}^* &\leftarrow \frac{d\mathbf{u}}{dt}=C\mathbf{u}+M\mathbf{f}^{n+1},\\
+    %p^{n+1} &\leftarrow \Delta\: p = \nabla \cdot \frac{\mathbf{u}^*}{\Delta t},\\
+    %\mathbf{u}^{**} &\leftarrow  \frac{d\mathbf{u}^*}{dt} =D^Tp^{n+1},\\
+    %\mathbf{u}^{n+1} &\leftarrow \frac{d\mathbf{u}^{**}}{dt}= -A\mathbf{u}^{**}.
+    %\end{split}
+    %\label{eq:fracstep}
+%\end{align}
+%\begin{align}
+    %\begin{split}
+        %\mathbf{u} &\leftarrow \frac{d\mathbf{u}}{dt}=C\mathbf{u}+M\mathbf{f},\\
+    %p &\leftarrow \Delta\: p = \nabla \cdot \frac{\mathbf{u}}{\Delta t},\\
+    %\mathbf{u} &\leftarrow \frac{d\mathbf{u}}{dt} = \nabla p,\\
+    %\mathbf{u} &\leftarrow \frac{d\mathbf{u}}{dt} = -A\mathbf{u}.
+    %\end{split}
+    %\label{eq:fracstep}
+%\end{align}
 \begin{align}
     \begin{split}
-        \mathbf{u}^* &\leftarrow \frac{d\mathbf{u}}{dt}=C\mathbf{u},\\
-    p^{n+1} &\leftarrow \Delta\: p = \nabla \cdot \frac{\mathbf{u}^*}{\Delta t},\\
-    \mathbf{u}^{**} &\leftarrow  \frac{d\mathbf{u}^*}{dt} =D^Tp^{n+1},\\
-    \mathbf{u}^{n+1} &\leftarrow \frac{d\mathbf{u}^{**}}{dt}= -A\mathbf{u}^{**}+M\mathbf{f}^{n+1}.
+        \mathbf{u}^{*} &= -\sum_{j=1}^kb_{j}\mathbf{u}^{n+1-j}
+        +\Delta t (C\mathbf{u}^{n+1}+M\mathbf{f}^{n+1}),\\
+        \Delta p^{n+1} &= \nabla \cdot \left(  \frac{\mathbf{u}^{*}}{\Delta t}\right),\\
+        \mathbf{u}^{**} &= \mathbf{u}^{*} + \Delta t D^T p^{n+1},\\
+        b_0\mathbf{u}^{n+1} &= \mathbf{u}^{**} -\Delta t A\mathbf{u}^{n+1}.
     \end{split}
     \label{eq:fracstep}
 \end{align}
 
 As earlier mentioned this method is convenient because it allows us to handle the different 
-terms with different solution techniques. So since the first equation in \eref{eq:fracstep}
-involves the non-linear skew-symmetric advection operator this equation is solved using a 
-explicit Adam Bashford scheme. The second equation is the Poisson pressure equation which
+terms with different solution techniques. Hence the term including the
+non-linear skew-symmetric advection matrix $C$ will be approximated by
+an $k$th order extrapolation (EXTk) scheme. The first step can also be evaluated in 
+an OIFS-way to gain stability. This implies using the discretization introduced in \eref{eq:NSOIFS1}
+with only the loading function on the right hand side, and solving the
+IVP \eref{eq:IVP} with RK4 to obtain $\mathbf{u}^{*}$. 
+
+The second equation is the Poisson pressure equation which
 assures a divergence free velocity field, and it is this step along with step three that 
 allows this to be classified as a projection method.
 
@@ -912,13 +955,7 @@ similar to problem \eref{eq:Helmholtz}.
 This method provides an efficient algorithm, but is known to produce errors of order
 $\mathcal{O}(1)$.
 The problem is the pressure Poisson equation which is solved with incorrect boundary 
-conditions. The first step can also be evaluated in an OIFS-way to gain stability,
-by rewriting the initial equation as described in the previous chapter. This allows you 
-to solve the unstable advection operator with multiple sub-steps. Explicitly the first step 
-in \eref{eq:fracstep} would be solved by applying the discretization used in \eref{eq:NSOIFS1}
-with an empty right hand side since the rest of the terms are take care of in the next steps. 
-The IVP \eref{eq:IVP} is then solved to obtain $\mathbf{u}^{*}$.
-
+conditions.
 %\subsection{Pressure-correction}
 
 \subsection{Discrete splitting - ($P_NP_{N-2}$)} \label{prescorr}
@@ -933,7 +970,7 @@ in~\cite{Fischer_hybridschwarz-multigrid}.
 To start the explanation of the method we continue considering the incompressible N-S equations in their 
 operational form 
 \begin{align}
-    \frac{1}{\Delta t} M \mathbf{u}^{n+1}-D^Tp^{n+1}+\nu A \mathbf{u}^{n+1} = M\mathbf{\tilde f}^{n+1},
+    \frac{1}{\Delta t} M \mathbf{u}^{n+1}-D^Tp^{n+1}+A \mathbf{u}^{n+1} = M\mathbf{\tilde f}^{n+1},
     \qquad D\mathbf{u}^{n+1}    = 0.
     \label{eq:DiscreteStart}
 \end{align}
@@ -945,7 +982,7 @@ incorporate both the original loading function, the non-linear term and the expl
 time-derivative from the BDFk-scheme. 
 By doing this reformulation the unsteady Stokes problem is obtained and algorithms studied 
 for this problem can be applied.
-By defining the matrix $H = 1/\Delta t M + \nu A$ \eref{eq:DiscreteStart} 
+By defining the matrix $H = 1/\Delta t M + A$ \eref{eq:DiscreteStart} 
 can be written as 
 \begin{equation}
 \begin{pmatrix}
