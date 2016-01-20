@@ -759,7 +759,7 @@ such that $g^{n}=g(n\Delta t)$ for some fixed timestep $\Delta t$. One step appl
 Backward Difference scheme (BDFk) yields
 %
 \begin{align}
-    \sum_{j = 0}^{k} \frac{b_j}{\Delta t} u^{n+1-j} =f^{n+1}u^{n+1}+g^{n+1}u^{n+1}.
+    \sum_{j = 0}^{k} b_j u^{n+1-j} =\Delta tf^{n+1}u^{n+1}+\Delta tg^{n+1}u^{n+1}.
     \label{eq:imp}
 \end{align}
 %
@@ -767,14 +767,14 @@ Now notice that $f^{n+1}=f(u^{n+1},t^{n+1})$ requires that $u$ is known at time 
 step. This term is therefore approximated by a $k$th order explicit scheme leading to 
 %
 \begin{align}
-    \sum_{j = 0}^{k} \frac{b_j}{\Delta t} u^{n+1-j} =\sum_{j = 0}^{k} a_j f^{n-j}u^{n-j}+g^{n+1}u^{n+1}.
+    \sum_{j = 0}^{k} b_j u^{n+1-j} =\Delta t\sum_{j = 0}^{k} a_j f^{n-j}u^{n-j}+\Delta tg^{n+1}u^{n+1}.
     \label{eq:imp-exp}
 \end{align}
 %
 Now the terms can be ordered such that only the implicit terms are present on the left hand side, 
 %
 \begin{align}
-    (\frac{b_0}{\Delta t} +g^{n+1})u^{n+1} =-\sum_{j = 1}^{k} \frac{b_j}{\Delta t} u^{n+1-j}+\sum_{j = 0}^{k} a_j f^{n-j}u^{n-j}.
+    (b_0-\Delta tg^{n+1})u^{n+1} =-\sum_{j = 1}^{k} b_j u^{n+1-j}+\Delta t\sum_{j = 0}^{k} a_j f^{n-j}u^{n-j}.
     \label{eq:imp-exp-ord}
 \end{align}
 %
@@ -802,6 +802,32 @@ In this thesis the schemes BDFk and a $k$th order extrapolation (EXTk) for $k=2,
 %Operator splitting is a very convenient strategy for the N-S equations which consists of the easily invertible Laplacian
 %and the demanding convection operator. 
 
+It should be mentioned that the explicit/implicit schemes introduced in this section are 
+stable only for operators with eigenvalues below a certain limit $\gamma$ that depends 
+on the scheme. When applied on the N-S 
+equations it is the convection term $\Delta t M^{-1}C\mathbf{u}^{n+1}$
+as observed in~\eref{eq:fracstep} that is evaluated by
+an explicit scheme. Let $\lambda_{max}$ be the maximum eigenvalue of
+$M^{-1}C$, which is known to scale as 
+$\mathcal{O}(N^{2})=\mathcal{O}(\Delta x_{\min}^{-1})$. The following inequality 
+has to be satisfied for the scheme to be stable, 
+%
+\begin{align}
+    \Delta t \lambda_{\max} = c\frac{\Delta t}{\Delta x} \le \gamma.
+    \label{eq:restriction}
+\end{align}
+%
+By introducing the Courant number, $\mbox{\scriptsize{\bf{CFL}}} = \bar u \Delta t/ \Delta x$,
+and a discretization-specific constant $S$, the inequality in~\eref{eq:restriction} 
+can be rewritten as the CFL-condition,
+%
+\begin{align}
+    S \cdot \mbox{\scriptsize{\bf{CFL}}}   \le \gamma.
+    \label{eq:CFLcondition}
+\end{align}
+%
+This inequality is used to adjust the time-step in order to maximize the evolution in time 
+within the stability criteria for the scheme.
 
 \subsection{Operator integrating factor schemes (OIFS)}\label{OIFS}
 The operator-splitting method described in the previous chapter may lead to an unstable scheme, 
@@ -889,7 +915,7 @@ Where $M, A,D,C$ Denotes the mass integral, Laplacian, gradient and non-linear o
 %\end{itemize}
 A schematic overview of the method is stated below, where the equations on the right hand side are 
 solved and the updated solution is stated on the left hand side. By performing these 
-steps the solution $(\mathbf{u},p)$ is deveoped one time-step
+steps the solution $(\mathbf{u},p)$ is developed one time-step
 from $(\mathbf{u}^n,p^n)$ to $(\mathbf{u}^{n+1},p^{n+1})$. 
 %\begin{align}
     %\begin{split}
@@ -912,10 +938,10 @@ from $(\mathbf{u}^n,p^n)$ to $(\mathbf{u}^{n+1},p^{n+1})$.
 \begin{align}
     \begin{split}
         \mathbf{u}^{*} &= -\sum_{j=1}^kb_{j}\mathbf{u}^{n+1-j}
-        +\Delta t (C\mathbf{u}^{n+1}+M\mathbf{f}^{n+1}),\\
+        +\Delta t M^{-1} (C\mathbf{u}^{n+1}+M\mathbf{f}^{n+1}),\\
         \Delta p^{n+1} &= \nabla \cdot \left(  \frac{\mathbf{u}^{*}}{\Delta t}\right),\\
-        \mathbf{u}^{**} &= \mathbf{u}^{*} + \Delta t D^T p^{n+1},\\
-        b_0\mathbf{u}^{n+1} &= \mathbf{u}^{**} -\Delta t A\mathbf{u}^{n+1}.
+        \mathbf{u}^{**} &= \mathbf{u}^{*} + \Delta t M^{-1}D^T p^{n+1},\\
+        b_0\mathbf{u}^{n+1} &= \mathbf{u}^{**} -\Delta t M^{-1} A\mathbf{u}^{n+1}.
     \end{split}
     \label{eq:fracstep}
 \end{align}
@@ -1058,7 +1084,7 @@ Applying these two matrices leads to a two step algorithm on the form
 \end{pmatrix}
 &=
 \begin{pmatrix}
-    Mf^{n+1} +D^Tp^n  \\ 
+    M\mathbf{f}^{n+1} +D^Tp^n  \\ 
     0 
     \end{pmatrix}
     \label{eq:PCstep1}
