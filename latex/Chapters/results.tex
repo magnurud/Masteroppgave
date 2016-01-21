@@ -67,7 +67,7 @@ The inflow conditions had to be extrapolated onto the domain at each time step. 
 on the inflow was generated in a different simulation performed in CDP. The inflow velocity was written to file every 
 $0.0013$s for a total of $28$s and had to be interpolated onto the domain for the simulations in Nek5000 since the grid was not identical.
 The right plot in \fref{fig:inflow} is an instantaneous picture of the inflow velocity in x-direction, 
-notice how the pattern repeats itself along the y-axis. This is because the inflow data was generated in a smaller channel, $\approx 1/3$ of the 
+notice how the pattern repeats itself along the y-axis. This is because the inflow data was generated in a smaller channel, approximately $1/3$ of the 
 width of the computational domain used for the data sampling. An interpolation algorithm implemented at FFI was applied in order to adjust 
 the inflow-data to the computational mesh, this was done directly in \verb|.usr|. 
 %
@@ -101,6 +101,24 @@ started.
 	\label{fig:plume}
 \end{figure}
 %
+
+The mesh used in the simulations performed in Nek5000 and the one performed in CDP are 
+different, and the resolution in the part of the domain close to the cubes is described 
+in~\tref{tab:meshdiff}.
+\begin{table}
+    \centering
+    \begin{tabular}{c| c c c}
+        Solver   & $n_x$& $n_y$ & $n_z$ \\ \hline
+        CDP      & 28 & 28 & 64 \\ 
+        Nek5000  & 22 & 22 & 36 
+    \end{tabular}
+    \caption{Number of nodes used to represent one cube.}
+    \label{tab:meshdiff}
+\end{table}
+
+The resolution is better in the simulations done in CDP and especially in 
+the $z$-direction. This probably explains some of the differece close to 
+$z=0$
 
 \subsection{Results - Gas dispersion} 
 This case is a part of a larger project designed to evaluate different solvers 
@@ -192,13 +210,15 @@ sufficiently long.
 %Along the second measurement line which is placed in the middle of the 4 cubes Nek5000 
 %estimates a concentration peak lower than both the reference solutions.  
 
-The results also indicate that the difference between the SGS-model and filtering
+The results also indicate that the difference between the SGS-model and the filtering
 is not that large,
-if anything the SGS-model shows a tendency to estimate lower concentration peaks. This could be a 
-result of too much smoothing due to the turbulent viscosity. An important difference between the 
-filtering and the SGS-model is the fact that the filter works based on the current state of the flow 
-whereas the amount of diffusion added by the SGS-model is mostly decided by the previous states of the 
-flow. This could lead to either too much or too little smoothening locally.
+if anything the SGS-model shows a tendency to estimate higher concentration peaks.
+In particular the first plot indicates a significant difference.
+An important difference between the filtering and the SGS-model is 
+that the filter works based on the current state of the flow 
+whereas the amount of diffusion added by the SGS-model is mostly decided
+by the previous states of the flow.
+This could lead to either too much or too little smoothening locally.
 
 \newpage
 \begin{figure}[h]
@@ -212,10 +232,13 @@ Two dashed lines on either side of the centerline represent the canyon.}
 \end{figure}
 The concentration along the vertical measurement lines is plotted in \fref{fig:cVall} and overall 
 Nek5000 provides good results according to the reference solutions. The largest difference is found close 
-to the wall right in the middle of the cubes. In particular the simulation including the SGS-model 
-underestimates the concentration in this domain. It is known that the Dynamic Smagorinsky model does not 
-perform that well close to the wall which could be a partial explanation to this. Along with the fact that 
-the $P_NP_N$ spitting errors also could be significant close to the wall.
+to the wall right in the middle of the cubes. In particular the simulation with filtering 
+underestimates the concentration in this domain. The resolution of the mesh used for the 
+Nek5000 simulations in this area is notably worse than for the CDP-simulations.
+And in the middle of the cubes neither one of the filter or the Dynamic Smagorinsky model
+are able to correct this.
+The $P_NP_N$ formulation is known to produce splitting errors of significant sizes 
+close to the wall, and could play an important role in this part of the domain.
 
 
 %\begin{figure}[h]
