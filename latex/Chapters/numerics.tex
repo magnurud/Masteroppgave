@@ -310,7 +310,7 @@ as well.
     Let $\Omega [-1,1]$ and  $u \in H^{\sigma}(\Omega)$. The projection 
     of $u$ onto $\mathbb{P}_N$ for any $\sigma \ge 1$ is given as  
     \begin{equation}
-        \inf_{v_h\in \mathbb{P}_N}||u-v_h||_1 \le CN^{1-\sigma}|u|_{\sigma}.
+        \inf_{v_h\in \mathbb{P}_N}||u-v_h||_1 \le CN^{1-\sigma}||u||_{\sigma}.
     \end{equation}
     \label{thm:smconvergence}
 \end{theorem}
@@ -425,8 +425,8 @@ be performed on almost any deformed domain as opposed to SM.
 %$\Omega$ is some 2 dimensional strongly connected domain with well-defined corners and each of the edges can be described by some polynomial $\Gamma_i$.
 
 \subsection{Convergence properties}
-This subsection will present a brief error estimate which in can be 
-compared to \thref{thm:femconvergence} and~\ref{thm:smconvergence}.
+This subsection will present an error estimate that is comparable
+to \thref{thm:femconvergence} and~\ref{thm:smconvergence}.
 The Spectral Element Method can as mentioned earlier be regarded as a projection 
 method similar to FEM and SM. 
 It was proved in~\cite{MPR1987} that spectral convergence can be achieved only by requiring the solution
@@ -448,7 +448,7 @@ $\mathbb{P}_{N,K} = \left\{ v \in L^2(\Omega),v_{|\Omega_k} \in \mathbb{P}_N(\Om
     \label{thm:semconvergence}
 \end{theorem}
 %
-
+It should be mentioned that the result in~\thref{thm:smconvergence} holds for SEM as well.
 Note that this result is for a spatial approximation of a function $u$, although SEM provides 
 great error estimates the solution of the N-S equations are also restricted by the errors due to 
 temporal discretizations. This will be further discussed in \cref{timeNS}.
@@ -636,15 +636,17 @@ only included for the small but still resolved scales of motion.
 \subsection{Aliasing}
 
 When evaluating the integral surging from the non-linear term in the N-S equations 
-the polynomial to be integrated can be of order $2N+(N-1)$ or even higher depending of the jacobian.
-The quadrature rule applied to solve the integrals are only exact up to an order $2N-1$
-hence the error surging from this evaluation can be of significant size.
+the polynomial to be integrated can be of order $2P+(P-1)$ or even higher depending
+of the Jacobian. Notice that the number of GLL-nodes are $N=P+1$, and the corresponding
+quadrature rule is said to be of order $N$. An $N$th order GLL-quadrature is known to 
+solve an integral exactly when the integrand is of order $2N-3=2P-1$ or less.
+Hence the error surging from this evaluation can be of significant size.
 Applying a non-sufficient quadrature to an integral like this is called a ``variational
 crime''. Applying a quadrature rule of a not sufficiently high order results in an 
 aliasing effect of the lower modes, attempting to compensate for the higher order modes omitted. 
 Since a spectral element method arguably has a good accuracy these variational crimes should 
-not be committed and it is therefore common practice to solve this particular integral using a
-quadrature of order $3N$. The concept and illustrative examples are given in Chapter 2.4 in 
+not be committed, and it is therefore common practice to solve this particular integral using a
+quadrature rule of order $3/2N$. The concept and illustrative examples are given in Chapter 2.4 in 
 \cite{Karniadakis}. It is worth to note that aliasing is not always a necessity depending on 
 the size of the smallest structures compared to the grid resolution, an example of this
 is presented in \cref{results}.
