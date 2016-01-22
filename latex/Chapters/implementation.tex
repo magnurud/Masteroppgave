@@ -89,7 +89,7 @@ The remaining operation is to call the Gordon Hall algorithm and create the inte
 %
 To make this implementation fully automatic a small change in the script \verb|mshconvert| was also necessary. 
 Since ICEM provides the midpoints of the curved edges, a function was added to convert the midpoint information 
-originally provided to a circle center and its correspoding radius.
+originally provided to a circle center and its corresponding radius.
 \section{General surface projection}\label{surfpro}
 The routine \verb|xyzarc()| enables the user to more accurately represent circular edges.
 For more complex geometry such as actual terrain and other surfaces without any analytic
@@ -100,15 +100,39 @@ to Nek5000. The idea is to create an additional fine surface mesh in ICEM such
 that the nodes in this mesh describes the surface fine enough to distribute the GLL-nodes correctly in Nek5000.
 During the initialization of the mesh in Nek5000 the program can read this information and project the GLL-nodes onto 
 the provided surface. 
-The routine was made as automatic as possible, and can be summarized in these four steps
+The routine was made as automatic as possible, and can be summarized in these three steps
 \begin{enumerate}
-    \item Create initial Mesh and convert to \verb|.rea| applying mshconvert.
+    \item Create initial mesh and convert to \verb|.rea| applying mshconvert.
         \item Create refined surface mesh on the non-regular surface.
-        \item Enable projection by setting param(33) = 1.
-        \item Choose number of interpolation points by modifying param(34)= (1,2,3)
+        \item Enable projection by adding the line \verb|call surfprojection(n,a,b)|.
+        %\item Choose number of interpolation points by modifying param(34)= (1,2,3)
 \end{enumerate}
 
-In addition to the standard Nek library the file \verb|surfpro.f| needs to be added to 
+To explain the input parameters, let us first agree upon some naming conventions. 
+The set of surface points is denoted $S$, while $f_e$ will denote the set of points 
+in element $e$ that belong to the face that is going to be projected.
+The number of interpolation points is denoted $n$, which has a maximum upper limit of three
+since the surface mesh is recommended to be a tetrahedra mesh. Setting $n=1$ simply projects 
+a point in $f_e$ to the closest one in $S$.
+The interpolation algorithm used for this experiment is an inverse distance interpolation
+which applies the inversed distance squared as weights. The distance between a point
+$\mathbf{x}\in f_e$, and a point $\mathbf{y} \in S $ is given as 
+\begin{align}
+    ||\mathbf{x}-\mathbf{y}||_{a} = a ||\mathbf{x}-\mathbf{y}||_{l^2}
+    + (1-a)||\mathbf{n} - \frac{(\mathbf{x}-\mathbf{y})}{||\mathbf{x}-\mathbf{y}||_{l^2}}||_{a},
+    \label{eq:distancenorm}
+\end{align}
+with $\mathbf{n}$ as the surface normal of the initial element face in the point $\mathbf{x}$.
+The last parameter is provided to determine the size of the working array. 
+
+The projection is done element wise, and to avoid unnecessary calculations a subset $S_e \subset S$
+is used in~\eref{eq:distancenorm}.
+Let $\mathbf{x}_e$ be the point at the center of face $f_e$
+with radius $r_e$, the subset is then formulated as  
+$S_e = \left\{ \mathbf{x} \in S , ||\mathbf{x}_e-\mathbf{x}|| < b \cdot r_e \right\}$.
+
+
+In addition to the standard Nek5000 library the file \verb|surfpro.f| needs to be added to 
 the folder \verb|trunk/nek/| along with all the other scripts applied by Nek5000.
 This implementation could be done directly in \verb|.usr|, but it is of practical 
 interest to keep this file as tidy as possible.
@@ -201,8 +225,7 @@ surfmesh\_myFlow. The following commands are then executed
 \end{lstlisting}
 \endgroup
 After running the commands above the only thing left is to 
-change parameters 13 and 14 in \verb|.rea| and add
-\verb|call surfpro()| to \verb|usrdat2|.
+add \verb|call surfpro(n,a,b)| to \verb|usrdat2|.
 % 
 % 
 %\begin{lstlisting}[style=FormattedNumber, frame=none]
@@ -223,16 +246,16 @@ unstructured surface will be misplaced.
 With the routine described in \cref{surfpro} the surface is approximated accurately 
 by higher order polynomials.
 %
-\begin{figure}
+\begin{figure}[h]
 \centering
   \centerline{
 \begin{minipage}{.5\textwidth}
-  \includegraphics[width=0.9\linewidth]{Figures/helicopter.jpg}
+  \includegraphics[width=1.0\linewidth]{Figures/heli_coarse.jpg}
   %\captionof{figure}{A figure}
 \end{minipage}%
 \begin{minipage}{.5\textwidth}
   \centering
-  \includegraphics[width=0.9\linewidth]{Figures/mesh_ekebergaasen2.png}
+  \includegraphics[width=1.0\linewidth]{Figures/ekeberg_coarse.jpg}
 \end{minipage}
 }
   \caption{Two examples of smooth surfaces with no analytical expression. 

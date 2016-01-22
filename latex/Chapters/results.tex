@@ -36,7 +36,7 @@ the box $0.0\leq x/H \leq 4.96,-1.75\leq y/H \leq 1.75, 0\leq z/H \leq 1.5$.
 The four cubic boxes are centered around $(1.4315,0)$ with a distance $h$ between each box.
 The source is placed with its center in $(0.396,0)$ and radius $r = 0.0515$.
 The grid used for the computations consists of 14747 elements and with a polynomial degree of
-8 the total number of nodes $N\approx 7,6$mill. 
+7 the total number of nodes $N\approx 5,2$mill. 
 
 
 The simulations are performed using Large Eddy Simulation (LES) 
@@ -117,8 +117,7 @@ in~\tref{tab:meshdiff}.
 \end{table}
 
 The resolution is better in the simulations done in CDP and especially in 
-the $z$-direction. This probably explains some of the differece close to 
-$z=0$
+the $z$-direction. 
 
 \subsection{Results - Gas dispersion} 
 This case is a part of a larger project designed to evaluate different solvers 
@@ -131,7 +130,7 @@ the Smagorinsky model does not damp spurious velocity modes in the same degree a
 %
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.6\textwidth]{Figures/maxvel.png}
+	\includegraphics[trim=0.5cm 7cm 0.5cm 7cm, width=0.8\textwidth]{Figures/maxvel.pdf}
     \caption{$||\mathbf{u}||_{\infty}$ as a function of time, the green line represents the 
 simulation with the dynamic Smagorinsky SGS-model and the blue line represents the filtering 
 with $\alpha = 0.05$ and a quadratic decay on the last 3 modes.}
@@ -193,7 +192,7 @@ with $\alpha = 0.05$ and a quadratic decay on the last 3 modes.}
 \newpage
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8\textwidth]{Figures/NekcH_all.pdf}
+    \includegraphics[width=0.9\textwidth]{Figures/NekcH_all.pdf}
     \caption{Time-averaged concentration with a sample time of $22.00$ s at $y = 0$ plotted
     vertically and scaled 
     with the free-stream velocity and emission rate. Compared against wind tunnel data.
@@ -223,7 +222,7 @@ This could lead to either too much or too little smoothening locally.
 \newpage
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8\textwidth]{Figures/NekcV_all.pdf}
+    \includegraphics[width=0.9\textwidth]{Figures/NekcV_all.pdf}
     \caption{Time-averaged concentration with a sample time of $22.00$ s at $y = 0$ plotted
     vertically and scaled 
     with the free-stream velocity and emission rate. Compared against wind tunnel data.
@@ -239,6 +238,16 @@ And in the middle of the cubes neither one of the filter or the Dynamic Smagorin
 are able to correct this.
 The $P_NP_N$ formulation is known to produce splitting errors of significant sizes 
 close to the wall, and could play an important role in this part of the domain.
+
+The simulations were also performed using the $P_NP_{N-2}$ formulation with filtering, and the 
+results were very similar to those observed above. The SGS-model did however not function at all, 
+and resulted in a system crash in one of the earliest time-steps.
+
+As for the performance of Nek5000 the results are baffling. With the same number of processors,
+same accuracy criteria, and approximately the same number of nodes in the grid, Nek5000 simulated
+one second of flow more than five times as fast as a numerical code comparable to CDP! 
+This was done without any particular tuning and with a time-step about $2/3$ of the one used in 
+CDP. 
 
 
 %\begin{figure}[h]
@@ -365,8 +374,8 @@ essential, both coefficients are computed with significantly better accuracy.
 \begin{tabular}{l l c c c c}
 		\toprule
 		\# of Cells & Software & $c_D$ & $c_L$ & \%\textbf{Err} $c_D$ &\%\textbf{Err} $c_L$ \\ \midrule 
-		2755170& Nek5000 (mid) & 6.18349 & 0.008939 & 0.030 & 4.19 \\ 
-		2755170& Nek5000 (arc) & 6.18498 & 0.009413 & 0.006 & 0.13 \\
+		2124030& Nek5000 (mid) & 6.18349 & 0.008939 & 0.030 & 4.19 \\ 
+		2124030& Nek5000 (arc) & 6.18498 & 0.009413 & 0.006 & 0.13 \\
 		3145728 & CFX 		 & 6.18287 & 0.009387 & 0.04 &0.15 \\
 		3145728 & OF	     & 6.18931 & 0.00973 & 0.06 &3.5 \\
 		3145728 & FEATFLOW   & 6.18465 & 0.009397 & 0.01 &0.05 \\
@@ -444,6 +453,33 @@ The resuslts do however give an indication to the general effect of these settin
 are worth noticing.
 
 %----------------------------------------------------------------------------------------
-\section{Discussion and Conclusion}
+\chapter{Concluding remarks}
+Nek5000 has proven to give very accurate results with a relatively coarse mesh as
+presented in~\cref{results}. This is as expected since it is based on a higher order 
+method known to yield great accuracy. As for the performance it is no doubt that the 
+efforts put into the efficiency of the code has paid off. The possibility to obtain 
+results 5-10 times faster than similar softwares is an important factor to keep in mind. 
+The polynomial degree is chosen by changing a single parameter, which makes performance tests
+and accuracy adjustments very simple to do. 
+
+Since the mathematical formulation in Nek5000 is based on a tensor product of the basis functions 
+in each direction it is limited to the use of hex-mesh. This is no problem for the geometries 
+studied in this thesis, but for very complex geometry the use of tetrahedral mesh is mandatory.
+It did also prove difficult to work with refinements made in ICEM which restricts the possibility 
+to make a mesh with large differences in grid size.
+
+Another interesting aspect 
+
+
+
+\section{Further work}
+The surface projection could be expanded and improved in many ways. Making it iterative 
+to make sure the GLL-points are distributed correspondingly, The norm corresponding
+to the normal is prone to give errors and should be calculated based on points further away\ldots.
+For the simple array case it was experimented with different meshes and the refinement procedure 
+in ICEM quickly leads to very small elements with wide angles which tends to lead to problems 
+in Nek5000. However the author believe that by making an ogrid around the most important part of 
+the domain, say for instance $0 < x/H < 3,0.4 < y/H < 0.4, 0 < z/H < 0.15$.
+
 \colorbox{green}{How did Nek5000 perform overall, user-friendly ?,correctness,speed etc.}
 
