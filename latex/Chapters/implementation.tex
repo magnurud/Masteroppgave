@@ -170,7 +170,7 @@ fix_geom()
 \end{lstlisting}
 \endgroup
 % 
-In order to understand the algorithm a short description of the auxiliary functions is 
+To understand the algorithm a short description of the auxiliary functions is 
 given in the list below
 \begin{itemize}
     \item create\_working\_surface(e,f) -- Loops through all the nodes in surf.i and adds the 
@@ -271,7 +271,7 @@ A dynamic Smagorinsky model has previously been implemented in Nek5000 for flow 
 The SGS-model as described in \cref{description} depends on an averaging routine to calculate
 the dynamic Smagorinsky constant. The previous implementation in Nek5000 applies an average routine in the plane,
 assuming that the Smagorinsky constant is the same for all points with equal distance to the walls 
-of the channel. This is a rather case specific averaging routine based on the assumption of homogeneous turbulence 
+of the channel. This is a case specific averaging routine based on the assumption of homogeneous turbulence 
 in the entire plane, hence only applicable to flows in idealized geometries.
 
 When applying dynamical Smagorinsky to Case 1 a new spatial mean routine had to be applied for it to be stable. 

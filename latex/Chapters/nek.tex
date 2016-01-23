@@ -15,7 +15,7 @@
 %\colorbox{green}{rydd opp i skjemaene! referer til en l;rerbok, beskriv vha numerisk flow phi\ldots }
 %\colorbox{green}{Hver tydelig paa hva man itererer over.}
 %\colorbox{green}{korte ned tekstene!}
-There are many numerical solvers for turbulent flows available on the market.
+Many numerical solvers for turbulent flows are available on the market.
 From large commercial softwares such as Fluent which runs as a 
 black-box solver, to full open-source codes such as Nek5000 and openFOAM. 
 The solvers can vary in the numerical method; Finite volume, Finite Differences, 
@@ -36,7 +36,7 @@ and it has been put a lot of effort into the parallelization of the code,
 guaranteeing optimal speedup. All the parallelization is accessed through subroutines
 and functions, enabling the user to make advanced functions without having to 
 deal directly with the functions from the MPI library.
-With SEM as the numerical method applied it is possible to obtain very accurate results.  
+With SEM as the numerical method applied it is possible to obtain accurate results.  
 
 %nek5000 has its own mesh-generator for generating simpler geometries and it is also implemented the possibility to integrate CUBIT mesh 
 %files. A common starting point for simulating turbulent flow is a geometry given by a CAD-file,
@@ -46,12 +46,12 @@ With SEM as the numerical method applied it is possible to obtain very accurate 
 
 Nek5000 provides some basic tools for generation of mesh. For more complex geometries this tool cannot compare with more visualized-based softwares 
 such as ICEM from ANSYS which exports mesh to several numerical solvers such as Fluent and Nastran.
-It is therefore very useful to have an automatic way of converting a mesh created in ICEM to the format required by Nek5000. 
+An automatic way of converting a mesh created in ICEM to the format required by Nek5000 is therefore very useful. 
 The way the mesh is created in this thesis is visualized in \fref{fig:mesh}.
 %
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.6\textwidth]{Figures/mesh.pdf}
+	\includegraphics[width=0.9\textwidth]{Figures/mesh2.pdf}
 	\caption{Visualization of how the mesh is created. The elemental mesh is first generated using ICEM, the script mshconvert
     converts this to a .rea-file and finally the distribution of the GLL-nodes is done during the initialization in Nek5000}
 	\label{fig:mesh}
@@ -77,7 +77,7 @@ the mesh routines are further elaborated an overview of the file-structure will 
 	\label{fig:files}
 \end{figure}
 %
-In order to work with Nek5000 there are some practical information that needs to be clarified.
+To work with Nek5000 requires knowledge of some practicalities .
 Nek5000 is recompiled for every case and the user specify all the case specific 
 information in the three files \verb|{.rea,.usr,SIZE,}|. \verb|.usr| and \verb|SIZE| are 
 compiled with the standard Nek5000 library using makenek which creates the executable file \verb|nek5000|,
@@ -95,7 +95,7 @@ The size of the working arrays necessary to perform the calculations are mostly 
 processors, scalars and of course the polynomial degree
 of the local Lagrange functions. These variables define the sizes of almost all 
 the arrays used in the program so it is important to define these variables as accurately 
-as possible in order to optimize memory usage. The \verb|SIZE| file can be considered as the necessary base 
+as possible to optimize memory usage. The \verb|SIZE| file can be considered as the necessary base 
 for Nek5000.
 %\begingroup
 %\fontsize{12pt}{14pt}
@@ -170,10 +170,10 @@ The \verb|.usr| file can be considered as the surface of Nek5000, easily accessi
 
 \section{The basics of the solver}
 The most important building blocks in Nek5000 are the \verb|fluid| and \verb|heat| functions which solves the 
-N-S and Passive scalar equations. The N-S solver works very distinctly depending on the mathematical formulation
+N-S and Passive scalar equations. The N-S solver works distinctly depending on the mathematical formulation
 enabled whereas the PS equation, which does not depend on the pressure, is solved similarly for $P_NP_N$ and $P_NP_{N-2}$. 
 For the sake of clarity, \fref{fig:files} shows how the algorithms are called from the main routine.
-This is a very simplified flow chart which does not include choices such as filters, preconditioners, LES-model, 
+This is a simplified flow chart which does not include choices such as filters, preconditioners, LES-model, 
 de-aliasing etc. but it explains how the two main algorithms are selected using the boolean variable \verb|ifsplit|. 
 %
 \begin{figure}[h]

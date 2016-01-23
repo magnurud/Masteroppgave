@@ -43,7 +43,7 @@
 %\colorbox{green}{vær presis med den svake formuleringen!!}
 \section{Numerical concepts on the Stokes problem} \label{stokes}
 In the previous chapter the N-S equations were presented and reformulated in several ways without any details on how to
-actually solve the equations. This chapter aims to give a more detailed description of the solution methods applied.
+solve the equations. This chapter aims to give a more detailed description of the solution methods applied.
 The choice of algorithms and solution spaces requires a more thorough analysis which is normally performed on the 
 steady Stokes problem. The steady Stokes problem does not include the convection term or the time derivative 
 but the highest order terms are all present and is therefore a valid problem to perform this necessary
@@ -126,7 +126,7 @@ other areas. It offers a precise mathematical foundation and due to the connecti
 it guaranties a sparse system. The decomposition of the geometrical domain into a finite amount of elements,
 makes it possible to create general algorithms applicable to all kinds of geometries. 
 For the full mathematical foundation of FEM it will be referred to \cite{Quarteroni}, but some of the key properties will be stated here
-in order to provide a thorough understanding of the spectral element method (SEM). 
+to provide a thorough understanding of the spectral element method (SEM). 
 Throughout this section $p$ denotes the polynomial degree of the basis-functions, $h$ represents the average grid spacing, $E$ is the total
 number of elements and $d$ is the number of dimensions. 
 
@@ -134,7 +134,7 @@ FEM provides an algorithm for solving any well-posed boundary value problem (BVP
 formulation is obtained by first finding the Galerkin
 formulation with a corresponding search space $X$ and then choosing a discrete subspace $X^p_h\subset X$ 
 spanned by the finite element basis functions $\{\phi^p_i\}$.
-The key property of the basis functions is that they only have local support in a very small part of the domain. 
+The key property of the basis functions is that they only have local support in a small part of the domain. 
 This is what gives rise to the resulting sparse linear system. 
 By increasing the polynomial order the number of grid points used to define the polynomial will need to increase as well.
 This implies either reducing the distance between the grid points or increasing the support of each basis function.
@@ -171,7 +171,7 @@ To sum up the discussion above a general error estimate from~\cite{Quarteroni} i
 \begin{theorem}
     Let $\Omega = [-1,1]$ and $\left\{ \Omega_k \right\}$ 
     be the non-overlapping elements with a corresponding element size $h_k$.
-    If $u\in C^{0}(\Omega)$ and $u_{|\Omega_k} \in H^{\sigma}(\Omega_k)$, 
+    If $u_{|\Omega_k} \in H^{\sigma}(\Omega_k)$, 
     then the following error estimate will hold for any $ \sigma > p \ge 1$ 
 \begin{align}
     \inf_{u_h \in X_h^p} ||u-u_h||_1 \le C\left( \sum_{k} h_k^{2p}|u|^2_{p+1,k} \right)^{1/2}.
@@ -189,7 +189,7 @@ Spectral methods (SM) share a some of the mathematical ideas as FEM, but are not
 There are many ways to apply SM, 
 and in this thesis only the Galerkin version with numerical integration (sometimes referred to as G-NI) will be considered and will be referred to only as SM. 
 For a full introduction to SM and its applications to BVP see~\cite{Canuto}.
-SM can be reduced to a interpolation problem such as FEM, and are very interesting from a theoretical point of view due to its 
+SM can be reduced to an interpolation problem such as FEM, and are interesting from a theoretical point of view due to its 
 spectral convergence rate which allows you to obtain solutions of extremely high accuracy. 
 The most important draw-back of SM are the difficulties with applications to complex geometries. Although the system of equations surging from
 a BVP can be constructed in an elegant way it is rarely sparse and often result in expensive calculations. 
@@ -202,8 +202,8 @@ A function $u$ is projected onto $X_h$ by the relation
     u_h(x) = \sum_{i=0}^N a_i\psi_i(x).
     \label{eq:spectralprojection}
 \end{align}
-Where the coefficients $a_i$ are called the expansion coefficients. There are many possible choices for the basis and the belonging coefficients, 
-in this thesis and the algorithms used the functions $\psi_i$ will be the Lagrange polynomials based on the Gauss-Lobatto-Legendre (GLL) nodes. 
+Where the coefficients $a_i$ are called the expansion coefficients. The basis and the belonging coefficients can be chosen in many different ways, 
+in this thesis functions $\psi_i$ will be the Lagrange polynomials based on the Gauss-Lobatto-Legendre (GLL) nodes. 
 The reason for choosing these nodes is because it enables us to apply the Gauss-Lobatto quadrature 
 rule. This is one of several existing Gauss-quadratures, and the only one allowing fixed 
 endpoints which is the case for this thesis. For more detailed information on GL-quadrature and 
@@ -229,12 +229,12 @@ basis functions $\psi_j$ can be stated as
 $\{x_i\}$ being the solutions to \eref{eq:GLL-nodes}. Note that $\psi_j(x_i) = \delta_{ij}$.
 The expansion coefficients in \eref{eq:spectralprojection} are then chosen as $a_i = u_i :=u(x_i)$. 
 
-This definition of the expansion coefficients is very convenient since the actual value of 
+This definition of the expansion coefficients is convenient since the actual value of 
 the function in any point can just be read directly from the coefficients without having to 
 sum all the contributions from the different polynomials.
 Creating a basis for 2 and 3 dimensions is done simply by taking the tensor product 
-of the basis functions in each direction. In order to keep track of indices in this section
-$i,j,k = 1,\cdots,N$ is used to keep track of Lagrange polynomials in one direction 
+of the basis functions in each direction. To keep track of indices in this section
+$i,j,k = 1,\cdots,N$ is used for the Lagrange polynomials in one direction 
 while $m,l,n = 1,\cdots,N^d$ will be used for the tensor product of the Lagrange polynomials spanning
 an entire element.
 for 3 dimensions the basis functions $\Psi_{l}$ are given as 
@@ -243,7 +243,7 @@ for 3 dimensions the basis functions $\Psi_{l}$ are given as
     \label{eq:3dbasis}
 \end{align}
 This expansion to multiple dimensions preserves the $\Psi_l(\mathbf{x}_m) = \delta_{lm}$.
-In order to clarify some of the concepts the SM approach will be applied on the Helmholtz equation
+To clarify some of the concepts the SM approach will be applied on the Helmholtz equation
 %
 \begin{align}
     -\Delta u + \lambda u &= f \quad \text{in } \Omega, \\
@@ -263,7 +263,7 @@ Find $u\in V$ st.
     \label{eq:Helmholtzweak}
 \end{align}
 %
-In order to solve this using SM the discrete space $V_h \subset V$ is defined as $\text{span}\{\Psi_l\}$ following the preceding definitions 
+To solve this using SM the discrete space $V_h \subset V$ is defined as $\text{span}\{\Psi_l\}$ following the preceding definitions 
 the discrete weak formulation is stated as 
 Find $u_h\in V_h$ st. 
 %
@@ -322,7 +322,7 @@ found in~\cite{Canuto2007}.
 %-----------------------------------
 
 \section{Spectral element method} \label{sem}
-In the early 1980's the idea to combine FEM and SM came along in order to obtain the 
+In the early 1980's the idea to combine FEM and SM came along to obtain the 
 flexibility and sparse properties of FEM 
 combined with the spectral convergence rate provided by SM. 
 The result was the Spectral element method (SEM). Several formulations were investigated mainly by 
@@ -439,8 +439,7 @@ repeated here, $X^N_k =  H_0^1(\Omega_k)\bigcap\mathbb{P}_N(\Omega_k)$, and
 $\mathbb{P}_{N,K} = \left\{ v \in L^2(\Omega),v_{|\Omega_k} \in \mathbb{P}_N(\Omega_K) \right\}$.
 \begin{theorem}
     Let $\Omega = [-1,1]$ and $\left\{ \Omega_k \right\}_K$ be the set of non-overlapping elements. 
-    If $u \in C^0(\Omega)$ 
-    and $u_{|\Omega_k} \in H^{\sigma}(\Omega_k)\; \forall \; k $, the following will hold for 
+    If $u_{|\Omega_k} \in H^{\sigma}(\Omega_k)\; \forall \; k $, the following will hold for 
     any $\sigma \ge 1$
 \begin{align}
     \inf_{v_{h}\in X_{k}^N}||u-v_h||_1 \le CN^{1-\sigma}\left( ||u||_1 + \sum_{k=1}^{K}||u||_{\sigma,k} \right).
@@ -521,8 +520,8 @@ but this time they are located on the second sup-diagonal (removing the 2 first 
 %$
 In this thesis the $\alpha_k$ follows a quadratic decay from $1$ to $k$.
 
-The filter is proved to be a very effective stabilization method and it preserves the 
-spectral convergence rate. Another interesting property is that the filtering procedure 
+The filter is proved to be an effective stabilization method and it preserves the 
+spectral convergence rate. Another property of interest is that the filtering procedure 
 does not imply dissipation of energy, let the energy norm be defined as $E(u) = ||u||_{L_2}^2$.  
 By applying Parseval's identity~\cite{Young} the difference in energy between the original solution
 and the filtered solution is given as 
@@ -540,7 +539,7 @@ the deduced absolute error $\epsilon$ of the filtered energy is of order
 $\epsilon\sim \alpha/N$. The approximation $||L_N||^2\approx||L_{N-2}||^2\approx 1/N$
 have been used to achieve the result in \eref{eq:filterenergy}.
 
-\subsubsection{A physical approach to the filter}
+\subsubsection{A physical approach to the filter}\label{physfilt}
 A good physical description of the filter has not yet been described, this 
 subsection is an attempt to show the resemblance between known properties 
 of some differential equations and the mathematical filter described in the previous section.
@@ -606,7 +605,7 @@ filter matrix $\mathcal{F}_{\alpha}$, but there are some similarities between th
 They are both upper triangular with zeros along the diagonal and positive entries on the second 
 sup-diagonal. The main difference is that the Laplacian applied on the $N$th Legendre function 
 $L_N$ affect all the terms $L_{N-2},L_{N-4},\cdots$, while the filter only affects $L_{N-2}$.
-In order to illustrate this effect~\fref{fig:entries} shows the non-zero entries of the
+To illustrate this effect~\fref{fig:entries} shows the non-zero entries of the
 Laplacian matrix, the red dots indicate the non-zero entries that are not present in the filtering
 matrix.
 %
@@ -625,7 +624,7 @@ and a clever choice of $\alpha_i$ would yield equality. Notice in particular the
 applying a filter and including a SGS-model, with $\nu_T$ as a constant in \eref{eq:NSLES} the term 
 $\nabla \nu_Ts_{ij}$ reduces to $\nu_T\Delta \mathbf{u}$.
 
-This way of considering the filtering procedure is very similar to the variational multiscale (VMS) 
+This way of considering the filtering procedure is similar to the variational multiscale (VMS) 
 approach to LES first introduced by Hughes~\cite{Hughes}. This method is based on the assumption that
 the unresolved structures have a negligible effect on the larger scales, hence the SGS-model is 
 only included for the small but still resolved scales of motion.
@@ -648,9 +647,9 @@ aliasing effect of the lower modes, attempting to compensate for the higher orde
 Since a spectral element method arguably has a good accuracy these variational crimes should 
 not be committed, and it is therefore common practice to solve this particular integral using a
 quadrature rule of order $3/2N$. The concept and illustrative examples are given in Chapter 2.4 in 
-\cite{Karniadakis}. It is worth to note that aliasing is not always a necessity depending on 
-the size of the smallest structures compared to the grid resolution, an example of this
-is presented in \cref{results}.
+\cite{Karniadakis}. Aliasing is however not always a necessity, if the grid resolution is 
+sufficiently fine the non-linear term will not need to be solved using a higher order quadrature rule, 
+an example of this is presented in \cref{results}.
 This is one of the time vs.\ accuracy questions one have to decide for each problem. 
 instead of applying the GLL-quadrature "designed" for the basis-functions the functions
 has to be evaluated in a new set of GLL-points with $3/2$ as many nodes. This is a costly 
@@ -674,8 +673,8 @@ process and should only be applied when absolutely necessary.
 \end{figure}
 %
 
-In order to work on complex geometries some elements require a certain deformation in order to be able 
-to describe the entire domain. It is necessary to evaluate all the integrals surging from the weak formulation over 
+Working with complex geometries often requires one or more elements to be deformed.
+The integrals surging from the weak formulation are solved using a quadrature rule over 
 a reference domain $\hat{\Omega} = [-1,1]^d$ for sakes of efficiency and implementation purposes. The Gordon-Hall 
 algorithm is a general method that creates an isometric map from an arbitrary simply connected domain to $\hat{\Omega}$.
 Let $\mathbf{\tilde{x}}$ be the mapping function from the reference domain to the physical domain given on the form 
@@ -745,7 +744,7 @@ for a third coordinate $t_k$ and the number of vertices, and edges are 8 and 12 
 
 So far the spatial discretization by SEM has been described in detail and so far been proved to yield spectral convergence,
 but for unsteady flows the development in time is determined by the temporal discretization and puts an additional 
-restriction on the convergence rate. Because the N-S equations are very computationally demanding to solve exactly 
+restriction on the convergence rate. Because the N-S equations are computationally demanding to solve exactly 
 a large number of splitting methods have been developed, all attempting to find the ideal balance between speed 
 and accuracy. The most common set of solution methods are called projection methods, which first calculates 
 a velocity field that does not fulfill the divergence free condition and then projecting this field onto a 
@@ -831,12 +830,12 @@ can be rewritten as the CFL-condition,
     \label{eq:CFLcondition}
 \end{align}
 %
-This inequality is used to adjust the time-step in order to maximize the evolution in time 
+This inequality is used to adjust the time-step such that the development in time is maximized
 within the stability criteria for the scheme.
 
 \subsection{Operator integrating factor schemes (OIFS)}\label{OIFS}
 The operator-splitting method described in the previous chapter may lead to an unstable scheme, 
-and require very small time-steps.
+and require small time-steps.
 OIFS is a similar method but it offers a more stable scheme and is more efficient by using a multi-step method that allows 
 larger advances in time. The presentation of the method is presented here in a computational fashion,
 for a full description and derivation of the method it is referred to Maday et al~\cite{raey}.
@@ -873,7 +872,7 @@ Applying the fact that $Q(t^{n+1}) = I$ enables \eref{eq:NSOIFS1} to be written 
     \label{eq:NSOIFS1}
 \end{align}
 Notice how all the easily invertible operators are evaluated implicitly, while the convective non-linear term is hidden in the BDFk scheme. 
-OIFS allows the terms in the sum to be calculated in a rather elegant fashion.
+OIFS allows the terms in the sum to be calculated in an elegant fashion.
 First of all the auxiliary variable $\tilde{\mathbf{v}}_j$ is defined such that $Q(t^{n+1-j})M\mathbf{v}^{n+1-j} = M\tilde{\mathbf{v}}_j$
 thus enabling the summation expression to be found by solving the initial value problem 
 \begin{align}
@@ -969,7 +968,7 @@ is somewhat different from the one normally studied in textbooks. Another diffic
 treatment of the boundary conditions. Ideally the BC's should be determined by the velocity 
 field $\mathbf{u}^{n+1}$, but since this solution is yet to be calculated the intermediate velocity field 
 $\mathbf{u}^{*}$ is used to impose the boundary conditions. With $p^{n+1}$ known the third equation is 
-simply an update of the velocity in order to impose the divergence free condition. Now the last
+simply an update of the velocity to impose the divergence free condition. Now the last
 equation is solved implicitly due to its nice symmetric structure. This results in a system 
 equivalent to the Helmholtz problem which will be discussed in detail in \cref{numerics}.
 This can be easily shown by discretizing the equation, 
@@ -1032,7 +1031,7 @@ can be written as
     \end{pmatrix}.
     \label{eq:Matform}
 \end{equation}
-It is convenient for the splitting that will be done in the next step to introduce the 
+The splitting that will be done in the next step requires the 
 pressure difference $\delta p^{n+1} = p^{n+1}-p^n$. \eref{eq:Matform} can be restated as 
 \begin{equation}
 \begin{pmatrix}
@@ -1111,7 +1110,7 @@ Applying these two matrices leads to a two step algorithm on the form
     \label{eq:PCstep2}
 \end{align}
 
-In order to clarify what is actually going on a brief description of each step is given,
+To clarify what is going on, a brief description of each step is given,
 The first step in \eref{eq:PCstep1} corresponds to an initial solution of the velocity using 
 the old pressure value, notice that this will not guarantee a divergence free velocity.
 The second step in \eref{eq:PCstep1} is referred to as the discrete pressure Poisson equation and will 
@@ -1124,8 +1123,8 @@ onto a divergence free space. The final step is of no real value and will instea
 by an update of the pressure $p^{n+1} = p^{n}+\delta p^{n+1}$.
 
 In this thesis the approximation of the inverse Helmholtz matrix was of first order, 
-$Q = \Delta t M^{-1}$. It is possible to make higher order approximations, but this is 
-a very convenient definition since $M$ is a diagonal matrix.
+$Q = \Delta t M^{-1}$. Higher order approximations can be made, but this is 
+a convenient definition since $M$ is a diagonal matrix.
 
 Unlike the fractional step method this way of solving the N-S equations  
 requires the discrete spaces for velocity and pressure
@@ -1133,11 +1132,11 @@ to meet the inf-sup condition stated in \eref{eq:infsup}.
 It also induces a discrete splitting error. The splitting error induced by this scheme 
 has been a topic of discussion for many years, see for instance the discussion between Perot and Abdallah in
 ~\cite{Perot},~\cite{Abdallah} and~\cite{Perotcomments}. The author will not choose sides in this debate, 
-but rather state that there will be some numerical differences between these two methods which will be presented 
+but state that there will be some numerical differences between these two methods which will be presented 
 in~\cref{results}.
 
-It is however apparent from the treatment of the pressure that this yields an algorithm that works well 
-for steady flows. Notice that the error surging from the splitting in \eref{eq:LUfactorization}
+The treatment of the pressure do however yield an algorithm that works well for steady flows.
+Notice that the error surging from the splitting in \eref{eq:LUfactorization}
 is proportional to $\delta p^n$ instead of $p^n$ as it would be for a straight forward derivation. 
 The method yields a second order scheme as proved by~\cite{vanKan},
 provided that the time discretization is of the same or higher order.

@@ -71,7 +71,7 @@ and their mathematical influence on the problem.
     - The diffusive term describes the natural diffusion of the fluid. The contribution of the diffusional term 
     is inversely proportional to the Reynolds number.
     The corresponding mathematical operator stabilizes the system and it is therefore generally easier
-    to solve the N-S equations for high-viscosity fluids. It should be mentioned that this term is actually a simplification 
+    to solve the N-S equations for high-viscosity fluids. It should be mentioned that this term is a simplification 
     of the Reynolds stress tensor that can be made under the assumption of incompressibility. The more general formulation that 
     will be used in \cref{LES} is $2 \nabla s_{ij}$, the tensor $s_{ij}$ is known as the strain-rate tensor. 
 
@@ -82,12 +82,13 @@ and their mathematical influence on the problem.
     \item $\nabla \cdot \mathbf{u}$ 
     - The divergence free condition appears naturally from the conservation of mass in an incompressible flow.
 \end{itemize}
-For large Reynolds numbers the huge span in length scales requires a very fine mesh 
+For large Reynolds numbers the huge span in length scales requires a fine mesh 
 if \eref{eq:NS} are to be solved exactly.
-Because a fine mesh implies a high computational cost a direct numerical solution (DNS) is not feasible for 
-problems of a certain geometrical complexity. There are many different approaches on how to resolve the turbulent term and in 
-this thesis the main approach will be through Large Eddy Simulations (LES) which will be discussed 
-in \cref{LES}. The Navier-Stokes equations can only be solved if the boundary conditions are given. 
+Because a fine mesh implies a high computational cost a Direct Numerical Simulation (DNS) is not feasible for 
+problems of a certain geometrical complexity. 
+With Large Eddy Simulations (LES) the smallest structures are modelled, thus allowing a coarser mesh. 
+In~\cref{LES} this method and a particular model will be discussed. 
+The Navier-Stokes equations can only be solved if the boundary conditions are given. 
 The boundary conditions are not stated explicitly in \eref{eq:NS} because they depend on the physical 
 situation and belong as a specification to each individual case. The next subsection gives a quick overview of the different 
 boundary conditions applied in this thesis.
@@ -130,7 +131,7 @@ I,O,SYM and W for Inflow, Outflow, Symmetry and Wall. Their mathematical formula
 \subsection{Weak formulation of N-S}
 %Let us first assume constant viscosity, enabling the simplification $\nabla \cdot \tau = -\nabla p + \nu \Delta \mathbf{u}$.
 The numerical algorithms applied in this thesis requires a weak formulation of \eref{eq:NS}.
-Before the weak form is derived a few operators will be defined in order to simplify the final 
+Before the weak form is derived a few operators will be defined to simplify the final 
 expression.
 %
 \begin{align}
@@ -182,8 +183,8 @@ force term.
     %\end{split}
 	%\label{eq:NSweak}
 %\end{align}
-The choice of search spaces for the velocity and pressure will be justified in \cref{numerics}, and will 
-just be stated here in order to present the weak formulation. Let $V \subset H^1(\Omega)^3$ and $Q \subset L^2(\Omega)$ 
+The choice of search spaces for the velocity and pressure will be justified in \cref{numerics}, but will 
+be stated here to present the weak formulation. Let $V \subset H^1(\Omega)^3$ and $Q \subset L^2(\Omega)$ 
 be subspaces that include the boundary conditions given by any particular flow situation.
 By using the notation introduced in \eref{eq:weakoperators} the weak formulation of the incompressible
 N-S equations can be stated as: 
@@ -203,7 +204,7 @@ Find $(\mathbf{u}, p) \in V\times Q$ such that
 $\forall\; (\mathbf{v}, q) \in V\times Q$.
 %
 
-In order to solve this equation numerically, everything has to be discretized and expressed 
+To solve this equation numerically, everything has to be discretized and expressed 
 using a set of basis functions. The idea is that the solution $(\mathbf{u},p)$ is approximated 
 by a discretized solution $(\mathbf{u}_h,p_h)$ and the bilinear operators can be represented 
 by matrices. The discretized system of equations can be stated as
@@ -298,7 +299,7 @@ A filter in its general mathematical form introduced by Leonard~\cite{Leonard} i
 
 %For the test filter applied in the dynamic Smagorinsky case in the procedure described in \cref{filtering}
  
-It is generally assumed that the filter commutes with 
+The filter is assumed to commutes with 
 the differential operators $\nabla$, $\Delta$ and $\partial / \partial t$. By applying the filter on the N-S equations
 and making the given assumptions the filtered N-S equations can be stated as 
 %
