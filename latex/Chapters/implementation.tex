@@ -186,8 +186,8 @@ given in the list below
     \item fix\_GLL() -- There is a risk after distributing the GLL-points on the surface that
         some of the internal GLL-points falls outside the element. This function distributes 
         all internal GLL-points correctly between the newly projected face and the opposite.
-    \item fix\_geom() -- An already existing Nek routine that redistributes the GLL-points to 
-        assure that the distance between them on the new surface is correct.
+    \item fix\_geom() -- An already existing Nek routine that makes sure the manipulation of the 
+        geometry is consistent with neighbouring elements, and distributes the internal GLL-points correctly.
 \end{itemize}
 
 Although this routine is only called once, and therefore will not contribute significantly 
