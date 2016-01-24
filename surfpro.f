@@ -24,7 +24,7 @@ c========================================================================
       common /surfstat/ wrksurf(nsurf,3),iwrkelem(nbdry,3)
       real wrkbdry(nwork,3)
 
-       
+c ---- Function 1 starts here ---- create_working_surface---
        call rzero(wrksurf(1,1),3*nsurf)
        call rzero(wrkbdry(1,1),3*nwork)
        call izero(iwrkelem(1,1),3*nbdry)
@@ -94,12 +94,13 @@ c========================================================================
               if(iter.eq.nwork) 
      $        write(*,*) 'ERR:Increase wrkbdry in SIZE or reduce radius'
           enddo
+c--------- First function ends here !! 
 
           ! Iterating over the face
           do iz=kz1,kz2
           do iy=ky1,ky2
           do ix=kx1,kx2
-
+c---------- This corresponds to the initialization of the interp array
           ! Get coordinates
           call nekasgn(ix,iy,iz,ie) 
 
@@ -112,8 +113,9 @@ c========================================================================
           call cfill(rinterp,999999.9,3)
           call izero(iinterp,3)
 
+c---------- End initialization of the interp array
           ! Finding the interpolation points
-              do k = 1,iter-1
+              do k = 1,iter-1  
                 wrk(1) = x-wrkbdry(k,1) ! vector from gllpoint to surf 
                 wrk(2) = y-wrkbdry(k,2)
                 wrk(3) = z-wrkbdry(k,3)
@@ -135,6 +137,7 @@ c========================================================================
                 ! Updating the interpolation points
                 call interp_up(iinterp,rinterp,intpt,err_new,k)
               enddo ! k
+                !set_new_pt(wrkbdry,intp,rinterp,n,ix,iy,iz,ie)
     
           enddo ! ix 
           enddo ! iy 
