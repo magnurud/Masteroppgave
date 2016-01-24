@@ -30,22 +30,23 @@ Without further introduction the incompressible N-S equations are stated as
 \end{align}
 %
 $\mathbf{u}$ and $p$ denotes the velocity of the fluid and the pressure, while $\mathbf{f}$ is some external force. 
-The Reynolds number $Re$ describes the relation between the viscous scales and the mean stream velocity scale.
+The Reynolds number $Re$ describes the ratio between momentum forces and viscous forces.
 For large Reynolds numbers the flow becomes turbulent and a large range of scales needs to be resolved. A lot 
 of research has been devoted to determine the amount of energy present at the different scales of motion, and 
-the interaction between them. This approach to \eref{eq:NS} leads to turbulence modelling which is based on the 
+the interaction between them. These ideas has led to turbulence modelling which is based on the 
 idea that the effect of the smallest turbulent motions can be modelled while the larger motions are resolved by 
 the numerical grid. 
-In this thesis both laminar and turbulent flows will be solved numerically, and a turbulence model will also 
-be compared with a mathematical filter meant to stabilize the flow. In addition to solving the N-S equations the 
+In this thesis both laminar and turbulent flows will be solved numerically, 
+and a physically motivated model for the smallest structures will be compared
+with a mathematical filter meant to stabilize the flow.
+In addition to solving the N-S equations the 
 transport of a passive scalar will also be analysed and compared with a set of reference solutions. 
 The software applied in this thesis is Nek5000 which is an implementation of the spectral element method initialized in the 80's.
-In addition to validate Nek5000 as a software for analyzing gas dispersion it is also as a part of this thesis 
-attempted to make Nek5000 more applicable to cases consisting of more complex geometry. 
+In addition to validate Nek5000 as a software for analyzing gas dispersion the work in this thesis 
+also attempts to make Nek5000 more applicable to cases consisting of more complex geometry. 
 
-The thesis is divided in 3 parts. The first part which includes the two following chapters are devoted to the physical understanding 
-of \eref{eq:NS}, the solution methods and a thorough presentation of the spectral element method. \cref{nek} gives the reader a brief 
-introduction to the functionalities of the solver Nek5000 to motivate some of the implementation performed. The last two chapters 
-describes the work performed by the author, first a presentation of the different cases followed by the results and the discussion
-of these.
+This thesis is divided in 3 parts. The first part which consists of the two following chapters are devoted to the physical understanding 
+of \eref{eq:NS}, the solution methods applied and a thorough presentation of the Spectral Element Method. \cref{nek} gives the reader a brief 
+introduction to the functionalities of the solver Nek5000 to motivate some of the implementation performed. The last three chapters 
+describes the work performed by the author, a presentation of the results and the discussion of these.
 

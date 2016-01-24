@@ -38,17 +38,17 @@
 %Solving the BVP numerically involves choosing discrete subsets of $X,X^t,Y,B$. These will be denoted $X_h,X_h^t,Y_h,B_h$.
 %The discrete subspaces can be chosen in a number of ways and the defining basis functions vary from one numerical method to another. 
 %In this thesis the spectral and finite element basis will be shortly stated and the spectral element basis will be viewed in more detail.
+In the previous chapter the N-S equations were presented and reformulated in several ways without any details on how to
+actually solve the equations. This chapter aims to give a more detailed description of the solution methods applied.
+The choice of algorithms and solution spaces requires a more thorough analysis which will be performed on the 
+steady Stokes problem. The time discretization applied will be discussed in \cref{timeNS}.
 
 
 %\colorbox{green}{vær presis med den svake formuleringen!!}
 \section{Numerical concepts on the Stokes problem} \label{stokes}
-In the previous chapter the N-S equations were presented and reformulated in several ways without any details on how to
-solve the equations. This chapter aims to give a more detailed description of the solution methods applied.
-The choice of algorithms and solution spaces requires a more thorough analysis which is normally performed on the 
-steady Stokes problem. The steady Stokes problem does not include the convection term or the time derivative 
+The steady Stokes problem does not include the convection term or the time derivative 
 but the highest order terms are all present and is therefore a valid problem to perform this necessary
-analysis \cite{Karniadakis}. The time schemes applied will be discussed in \cref{timeNS}.
-The steady Stokes problem with homogeneous boundary conditions is given as 
+analysis \cite{Karniadakis}. The steady Stokes problem with homogeneous boundary conditions is given as 
 %
 \begin{align}
     \begin{split}
@@ -96,19 +96,18 @@ $ H^1(\Omega) ^3$- and $L^2(\Omega)$-norm denoted $||\cdot||_V$ and $||\cdot||_Q
 For the discrete weak form to be well-posed it has to meet the requirements stated by the
 inf-sup condition. This condition is known from the study of saddle-point problems, and 
 is often referred to as the Babuska-Brezzi condition due to their important results
-in~\cite{Babuska} and~\cite{Brezzi}. The name inf-sup is a result of the
-following way of writing it,
+in~\cite{Babuska} and~\cite{Brezzi}. The condition can be stated as
 %
 \begin{align}
-    \inf_{q\in Q}\sup_{\mathbf{v}\in V}\frac{\mathcal{B}(v,q)}{||\mathbf{v}||_V||q||_Q} \ge b.
+    \inf_{q\in Q}\sup_{\mathbf{v}\in V}\frac{\mathcal{B}(v,q)}{||\mathbf{v}||_V||q||_Q} \ge b,
     \label{eq:infsup}
 \end{align}
 %
-Where $b$ denotes some positive constant. Fulfilling this condition often implies
+for some $b>0$. Fulfilling this condition often implies
 a staggered grid, such that the pressure and the velocity are evaluated at different points. 
 For a Spectral Element formulation of this problem which will be elaborated in \cref{sem},
-a valid choice of subspaces $(V,Q)$ is $(\left[  P_N\cap H^1_0\right]^3,P_{N-2} \cap L^{2}_{0})$. This will be referred to as the 
-$P_NP_{N-2}$-formulation where $P_N$ denotes the space of polynomials up to degree $N$.
+a valid choice of subspaces $(V,Q)$ is $\left(  \left[  P_N\cap H^1_0\right]^3,P_{N-2} \cap L^{2}_{0}\right)$. This will be referred to as the 
+$P_NP_{N-2}$ formulation where $P_N$ denotes the space of polynomials up to degree $N$.
 It was however proved by Guermond in~\cite{GuermondPnPn} that the fractional step algorithm applies a 
 form of the Stokes problem which automatically fulfills the inf-sup condition and therefore does not require any particular 
 discrete subspaces to be chosen. For the sake of convenience the polynomial degree of the pressure and the velocity will be 
@@ -309,9 +308,9 @@ found in~\cite{Canuto2007}.
 
 \begin{theorem}
     Let $\Omega [-1,1]$ and  $u \in H^{\sigma}(\Omega)$. The projection 
-    of $u$ onto $\mathbb{P}_N$ for any $\sigma \ge 1$ is given as  
+    of $u$ onto $P_N$ for any $\sigma \ge 1$ is given as  
     \begin{equation}
-        \inf_{v_h\in \mathbb{P}_N}||u-v_h||_1 \le CN^{1-\sigma}||u||_{\sigma}.
+        \inf_{v_h\in P_N}||u-v_h||_1 \le CN^{1-\sigma}||u||_{\sigma}.
     \end{equation}
     \label{thm:smconvergence}
 \end{theorem}
@@ -387,7 +386,7 @@ For all elements $\Omega_k$ Find $u_{h,k}\in X^N_k$  such that
     \label{eq:HelmholtzweakSEM}
 \end{align}
 %
-Where $X^N_k =  H_0^1(\Omega_k)\bigcap\mathbb{P}_N(\Omega_k)$. The same discretization 
+Where $X^N_k =  H_0^1(\Omega_k)\bigcap P_N(\Omega_k)$. The same discretization 
 procedure as performed for the pure spectral case is now done for each of the 
 sub-domains $\Omega_k$,
 %
@@ -435,8 +434,8 @@ $u$ to be sufficiently regular within each element. This as opposed to pure spec
 requires regularity in the entire domain is an advantage when working with turbulent flows 
 in complex domains.
 For the sake of clarity the relevant spaces for the following error estimates are 
-repeated here, $X^N_k =  H_0^1(\Omega_k)\bigcap\mathbb{P}_N(\Omega_k)$, and 
-$\mathbb{P}_{N,K} = \left\{ v \in L^2(\Omega),v_{|\Omega_k} \in \mathbb{P}_N(\Omega_K) \right\}$.
+repeated here, $X^N_k =  H_0^1(\Omega_k)\bigcap P_N(\Omega_k)$, and 
+$P_{N,K} = \left\{ v \in L^2(\Omega),v_{|\Omega_k} \in P_N(\Omega_K) \right\}$.
 \begin{theorem}
     Let $\Omega = [-1,1]$ and $\left\{ \Omega_k \right\}_K$ be the set of non-overlapping elements. 
     If $u_{|\Omega_k} \in H^{\sigma}(\Omega_k)\; \forall \; k $, the following will hold for 
@@ -467,7 +466,7 @@ explicitly they define the filter $F_{\alpha}$ as
     \label{eq:filter}
 \end{align}
 %
-Where $I_{N-1}$ is the projector from $\mathbb{P}_N$ to $\mathbb{P}_{N-1}$ and $ I_d$ is the identity operator.
+Where $I_{N-1}$ is the projector from $P_N$ to $P_{N-1}$ and $ I_d$ is the identity operator.
 The parameter $\alpha$ is recommended to be somewhere in the interval $(0.05,0.3)$.
 
 The effect of $F_{\alpha}$ in Legendre space is analysed

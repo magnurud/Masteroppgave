@@ -8,7 +8,7 @@
 
 %----------------------------------------------------------------------------------------
 
-This chapter will present the cases investigated and the results achieved.
+This chapter will present the cases investigated and the results acquired.
 The main tools in addition to Nek5000 needed to perform the simulations presented in this 
 chapter are \textit{ANSYS ICEM} and \textit{python}. For post-processing \textit{Visit} and
 \textit{Matlab} were used.
@@ -117,7 +117,10 @@ in~\tref{tab:meshdiff}.
 \end{table}
 
 The resolution is better in the simulations done in CDP and especially in 
-the $z$-direction. 
+the $z$-direction. It should also be mentioned that all elements for the mesh used in Nek5000
+have straight edges. The circular source is described directly in \verb|userbc| by allowing 
+a certain inflow velocity only if the point on the ground is within a certain distance 
+to the center of the source.
 
 \subsection{Results - Gas dispersion} 
 This case is a part of a larger project designed to evaluate different solvers 
@@ -424,7 +427,7 @@ which confirms the analytical results from \eref{eq:filterenergy}.
          \# & $\Delta t$ & ifsplit & Dealiasing & IOFS & Filter & $c_D$ & $c_L$ \\  \hline 
          1 & 6e-4& No & Yes& No & No & 0.005 & 0.10\\
          2 & 6e-4& No & Yes& No & Yes& 0.005 & 0.43\\
-         3 & 6e-4& No & Yes& Yes& No & 0.005 & 0.18\\
+         3 & 6e-4& No & Yes& Yes& No & 0.005 & 0.11\\
          4 & 6e-4& No & No & No & No & 0.005 & 0.03\\
          5 & 6e-4& Yes& Yes& No & No & 0.012 & 2.35\\
          %6 & 4.5e-4& Yes& Yes& No & No & 0.015 & 0.01\\
