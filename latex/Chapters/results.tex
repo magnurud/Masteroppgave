@@ -452,7 +452,7 @@ suggest any optimal adjustment for Nek5000. An important example of this is the 
 deactivating de-aliasing yields better results. For a coarser mesh or a more turbulent flow 
 this would not be the case, and that the result is better is probably due to 
 the accuracy, which are close to the accuracy given by the reference solution. 
-The resuslts do however give an indication to the general effect of these settings that 
+The results do however give an indication to the general effect of these settings that 
 are worth noticing.
 
 %----------------------------------------------------------------------------------------
@@ -476,23 +476,21 @@ as presented in~\cref{physfilt}. It would be interesting to design some test cas
 investigate its properties. 
 
 The fact that Nek5000 is an open-source code is also a huge advantage to other black-box solvers. 
-Although the user community is not that large there are several commited users that provide 
+Although the user community is not that large there are several committed users that provide 
 their help on short notice. Many different examples are available, and the user guide 
 contains a nice introduction with everything needed to get the program up and running. 
-The documentation of variables and functions are sometimes missing, which is the main motivation 
-to create Appendix~\ref{AppendixB}. 
+The documentation of variables and functions are however sometimes missing, which was 
+the main motivation behind the creation of Appendix~\ref{AppendixB}. 
 
 
 \section{Further work}
 The surface projection could be expanded and improved in many ways. Making it iterative 
-to make sure the GLL-points are distributed correspondingly, The norm corresponding
-to the normal is prone to give errors and should be calculated based on points further away\ldots.
+to make sure the GLL-points are distributed correspondingly. The norm corresponding
+to the normal is prone to give errors and should be calculated based on points further away.
+
 For the simple array case it was experimented with different meshes and the refinement procedure 
-in ICEM quickly leads to small elements with wide angles which tends to lead to problems 
+in ICEM quickly leads to small elements with wide angles that tend to lead to problems 
 in Nek5000. The author do however believe that by making an ogrid around the most important part of 
 the domain, say for instance the box, $x/H < 3,\: |y|/H < 0.4,\: z/H < 0.15$ the nodes could have been 
 distributed in a more economical fashion and an overall better result could have been achieved.
-
-
-\colorbox{green}{How did Nek5000 perform overall, user-friendly ?,correctness,speed etc.}
 

@@ -112,7 +112,7 @@ It was however proved by Guermond in~\cite{GuermondPnPn} that the fractional ste
 form of the Stokes problem which automatically fulfills the inf-sup condition and therefore does not require any particular 
 discrete subspaces to be chosen. For the sake of convenience the polynomial degree of the pressure and the velocity will be 
 the same and the discrete pair of subspaces $(V,Q)$ is chosen to $(\left[ P_N\cap H^1_0 \right]^3,P_{N} \cap L^{2}_{0})$,
-known as the $P_NP_N$-formulation.
+known as the $P_NP_N$ formulation.
 
 Before the analysis of the N-S equations can be taken any further the theory behind the Spectral Element Method will be presented in the following
 subsections.
@@ -129,13 +129,13 @@ to provide a thorough understanding of the spectral element method (SEM).
 Throughout this section $p$ denotes the polynomial degree of the basis-functions, $h$ represents the average grid spacing, $E$ is the total
 number of elements and $d$ is the number of dimensions. 
 
-FEM provides an algorithm for solving any well-posed boundary value problem (BVP) and the mathematical 
-formulation is obtained by first finding the Galerkin
+FEM provides an algorithm for solving any well-posed boundary value problem (BVP).
+The mathematical formulation is obtained by first finding the Galerkin
 formulation with a corresponding search space $X$ and then choosing a discrete subspace $X^p_h\subset X$ 
 spanned by the finite element basis functions $\{\phi^p_i\}$.
 The key property of the basis functions is that they only have local support in a small part of the domain. 
 This is what gives rise to the resulting sparse linear system. 
-By increasing the polynomial order the number of grid points used to define the polynomial will need to increase as well.
+By increasing the polynomial order,, the number of grid points used to define the polynomial will need to increase as well.
 This implies either reducing the distance between the grid points or increasing the support of each basis function.
 Both approaches will reduce the sparsity of the final matrix.
 Another important aspect of FEM is the treatment of the domain $\Omega$, 
@@ -163,7 +163,7 @@ solution will all provide slightly more complicated error estimates.
 However for a simpler BVP such as the Poisson problem on the unit square, the error estimate is valid.  
 A $h$-refinement will lead to an algebraic convergence of order $p$, while the sparsity of the system is conserved
 and the total algorithm does not change in any other way than increasing the number of elements.
-Keeping $h$ constant and increasing $p$ will provide spectral convergence, but the sparsity will be reduced and all integrals solved will require 
+Keeping $h$ constant and increasing $p$ will provide esponential decay of the error, but the sparsity will be reduced and all integrals solved will require 
 quadrature rules of higher order. A formal statement and numerical validation of the error estimate can be found in \cite{Karniadakis} chapter 2.6.  
 
 To sum up the discussion above a general error estimate from~\cite{Quarteroni} is stated as a theorem, 
@@ -234,9 +234,10 @@ sum all the contributions from the different polynomials.
 Creating a basis for 2 and 3 dimensions is done simply by taking the tensor product 
 of the basis functions in each direction. To keep track of indices in this section
 $i,j,k = 1,\cdots,N$ is used for the Lagrange polynomials in one direction 
-while $m,l,n = 1,\cdots,N^d$ will be used for the tensor product of the Lagrange polynomials spanning
-an entire element.
-for 3 dimensions the basis functions $\Psi_{l}$ are given as 
+while $m,l,n = 1,\cdots,N^d$ will be used for the tensor product
+of the Lagrange polynomials spanning an entire element.
+For this particular example $l = i+N(j-1)+N^{2}(k-1)$,
+such that the three dimensional basis functions $\Psi_{l}$ is given as 
 \begin{align}
     \Psi_{l}(\mathbf{x}) = \psi_i(x)\psi_j(y)\psi_k(z).
     \label{eq:3dbasis}
@@ -277,12 +278,12 @@ is then given as
 %
 \begin{align}
     \sum_l\left(  u_l\sum_n \rho_n\nabla \Psi_l(\mathbf{x}_{n}) \cdot \nabla \Psi_m(\mathbf{x}_{n}) + u_l\lambda \sum_n \rho_n \Psi_l(\mathbf{x}_{n}) \Psi_m(\mathbf{x}_{n})\right)\\
-     = \sum_n \rho_nf \Psi_m(\mathbf{x}_{n})\qquad \forall \Psi_m(\mathbf{x}_{n}) \in V_h.
+    = \sum_n \rho_nf \Psi_m(\mathbf{x}_{n}),\qquad \text{for } m = 1,\cdots,N^2,
     \label{eq:Helmholtzquad}
 \end{align}
 %
-$\rho_n$ is the quadrature weight for the $n$th node, and $\mathbf{x}_n$ is the vector containing the coordinates to the $n$th node.
-Note that all the indices $l,m,n=1,\cdots,N_xN_y$.
+where $\rho_n$ is the quadrature weight for the $n$th node, and $\mathbf{x}_n$ is the vector containing the coordinates to the $n$th node.
+Note that all the indices $l,m,n=1,\cdots,N^{2}$.
 This can be written in a compact matrix form as 
 \begin{align}
     (A+\lambda M)u_h = \tilde f.
@@ -499,15 +500,22 @@ lower ones and then subtracting the contribution from the higher polynomials. Le
 vector containing the Legendre coefficients.
 \begin{align}
     \begin{split}
-    u^* &=(I+\mathcal{F}_{\alpha})u, \\
+    u^* &=(I+\mathcal{F}_{\alpha,k})u, \\
     u^{**} &= (I-I_{\alpha,k})u^*.
     \end{split}
     \label{eq:filterstepwise}
 \end{align}
 In this case $I_{\alpha,k}$ is a diagonal matrix 
 diag$(0,0,\cdots,\alpha_k,\alpha_{k-1},\cdots,\alpha_1)$ 
-while $\mathcal{F}_{\alpha}$ is also sparse and with the same non-zero entries as $I_{\alpha,k}$,
+while $\mathcal{F}_{\alpha,k}$ is also sparse and with the same non-zero entries as $I_{\alpha,k}$,
 but this time they are located on the second sup-diagonal (removing the 2 first zeros). 
+\begin{align}
+    \begin{split}
+        (I_{\alpha,k})_{i,j} &= \delta_{i,j}\alpha_{i-(n-1)}, \qquad \text{ if } i > n-k+1, \\
+     (\mathcal{F}_{\alpha,k})_{i,j} &= \delta_{i,j+2}\alpha_{i-(n-1)}, \qquad \text{ if } i > n-k+1.
+    \end{split}
+    \label{eq:helpmatrices}
+\end{align}
 %The non-zero diagonal part of $I_{\alpha,k}$ is given as 
 %$
 %\begin{pmatrix}
@@ -599,7 +607,7 @@ Euler of \eref{eq:ivps2} can be written as
 
 Notice the resemblance to the application of the filter in \eref{eq:filterstepwise}. The second step
 is identical if $\alpha_i = \Delta t/(1+\Delta t)$. The truncated Laplacian $A^*$ is not equal to the corresponding
-filter matrix $\mathcal{F}_{\alpha}$, but there are some similarities between these to matrices.
+filter matrix $\mathcal{F}_{\alpha,k}$, but there are some similarities between these to matrices.
 They are both upper triangular with zeros along the diagonal and positive entries on the second 
 sup-diagonal. The main difference is that the Laplacian applied on the $N$th Legendre function 
 $L_N$ affect all the terms $L_{N-2},L_{N-4},\cdots$, while the filter only affects $L_{N-2}$.
