@@ -176,9 +176,11 @@ def fixthermalbc(name,iftemp):
     return 1
 
 def points2circ(x1,x2,x3):
+    # Description:
     # takes in three 3D points and returns 
     # The radius (r) and center x of the sphere with its center 
     # in the same plane as the three points.
+
     # INPUT: xi = array([real,real,real])
     # OUTPUT: r = real, x = array([real,real,real])
     n = cross(x2-x1,x3-x1) # 
@@ -193,37 +195,46 @@ def points2circ(x1,x2,x3):
     r = sqrt(dot(x-x1,x-x1))
     return r,x
 
+
 def write_surface_file():
+    # Description:
+    # Writes the surface nodes of the refined surface
+    # to the file surf.i and changes the parameter
+    # nsurf and nwork in SIZE accordingly
 
     print 'Writing surface nodes to surf.i !'
+
     global tot_num_nodes
+
+    # Write surf.i
     ofile  = open('surf.i', "w")
-    #ofile.write('{}\n'.format(tot_num_nodes))
     for n in range(tot_num_nodes):
         nn = nodes[:,n] 
         ofile.write(reduce(add, ['{0:.6e} '.format(x) 
         for x in nn]) + '\n')
     ofile.close()
 
-    ### Do necessary changes in SIZE file! 
+    # Do necessary changes in SIZE file
     ifile = open('SIZE',"r")
     lines = ifile.readlines()
     ifile.close()
+
     if len(lines) == 0:
         raise IOError("Empty SIZE file")
     ofile = open("SIZE","w")
-    # Iterating through the lines
+
     dummy = 0
     target = '(?<=nsurf\=).+\)'
     repl= '{}'.format(tot_num_nodes)+')'
+
+    # Replacing the number of nodes if it already exists
     for line in lines:
-        # want to replace lfdm=XXX with lfdm = 38
         m = re.search(target,line)
         if(m): dummy = 1
         line = re.sub(target,repl,line)
-        #re.sub('(?<=lfdm).+)','=38\)',line)
-        #print line
         ofile.write(line)
+
+    # Creating new parameter if not already existing
     if (not dummy):
         ofile.write('c automatically added by nmshconvert \n') 
         ofile.write('      parameter (nsurf={}) ! Number of bdry nodes\n'.format(tot_num_nodes))
@@ -231,28 +242,36 @@ def write_surface_file():
 
 def write_surf_list():
 
+    # Description:
+    # Writes the surface nodes of the refined surface
+    # to the file surf.i and changes the parameter
+    # nsurf and nwork in SIZE accordingly
+
     print 'Writing surface elements and local faces to bdry.i !'
     ofile = open('bdry.i', "w")
-    #ofile.write('{}\n'.format(len(surf_list)))
+
     for info in surf_list:
         #ofile.write(reduce(add, ['{0:.8e}'.format(x).rjust(16) 
         ofile.write(reduce(add, ['{} '.format(x) 
                                     for x in info]) + '\n')
     ofile.close()
 
-    print 'Appending some essential variables in SIZE as well!! Remeber to call the script from the same folder as your SIZE-file!!'
+    print 'Appending nsurf and nwork in SIZE! NOTE: Script has to be called from the same folder as your SIZE-file!'
+
     ifile = open('SIZE',"r")
 
-    ### Do necessary changes in SIZE file! 
+    # Do necessary changes in SIZE file 
     lines = ifile.readlines()
     ifile.close()
     if len(lines) == 0:
         raise IOError("Empty SIZE file")
     ofile = open("SIZE","w")
-    # Iterating through the lines
+
     dummy = 0
     target = '(?<=nbdry\=).+\)'
     repl= '{}'.format(len(surf_list))+')'
+
+    # Replacing the number of nodes if it already exists
     for line in lines:
         # want to replace lfdm=XXX with lfdm = 38
         m = re.search(target,line)
@@ -261,32 +280,40 @@ def write_surf_list():
         #re.sub('(?<=lfdm).+)','=38\)',line)
         #print line
         ofile.write(line)
+
+    # Creating new parameter if not already existing
     if (not dummy): 
         ofile.write('c automatically added by nmshconvert \n') 
         ofile.write('      parameter (nbdry={}) ! Number of bdry nodes\n'.format(len(surf_list)))
     ofile.close()
 
 def fixSIZE():
+
+    # Description:
+    # Updates the nwork variable in SIZE
+
     # initial values
     nsurf = 1
     nbdry = 1
 
     ifile = open('SIZE',"r")
 
-    ### Do necessary changes in SIZE file! 
+    # Do necessary changes in SIZE file
     lines = ifile.readlines()
     ifile.close()
+
     if len(lines) == 0:
         raise IOError("Empty SIZE file")
     # Iterating through the lines
+
     bdry_dummy = 0
     surf_dummy= 0
     work_dummy= 0
     work_target = '(?<=nwork\=).+\)'
     bdry_target = '(?<=nbdry\=).+\)'
     surf_target = '(?<=nsurf\=).+\)'
+
     for line in lines:
-        # want to replace lfdm=XXX with lfdm = 38
         m = re.search(bdry_target,line)
         n = re.search(surf_target,line)
         o = re.search(work_target,line)
@@ -297,6 +324,7 @@ def fixSIZE():
         if(n): 
             surf_dummy = 1
             nsurf = int(re.findall(r'\d+',line)[0])
+
     # Updating the nwork variable
     if(bdry_dummy and surf_dummy):
         nwork = 10*nsurf/nbdry

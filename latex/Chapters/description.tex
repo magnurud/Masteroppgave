@@ -9,11 +9,11 @@
 %----------------------------------------------------------------------------------------
 %	SECTION 1
 %----------------------------------------------------------------------------------------
-This chapter will present the Incompressible Navier-Stokes equations and give a thorough 
-analysis of the physical effects of each term. It will also present the idea behind turbulence 
+This chapter will present the incompressible Navier-Stokes equations and give a 
+description of the physical effects of each term. It will also present the idea behind turbulence 
 modelling, and prepare the mathematical formulations that will be further analysed in \cref{numerics}.
 
-\section{The Incompressible Navier-Stokes equations}
+\section{The incompressible Navier-Stokes equations}
 
 %The physics regarding fluids in motion are described mathematically by the Navier-Stokes (N-S) equations. 
 %The equations can be derived in many ways, and it is referred to \cite{White} for a complete 
@@ -49,9 +49,10 @@ and their mathematical influence on the problem.
              The discretization of this term is often based on some implicit scheme. 
     \item $\mathbf{u} \cdot \nabla \mathbf{u}$
      - The convective term, describes the transport due to the flow itself on each of its components. 
-    The term is not present in Stokes problem.
-    The mathematical operator corresponding to this term is non-linear and non-symmetric, and does therefore require an explicit scheme. 
-    Even with linear advection the operator quickly leads to instability. 
+    The term is not present in a Stokes problem.
+    The mathematical operator corresponding to this term is non-linear and non-symmetric, 
+    and does therefore require an explicit scheme to be solved efficiently.
+    Even with a linear advection the operator has to fulfill the CFL-condition to be stable. 
 %\item  $\nabla \cdot \tau$ 
        %- $\tau= -p + \nu[ \nabla \mathbf{u} + \nabla^T \mathbf{u}]$ is known as the Reynolds stress tensor for incompressible flows.
        %The term $\nabla \cdot \tau$ simplifies to $-\nabla p + \nu \Delta \mathbf{u}$ if the velocity is assumed to 
@@ -60,31 +61,33 @@ and their mathematical influence on the problem.
 
     \item $\nabla p$
     - The pressure gradient, removal of this term results in a pure advection diffusion problem. The pressure is often 
-    treated as a lagrange multiplicator, assuring the projection of $\mathbf{u}$ onto a divergence free space.
+    treated as a Lagrange multiplicator, assuring the projection of $\mathbf{u}$ onto a divergence free space.
 
     \item $Re$ 
-    - The Reynolds number defined as $UL/\nu$ where $U$ is the velocity scale, $L$ is the length scale and $\nu$ 
-      is the viscosity of the fluid. $Re$ describes the relation between the largest length scales of the flow
-      and the viscous length scales. Notice that for large Reynolds numbers the unstable non-linear term 
-      dominates the transportation. Turbulent flows are characterized by a high Reynolds number.
+    - The Reynolds number defined as $UL/\nu$ where $U$ is a velocity scale, $L$ is a length scale and $\nu$ 
+      is the viscosity of the fluid. $Re$ describes the ratio between momentum forces and viscous forces.
+      Notice that for large Reynolds numbers the unstable non-linear term dominates the transportation.
+      Turbulent flows are characterized by a high Reynolds number.
 
     \item $\Delta \mathbf{u}$ 
     - The diffusive term describes the natural diffusion of the fluid. The contribution of the diffusional term 
     is inversely proportional to the Reynolds number.
     The corresponding mathematical operator stabilizes the system and it is therefore generally easier
     to solve the N-S equations for high-viscosity fluids. It should be mentioned that this term is a simplification 
-    of the Reynolds stress tensor that can be made under the assumption of incompressibility. The more general formulation that 
-    will be used in \cref{LES} is $2 \nabla s_{ij}$, the tensor $s_{ij}$ is known as the strain-rate tensor. 
+    of the Reynolds stress tensor that can be made under the assumption of incompressibility and constant viscosity.
+    The more general formulation that will be used to replace $\nu\Delta\mathbf{u}$ in \cref{LES} is
+    $\partial_j \left[  \nu(\partial_j u_i + \partial_i u_j)\right] = 2\: \nabla \cdot(\nu s_{ij})$,
+    the tensor $s_{ij}$ is known as the strain-rate tensor. 
 
 \item $\mathbf{f}$ 
     - General term describing external body forces such as gravity. For incompressible flow the
-    gravity term is incorporated in the pressure term, $\nabla p = \nabla p + \rho \mathbf{g}$. 
+    gravity term is incorporated in the pressure term, $\nabla p := \nabla p + \rho \mathbf{g}$. 
 
     \item $\nabla \cdot \mathbf{u}$ 
-    - The divergence free condition is a result of the conservation of mass in an incompressible flow.
+    - The divergence-free condition is a result of the conservation of mass in an incompressible flow.
 \end{itemize}
 For large Reynolds numbers the huge span in length scales requires a fine mesh 
-to solve \eref{eq:NS} exactly.
+to solve~\eref{eq:NS} exactly.
 Because a fine mesh implies a high computational cost, a Direct Numerical Simulation (DNS) is not feasible for 
 problems of a certain geometrical complexity. 
 With Large Eddy Simulations (LES) the smallest structures are modelled, thus allowing a coarser mesh. 
@@ -95,8 +98,8 @@ situation and belong as a specification to each individual case. The next subsec
 boundary conditions applied in this thesis.
 %
 \subsection{Boundary conditions}
-Depending on the kind of flow and geometry a particular problem different boundary conditions are applied. In this section 
-$\mathbf{n}$ and $\mathbf{t}$ will denote the normal vector and the tangential surface to the boundary surface.
+Depending on the kind of flow and geometry for a particular problem different boundary conditions are applied. In this section 
+$\mathbf{n}$ and $\mathbf{t}$ will denote the normal vector and a tangential vector to the boundary surface.
 The boundary conditions applied for the cases investigated in this thesis will be given the names 
 I,O,SYM and W for Inflow, Outflow, Symmetry and Wall. Their mathematical formulation and physical interpretation are given as 
 \begin{itemize}
@@ -113,7 +116,7 @@ I,O,SYM and W for Inflow, Outflow, Symmetry and Wall. Their mathematical formula
         \end{align}
     \item SYM 
         - Symmetry, denying any flux through the boundary without disturbing the tangential velocity. Convenient
-        to apply in an open channel where the stream wise direction is parallel to the boundary. Mathematically this is 
+        to apply in an open channel where the streamwise direction is parallel to the boundary. Mathematically this is 
         described as 
         \begin{align}
             \mathbf{u}\cdot \mathbf{n} = 0, \qquad (\nabla\mathbf{u}\cdot \mathbf{t})\cdot \mathbf{n} = 0.
@@ -131,7 +134,7 @@ I,O,SYM and W for Inflow, Outflow, Symmetry and Wall. Their mathematical formula
 %
 \subsection{Weak formulation of N-S}
 %Let us first assume constant viscosity, enabling the simplification $\nabla \cdot \tau = -\nabla p + \nu \Delta \mathbf{u}$.
-The numerical algorithms applied in this thesis requires a weak formulation of \eref{eq:NS}.
+The numerical algorithms applied in this thesis require a weak formulation of \eref{eq:NS}.
 Before the weak form is derived a few operators will be defined to simplify the final 
 expression.
 %
@@ -143,7 +146,7 @@ expression.
     \label{eq:weakoperators}
 \end{align}
 %
-A weak formulation is obtained by multiplying with a test function $\mathbf{v}$ and integrating over
+A weak formulation is obtained by multiplying with the test functions $\mathbf{v}$ and $q$ in ~\eref{eq:NS} and integrating over
 the entire domain,
 \begin{align}
     \begin{split}
@@ -170,7 +173,7 @@ the first equation yields
 	\label{eq:NSweak}
 \end{align}
 %
-The contributions from the boundary as a result of the application of the divergence theorem is included in the 
+The contributions from the boundary as a result of the application of the divergence theorem are included in the 
 force term.
 %Writing the covective term in conservational form $\nabla \cdot \mathbf{u}\mathbf{u}$ and applying the 
 %divergence theorem on the terms leaves us with 
@@ -206,9 +209,10 @@ $\forall\; (\mathbf{v}, q) \in V\times Q$.
 %
 
 To solve this equation numerically, everything has to be discretized and expressed 
-using a set of basis functions. The idea is that the solution $(\mathbf{u},p)$ is approximated 
-by a discretized solution $(\mathbf{u}_h,p_h)$ and the bilinear operators can be represented 
-by matrices. The discretized system of equations can be stated as
+using a set of basis functions. These basis functions can then describe any test functions
+$(\mathbf{v}_h,q_h)$, and the solution $(\mathbf{u},p)$ can be approximated by a discretized 
+solution $(\mathbf{u}_h,p_h)$. This also results in discrete bilinear operators that can be
+represented by matrices. The discretized system of equations can be stated as
 %
 \begin{align}
     M\frac{\partial \mathbf{u}_h}{\partial t} +C(\mathbf{u}_h)\mathbf{u}_h 
@@ -255,7 +259,7 @@ by matrices. The discretized system of equations can be stated as
 %\subsection{inf-sup condition}
 
 \section{The passive scalar equation}
-The N-S equations explains how a fluid will behave, and solving these provides a pressure-velocity field on the 
+The N-S equations explain how a fluid will behave, and solving these provides a pressure-velocity field on the 
 domain of interest. 
 In many practical situations one is however interested in how a scalar such as heat or a neutral gas will move in this flow.
 The equation corresponding to the motion of a scalar $\phi$ in a velocity field $\mathbf{u}$
@@ -272,7 +276,7 @@ the scalar transported. For dispersion of neutral gas with $\phi$ as the volume 
 they resemble the viscosity and mass flux. The last term on the right hand side $q_{vol}$ is the source term and is not 
 included in this thesis since all gas enters the control volume as a boundary condition.
 
-The passive scalar equation is solved as a Helmholtz problem, by applying a explicit scheme on the convection term and an implicit 
+The passive scalar equation is solved as a Helmholtz problem, by applying an explicit scheme on the convection term and an implicit 
 scheme on the diffusion term. This is similar to the discretization performed on the momentum equation which will be discussed in 
 detail in \cref{numerics}. 
 %\colorbox{green}{write more about this equation and how it is solved \ldots}
@@ -282,7 +286,7 @@ detail in \cref{numerics}.
 When DNS is not feasible due to high Reynolds number on large domains, LES is one of the most powerful tools for simulating turbulent flows.
 The idea is based on the fact that the small turbulent structures behave homogeneously and are therefore easy to model.
 This way the larger structures driven by geometry, inflow conditions and external forces can be simulated using a coarser 
-grid while the effect of the small structures are modelled. 
+grid while the effect of the small structures is modelled. 
 LES will be introduced here in a mathematical fashion, starting by defining a filter function,
 although in many practical cases the filter function is not well defined.
 The reason for this is that the grid itself is often considered a filter, with the 
@@ -302,7 +306,7 @@ A filter in its general mathematical form introduced by Leonard~\cite{Leonard} i
 
 %For the test filter applied in the dynamic Smagorinsky case in the procedure described in \cref{filtering}
  
-The filter is assumed to commutes with 
+The filter is assumed to commute with 
 the differential operators $\nabla$, $\Delta$ and $\partial / \partial t$. By applying the filter on the N-S equations
 and making the given assumptions the filtered N-S equations can be stated as 
 %
@@ -310,12 +314,12 @@ and making the given assumptions the filtered N-S equations can be stated as
     \begin{split}
         \frac{\partial \mathbf{u}^r}{\partial t} + \mathbf{u}^r\cdot \nabla\mathbf{u}^r
         &= -\nabla p^r +\nu\Delta \mathbf{u}^r+\mathbf{f}^r-\nabla \cdot \tau, \\
-        \nabla \cdot \mathbf{u}^r &= 0.
+        \nabla \cdot \mathbf{u}^r &= 0,
     \end{split}
 	\label{eq:NSfiltered}
 \end{align}
 %
-Where $\tau$ in this case denotes the subgrid-scale (SGS) stress given as 
+where $\tau$ in this case denotes the subgrid-scale (SGS) stress given as 
 \begin{align}
     \tau_{ij}(u_i,uj) = (u_iu_j)^r -u_i^ru_j^r.
     \label{eq:sgstensor}
@@ -335,23 +339,25 @@ Lilly in 1967~\cite{Lilly67} suggesting the following model for the SGS-tensor
     \tau_{ij} &= -2C_sl^2\mathcal{S}^rs_{ij}^r,\\
     s^r_{ij} &= \frac{1}{2}\left( \frac{\partial u^r_i}{\partial x_j} +
     \frac{\partial u^r_j}{\partial x_i}\right),\\
-    \mathcal{S}^r &= \sqrt{2s^r_{ij}s^r_{ij}}.
+    \mathcal{S}^r &= \sqrt{2s^r_{ij}s^r_{ij}},
     \end{split}
     \label{eq:boussinesq}
 \end{align}
 %
-Where $l$ denotes the filter width, which for this thesis is equivalent to the grid size.
+where $l$ denotes the filter width, which for this thesis is equivalent to the grid size.
 The resolved strain rate $s^r_{ij}$ can be calculated from the filtered velocity and the problem is now reduced to determining
 the constant $C_s$. There were several attempts to determine this constant for the entire domain, but in lack of a general 
 constant applicable to all flow situations a dynamic constant $C_d$ was presented to replaces $C_sl^2$ in \eref{eq:boussinesq}.
 $C_d$ is called the dynamic Smagorinsky constant, and is both time and space dependent.
 The general idea is that $C_d$ is unaffected by the filter and from this 
-assumption an computable expression is developed for the dynamical constant.
+assumption a computable expression is developed for the dynamical constant.
 
 Let $a,b$ denote two distinct filters with corresponding filter widths $l_a,l_b$. 
-Throughout this thesis $l_a$ will be the grid size and $l_b\approx 2l_a$. Filter $b$ is
-often referred to as the test filter and is only included to provide an estimation 
-of the dynamic Smagorinsky constant. Remember that $a$ is the filter corresponding tu the numerical discretization, while 
+Throughout this thesis $l_a$ will be the grid size. The second filter width $l_b$ 
+is in this thesis based the same elemental grid, but with a number of nodes $N_b = N_a - 2$.
+Hence the relation which is the only parameter needed for the simulation is calculated as $lambda = (N_a-1)/(N_b-1)$.
+Filter $b$ is often referred to as the test filter and is only included to provide an estimation 
+of the dynamic Smagorinsky constant. Remember that $a$ is the filter corresponding too the numerical discretization, while 
 filter $b$ is obtained by applying the filter described in \cref{filtering} with $\alpha_i=1$ for the highest modes.
 Let $\tau_{ij}$ and $T_{ij}$ denote the stresses based on single- and double filtering
 operations on the N-S equations
@@ -402,9 +408,9 @@ for the dynamic Smagorinsky constant
     \label{eq:dynsmag}
 \end{align}
 %
-Note that the double indices implies summing. This expression is however not a 
-stable option and to deal with this most implementations apply some sort of mean or smoothening 
-in either time and/or space when calculating the constant. In this thesis the smoothening is done in 
+Note that the double indices imply summing. This expression is however not a 
+stable option and to deal with this most implementations apply some sort of mean or smoothing 
+in time and/or space when calculating the constant. In this thesis the smoothing is done in 
 both time and space for the denominator and the numerator in \eref{eq:dynsmag}. Another property 
 of this expression is that the constant $C_d$ is 
 independent of the filter width, the only necessary variable is the coefficient $\lambda = l_b/l_a$.
@@ -413,8 +419,8 @@ as diffusion, similar to the kinematic viscosity a turbulent viscosity $\nu_t$ i
 $\nu_t = C_d\mathcal{S}^a$.
 
 Let us end this section by stating the filtered N-S equations with the LES using 
-dynamical Smagorinsky subgrid scale model, and remember that the diffusive term is written 
-in general terms as $2\nabla \cdot \nu s_{ij}$.  
+the dynamical Smagorinsky subgrid scale model, and remember that the diffusive term is written 
+in general terms as $2\nabla \cdot (\nu s_{ij})$.  
 %
 \begin{align}
     \begin{split}
@@ -428,8 +434,8 @@ in general terms as $2\nabla \cdot \nu s_{ij}$.
 Notice that if $v_t$ is a constant in the entire domain this equation would 
 be equivalent to the one for a fluid with viscosity $\nu'= \nu + \nu_t$. The idea is 
 that $\nu_t$ will be larger when the subgrid-structures are significant and closer to zero 
-when the flow is laminar. This is just one of many types of models but is attractive due to its
-simple derivation from physical principles.
+when the flow is laminar. This is just one of many types of models that are based on an 
+anology between subgrid-scale stress and physical stress. 
 
 %\subsection{Decoupling the pressure} 
 

@@ -15,27 +15,16 @@
 %solutions of the incompressible N-S equations.  
 
 The physics regarding fluids in motion are described mathematically by the Navier-Stokes (N-S) equations. 
-They are a result of the conservation of momentum and mass, and it is referred to~\cite{White} for a complete 
-description of the necessary assumptions and simplifications. 
+They are a result of the conservation of momentum and mass and are stated in~\eref{eq:NS}. For a complete 
+description of the necessary assumptions and simplifications it is referred to~\cite{White}.  
 This thesis is restricted to numerical solutions of the incompressible N-S equations.
-Without further introduction the incompressible N-S equations are stated as  
-%
-\begin{align}
-    \begin{split}
-    \frac{\partial \mathbf{u}}{\partial t} + \mathbf{u}\cdot \nabla\mathbf{u} &= 
-    -\nabla p + \frac{1}{Re} \Delta\mathbf{u} + \mathbf{f}, \\
-		\nabla \cdot \mathbf{u} &= 0.
-    \end{split}
-	\label{eq:NS}
-\end{align}
-%
-$\mathbf{u}$ and $p$ denotes the velocity of the fluid and the pressure, while $\mathbf{f}$ is some external force. 
-The Reynolds number $Re$ describes the ratio between momentum forces and viscous forces.
-For large Reynolds numbers the flow becomes turbulent and a large range of scales needs to be resolved. A lot 
-of research has been devoted to determine the amount of energy present at the different scales of motion, and 
-the interaction between them. These ideas has led to turbulence modelling which is based on the 
-idea that the effect of the smallest turbulent motions can be modelled while the larger motions are resolved by 
-the numerical grid. 
+An important dimonsionless quantity is the Reynolds number $Re$, which describes the ratio between 
+momentum forces and viscous forces. For large Reynolds numbers the flow becomes turbulent and a 
+large range of scales needs to be resolved. A lot of research has been devoted to determine the
+amount of energy present at the different scales of motion, and the interaction between them. 
+These ideas has led to turbulence modelling which is based on the 
+idea that the effect of the smallest turbulent motions can be modelled while 
+the larger motions are resolved by the numerical grid. 
 In this thesis both laminar and turbulent flows will be solved numerically, 
 and a physically motivated model for the smallest structures will be compared
 with a mathematical filter meant to stabilize the flow.
@@ -49,4 +38,34 @@ This thesis is divided in 3 parts. The first part which consists of the two foll
 of \eref{eq:NS}, the solution methods applied and a thorough presentation of the Spectral Element Method. \cref{nek} gives the reader a brief 
 introduction to the functionalities of the solver Nek5000 to motivate some of the implementation performed. The last three chapters 
 describes the work performed by the author, a presentation of the results and the discussion of these.
+
+\section{A brief overview of the work done for this thesis}
+
+Before we end this chapter a brief overview of the work done for this thesis is listed here. 
+It can be divided in three main sections and will be presented properly in
+~\cref{implementation} and~\ref{results}. 
+
+\begin{itemize}
+    \item Nek5000 grid generation
+        \begin{itemize}
+            \item Project edges onto a higher order arc
+            \item General surface projection
+            \item Testing of algorithm for different surfaces
+            \item Curvature propagation
+            \item Changes and adjustments to mshconvert
+        \end{itemize}
+    \item Laminar flow around cylinder
+        \begin{itemize}
+            \item Generation of geometry and grid
+            \item Setup of the problem with necessary input and output
+            \item Simulations with Nek5000 with different grid-size, polynomial order, time-stepping method, and other settings
+        \end{itemize}
+    \item Turbulent flow with gas dispersion
+        \begin{itemize}
+            \item Grid generation
+            \item Setup the problem with necessary input and output
+            \item Implementation of the spatial avering routine for the dynamic Smagorinsky model
+            \item Simulations with Nek5000 with different grids, polynomial order,stabilization methods
+        \end{itemize}
+\end{itemize}
 

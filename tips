@@ -33,6 +33,7 @@ Make sure nodes are projected onto surface in ICEM
 # Declaration of variables
 Be absolutely sure that all variables are declared,
 Fortran throws no error message. 
+First SIZE, then TOTAL etc, then NEKUSE
 
 # OUTPUT FIELDS! 
 Need at least 5 lines!! 

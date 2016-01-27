@@ -115,7 +115,7 @@ The number of interpolation points is denoted $n$, which has a maximum upper lim
 since the surface mesh is recommended to be a tetrahedra mesh. Setting $n=1$ simply projects 
 a point in $f_e$ to the closest one in $S$.
 The interpolation algorithm used for this experiment is an inverse distance interpolation
-which applies the inversed distance squared as weights. The distance between a point
+which applies the inverse distance squared as weights. The distance between a point
 $\mathbf{x}\in f_e$, and a point $\mathbf{y} \in S $ is given as 
 \begin{align}
     ||\mathbf{x}-\mathbf{y}||_{a} = a ||\mathbf{x}-\mathbf{y}||_{l^2}
@@ -269,9 +269,10 @@ describing the surface is typically of order $P \approx 7$.
 \section{Spatial averaging routine}
 A dynamic Smagorinsky model has previously been implemented in Nek5000 for flow in a channel. 
 The SGS-model as described in \cref{description} depends on an averaging routine to calculate
-the dynamic Smagorinsky constant. The previous implementation in Nek5000 applies an average routine in the plane,
-assuming that the Smagorinsky constant is the same for all points with equal distance to the walls 
-of the channel. This is a case specific averaging routine based on the assumption of homogeneous turbulence 
+the dynamic Smagorinsky constant. The previous implementation in Nek5000 applies a planar average routine
+in addition to averaging in time. The planar averaging is based on the assumption that the Smagorinsky 
+constant is the same for all points with equal distance to the walls of the channel.
+This is a case specific averaging routine based on the assumption of homogeneous turbulence 
 in the entire plane, hence only applicable to flows in idealized geometries.
 
 When applying dynamical Smagorinsky to Case 1 a new spatial mean routine had to be applied for it to be stable. 

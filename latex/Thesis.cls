@@ -119,7 +119,7 @@
 \setlength{\captionmargin}{20pt}
 \newcommand{\fref}[1]{Figure~\ref{#1}}
 \newcommand{\tref}[1]{Table~\ref{#1}}
-\newcommand{\eref}[1]{Eq.~(\ref{#1})}
+\newcommand{\eref}[1]{Eq.(\ref{#1})}
 \newcommand{\cref}[1]{Chapter~\ref{#1}}
 \newcommand{\sref}[1]{Section~\ref{#1}}
 \newcommand{\aref}[1]{Appendix~\ref{#1}}
@@ -184,7 +184,7 @@
 %	defined as \examname above so you cite it as \examname
 %----------------------------------------------------------------------------------------
 
-\thesistitle{Application of nek5000 to dispersion simulations} % Your thesis title - this is used in the title and abstract
+\thesistitle{Application of Nek5000 to dispersion simulations} % Your thesis title - this is used in the title and abstract
 %-------------------------------------------------  
 \supervisor{Anne Kværnø} % You supervisor's name - this is used in the title page
 %-------------------------------------------------   

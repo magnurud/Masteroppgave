@@ -32,13 +32,13 @@ c     beta adjusts the limit of the working array.
      &     lambda,mcx(2),
      &     err_new
 
-      integer iwrkelem(nbdry,3),iscorner
-      real wrksurf(nsurf,3),wrkbdry(nwork,3)
+      integer iwrkelem(2,nbdry),iscorner
+      real wrksurf(3,nsurf),wrkbdry(3,nwork)
        
        call rzero(mcx,2) ! Max deviation
        call rzero(wrksurf(1,1),3*nsurf)
        call rzero(wrkbdry(1,1),3*nwork)
-       call izero(iwrkelem(1,1),3*nbdry)
+       call izero(iwrkelem(1,1),2*nbdry)
 
        !call readsurfpro(wrksurf,iwrkelem)
        call readsurfpro(wrksurf,iwrkelem)
@@ -46,7 +46,7 @@ c     beta adjusts the limit of the working array.
        ! Iterating over the Boundary elements
        do i = 1,nbdry
 
-       e = iwrkelem(i,1) ! Global element 
+       e = iwrkelem(1,i) ! Global element 
        ie = gllel(e)     ! Local element
        if(e.le.0) then 
            write(*,*) 'ERROR: bdry.i not read correctly - elem',e
@@ -57,8 +57,8 @@ c     beta adjusts the limit of the working array.
        !corresponds to the processor
        if(lglel(ie).eq.e) then 
 
-       f = iwrkelem(i,2) ! preprocessor face
-       iside = eface(f) ! symmetric notation face
+       f = iwrkelem(2,i) ! preprocessor face
+       iside = eface1(f) ! symmetric notation face
        if(f.gt.6.or.f.lt.1) then
            write(*,*) 'ERROR: bdry.i not read correctly - face',f
            call exitt
@@ -72,6 +72,7 @@ c     beta adjusts the limit of the working array.
 
        ! Estimate midpoint and radius
        call getfaceinfo(midpoint,radius,wrk,ie,f)
+       !call getfaceinfo2(midpoint,radius,ie,f)
 
        ! Finding the points of interest
        call 
@@ -88,14 +89,14 @@ c     beta adjusts the limit of the working array.
        iscorner = 0
        call checkcorner(iscorner,ix,iy,iz,kz1,kz2,ky1,ky2,kx1,kx2)
        if(iscorner.eq.1) then 
+           !Do nothing
            !write(*,*) 'corner:',ix,iy,iz
        else 
-
 
        ! Get coordinates
        call nekasgn(ix,iy,iz,ie) 
        ! Get surface normal
-       call getsurfnorm(sn,ix,iy,iz,f,ie) 
+       call getsurfnorm(sn,ix,iy,iz,iside,ie) 
 
        ! Iterating through wrkbdry
        call cfill(rinterp,999999.9,3)
@@ -104,9 +105,9 @@ c     beta adjusts the limit of the working array.
        ! Finding the interpolation points
        do k = 1,iter-1
 
-         wrk(1) = x-wrkbdry(k,1) ! vector from gllpoint to surf 
-         wrk(2) = y-wrkbdry(k,2)
-         wrk(3) = z-wrkbdry(k,3)
+         wrk(1) = x-wrkbdry(1,k) ! vector from gllpoint to surf 
+         wrk(2) = y-wrkbdry(2,k)
+         wrk(3) = z-wrkbdry(3,k)
          lambda = sqrt(wrk(1)**2+wrk(2)**2+wrk(3)**2)
          if(lambda.eq.0.0) then 
              do j = 1,intpt
@@ -279,10 +280,10 @@ c     e          - the current global element
       return
       end
 c---------------------------------------------------------------
-      subroutine getsurfnorm(sn,ix,iy,iz,f,ie)
+      subroutine getsurfnorm(sn,ix,iy,iz,iside,ie)
 
 c     Providing the surface normal sn at point ix,iy,iz of element ie
-c     and preprocessor face f 
+c     and symmetric face iside 
 
       include 'SIZE'
       include 'TOTAL'
@@ -292,21 +293,22 @@ c     and preprocessor face f
       integer ix,iy,iz
       integer ie,f,iside
 
-      iside = eface(f) ! Providing the lexicographic notation
+      ! symmetric notation --> Preprocessor  
+      f = eface(iside) ! Providing the prepro notation 
 
       ! Get the normal vector
-      if (f.eq.1.or.f.eq.2) then ! "r face"
-          sn(1) = unx(iy,iz,iside,ie)
-          sn(2) = uny(iy,iz,iside,ie)
-          sn(3) = unz(iy,iz,iside,ie)
-      elseif (f.eq.3.or.f.eq.4) then ! "s face"
-          sn(1) = unx(ix,iz,iside,ie)
-          sn(2) = uny(ix,iz,iside,ie)
-          sn(3) = unz(ix,iz,iside,ie)
-      elseif (f.eq.5.or.f.eq.6) then ! "t face"
-          sn(1) = unx(ix,iy,iside,ie)
-          sn(2) = uny(ix,iy,iside,ie)
-          sn(3) = unz(ix,iy,iside,ie)
+      if (iside.eq.1.or.iside.eq.2) then ! "r face"
+          sn(1) = unx(iy,iz,f,ie)
+          sn(2) = uny(iy,iz,f,ie)
+          sn(3) = unz(iy,iz,f,ie)
+      elseif (iside.eq.3.or.iside.eq.4) then ! "s face"
+          sn(1) = unx(ix,iz,f,ie)
+          sn(2) = uny(ix,iz,f,ie)
+          sn(3) = unz(ix,iz,f,ie)
+      elseif (iside.eq.5.or.iside.eq.6) then ! "t face"
+          sn(1) = unx(ix,iy,f,ie)
+          sn(2) = uny(ix,iy,f,ie)
+          sn(3) = unz(ix,iy,f,ie)
       end if
 
       return 
@@ -508,7 +510,7 @@ c     f        -  preprocessor face id
       include 'SIZE' !nx1,ny1,nz1
       include 'GEOM' !xm1,ym1,zm1
 
-      real wrkbdry(nwork,3) 
+      real wrkbdry(3,nwork) 
       integer ie,ix,iy,iz,kz1,kz2,ky1,ky2,kx1,kx2,iter,f
            
       call facind(kx1,kx2,ky1,ky2,kz1,kz2,nx1,ny1,nz1,f)
@@ -516,9 +518,9 @@ c     f        -  preprocessor face id
       do ix = kx1,kx2,nx1-1
       do iy = ky1,ky2,ny1-1
       do iz = kz1,kz2,nz1-1
-          wrkbdry(iter,1) = xm1(ix,iy,iz,ie)
-          wrkbdry(iter,2) = ym1(ix,iy,iz,ie)
-          wrkbdry(iter,3) = zm1(ix,iy,iz,ie)
+          wrkbdry(1,iter) = xm1(ix,iy,iz,ie)
+          wrkbdry(2,iter) = ym1(ix,iy,iz,ie)
+          wrkbdry(3,iter) = zm1(ix,iy,iz,ie)
           iter = iter + 1
       enddo
       enddo
@@ -538,8 +540,8 @@ c                 of the elements that are going to be projected.
       include 'SIZE'     ! nid , nsurf , nbdry
       include 'PARALLEL' ! ISIZE , WDSIZE
 
-      integer iwrkelem(nbdry,3)
-      real wrksurf(nsurf,3)
+      integer iwrkelem(2,nbdry)
+      real wrksurf(3,nsurf)
 
       if(nid.eq.0) then 
 
@@ -547,7 +549,7 @@ c                 of the elements that are going to be projected.
          open(unit=13,file='surf.i',status='OLD')
          write(*,*) 'Opening: surf.i' 
          do i = 1,nsurf
-             read(13,*) wrksurf(i,1),wrksurf(i,2),wrksurf(i,3)
+             read(13,*) wrksurf(1,i),wrksurf(2,i),wrksurf(3,i)
          end do
          close(unit=13)
 
@@ -555,7 +557,7 @@ c                 of the elements that are going to be projected.
          open (unit=12,file='bdry.i',status='OLD')
          write(*,*) 'Opening: bdry.i' 
          do i = 1,nbdry
-           read(12,*) iwrkelem(i,1),iwrkelem(i,2)
+           read(12,*) iwrkelem(1,i),iwrkelem(2,i)
          end do
          close(unit=12)
 
@@ -568,6 +570,64 @@ c                 of the elements that are going to be projected.
 
        return 
        end
+c-----------------------------------------------------------------------
+c-----------------------------------------------------------------------
+      subroutine getfaceinfo2(midpoint,radius,ie,f)
+
+c     OUTPUT:
+c     midpoint -  the coordinates of the midpoint of the face
+c     radius   -  estimate of the radius of the face, assumes quadratic face
+
+c     INPUT:
+c     wrk      -  scratch array length 3
+c     ie       -  local element number
+c     f        -  preprocessor face id
+
+       include 'SIZE' ! nx1,ny1,nz1
+       include 'GEOM' ! xm1,ym1,zm1
+
+       real midpoint(3),radius
+       real totarea
+       integer ie,f,kx1,kx2,ky1,ky2,kz1,kz2,i
+
+       call facind(kx1,kx2,ky1,ky2,kz1,kz2,nx1,ny1,nz1,f)
+
+       call rzero(midpoint,3)
+
+       totarea = 0.0
+       i = 1
+
+       do ix = kx1,kx2
+       do iy = ky1,ky2
+       do iz = kz1,kz2
+           totarea = totarea + area(i,1,f,ie)
+           midpoint(1) = midpoint(1)+xm1(ix,iy,iz,ie)*area(i,1,f,ie)
+           midpoint(2) = midpoint(2)+ym1(ix,iy,iz,ie)*area(i,1,f,ie)
+           midpoint(3) = midpoint(3)+zm1(ix,iy,iz,ie)*area(i,1,f,ie)
+           i = i+1
+       enddo
+       enddo
+       enddo
+
+       call cmult(midpoint,1.0/totarea,3)
+
+       ! This calculation of the radius is based on the assumption that 
+       ! element face is quadratic.
+
+       radius = sqrt(totarea/2.0)
+
+       ! Error handling
+       if(radius.le.0.0) then 
+         write(*,*) 'ERROR: radius too small:',radius
+         write(*,*) 'FACE LIMITS:',kx1,ky1,kz1,kx2,ky2,kz2
+         write(*,*) 'midpoint:', midpoint(1),midpoint(2),midpoint(3)
+         write(*,*) 'locelem, elem, prepro face:',ie,e, f
+         call exitt        
+       endif
+
+       return
+       end
+
 c-----------------------------------------------------------------------
 c-----------------------------------------------------------------------
       subroutine getfaceinfo(midpoint,radius,wrk,ie,f)
@@ -644,20 +704,20 @@ c     rad      -  radius of the element
       integer iter,j,f
       real beta,rad,lambda,
      $     mid(3),
-     $     wrksurf(nsurf,3),wrkbdry(nwork,3)
+     $     wrksurf(3,nsurf),wrkbdry(3,nwork)
 
        
       do j = 1,nsurf
 
         ! distance to temporary node
-        lambda = sqrt((wrksurf(j,1)-mid(1))**2+
-     $  (wrksurf(j,2)-mid(2))**2+
-     $  (wrksurf(j,3)-mid(3))**2)
+        lambda = sqrt((wrksurf(1,j)-mid(1))**2+
+     $                (wrksurf(2,j)-mid(2))**2+
+     $                (wrksurf(3,j)-mid(3))**2)
 
         if (lambda.le.beta*rad) then ! Add to working array
-            wrkbdry(iter,1) =wrksurf(j,1)
-            wrkbdry(iter,2) =wrksurf(j,2)
-            wrkbdry(iter,3) =wrksurf(j,3)
+            wrkbdry(1,iter) = wrksurf(1,j)
+            wrkbdry(2,iter) = wrksurf(2,j)
+            wrkbdry(3,iter) = wrksurf(3,j)
             iter = iter+1              
         end if
 

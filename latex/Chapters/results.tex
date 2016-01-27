@@ -36,7 +36,7 @@ the box $0.0\leq x/H \leq 4.96,-1.75\leq y/H \leq 1.75, 0\leq z/H \leq 1.5$.
 The four cubic boxes are centered around $(1.4315,0)$ with a distance $h$ between each box.
 The source is placed with its center in $(0.396,0)$ and radius $r = 0.0515$.
 The grid used for the computations consists of 14747 elements and with a polynomial degree of
-7 the total number of nodes $N\approx 5,2$mill. 
+7 the total number of nodes $N\approx 5.2$mill. 
 
 
 The simulations are performed using Large Eddy Simulation (LES) 
@@ -45,7 +45,7 @@ routine that is available in Nek5000.
 The release of gas will result in a plume that is advected with the wind field,
 see \fref{fig:plume}. The concentration of the released gas at the 
 indicated positions in \fref{fig:layout} are compared with 
-experimental data and simulations performed in CDP~\cite{CDP}. 
+experimental wind tunnel data and simulations performed in CDP~\cite{CDP}. 
 For clarification some of the variables repeatedly mentioned throughout this thesis will be 
 stated explicitly in \tref{tab:simplevariables}.
 \begin{table}
@@ -63,7 +63,7 @@ stated explicitly in \tref{tab:simplevariables}.
     \label{tab:simplevariables}
 \end{table}
 
-The inflow conditions had to be extrapolated onto the domain at each time step. To mimic the situation in the wind-tunnel the velocity field
+The inflow conditions had to be mapped onto the boundary at each time step. To mimic the situation in the wind-tunnel the velocity field
 on the inflow was generated in a different simulation performed in CDP. The inflow velocity was written to file every 
 $0.0013$s for a total of $28$s and had to be interpolated onto the domain for the simulations in Nek5000 since the grid was not identical.
 The right plot in \fref{fig:inflow} is an instantaneous picture of the inflow velocity in x-direction, 
@@ -97,7 +97,7 @@ started.
 	\centering
 	\includegraphics[width=0.6\textwidth]{Figures/plume2.png}
 	\caption{An iso-surface of the average concentration with $C=0.03$ 
-    after 30 seconds of sampling.}
+    after 30 seconds of sampling. Streamwise direction is from left to right.}
 	\label{fig:plume}
 \end{figure}
 %
@@ -220,7 +220,7 @@ An important difference between the filtering and the SGS-model is
 that the filter works based on the current state of the flow 
 whereas the amount of diffusion added by the SGS-model is mostly decided
 by the previous states of the flow.
-This could lead to either too much or too little smoothening locally.
+This could lead to either too much or too little smoothing locally.
 
 \newpage
 \begin{figure}[h]
@@ -366,7 +366,7 @@ calculated. On the other side is the splitting scheme implied by the $P_NP_N$ fo
 \subsection{Results - benchmark comparison}
 The effect of the algorithm explained in \cref{xyzarc} is
 illustrated by solving a laminar flow test problem. 
-The solution is compared with previously benchmark computations performed by a number of 
+The solution is compared with previous benchmark computations performed by a number of 
 contributors~\cite{benchmark}. 
 
 The results are presented in \tref{tab:testcase}, and they confirm that the treatment of the geometry is 
@@ -380,7 +380,7 @@ essential, both coefficients are computed with significantly better accuracy.
 		2124030& Nek5000 (mid) & 6.18349 & 0.008939 & 0.030 & 4.19 \\ 
 		2124030& Nek5000 (arc) & 6.18498 & 0.009413 & 0.006 & 0.13 \\
 		3145728 & CFX 		 & 6.18287 & 0.009387 & 0.04 &0.15 \\
-		3145728 & OF	     & 6.18931 & 0.00973 & 0.06 &3.5 \\
+		3145728 & OpenFOAM	 & 6.18931 & 0.00973 & 0.06 &3.5 \\
 		3145728 & FEATFLOW   & 6.18465 & 0.009397 & 0.01 &0.05 \\
 		\bottomrule	
 	\end{tabular}
@@ -432,6 +432,14 @@ which confirms the analytical results from \eref{eq:filterenergy}.
          5 & 6e-4& Yes& Yes& No & No & 0.012 & 2.35\\
          %6 & 4.5e-4& Yes& Yes& No & No & 0.015 & 0.01\\
          %7 & 3e-4& Yes& Yes& No & No & 0.018 & 0.01\\
+
+
+%   Alias   1.32183732e-02  -2.50363621e+01
+%   Char    1.00237174e-04  -1.22425816e+01
+%   default 1.61349516e-03  -1.22431699e+01
+%   filter  8.43539472e-01  -1.26292235e+01
+%   P_NP_N  9.33531436e-02  -6.23979364e+00
+
     \end{tabular}
     %\begin{tabular}{c | c c c c | c c | c c c}
          %& \multicolumn{4}{|c|}{Settings} & \multicolumn{2}{|c|}{\% Error} & \multicolumn{3}{|c}{Data} \\\hline
@@ -490,7 +498,7 @@ to the normal is prone to give errors and should be calculated based on points f
 
 For the simple array case it was experimented with different meshes and the refinement procedure 
 in ICEM quickly leads to small elements with wide angles that tend to lead to problems 
-in Nek5000. The author do however believe that by making an ogrid around the most important part of 
+in Nek5000. The author do however believe that by making an o-grid around the most important part of 
 the domain, say for instance the box, $x/H < 3,\: |y|/H < 0.4,\: z/H < 0.15$ the nodes could have been 
 distributed in a more economical fashion and an overall better result could have been achieved.
 

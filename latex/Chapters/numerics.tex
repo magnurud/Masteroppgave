@@ -53,7 +53,7 @@ analysis \cite{Karniadakis}. The steady Stokes problem with homogeneous boundary
 \begin{align}
     \begin{split}
         %\frac{\partial \mathbf{u}}{\partial t} 
-        - \mu \Delta \mathbf{u} + \nabla p &= \mathbf{f}, \qquad \nabla \cdot \mathbf{u} = 0, \\
+        - \mu \Delta \mathbf{u} + \nabla p &= \mathbf{f}, \qquad \nabla \cdot \mathbf{u} = 0, \qquad \text{ in } \Omega, \\
         \mathbf{u} &= \mathbf{0} \text{  on  } \partial \Omega.
     \end{split}
     \label{eq:stokes}
@@ -108,11 +108,12 @@ a staggered grid, such that the pressure and the velocity are evaluated at diffe
 For a Spectral Element formulation of this problem which will be elaborated in \cref{sem},
 a valid choice of subspaces $(V,Q)$ is $\left(  \left[  P_N\cap H^1_0\right]^3,P_{N-2} \cap L^{2}_{0}\right)$. This will be referred to as the 
 $P_NP_{N-2}$ formulation where $P_N$ denotes the space of polynomials up to degree $N$.
-It was however proved by Guermond in~\cite{GuermondPnPn} that the fractional step algorithm applies a 
-form of the Stokes problem which automatically fulfills the inf-sup condition and therefore does not require any particular 
-discrete subspaces to be chosen. For the sake of convenience the polynomial degree of the pressure and the velocity will be 
-the same and the discrete pair of subspaces $(V,Q)$ is chosen to $(\left[ P_N\cap H^1_0 \right]^3,P_{N} \cap L^{2}_{0})$,
-known as the $P_NP_N$ formulation.
+It was however proved by Guermond in~\cite{GuermondPnPn} that for a particular formulation of the Stokes problem
+the approximation spaces do not need to fulfill the inf-sup condition.
+The numerical method corresponding to this formulation will for the sake of convenience use the same 
+polynomial degree for pressure and velocity. The subspaces $(V,Q)$ is therefore chosen to 
+$(\left[ P_N\cap H^1_0 \right]^3,P_{N} \cap L^{2}_{0})$,
+and will be referred to as the $P_NP_N$ formulation.
 
 Before the analysis of the N-S equations can be taken any further the theory behind the Spectral Element Method will be presented in the following
 subsections.
@@ -135,7 +136,7 @@ formulation with a corresponding search space $X$ and then choosing a discrete s
 spanned by the finite element basis functions $\{\phi^p_i\}$.
 The key property of the basis functions is that they only have local support in a small part of the domain. 
 This is what gives rise to the resulting sparse linear system. 
-By increasing the polynomial order,, the number of grid points used to define the polynomial will need to increase as well.
+By increasing the polynomial order, the number of grid points used to define the polynomial will need to increase as well.
 This implies either reducing the distance between the grid points or increasing the support of each basis function.
 Both approaches will reduce the sparsity of the final matrix.
 Another important aspect of FEM is the treatment of the domain $\Omega$, 
@@ -157,13 +158,13 @@ the solution $u_h$ provided by the Galerkin method is known as the orthogonal pr
 
 Before this section ends it is important to understand the two ways to increase accuracy and the effects these two ways have on the algorithm. 
 Assume the solution of the BVP to be infinitely smooth and the domain be sufficiently regular. 
-This yields an error $e = Ch^p$, being some positive constant.
+This yields an error $e = Ch^p$, $C$ being some positive constant.
 Factors such as geometric complexity, condition-number, non-linear operators and the continuity of the 
 solution will all provide slightly more complicated error estimates. 
 However for a simpler BVP such as the Poisson problem on the unit square, the error estimate is valid.  
 A $h$-refinement will lead to an algebraic convergence of order $p$, while the sparsity of the system is conserved
 and the total algorithm does not change in any other way than increasing the number of elements.
-Keeping $h$ constant and increasing $p$ will provide esponential decay of the error, but the sparsity will be reduced and all integrals solved will require 
+Keeping $h$ constant and increasing $p$ will provide exponential decay of the error, but the sparsity will be reduced and all integrals solved will require 
 quadrature rules of higher order. A formal statement and numerical validation of the error estimate can be found in \cite{Karniadakis} chapter 2.6.  
 
 To sum up the discussion above a general error estimate from~\cite{Quarteroni} is stated as a theorem, 
@@ -190,8 +191,10 @@ and in this thesis only the Galerkin version with numerical integration (sometim
 For a full introduction to SM and its applications to BVP see~\cite{Canuto}.
 SM can be reduced to an interpolation problem such as FEM, and are interesting from a theoretical point of view due to its 
 spectral convergence rate which allows you to obtain solutions of extremely high accuracy. 
-The most important draw-back of SM are the difficulties with applications to complex geometries. Although the system of equations surging from
-a BVP can be constructed in an elegant way it is rarely sparse and often result in expensive calculations. 
+The most important draw-back of SM are the difficulties with applications to complex geometries. The Fourier basis
+gives rise to a very efficient method, but is restricted to periodic boundary conditions. Using the GLL-points and
+corresponding Lagrange polynomials allow the system of equations surging from
+a BVP can be constructed in an elegant way, but it is rarely sparse and often result in expensive calculations. 
 
 Applying SM on a BVP in one dimension requires a set of basis functions $\{\psi_i\}_N$ defined on the whole domain $\Omega$. 
 The discrete space $X_h(\Omega)$ spanned by the basis functions involves all polynomials up to degree $N$.
@@ -221,12 +224,12 @@ $L_N$ being the Legendre polynomial of degree $N$, defined from the Sturm-Liouvi
 With equations \eref{eq:GLL-nodes} and \eref{eq:Legendre} the local spectral 
 basis functions $\psi_j$ can be stated as 
 \begin{align}
-    \psi_j(x) = \prod_{i\neq j}^{N}\frac{x-x_i}{x_j-x_i}.
+    \psi_j(x) = \prod_{i\neq j}^{N}\frac{x-\xi_i}{\xi_j-\xi_i}.
     \label{eq:Lagrange}
 \end{align}
 
-$\{x_i\}$ being the solutions to \eref{eq:GLL-nodes}. Note that $\psi_j(x_i) = \delta_{ij}$.
-The expansion coefficients in \eref{eq:spectralprojection} are then chosen as $a_i = u_i :=u(x_i)$. 
+$\{\xi_i\}$ being the solutions to \eref{eq:GLL-nodes}. Note that $\psi_j(\xi_i) = \delta_{ij}$.
+The expansion coefficients in \eref{eq:spectralprojection} are then chosen as $a_i = u_i :=u(\xi_i)$. 
 
 This definition of the expansion coefficients is convenient since the actual value of 
 the function in any point can just be read directly from the coefficients without having to 
@@ -242,7 +245,7 @@ such that the three dimensional basis functions $\Psi_{l}$ is given as
     \Psi_{l}(\mathbf{x}) = \psi_i(x)\psi_j(y)\psi_k(z).
     \label{eq:3dbasis}
 \end{align}
-This expansion to multiple dimensions preserves the $\Psi_l(\mathbf{x}_m) = \delta_{lm}$.
+This expansion to multiple dimensions preserves the $\Psi_l(\boldsymbol\xi_m) = \delta_{lm}$.
 To clarify some of the concepts the SM approach will be applied on the Helmholtz equation
 %
 \begin{align}
@@ -265,7 +268,8 @@ Find $u\in V$ st.
 %
 To solve this using SM the discrete space $V_h \subset V$ is defined as $\text{span}\{\Psi_l\}$ following the preceding definitions 
 the discrete weak formulation is stated as 
-Find $u_h\in V_h$ st. 
+
+Find $u_h = \sum_l u_l \Psi_l \in V_h$ st. 
 %
 \begin{align}
     \sum_l\left(  u_l\int_{\Omega}\nabla \Psi_l \cdot \nabla \Psi_m d \Omega + u_l\lambda \int_{\Omega} \Psi_l \Psi_md \Omega \right)
@@ -277,34 +281,34 @@ The following step of this particular spectral method is evaluating the integral
 is then given as 
 %
 \begin{align}
-    \sum_l\left(  u_l\sum_n \rho_n\nabla \Psi_l(\mathbf{x}_{n}) \cdot \nabla \Psi_m(\mathbf{x}_{n}) + u_l\lambda \sum_n \rho_n \Psi_l(\mathbf{x}_{n}) \Psi_m(\mathbf{x}_{n})\right)\\
-    = \sum_n \rho_nf \Psi_m(\mathbf{x}_{n}),\qquad \text{for } m = 1,\cdots,N^2,
+    \sum_l\left(  u_l\sum_n \rho_n\nabla \Psi_l(\boldsymbol\xi_{n}) \cdot \nabla \Psi_m(\boldsymbol\xi_{n}) + u_l\lambda \sum_n \rho_n \Psi_l(\boldsymbol\xi_{n}) \Psi_m(\boldsymbol\xi_{n})\right)\\
+    = \sum_n \rho_nf \Psi_m(\boldsymbol\xi_{n}),\qquad \text{for } m = 1,\cdots,N^2,
     \label{eq:Helmholtzquad}
 \end{align}
 %
-where $\rho_n$ is the quadrature weight for the $n$th node, and $\mathbf{x}_n$ is the vector containing the coordinates to the $n$th node.
+where $\rho_n$ is the quadrature weight for the $n$th node, and $\boldsymbol\xi_n$ is the vector containing the coordinates to the $n$th node.
 Note that all the indices $l,m,n=1,\cdots,N^{2}$.
 This can be written in a compact matrix form as 
 \begin{align}
-    (A+\lambda M)u_h = \tilde f.
+    (A+\lambda M)u_h = \tilde f,
     \label{eq:Helmholtzmat}
 \end{align}
-Where the elements in the matrices and vectors are given as 
+where the elements in the matrices and vectors are given as 
 \begin{align}
     \begin{split}
-        A_{lm} &= \sum_n \rho_n\nabla \Psi_l(\mathbf{x}_{n}) \cdot \nabla \Psi_m(\mathbf{x}_{n}),\\
-        M_{lm} &= \sum_n \rho_n \Psi_l(\mathbf{x}_{n}) \Psi_m(\mathbf{x}_{n}) = \rho_l\delta_{lm},\\
-        (u_h)_l & = u(\mathbf{x}_l), \\
-        \tilde f_m &= \sum_n \rho_n f(\mathbf{x}_{n}) \Psi_m(\mathbf{x}_{n}) = \rho_m f(\mathbf{x}_{j}).
+        A_{lm} &= \sum_n \rho_n\nabla \Psi_l(\boldsymbol\xi_{n}) \cdot \nabla \Psi_m(\boldsymbol\xi_{n}),\\
+        M_{lm} &= \sum_n \rho_n \Psi_l(\boldsymbol\xi_{n}) \Psi_m(\boldsymbol\xi_{n}) = \rho_l\delta_{lm},\\
+        (u_h)_l & = u(\boldsymbol\xi_l), \\
+        \tilde f_m &= \sum_n \rho_n f(\boldsymbol\xi_{n}) \Psi_m(\boldsymbol\xi_{n}) = \rho_m f(\boldsymbol\xi_{j}).
     \end{split}
     \label{eq:Helmholtzmatelem}
 \end{align}
 From these equations it is clear that the mass matrix $M$ is diagonal and the right hand side vector $\tilde f$ is easily calculated, 
 while the stiffness matrix $A$ is symmetric but full.
 
-The method oulined in this section is similarly to FEM also a projection method, 
+The method outlined in this section is similarly to FEM also a projection method, 
 but by applying a different set of basis functions the projection error is different 
-as well. This theorem and more information about spectral methods and there properties can be 
+as well. This theorem and more information about spectral methods and their properties can be 
 found in~\cite{Canuto2007}.
 
 \begin{theorem}
@@ -404,19 +408,19 @@ Applying the identities from \eref{eq:transforms} to \eref{eq:HelmholtzdiscreteS
 %
 \begin{align}
     \begin{split}
-    \sum_i\left(  u_i\int_{\hat{\Omega}_k}(\mathbf{J}^{-T}\hat{\nabla} \hat{\psi}_i)^T
-    (\mathbf{J}^{-T}\hat{\nabla} \hat{\psi}_j) J d \hat{\Omega} + 
+    \sum_i\left(  u_i\int_{\hat{\Omega}_k}(\mathbf{J}_k^{-T}\hat{\nabla} \hat{\psi}_i)^T
+    (\mathbf{J}_k^{-T}\hat{\nabla} \hat{\psi}_j) J d \hat{\Omega} + 
     u_i\lambda \int_{\hat{\Omega}_k} \hat{\psi}_i \hat{\psi}_j Jd \hat{\Omega} \right)
     &= \int_{\hat{\Omega}_k}\hat{f} \psi_j J d \hat{\Omega} \qquad \forall \psi_j \in V_h.  \\
-    \sum_i\left(  u_i\int_{\hat{\Omega}_k}\hat{\nabla}^T \hat{\psi}_i\mathbf{J}^{-1}
-    \mathbf{J}^{-T}\hat{\nabla} \hat{\psi}_j J d \hat{\Omega} + 
+    \sum_i\left(  u_i\int_{\hat{\Omega}_k}\hat{\nabla}^T \hat{\psi}_i\mathbf{J}_k^{-1}
+    \mathbf{J}_k^{-T}\hat{\nabla} \hat{\psi}_j J d \hat{\Omega} + 
     u_i\lambda \int_{\hat{\Omega}_k} \hat{\psi}_i \hat{\psi}_j Jd \hat{\Omega} \right)
     &= \int_{\hat{\Omega}_k}\hat{f} \psi_j J d \hat{\Omega} \qquad \forall \psi_j \in V_h.
     \end{split}
     \label{eq:HelmholtzrefSEM}
 \end{align}
 %
-Notice how the integrals depend on the Jacobian $\mathbf{J}$ and its determinant $J$.
+Notice how the integrals depend on the local Jacobian $\mathbf{J}_k$ and its determinant $J_k$.
 The local matrices $A_k,M_k$ and the loading vector $f_k$ are gathered from each element.
 Equivalently as for FEM the global matrices has to be assembled
 from all the local matrices corresponding to each sub-domain. This procedure is general and 
@@ -455,11 +459,11 @@ temporal discretizations. This will be further discussed in \cref{timeNS}.
 \subsection{Filtering} \label{filtering}
 Although SEM provides spectral convergence in space,
 a non-sufficient resolution of the smallest structures
-often leads to spurious nodes and an unstable scheme 
+often leads to spurious oscillations and an unstable scheme 
 as shown in chapter 2.4.1.2 in~\cite{Karniadakis}. In \cite{FischerMullen} a filter-based 
 stabilization is introduced for SEM applied on 
 the Navier-Stokes equations. The idea is to project a part $ 0 <\alpha < 1$ 
-of the of the solution onto a polynomial space of lower order, 
+of the solution onto a polynomial space of lower order, 
 explicitly they define the filter $F_{\alpha}$ as 
 %
 \begin{align}
@@ -493,7 +497,7 @@ For a full derivation and discussion on this matter it is referred to chapter 6.
 \cite{Karniadakis}.
 
 The filter in \eref{eq:filtereffect} is in this thesis applied such that the $k$ highest Legendre modes
-are dampened with coefficients $\alpha_i = (\frac{k+1-i}{k+1})^2\alpha_0 $. With $\alpha_0$ being the filter constant
+are dampened with coefficients $\alpha_i = (\frac{k+1-i}{k+1})^2\alpha_0 $, with $\alpha_0$ being the filter constant
 for the highest mode. The action of the filter can therefore be described as 
 a matrix equation in two steps, first adding the contribution from the higher polynomials to the 
 lower ones and then subtracting the contribution from the higher polynomials. Let $u$ be the 
@@ -599,7 +603,7 @@ Euler of \eref{eq:ivps2} can be written as
 \begin{align}
     \begin{split}
     (I-\Delta t A^*)u^{n+1} &= u^n  \implies u^{n+1}= (I-\Delta t A^*)^{-1}u^{n}, \\
-    (I+\Delta t P_{k})u^{n+1} &= u^n \implies u^n = (I+\Delta t P_{k})^{-1}u^{n}.
+    (I+\Delta t P_{k})u^{n+1} &= u^n \implies u^{n+1} = (I+\Delta t P_{k})^{-1}u^{n}.
     \label{eq:timestep}
     \end{split}
 \end{align}
@@ -649,7 +653,7 @@ solve an integral exactly when the integrand is of order $2N-3=2P-1$ or less.
 Hence the error surging from this evaluation can be of significant size.
 Applying a non-sufficient quadrature to an integral like this is called a ``variational
 crime''. Applying a quadrature rule of a not sufficiently high order results in an 
-aliasing effect of the lower modes, attempting to compensate for the higher order modes omitted. 
+amplifaction of the lower modes, attempting to compensate for the higher order modes omitted. 
 Since a spectral element method arguably has a good accuracy these variational crimes should 
 not be committed, and it is therefore common practice to solve this particular integral using a
 quadrature rule of order $3/2N$. The concept and illustrative examples are given in Chapter 2.4 in 
@@ -657,7 +661,7 @@ quadrature rule of order $3/2N$. The concept and illustrative examples are given
 sufficiently fine the non-linear term will not need to be solved using a higher order quadrature rule, 
 an example of this is presented in \cref{results}.
 This is one of the time vs.\ accuracy questions one have to decide for each problem. 
-instead of applying the GLL-quadrature "designed" for the basis-functions the functions
+Instead of applying the GLL-quadrature "designed" for the basis-functions the functions
 has to be evaluated in a new set of GLL-points with $3/2$ as many nodes. This is a costly 
 process and should only be applied when absolutely necessary. 
 
@@ -740,7 +744,7 @@ the deformation of the edges.
 %
 In 3D the additional knowledge of the faces may be applied to create mappings from elements with deformed faces as a 
 third step. The only difference when applying this algorithm in three dimensions is that you need to include $\phi$
-for a third coordinate $t_k$ and the number of vertices, and edges are 8 and 12 instead of 
+for a third coordinate $t_k$ and the number of vertices and edges are 8 and 12 instead of 
 4 and 4.
 
 
@@ -842,11 +846,11 @@ within the stability criteria for the scheme.
 \subsection{Operator integrating factor schemes (OIFS)}\label{OIFS}
 The operator-splitting method described in the previous chapter may lead to an unstable scheme, 
 and require small time-steps.
-OIFS is a similar method but it offers a more stable scheme and is more efficient by using a multi-step method that allows 
+OIFS is a similar method but it offers a more stable scheme and is more efficient by using a multi-stage method that allows 
 larger advances in time. The presentation of the method is presented here in a computational fashion,
 for a full description and derivation of the method it is referred to Maday et al~\cite{raey}.
 
-Throughout this section the NS-equation will be considered in its operational form as introduced in~\ref{eq:NSMatrixform}
+Throughout this section the NS-equation will be considered in its operational form as introduced in~\eref{eq:NSMatrixform}
 %
 \begin{align}
     M\frac{d \mathbf{v}}{dt} + C\mathbf{v} = -A\mathbf{v} +D^T p +M\mathbf{f}, \qquad D\mathbf{v} = 0
@@ -893,7 +897,7 @@ Notice how the integrational factor $Q(t)$ is never evaluated directly.
 The final scheme applied for solving \eref{eq:NSoperator} when applying OIFS consists of one implicit scheme for 
 solving \eref{eq:NSOIFS1} and an explicit scheme for solving \eref{eq:IVP}. When applied in this thesis the 
 first scheme corresponding to the $b_j$ coefficients is an implicit BDFk-scheme while the second is an explicit 4th order Runge-Kutta scheme (RK4). 
-Solving~\eref{eq:IVP} with a multi-step method implies a bit more work per time-step, but as it stabilizes the routine larger advances in 
+Solving~\eref{eq:IVP} with a multi-stage method implies a bit more work per time-step, but as it stabilizes the routine larger advances in 
 time can be made and the overall efficiency improves.
 
 %It is important to add that the error induced by this method is non-vanishing and is only recommended for assuring stability 
@@ -909,7 +913,7 @@ be considered in its operational form
     \label{eq:NSfracstep}
 \end{align}
 %
-Where $M, A,D,C$ Denotes the mass integral, Laplacian, gradient and non-linear operator. 
+Where $M,A,D,C$ denotes the mass integral, Laplacian, gradient and non-linear operator. 
 %The method describing one time-step can then be summarized as following
 %\begin{itemize}
     %\item solve $v^* = v^n + \Delta t Nv^n$.
@@ -962,7 +966,7 @@ terms with different solution techniques. Hence the term including the
 non-linear skew-symmetric advection matrix $C$ will be approximated by
 an $k$th order extrapolation (EXTk) scheme. The first step can also be evaluated in 
 an OIFS-way to gain stability. This implies using the discretization introduced in \eref{eq:NSOIFS1}
-with only the loading function on the right hand side, and solving the
+with only the forcing function on the right hand side, and solving the
 IVP \eref{eq:IVP} with RK4 to obtain $\mathbf{u}^{*}$. 
 
 The second equation is the Poisson pressure equation which
@@ -1015,7 +1019,7 @@ The outline of the method is based on \eref{eq:NSweak}, but with some changes. S
 is a method for the unsteady N-S equation the time derivative has to be included, and the 
 non-linear term which is treated explicitly as studied in \cref{opsplitting} and~\ref{OIFS}
 is added as a part of the right hand side function. So $M\mathbf{\tilde f}^{n+1}$ does in this equation 
-incorporate both the original loading function, the non-linear term and the explicit part of the 
+incorporate both the original forcing function, the non-linear term and the explicit part of the 
 time-derivative from the BDFk-scheme. 
 By doing this reformulation the unsteady Stokes problem is obtained and algorithms studied 
 for this problem can be applied.
@@ -1073,7 +1077,7 @@ The matrix decomposition is given as
 \approx
 \begin{pmatrix}
     H & 0 \\ 
-    -D & -DQD^{-1}
+    -D & -DQD^{T}
 \end{pmatrix}
 \begin{pmatrix}
     I & -QD^T \\ 
@@ -1087,7 +1091,7 @@ Applying these two matrices leads to a two step algorithm on the form
 \begin{align}
 \begin{pmatrix}
     H & 0 \\ 
-    -D & -DQD^{-1}
+    -D & -DQD^{T}
 \end{pmatrix}
 \begin{pmatrix}
     \mathbf{u}^{*}  \\ 
@@ -1120,9 +1124,8 @@ To clarify what is going on, a brief description of each step is given,
 The first step in \eref{eq:PCstep1} corresponds to an initial solution of the velocity using 
 the old pressure value, notice that this will not guarantee a divergence free velocity.
 The second step in \eref{eq:PCstep1} is referred to as the discrete pressure Poisson equation and will 
-make sure that the pressure corresponds to a divergence free flow. When solved in practice 
-the velocity used in this equation is the updated velocity from the first step. This way of 
-updating the pressure is the reason why this method is often referred to as a pressure 
+make sure that the pressure corresponds to a divergence free flow. 
+This way of updating the pressure is the reason why this method is often referred to as a pressure 
 correction method.
 The first step in \eref{eq:PCstep2} is just a projection of the velocity field
 onto a divergence free space. The final step is of no real value and will instead be replaced 

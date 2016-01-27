@@ -19,8 +19,8 @@ Many numerical solvers for turbulent flows are available on the market.
 From large commercial softwares such as Fluent which runs as a 
 black-box solver, to full open-source codes such as Nek5000 and openFOAM. 
 The solvers can vary in the numerical method; Finite volume, Finite Difference, 
-Finite Element , Spectral Element etc., The particular algorithm 
-for resolving the Pressure-Velocity coupling, for instance Fractional Step, Pressure correction, 
+Finite Element, Spectral Element etc., the particular algorithm 
+for resolving the pressure-velocity coupling, for instance fractional step, pressure correction, 
 inexact factorization and Uzawa.
 The type of simulation available also varies from solver to solver, whether
 they apply RANS, LES, DNS or a variety of these. Although most solvers offer multiple of the settings
@@ -30,7 +30,7 @@ as a brief introduction to the code.
 
 \section{Nek5000 basics}
 
-Nek5000 is a turbulent flow solver developed mainly by Paul Fischer
+Nek5000 is a flow solver developed mainly by Paul Fischer
 and has through the past 20 years had several contributors. 
 It is an open-source code applicable to many different types of flow 
 and it has been put a lot of effort into the parallelization of the code, 
@@ -80,7 +80,7 @@ the mesh routines are further elaborated an overview of the file-structure will 
 %
 To work with Nek5000 requires knowledge of some practicalities .
 Nek5000 is recompiled for every case and the user specify all the case specific 
-information in the three files \verb|{.rea,.usr,SIZE,}|. \verb|.usr| and \verb|SIZE| are 
+information in the three files \verb|{.rea,.usr,SIZE}|. \verb|.usr| and \verb|SIZE| are 
 compiled with the standard Nek5000 library using makenek which creates the executable file \verb|nek5000|,
 they can be considered the surface and the core of the entire program. 
 The \verb|.rea| file contains case-specific information read during the initialization of the 
@@ -170,7 +170,7 @@ The \verb|.usr| file can be considered as the surface of Nek5000, easily accessi
 
 \section{The basics of the solver}
 The most important building blocks in Nek5000 are the \verb|fluid| and \verb|heat| functions that solves the 
-N-S and Passive scalar equations. The N-S solver works distinctly depending on the mathematical formulation
+N-S and passive scalar equations. The N-S solver works distinctly depending on the mathematical formulation
 enabled whereas the PS equation, which does not depend on the pressure, is solved similarly for $P_NP_N$ and $P_NP_{N-2}$. 
 For the sake of clarity, \fref{fig:files} shows how the algorithms are called from the main routine.
 This is a simplified flow chart that does not include choices such as filters, preconditioners, LES-model, 
