@@ -268,9 +268,13 @@ introduces an erroneous boundary condition weakly.
 
 
 \section{Nek5000 for complex geometries}
-For curved geometries such as bent cylinders, spheres, ellipsoids etc.
-the user has to be able to express these surfaces analytically and write a routine
-in \verb|usrdat2| that projects the points of interest onto the surface.
+Nek5000 has its own mesh generator \textit{prenek} that allows the user to define geometries 
+and curves using analytical expressions. This tool does however have limited visual support, and
+can not compare with for instance ICEM when working with more complex geometries. 
+
+When \textit{prenek } is not applied curved geometries such as bent cylinders, ellipsoids etc.
+has to be expressed analytically and a routine
+in \verb|usrdat2| has to be implemented to project the points of interest onto the surface.
 Even for a simple shape such as a sphere some implementation has to be done and it 
 demands that the user has knowledge to Fortran77 and the structure of Nek5000.
 
@@ -298,3 +302,10 @@ convenient method when working with cylinder geometries and other similar shapes
 is an attempt to include general boundary surfaces by creating a semi-automatic procedure allowing 
 the user to represent any geometry with polynomials of the same order as applied for the basis functions.
 The algorithms are presented in \cref{implementation}. 
+
+Propagation of curved geometry was also experimented with. 
+The effect observed on the grid was very small, and a similar test was 
+done in two dimensions on an annulus by Korczak and Patera~\cite{Patera1986}. 
+Their results suggests that the accuracy is not affected in any significant way 
+by doing a similar propagation. Based on these results and my own observation 
+it was decided to rather focus on the two routines mentioned above. 

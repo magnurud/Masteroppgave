@@ -21,7 +21,7 @@ The routines implemented are meant to develop Nek5000 functionalities
 in the encounter with complex geometries. 
 
 As shown in \fref{fig:mesh} the coarse element grid is created
-in ICEM and then converted using the python script \verb|mshconvert| while the
+in ICEM and then converted using the existing python script \verb|mshconvert| while the
 distribution of GLL-nodes and the simulation itself was performed in Nek5000.
 \verb|.rea| contains exact information about the corners,
 limited information about the edges, and no information about the faces of the elements.
@@ -250,12 +250,12 @@ by higher order polynomials.
 \centering
   \centerline{
 \begin{minipage}{.5\textwidth}
-  \includegraphics[width=1.0\linewidth]{Figures/heli_coarse.jpg}
+  \includegraphics[width=1.0\linewidth]{Figures/helicopter.jpg}
   %\captionof{figure}{A figure}
 \end{minipage}%
 \begin{minipage}{.5\textwidth}
   \centering
-  \includegraphics[width=1.0\linewidth]{Figures/ekeberg_coarse.jpg}
+  \includegraphics[width=1.0\linewidth]{Figures/mesh_ekeberg.jpg}
 \end{minipage}
 }
   \caption{Two examples of smooth surfaces with no analytical expression. 

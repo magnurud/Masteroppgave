@@ -184,7 +184,7 @@ To sum up the discussion above a general error estimate from~\cite{Quarteroni} i
 %	SUBSECTION 1
 %-----------------------------------
 
-\section{Spectral methods}
+\section{Spectral methods} \label{sm}
 Spectral methods (SM) share a some of the mathematical ideas as FEM, but are not as widely used in real life problems. 
 There are many ways to apply SM, 
 and in this thesis only the Galerkin version with numerical integration (sometimes referred to as G-NI) will be considered and will be referred to only as SM. 
@@ -759,7 +759,7 @@ a large number of splitting methods have been developed, all attempting to find 
 and accuracy. The most common set of solution methods are called projection methods, which first calculates 
 a velocity field that does not fulfill the divergence free condition and then projecting this field onto a 
 divergence free space. For an extensive discussion regarding projection methods it is referred to~\cite{Guermond2006}.
-The projection is done by solving a Poisson equation for the pressure (PPE). 
+The projection is done by solving a Poisson equation for the pressure. 
 
 \subsection{Operator-splitting techniques } \label{opsplitting}
 In this chapter $a_j,b_j$ will denote the coefficients for some explicit and implicit scheme.
@@ -903,17 +903,38 @@ time can be made and the overall efficiency improves.
 %It is important to add that the error induced by this method is non-vanishing and is only recommended for assuring stability 
 %for very instable problem. 
 
-\subsection{Fractional step - ($P_NP_N$)} 
-\label{fracstep}
+%%%%%%%%%%%%%%%
+% NEW CHAPTER %
+%%%%%%%%%%%%%%%
 
-Fractional step is an algorithm that can be divided into four separate steps. The N-S equations will still 
-be considered in its operational form 
+\subsection{Fractional step - ($P_NP_N$)} \label{fracstep}
+The formulation applied in this method is justified by Guermond in~\cite{GuermondPnPn} and is 
+based on the following formulation of the Stokes problem 
+%
 \begin{align}
-    M\frac{d \mathbf{u}}{dt} + C\mathbf{u} = -A\mathbf{u} +D^T p +M\mathbf{f}.
+    \begin{split}
+        - \mu \Delta \mathbf{u} + \nabla p &= \mathbf{f} \text{  in  } \Omega,
+        \qquad \mathbf{u} = \mathbf{0} \text{  on  } \partial \Omega,\\
+        \Delta p &= \nabla \cdot \mathbf{f}\text{  in  } \Omega,\qquad \partial_n p
+        = (-\nabla \times \nabla \times \mathbf{u} + \mathbf{f} ) \cdot \mathbf{n} \text{  on  } \partial \Omega. \\
+    \end{split}
+    \label{eq:nonstandardstokes}
+\end{align}
+%
+This formulation is obtained by taking the divergence of the momentum equation and applying the 
+divergence-free condition to obtain the second equation in~\eref{eq:nonstandardstokes}.
+The vector identity 
+$ -\Delta \mathbf{u}=-\nabla\nabla\cdot\mathbf{u}+\nabla\times\nabla\times\cdot\mathbf{u}$ 
+combined with the divergence-free condition yields the boundary condition for the pressure.
+
+Fractional step exploits this algebraic splitting and the algorithm can be divided into
+four separate steps. The momentum equation will still be considered in its operational form 
+\begin{align}
+    M\frac{d \mathbf{u}}{dt} + C(\mathbf{u})\mathbf{u} = -A\mathbf{u} +D^T p +M\mathbf{f}.
     \label{eq:NSfracstep}
 \end{align}
 %
-Where $M,A,D,C$ denotes the mass integral, Laplacian, gradient and non-linear operator. 
+Where $M,A,D,C(\mathbf{u})$ denotes the mass integral, Laplacian, gradient and non-linear operator. 
 %The method describing one time-step can then be summarized as following
 %\begin{itemize}
     %\item solve $v^* = v^n + \Delta t Nv^n$.
@@ -952,15 +973,15 @@ from $(\mathbf{u}^n,p^n)$ to $(\mathbf{u}^{n+1},p^{n+1})$.
 \begin{align}
     \begin{split}
         \mathbf{u}^{*} &= -\sum_{j=1}^kb_{j}\mathbf{u}^{n+1-j}
-        +\Delta t M^{-1} (C\mathbf{u}^{n+1}+M\mathbf{f}^{n+1}),\\
-        \Delta p^{n+1} &= \nabla \cdot \left(  \frac{\mathbf{u}^{*}}{\Delta t}\right),\\
+        +\Delta t M^{-1} (\sum_{j=1}^ka_{j}C(\mathbf{u}^{n+1-j})\mathbf{u}^{n+1-j}
+        +M\mathbf{f}^{n+1}),\\
+        DM^{-1}D^T p^{n+1} &= \frac{1}{\Delta t}D \mathbf{u}^{*} ,\\
         \mathbf{u}^{**} &= \mathbf{u}^{*} + \Delta t M^{-1}D^T p^{n+1},\\
-        b_0\mathbf{u}^{n+1} &= \mathbf{u}^{**} -\Delta t M^{-1} A\mathbf{u}^{n+1}.
+        (b_0M+\Delta t A)\mathbf{u}^{n+1} &= M\mathbf{u}^{**}.
     \end{split}
     \label{eq:fracstep}
 \end{align}
-
-\colorbox{green}{Should the pressure poisson eq. be separate? don't like the mix of discrete and continuous operators.} 
+%
 As earlier mentioned this method is convenient because it allows us to handle the different 
 terms with different solution techniques. Hence the term including the
 non-linear skew-symmetric advection matrix $C$ will be approximated by
@@ -969,7 +990,7 @@ an OIFS-way to gain stability. This implies using the discretization introduced 
 with only the forcing function on the right hand side, and solving the
 IVP \eref{eq:IVP} with RK4 to obtain $\mathbf{u}^{*}$. 
 
-The second equation is the Poisson pressure equation which
+The second equation is the Poisson equation for the pressure which
 assures a divergence free velocity field, and it is this step along with step three that 
 allows this to be classified as a projection method.
 
@@ -979,24 +1000,13 @@ treatment of the boundary conditions. Ideally the BC's should be determined by t
 field $\mathbf{u}^{n+1}$, but since this solution is yet to be calculated the intermediate velocity field 
 $\mathbf{u}^{*}$ is used to impose the boundary conditions. With $p^{n+1}$ known the third equation is 
 simply an update of the velocity to impose the divergence free condition. Now the last
-equation is solved implicitly due to its nice symmetric structure. This results in a system 
-equivalent to the Helmholtz problem which will be discussed in detail in \cref{numerics}.
-This can be easily shown by discretizing the equation, 
-\begin{align}
-    \begin{split}
-    (\mathbf{u}^{n+1}-\mathbf{u}^{n})/\Delta t  &= -A\mathbf{u}^{n+1},\\
-    A\mathbf{u}^{n+1}+\frac{1}{\Delta t} \mathbf{u}^{n+1} &= \mathbf{u}^{n}.
-    \end{split}
-    \label{eq:fracHelm}
-\end{align}
-Knowing that $A$ is the discrete Laplacian and $\mathbf{u}^n$ is a known variable this is 
-similar to problem \eref{eq:Helmholtz}.
+equation is solved implicitly due to the nice symmetric structure of the Laplacian operator.
+This results in a system equivalent to the Helmholtz problem as discussed in 
+\cref{sm} and~\ref{sem}.
 
-
-This method provides an efficient algorithm, but is known to produce errors of order
-$\mathcal{O}(1)$.
-The problem is the pressure Poisson equation which is solved with incorrect boundary 
-conditions.
+This method provides an efficient algorithm, and by doing an incremental version 
+it yields a scheme with errors in the $L_2$-norm of orders $\mathcal{O}(\Delta t)$ for
+pressure and $\mathcal{O}(\Delta t ^2)$ for velocity as stated in~\cite{Guermond2006}.
 %\subsection{Pressure-correction}
 
 \subsection{Discrete splitting - ($P_NP_{N-2}$)} \label{prescorr}
@@ -1123,7 +1133,7 @@ Applying these two matrices leads to a two step algorithm on the form
 To clarify what is going on, a brief description of each step is given,
 The first step in \eref{eq:PCstep1} corresponds to an initial solution of the velocity using 
 the old pressure value, notice that this will not guarantee a divergence free velocity.
-The second step in \eref{eq:PCstep1} is referred to as the discrete pressure Poisson equation and will 
+The second step in \eref{eq:PCstep1} is the discrete Poisson equation for the pressure and will 
 make sure that the pressure corresponds to a divergence free flow. 
 This way of updating the pressure is the reason why this method is often referred to as a pressure 
 correction method.
@@ -1147,5 +1157,6 @@ in~\cref{results}.
 The treatment of the pressure do however yield an algorithm that works well for steady flows.
 Notice that the error surging from the splitting in \eref{eq:LUfactorization}
 is proportional to $\delta p^n$ instead of $p^n$ as it would be for a straight forward derivation. 
-The method yields a second order scheme as proved by~\cite{vanKan},
-provided that the time discretization is of the same or higher order.
+The method yields a scheme with errors in the $L_2$-norm of orders $\mathcal{O}(\Delta t)$ for pressure 
+and $\mathcal{O}(\Delta t ^2)$ for velocity as proved in~\cite{Guermond2006},
+for a second order BDF scheme.
