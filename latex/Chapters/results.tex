@@ -244,7 +244,8 @@ close to the wall, and could play an important role in this part of the domain.
 
 The simulations were also performed using the $P_NP_{N-2}$ formulation with filtering, and the 
 results were similar to those observed above. The SGS-model did however not function at all, 
-and resulted in a system crash in one of the earliest time-steps.
+and resulted in a system crash in one of the earliest time-steps. It was beyond the scope of 
+this work to correct this presumable bug in the Nek5000 implementation.
 
 As for the performance of Nek5000 the results are baffling. With the same number of processors,
 same accuracy criteria, and approximately the same number of nodes in the grid, Nek5000 simulated
@@ -378,7 +379,7 @@ essential, both coefficients are computed with significantly better accuracy.
 		\toprule
 		\# of Cells & Software & $c_D$ & $c_L$ & \%\textbf{Err} $c_D$ &\%\textbf{Err} $c_L$ \\ \midrule 
 		2124030& Nek5000 (mid) & 6.18349 & 0.008939 & 0.030 & 4.19 \\ 
-		2124030& Nek5000 (arc) & 6.18498 & 0.009413 & 0.006 & 0.13 \\
+		2124030& Nek5000 (arc) & 6.18498 & 0.009413 & 0.005 & 0.10 \\
 		3145728 & CFX 		 & 6.18287 & 0.009387 & 0.04 &0.15 \\
 		3145728 & OpenFOAM	 & 6.18931 & 0.00973 & 0.06 &3.5 \\
 		3145728 & FEATFLOW   & 6.18465 & 0.009397 & 0.01 &0.05 \\
@@ -422,16 +423,22 @@ which confirms the analytical results from \eref{eq:filterenergy}.
 %
 \begin{table}[h]
     \centering
-    \begin{tabular}{c | c c c c c | c c }
-         & \multicolumn{5}{|c|}{Settings} & \multicolumn{2}{|c}{\% Error} \\\hline
-         \# & $\Delta t$ & ifsplit & Dealiasing & IOFS & Filter & $c_D$ & $c_L$ \\  \hline 
-         1 & 6e-4& No & Yes& No & No & 0.005 & 0.10\\
-         2 & 6e-4& No & Yes& No & Yes& 0.006 & 0.31\\
-         3 & 6e-4& No & Yes& Yes& No & 0.005 & 0.11\\
-         4 & 6e-4& No & No & No & No & 0.005 & 0.03\\
-         5 & 6e-4& Yes& Yes& No & No & 0.012 & 2.35\\
+    \begin{tabular}{c | c c c c c c | c c }
+         & \multicolumn{6}{|c|}{Settings} & \multicolumn{2}{|c}{\% Error} \\\hline
+         \# & N & $\Delta t$ & ifsplit & Dealiasing & IOFS & Filter & $c_D$ & $c_L$ \\  \hline 
+         1 &11& 6e-4& No & Yes& No & No & 0.005 & 0.10\\
+         2 &11& 6e-4& No & Yes& No & Yes& 0.006 & 0.31\\
+         3 &11& 6e-4& No & Yes& Yes& No & 0.005 & 0.11\\
+         4 &11& 6e-4& No & No & No & No & 0.005 & 0.03\\
+         5 &11& 6e-4& Yes& Yes& No & No & 0.012 & 2.35\\
          %6 & 4.5e-4& Yes& Yes& No & No & 0.015 & 0.01\\
          %7 & 3e-4& Yes& Yes& No & No & 0.018 & 0.01\\
+
+%   Alias   0.013  -2.50363621e+01
+%   Char    0.000  -1.22425816e+01
+%   default 0.001.61349516e-03  -1.22431699e+01
+%   filter  8.43539472e-01  -1.26292235e+01
+%   P_NP_N  9.33531436e-02  -6.23979364e+00
 
 
 %   Alias   1.32183732e-02  -2.50363621e+01
@@ -464,7 +471,7 @@ The results do however give an indication to the general effect of these setting
 are worth noticing.
 
 %----------------------------------------------------------------------------------------
-\chapter{Concluding remarks}
+\chapter{Concluding remarks} \label{discussion}
 Nek5000 has proven to give accurate results with a relatively coarse mesh as
 presented in~\cref{results}. This is as expected since it is based on a higher order 
 method known to yield great accuracy. As for the performance it is no doubt that the 

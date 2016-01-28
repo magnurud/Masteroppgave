@@ -17,7 +17,7 @@
 %\colorbox{green}{korte ned tekstene!}
 Many numerical solvers for turbulent flows are available on the market.
 From large commercial softwares such as Fluent which runs as a 
-black-box solver, to full open-source codes such as Nek5000 and openFOAM. 
+black-box solver, to full open-source codes such as Nek5000 and OpenFOAM. 
 The solvers can vary in the numerical method; Finite volume, Finite Difference, 
 Finite Element, Spectral Element etc., the particular algorithm 
 for resolving the pressure-velocity coupling, for instance fractional step, pressure correction, 
@@ -272,12 +272,10 @@ Nek5000 has its own mesh generator \textit{prenek} that allows the user to defin
 and curves using analytical expressions. This tool does however have limited visual support, and
 can not compare with for instance ICEM when working with more complex geometries. 
 
-When \textit{prenek } is not applied curved geometries such as bent cylinders, ellipsoids etc.
-has to be expressed analytically and a routine
-in \verb|usrdat2| has to be implemented to project the points of interest onto the surface.
-Even for a simple shape such as a sphere some implementation has to be done and it 
-demands that the user has knowledge to Fortran77 and the structure of Nek5000.
-
+For curved geometries that can be expressed analytically such as bent cylinders, ellipsoids etc. 
+the recommended procedure is to project the points of interest onto the surface
+in \verb|usrdat2|. Even for a simple shape such as a sphere some implementation
+has to be done and it demands that the user has knowledge to Fortran77 and the structure of Nek5000.
 The necessary implementation consists of two steps 
 %
 \begin{enumerate}
@@ -296,16 +294,19 @@ solver it is necessary to address this problem since spectral convergence
 for the approximated solution in $P_N$ is not achievable 
 if the geometry is only represented in $P_{1}$ or $P_{2}$.
 
-Two advancements have been made in this thesis regarding the work with irregular geometries in Nek5000.
-The first part is a fully automatic procedure which projects any edge onto a circle. This is a
-convenient method when working with cylinder geometries and other similar shapes. The second part
-is an attempt to include general boundary surfaces by creating a semi-automatic procedure allowing 
-the user to represent any geometry with polynomials of the same order as applied for the basis functions.
-The algorithms are presented in \cref{implementation}. 
+\subsection{converting mesh from ICEM to Nek5000}
 
-Propagation of curved geometry was also experimented with. 
-The effect observed on the grid was very small, and a similar test was 
-done in two dimensions on an annulus by Korczak and Patera~\cite{Patera1986}. 
-Their results suggests that the accuracy is not affected in any significant way 
-by doing a similar propagation. Based on these results and my own observation 
-it was decided to rather focus on the two routines mentioned above. 
+For more advanced geometry it is considered a necessity to have some visual mesh generator.
+In this thesis all of the meshes have been made in ICEM and then converted using the python 
+script \verb|mshconvert| as illustrated in~\fref{fig:mesh}. Since a lot 
+of the work done regarding the mesh was done based on this script a brief description will be 
+given in this subsection.
+
+ICEM is able to write mesh files for many different solvers, including Fluent and Nastran. 
+The original \verb|mshconvert| script can take any of these two formats as input and write a 
+corresponding \verb|.rea| file with a predefined parameter list. It supports curved 
+edges by applying the midpoint notation, and all velocity boundary conditions available in Nek5000.
+It also has a propagation parameter for a cylinder, this allows element edges inside
+the domain to be affected by the curvature of the geometry. The idea is that a smooth 
+transition of the element deformation, will improve the Jacobians and lead to better accuracy.  
+

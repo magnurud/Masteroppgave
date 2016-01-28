@@ -562,14 +562,14 @@ $P_{k}$ is the diagonal matrix with ones on the $k$ last entries and $0$ on the 
 Let us consider the two initial value problems 
 \begin{align}
     \begin{split}
-    \frac{\partial v }{\partial t} &= \Delta v, \qquad v(0) = v_0, \\
-    \frac{\partial u }{\partial t} &= -u, \qquad u(0) = u_0.
+    \frac{\partial v }{\partial t} &=  \lambda_1\Delta v, \qquad v(0) = v_0, \\
+    \frac{\partial u }{\partial t} &= -\lambda_2u, \qquad u(0) = u_0,
     \end{split}
     \label{eq:ivps}
 \end{align}
-
+with $\lambda_1,\lambda_2 > 0$.
 The second IVP in \eref{eq:ivps} has a known analytical solution 
-$u = u_0e^{-t}$ which decays exponentially in time. The first IVP is known 
+$u = u_0e^{-\lambda_2 t}$ which decays exponentially in time. The first IVP is known 
 as the heat equation and is known to diffuse the initial condition with time. 
 Now let the operators $-1$ and $\Delta$ on the right hand sides of \eref{eq:ivps}
 be applied only on the $k$ highest Legendre polynomials. By applying the Legendre decomposition
@@ -578,9 +578,9 @@ and the truncated operators the system can then be written as
 \begin{align}
     \begin{split}
     \frac{\partial \bar v }{\partial t}
-    &= \Delta P_{k}\bar v^T , \qquad v(0) = v_0, \\
+    &= \lambda_1 \Delta P_{k}\bar v^T , \qquad v(0) = v_0, \\
         \frac{\partial \bar u }{\partial t} 
-        &=   -P_{k}\bar u^T , \qquad u(0) = u_0.
+        &=   -\lambda_2P_{k}\bar u^T , \qquad u(0) = u_0.
     \label{eq:ivps2}
     \end{split}
 \end{align}
@@ -602,15 +602,16 @@ Euler of \eref{eq:ivps2} can be written as
 %
 \begin{align}
     \begin{split}
-    (I-\Delta t A^*)u^{n+1} &= u^n  \implies u^{n+1}= (I-\Delta t A^*)^{-1}u^{n}, \\
-    (I+\Delta t P_{k})u^{n+1} &= u^n \implies u^{n+1} = (I+\Delta t P_{k})^{-1}u^{n}.
+    (I-\lambda_1\Delta t A^*)u^{n+1} &= u^n  \implies u^{n+1}= (I-  \lambda_1\Delta t A^*)^{-1}u^{n}, \\
+    (I+\lambda_2\Delta t P_{k})u^{n+1} &= u^n \implies u^{n+1} = (I+\lambda_2\Delta t P_{k})^{-1}u^{n}.
     \label{eq:timestep}
     \end{split}
 \end{align}
 %
 
 Notice the resemblance to the application of the filter in \eref{eq:filterstepwise}. The second step
-is identical if $\alpha_i = \Delta t/(1+\Delta t)$. The truncated Laplacian $A^*$ is not equal to the corresponding
+is identical if $\alpha_i = \lambda_2\Delta t/(1+\lambda_2\Delta t)\approx \lambda_2\Delta t$. 
+The truncated Laplacian $A^*$ is not equal to the corresponding
 filter matrix $\mathcal{F}_{\alpha,k}$, but there are some similarities between these to matrices.
 They are both upper triangular with zeros along the diagonal and positive entries on the second 
 sup-diagonal. The main difference is that the Laplacian applied on the $N$th Legendre function 

@@ -26,6 +26,21 @@ distribution of GLL-nodes and the simulation itself was performed in Nek5000.
 \verb|.rea| contains exact information about the corners,
 limited information about the edges, and no information about the faces of the elements.
 Hence the distribution of the GLL-nodes on a non-regular surface requires data exceeding the one in \verb|.rea|.
+
+Two advancements have been made in this thesis regarding the work with irregular geometries in Nek5000.
+The first part is a fully automatic procedure which projects any edge onto a circle. This is a
+convenient method when working with cylinder geometries and other similar shapes. The second part
+is an attempt to include general boundary surfaces by creating a semi-automatic procedure allowing 
+the user to represent any geometry with polynomials of the same order as applied for the basis functions.
+The algorithms are presented in \cref{implementation}. 
+
+Propagation of curved geometry was also experimented with. 
+The effect observed on the grid was very small, and a similar test was 
+done in two dimensions on an annulus by Korczak and Patera~\cite{Patera1986}. 
+Their results suggests that the accuracy is not affected in any significant way 
+by doing a similar propagation. Based on these results and my own observation 
+it was decided to rather focus on the two routines mentioned above.
+
 %For complex geometries and one part of this thesis has been to develop solutions that makes it 
 %easier to work with complex geometries in Nek5000.
 
@@ -131,6 +146,32 @@ Let $\mathbf{x}_e$ be the point at the center of face $f_e$
 with radius $r_e$, the subset is then formulated as  
 $S_e = \left\{ \mathbf{x} \in S , ||\mathbf{x}_e-\mathbf{x}|| < b \cdot r_e \right\}$.
 
+Let $\left\{ \mathbf{x} \right\}_m$ be the $m$ closest in the sense of the norm defined by~\eref{eq:distancenorm},
+and let $\mathbf{x}_0$ be the original point before the projection is performed. The surface normal in point
+$\mathbf{x}_0$ is denoted $\mathbf{n}_0$. The new point $\mathbf{x}^*$ is chosen such that it minimizes the distance 
+to the points $\left\{ \mathbf{x} \right\}_m$ along the line $\mathbf{x}_0+k\mathbf{n}_0$. Mathematically this can be stated as, 
+\begin{align}
+    \begin{split}
+    &\min_{k\in \mathbb{R}} E(k), \\
+    E(k) &= \sum_{i=1}^{m}w_i|\mathbf{x}_0+k\mathbf{n}_0-\mathbf{x}_i|^2, \\ 
+    w_i &= |\mathbf{x}_0-\mathbf{x}_i|^{-1}. \\
+    \end{split}
+    \label{eq:minprob}
+\end{align}
+The choice of the weighting function is based on the intuitive idea that the points that initially 
+were closest to $\mathbf{x}_0$ should have bigger influence when minimizing along the normal.
+The minimization problem is a second degree equation with respect to $k$ and can therefore be solved exactly. 
+To do this let us define the vectors $\mathbf{\tilde x}_i=\mathbf{x}_i-\mathbf{x}_0$ and then find the $k_0$ such that $E'(k_0) = 0$,
+%
+\begin{align}
+    E'(k) &= 2 \sum_{i=1}^m w_i \mathbf{n}_0 \cdot (k \mathbf{n}_0 - \mathbf{\tilde x}_i),\\
+    E'(k_0) &= 0 \implies k_0 = \frac{1}{\sum_{i=1}^m w_i}\sum_{i=1}^m w_i \mathbf{n}_0 \cdot \mathbf{\tilde x}_i,\\
+    \mathbf{x}^{*} &= \mathbf{x}_0 + k_0 \mathbf{n}_0.
+    \label{eq:minimizing}
+\end{align}
+%
+An important argument for projecting the points in this manner is that for a plane element face two 
+neighbouring GLL-nodes can never end up on the same point. 
 
 In addition to the standard Nek5000 library the file \verb|surfpro.f| needs to be added to 
 the folder \verb|trunk/nek/| along with all the other scripts applied by Nek5000.
@@ -226,6 +267,11 @@ surfmesh\_myFlow. The following commands are then executed
 \endgroup
 After running the commands above the only thing left is to 
 add \verb|call surfpro(n,a,b)| to \verb|usrdat2|.
+
+This is an initial framework for surface projection that seems to work well for the geometries tested in this thesis.
+The code is also structured such that it is easy to manipulate and several ideas for 
+further work on this algorithm will be discussed in~\cref{discussion}.
+
 % 
 % 
 %\begin{lstlisting}[style=FormattedNumber, frame=none]
@@ -244,7 +290,7 @@ the details in the geometry and the GLL-nodes distributed on the faces correspon
 unstructured surface will be misplaced. 
 %It is however no theoretical problem to reconstruct the surface with with a polynomial of order $P$. 
 With the routine described in \cref{surfpro} the surface is approximated accurately 
-by higher order polynomials.
+by higher order polynomials. 
 %
 \begin{figure}[h]
 \centering
