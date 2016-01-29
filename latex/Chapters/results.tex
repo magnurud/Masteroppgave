@@ -493,7 +493,17 @@ which confirms the analytical results from \eref{eq:filterenergy}.
     \label{tab:perf}
 \end{table}
 %
-
+%
+\begin{figure}[h]
+	\centerline{
+        \includegraphics[trim=0.5cm 4cm 0.5cm 7cm, width=0.8\textwidth]{Figures/scalresults.pdf}}
+	\caption{The logarithm of the error plotted against the polynomial degree. All results 
+        are with $P_NP_{N-2}$ and dealiasing, and they are solved without using the 
+    characteristic scheme or any filtering. A line illustrating a second order convergence is 
+    plotted to illustrate the convergence rate.}
+	\label{fig:liftconv}
+\end{figure}
+%
 Be aware that these results are obtained from a laminar test case and does not in any way 
 suggest any optimal adjustment for Nek5000. An important example of this is the fact that 
 deactivating de-aliasing yields better results. For a coarser mesh or a more turbulent flow 
