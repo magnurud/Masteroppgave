@@ -127,9 +127,11 @@ This case is a part of a larger project designed to evaluate different solvers
 ability to perform simulations of gas dispersion. The N-S equations are solved using
 the $P_NP_N$ formulation with the fractional step method, IOFS with a target Courant number 
 equal 2 was enabled to maximize the time step as recommended in~\cite{Nek}. It should be 
-mentioned that the stability properties when activating the SGS-model and deactivating the 
-filtering was greatly reduced. This effect is captured in~\fref{fig:maxvel} that shows how 
-the Smagorinsky model does not damp spurious velocity modes in the same degree as the filter. 
+mentioned that when activating the SGS-model and deactivating the 
+filter the simulation is more probable to blow up. This effect is captured in~\fref{fig:maxvel}
+that shows how the Smagorinsky model does not damp spurious velocity modes in the 
+same degree as the filter. 
+
 %
 \begin{figure}[h]
 	\centering
@@ -245,13 +247,43 @@ close to the wall, and could play an important role in this part of the domain.
 The simulations were also performed using the $P_NP_{N-2}$ formulation with filtering, and the 
 results were similar to those observed above. The SGS-model did however not function at all, 
 and resulted in a system crash in one of the earliest time-steps. It was beyond the scope of 
-this work to correct this presumable bug in the Nek5000 implementation.
+this work to correct this presumable bug in the Nek5000 implementation. 
+
+It was also experimented with different meshes. An attempt was made to improve the 
+results at the measurement lines in between the cubes by increasing the resolution in
+this particular area, this was done by using the refinement functionality in ICEM.
+The rest of the mesh was made coarser to keep the amount of elements at approximately the 
+same level. The amount of nodes used to describe one cube as presented in~\tref{tab:meshdiff} 
+were for this simulation $(n_x,n_y,n_z) = (21,21,63)$.
+The simulation was performed using $P_NP_N$ with filtering, but the results were 
+similar to the ones previously obtained. It could seem like a refinement of the 
+mesh in the $x$ and $y$ direction could be necessary to achieve better results. 
 
 As for the performance of Nek5000 the results are baffling. With the same number of processors,
 same accuracy criteria, and approximately the same number of nodes in the grid, Nek5000 simulated
 one second of flow more than five times as fast as a numerical code comparable to CDP! 
 This was done without any particular tuning and with a time-step about $2/3$ of the one used in 
 CDP. 
+
+To check how Nek5000 scales for the number of processors 1 second of flow was 
+simulated using the $P_NP_{N-2}$ formulation on the grid with 14747 elements,
+$N=7$, $DT = 0.001$ and both 
+IOFS and filtering was activated. The efficiency $\eta_p = 10 N_{10}/(PN_p)$
+is presented in~\tref{tab:perfgas}
+%
+\begin{table}[h]
+    \centering
+    \begin{tabular}{c l }
+     $N_p$ & $\%\eta_p  $  \\ \hline
+    $10$ &$100$\\
+    $20$ &$79$ \\
+    $40$ &$76$ \\
+    $60$ &$72$ \\
+    $80$ &$63$ \\ 
+    \end{tabular}
+    \caption{Constants for case 2}
+    \label{tab:perfgas}
+\end{table}
 
 
 %\begin{figure}[h]
@@ -470,6 +502,23 @@ the accuracy, which are close to the accuracy given by the reference solution.
 The results do however give an indication to the general effect of these settings that 
 are worth noticing.
 
+%
+\begin{figure}[h]
+\centering
+  \centerline{
+\begin{minipage}{.6\textwidth}
+  \includegraphics[trim=0.5cm 3cm 0.5cm 7cm,width=1.0\linewidth]{Figures/tpers.pdf}
+  %\captionof{figure}{A figure}
+\end{minipage}%
+\begin{minipage}{.6\textwidth}
+  \centering
+  \includegraphics[trim=0.5cm 3cm 0.5cm 7cm,width=1.0\linewidth]{Figures/tperstep.pdf}
+\end{minipage}
+}
+  \caption{Computational time in Nek5000 as a function of $P$. }
+  \label{fig:surfpro}
+\end{figure}
+%
 %----------------------------------------------------------------------------------------
 \chapter{Concluding remarks} \label{discussion}
 Nek5000 has proven to give accurate results with a relatively coarse mesh as

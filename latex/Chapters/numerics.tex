@@ -820,12 +820,12 @@ In this thesis the schemes BDFk and a $k$th order extrapolation (EXTk) for $k=2,
 It should be mentioned that the explicit/implicit schemes introduced in this section are 
 stable only for operators with eigenvalues below a certain limit $\gamma$ that depends 
 on the scheme. When applied on the N-S 
-equations it is the convection term $\Delta t M^{-1}C\mathbf{u}^{n+1}$
+equations it is the convection term $\Delta t M^{-1}C(\mathbf{u})\mathbf{u}$
 as observed in~\eref{eq:fracstep} that is evaluated by
 an explicit scheme. Let $\lambda_{max}$ be the maximum eigenvalue of
-$M^{-1}C$, which is known to scale as 
-$\mathcal{O}(N^{2})=\mathcal{O}(\Delta x_{\min}^{-1})$. The following inequality 
-has to be satisfied for the scheme to be stable, 
+$M^{-1}C(\mathbf{u})$, which is known to scale as 
+$\mathcal{O}(N^{2})=\mathcal{O}(\Delta x_{\min}^{-1})$, and be proportional to $\mathbf{u}$.
+The following inequality has to be satisfied for the scheme to be stable, 
 %
 \begin{align}
     \Delta t \lambda_{\max} = c\frac{\Delta t}{\Delta x} \le \gamma.
@@ -854,7 +854,7 @@ for a full description and derivation of the method it is referred to Maday et a
 Throughout this section the NS-equation will be considered in its operational form as introduced in~\eref{eq:NSMatrixform}
 %
 \begin{align}
-    M\frac{d \mathbf{v}}{dt} + C\mathbf{v} = -A\mathbf{v} +D^T p +M\mathbf{f}, \qquad D\mathbf{v} = 0
+    M\frac{d \mathbf{v}}{dt} + C(\mathbf{v})\mathbf{v} = -A\mathbf{v} +D^T p +M\mathbf{f}, \qquad D\mathbf{v} = 0
     \label{eq:NSoperator}
 \end{align}
 %
@@ -862,7 +862,7 @@ Now let $Q(t)$ be an operator such that $Q(t^{n+1}) = I$ and
 %
 \begin{align}
     \frac{dQ(t)M\mathbf{v}}{dt} &=  Q(t)M\frac{d\mathbf{v}}{dt} + \frac{d}{dt}\left[  Q(t)M\right]\mathbf{v},\\
-    &= Q(t)M\frac{d\mathbf{v}}{dt} + Q(t)C\mathbf{v}. 
+    &= Q(t)M\frac{d\mathbf{v}}{dt} + Q(t)C(\mathbf{v})\mathbf{v}. 
     \label{eq:integrationalfactor}
 \end{align}
 %
