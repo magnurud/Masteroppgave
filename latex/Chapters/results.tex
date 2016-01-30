@@ -13,7 +13,7 @@ The main tools in addition to Nek5000 needed to perform the simulations presente
 chapter are \textit{ANSYS ICEM} and \textit{python}. For post-processing \textit{Visit} and
 \textit{Matlab} were used.
 %
-\section{Case 1: Gas dispersion in a simplified urban area}
+\section{Case 1: Gas dispersion in a simplified urban area} \label{case1}
 %The problem investigated in this work is gas dispersion of neutral gas in a velocity field through four cubic blocks.
 %Similar simulations have been done in CDP and Fluent which are compared to data from a wind-tunnel experiment performed by ALAN.
 The scenario investigated in this work is dispersion of a neutral gas in a rectangular tunnel
@@ -36,7 +36,10 @@ the box $0.0\leq x/H \leq 4.96,-1.75\leq y/H \leq 1.75, 0\leq z/H \leq 1.5$.
 The four cubic boxes are centered around $(1.4315,0)$ with a distance $h$ between each box.
 The source is placed with its center in $(0.396,0)$ and radius $r = 0.0515$.
 The grid used for the computations consists of 14747 elements and with a polynomial degree of
-7 the total number of nodes $N\approx 5.2$mill. 
+7 the total number of nodes $N\approx 5.2$mill. There are no curved elements in this case, so the 
+circular source is created simply by requiring that the inflow velocity is non-zero for the nodes
+on the floor within that particular circle. The corresponding area is somewhat different from that
+of a circle $\approx 5 \%$, but this is taken care of in the post-processing.
 
 
 The simulations are performed using Large Eddy Simulation (LES) 
@@ -69,7 +72,7 @@ $0.0013$s for a total of $28$s and had to be interpolated onto the domain for th
 The right plot in \fref{fig:inflow} is an instantaneous picture of the inflow velocity in x-direction, 
 notice how the pattern repeats itself along the y-axis. This is because the inflow data was generated in a smaller channel, approximately $1/3$ of the 
 width of the computational domain used for the data sampling. An interpolation algorithm implemented at FFI was applied to adjust 
-the inflow-data to the computational mesh, this was done directly in \verb|.usr|. 
+the inflow data to the computational mesh, this was done directly in \verb|.usr|. 
 %
 \begin{figure}
 \centering
@@ -89,7 +92,7 @@ the inflow-data to the computational mesh, this was done directly in \verb|.usr|
 %
 
 The simulations in Nek5000 were performed in the following manner; first 6 seconds of initialization of the velocity field in the 
-channel, followed by 8 seconds of gas release to initialize the gas-concentration. After assuring that the wind-field was 
+channel, followed by 8 seconds of gas release to initialize the gas concentration. After assuring that the wind-field was 
 correctly created and the released gas had reached the measurement lines furthest from the source the data sampling of 22 seconds 
 started.
 %
@@ -127,7 +130,7 @@ This case is a part of a larger project designed to evaluate different solvers
 ability to perform simulations of gas dispersion. The N-S equations are solved using
 the $P_NP_N$ formulation with the fractional step method, IOFS with a target Courant number 
 equal 2 was enabled to maximize the time step as recommended in~\cite{Nek}. It should be 
-mentioned that when activating the SGS-model and deactivating the 
+mentioned that when activating the SGS model and deactivating the 
 filter the simulation is more probable to blow up. This effect is captured in~\fref{fig:maxvel}
 that shows how the Smagorinsky model does not damp spurious velocity modes in the 
 same degree as the filter. 
@@ -137,7 +140,7 @@ same degree as the filter.
 	\centering
 	\includegraphics[trim=0.5cm 7cm 0.5cm 7cm, width=0.8\textwidth]{Figures/maxvel.pdf}
     \caption{$||\mathbf{u}||_{\infty}$ as a function of time, the green line represents the 
-simulation with the dynamic Smagorinsky SGS-model and the blue line represents the filtering 
+simulation with the dynamic Smagorinsky SGS model and the blue line represents the filtering 
 with $\alpha = 0.05$ and a quadratic decay on the last 3 modes.}
 	\label{fig:maxvel}
 \end{figure}
@@ -214,13 +217,13 @@ sufficiently long.
 %Along the second measurement line which is placed in the middle of the 4 cubes Nek5000 
 %estimates a concentration peak lower than both the reference solutions.  
 
-The results also indicate that the difference between the SGS-model and the filtering
+The results also indicate that the difference between the SGS model and the filtering
 is not that large,
-if anything the SGS-model shows a tendency to estimate higher concentration peaks.
+if anything the SGS model shows a tendency to estimate higher concentration peaks.
 In particular the first plot indicates a significant difference.
-An important difference between the filtering and the SGS-model is 
+An important difference between the filtering and the SGS model is 
 that the filter works based on the current state of the flow 
-whereas the amount of diffusion added by the SGS-model is mostly decided
+whereas the amount of diffusion added by the SGS model is mostly decided
 by the previous states of the flow.
 This could lead to either too much or too little smoothing locally.
 
@@ -245,8 +248,8 @@ The $P_NP_N$ formulation is known to produce splitting errors of significant siz
 close to the wall, and could play an important role in this part of the domain.
 
 The simulations were also performed using the $P_NP_{N-2}$ formulation with filtering, and the 
-results were similar to those observed above. The SGS-model did however not function at all, 
-and resulted in a system crash in one of the earliest time-steps. It was beyond the scope of 
+results were similar to those observed above. The SGS model did however not function at all, 
+and resulted in a system crash in one of the earliest time steps. It was beyond the scope of 
 this work to correct this presumable bug in the Nek5000 implementation. 
 
 It was also experimented with different meshes. An attempt was made to improve the 
@@ -262,29 +265,25 @@ mesh in the $x$ and $y$ direction could be necessary to achieve better results.
 As for the performance of Nek5000 the results are baffling. With the same number of processors,
 same accuracy criteria, and approximately the same number of nodes in the grid, Nek5000 simulated
 one second of flow more than five times as fast as a numerical code comparable to CDP! 
-This was done without any particular tuning and with a time-step about $2/3$ of the one used in 
+This was done without any particular tuning and with a time step about $2/3$ of the one used in 
 CDP. 
 
-To check how Nek5000 scales for the number of processors 1 second of flow was 
+To check how Nek5000 scales for the number of processors, one second of flow was 
 simulated using the $P_NP_{N-2}$ formulation on the grid with 14747 elements,
-$N=7$, $DT = 0.001$ and both 
-IOFS and filtering was activated. The efficiency $\eta_p = 10 N_{10}/(PN_p)$
-is presented in~\tref{tab:perfgas}
+$N=7$, $DT = 0.001$ and both IOFS and filtering was activated. The results 
+are presented in~\fref{fig:perfgas}.
 %
-\begin{table}[h]
-    \centering
-    \begin{tabular}{c l }
-     $N_p$ & $\%\eta_p  $  \\ \hline
-    $10$ &$100$\\
-    $20$ &$79$ \\
-    $40$ &$76$ \\
-    $60$ &$72$ \\
-    $80$ &$63$ \\ 
-    \end{tabular}
-    \caption{Constants for case 2}
-    \label{tab:perfgas}
-\end{table}
+\begin{figure}[h!]
+	\centerline{
+        \includegraphics[trim=0.5cm 4cm 0.5cm 4cm, width=0.6\textwidth]{Figures/scalresults.pdf}}
+        \caption{Scaling results, from case 1 with $14747$ elements, $P_NP_{N-2}$ formulation using filtering and $N=7$.}
+	\label{fig:perfgas}
+\end{figure}
+%
 
+This is far from optimal speedup which is the theoretical upper limit, and Nek5000 were perhaps expected to perform 
+better than these results indicate. This performance test is done without doing any tweaking of the settings, and 
+it is probable that by adjusting some parameters in \verb|.rea| a better speedup could be obtained. 
 
 %\begin{figure}[h]
     %\centering
@@ -437,7 +436,7 @@ lift coefficient error for increasing polynomial degree.
 	\centerline{
         \includegraphics[trim=0.5cm 7cm 0.5cm 7cm, width=0.8\textwidth]{Figures/lift_coef4.pdf}}
 	\caption{The logarithm of the error plotted against the polynomial degree. All results 
-        are with $P_NP_{N-2}$ and dealiasing, and they are solved without using the 
+        are with $P_NP_{N-2}$ and de-aliasing, and they are solved without using the 
     characteristic scheme or any filtering. A line illustrating a second order convergence is 
     plotted to illustrate the convergence rate.}
 	\label{fig:liftconv}
@@ -445,30 +444,29 @@ lift coefficient error for increasing polynomial degree.
 %
 
 The setting that has the biggest impact on the result is the $P_NP_N$ scheme which clearly performs 
-worse than the others. This is as expected since the discrete splitting is known to converge faster
-for steady state flows. Notice however that by reducing the time-step the effect of the algebraic splitting
-greatly reduces and achieves results of similar order as the discrete splitting.
-Use of the IOFS method also has a negative effect on the accuracy,
-this is also as expected because of the stability-accuracy trade-off for this method.
-Remember that this scheme allows a much higher time step. The filtering is the least significant change
-which confirms the analytical results from \eref{eq:filterenergy}. 
+worse than the others. It would seem like the error on the boundary known to be present in both schemes
+has a bigger effect in the $P_NP_N$ formulation.
+Use of the IOFS method was expected to have a negative effect on the accuracy due to~\cite{Deville}, 
+this is not observed for this case.
+The filtering does have a negative effect on calculation of the lift coefficient,
+but it is of relatively small significance which confirms the analytical results from \eref{eq:filterenergy}. 
 %
 \begin{table}[h]
     \centering
-    \begin{tabular}{c | c c c c c c | c c }
-         & \multicolumn{6}{|c|}{Settings} & \multicolumn{2}{|c}{\% Error} \\\hline
-         \# & N & $\Delta t$ & ifsplit & Dealiasing & IOFS & Filter & $c_D$ & $c_L$ \\  \hline 
-         1 &11& 6e-4& No & Yes& No & No & 0.005 & 0.10\\
-         2 &11& 6e-4& No & Yes& No & Yes& 0.006 & 0.31\\
-         3 &11& 6e-4& No & Yes& Yes& No & 0.005 & 0.11\\
-         4 &11& 6e-4& No & No & No & No & 0.005 & 0.03\\
-         5 &11& 6e-4& Yes& Yes& No & No & 0.012 & 2.35\\
-         %6 & 4.5e-4& Yes& Yes& No & No & 0.015 & 0.01\\
-         %7 & 3e-4& Yes& Yes& No & No & 0.018 & 0.01\\
+    \begin{tabular}{c | c c c c c | c c }
+         & \multicolumn{5}{|c|}{Settings} & \multicolumn{2}{|c}{\% Error} \\\hline
+         \# & N & ifsplit & Dealiasing & IOFS & Filter & $c_D$ & $c_L$ \\  \hline 
+         1 &11& No & Yes& No & No & 0.005 & 0.10\\
+         2 &11& No & No & No & No & 0.005 & 0.03\\
+         3 &11& No & Yes& No & Yes& 0.006 & 0.31\\
+         4 &11& No & Yes& Yes& No & 0.005 & 0.11\\
+         5 &11& Yes& Yes& No & No & 0.012 & 2.35\\
+         6 &7 & No & Yes& No & No & 0.002 & 12.24\\
+         7 &7 & No & No & No & No & 0.013 & 25.04\\
 
-%   Alias   0.013  -2.50363621e+01
-%   Char    0.000  -1.22425816e+01
-%   default 0.001.61349516e-03  -1.22431699e+01
+%   default   
+%   Alias     
+%   Char    0.000  12.24
 %   filter  8.43539472e-01  -1.26292235e+01
 %   P_NP_N  9.33531436e-02  -6.23979364e+00
 
@@ -493,40 +491,36 @@ which confirms the analytical results from \eref{eq:filterenergy}.
     \label{tab:perf}
 \end{table}
 %
-%
-\begin{figure}[h]
-	\centerline{
-        \includegraphics[trim=0.5cm 4cm 0.5cm 7cm, width=0.8\textwidth]{Figures/scalresults.pdf}}
-	\caption{The logarithm of the error plotted against the polynomial degree. All results 
-        are with $P_NP_{N-2}$ and dealiasing, and they are solved without using the 
-    characteristic scheme or any filtering. A line illustrating a second order convergence is 
-    plotted to illustrate the convergence rate.}
-	\label{fig:liftconv}
-\end{figure}
-%
 Be aware that these results are obtained from a laminar test case and does not in any way 
-suggest any optimal adjustment for Nek5000. An important example of this is the fact that 
-deactivating de-aliasing yields better results. For a coarser mesh or a more turbulent flow 
-this would not be the case, and that the result is better is probably due to 
-the accuracy, which are close to the accuracy given by the reference solution. 
-The results do however give an indication to the general effect of these settings that 
-are worth noticing.
+suggest any optimal adjustment for Nek5000. It is however important to be aware that the activation 
+of de-aliasing is not guaranteed to give a better result. For a well-resolved flow situation such as $N=11$ 
+for this case, the effect of aliasing is negligible and applying a higher order quadrature to resolve the 
+non-linear term is a waste of computational time. For $N=7$ the results show that activation of de-aliasing
+provides a better estimate, so the decision to activate de-aliasing or not depends on the type of flow
+and the resolution of the mesh.
+
+When designing the mesh it is important to be aware of how the computational time depends on the polynomial 
+degree. In user manual for Nek~\cite{Nek} it states that the computational time for one time step is 
+of order $\mathcal{O}(EN^4) = \mathcal{O}(EP^4)$. This is confirmed in the left plot in~\fref{fig:comptime}.
+Another important consequence of increasing the polynomial degree is that the time step decreases with a factor
+$\mathcal{O}(P^2)$ due to the CFL-condition seen in~\eref{eq:restriction}. The computational time per 
+time unit is therefore expected to be $\mathcal{O}(EP^{6})$ which is confirmed in the right plot in~\fref{fig:comptime}.
 
 %
 \begin{figure}[h]
 \centering
   \centerline{
 \begin{minipage}{.6\textwidth}
-  \includegraphics[trim=0.5cm 3cm 0.5cm 7cm,width=1.0\linewidth]{Figures/tpers.pdf}
-  %\captionof{figure}{A figure}
-\end{minipage}%
-\begin{minipage}{.6\textwidth}
   \centering
   \includegraphics[trim=0.5cm 3cm 0.5cm 7cm,width=1.0\linewidth]{Figures/tperstep.pdf}
 \end{minipage}
+\begin{minipage}{.6\textwidth}
+  \includegraphics[trim=0.5cm 3cm 0.5cm 7cm,width=1.0\linewidth]{Figures/tpers.pdf}
+  %\captionof{figure}{A figure}
+\end{minipage}%
 }
-  \caption{Computational time in Nek5000 as a function of $P$. }
-  \label{fig:surfpro}
+  \caption{Computational time in Nek5000 as a function of the polynomial degree $P$. }
+  \label{fig:comptime}
 \end{figure}
 %
 %----------------------------------------------------------------------------------------
@@ -559,12 +553,21 @@ the main motivation behind the creation of Appendix~\ref{AppendixB}.
 
 \section{Further work}
 The surface projection could be expanded and improved in many ways. Making it iterative 
-to make sure the GLL-points are distributed correspondingly. The norm corresponding
-to the normal is prone to give errors and should be calculated based on points further away.
+such that the points are projected more controlled towards the surface is one possibility. 
+Experimentation with the weighting function and the distance norm should be done to see 
+what provides best results. Treating the points along the edges differently, since they 
+have a larger risk of being affected by the neighbouring element. Omitting the projection 
+for certain points, especially those on edges that limits to other boundary conditions.
+Restricting the relative or absolute change to avoid too much disturbance in the original mesh. 
+These are just some ideas that might be worth having in mind if applying this method.
 
-For the simple array case it was experimented with different meshes and the refinement procedure 
-in ICEM quickly leads to small elements with wide angles that tend to lead to problems 
-in Nek5000. The author do however believe that by making an o-grid around the most important part of 
-the domain, say for instance the box, $x/H < 3,\: |y|/H < 0.4,\: z/H < 0.15$ the nodes could have been 
+For the simple array case it was experimented with different meshes and the Nek seemed to 
+have no problems with refined grids from ICEM. The refinement functionality does however not 
+provide the same flexibility to adjust the number of elements. Perhaps even better results could 
+have been achieved by making an o-grid around the most important part of the domain,
+say for instance the box, $x/H < 3,\: |y|/H < 0.4,\: z/H < 0.15$ the nodes could have been 
 distributed in a more economical fashion and an overall better result could have been achieved.
 
+Finding out why the dynamic Smagorinsky model did not work for the $P_NP_{N-2}$ is also 
+something that should be investigated further. As well as experimentation with 
+other LES-models. 

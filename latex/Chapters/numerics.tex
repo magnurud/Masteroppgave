@@ -87,7 +87,7 @@ Find $(\mathbf{u}, p) \in H^1_0(\Omega)^3\times L^2_0(\Omega)$ such that
     \end{split}
 	\label{eq:NSweak}
 \end{align}
-$\forall\; (\mathbf{v}, q) \in H^1(\Omega)^3\times L^2(\Omega)$.
+$\forall\; (\mathbf{v}, q) \in H_0^1(\Omega)^3\times L_0^2(\Omega)$.
 %
 
 The numerical solution of this problem requires a discrete formulation of the weak form, with $(\mathbf{u}_h,p_h)\in V\times Q$
@@ -127,7 +127,7 @@ it guaranties a sparse system. The decomposition of the geometrical domain into 
 makes it possible to create general algorithms applicable to all kinds of geometries. 
 For the full mathematical foundation of FEM it will be referred to \cite{Quarteroni}, but some of the key properties will be stated here
 to provide a thorough understanding of the spectral element method (SEM). 
-Throughout this section $p$ denotes the polynomial degree of the basis-functions, $h$ represents the average grid spacing, $E$ is the total
+Throughout this section $p$ denotes the polynomial degree of the basis functions, $h$ represents the average grid size, $E$ is the total
 number of elements and $d$ is the number of dimensions. 
 
 FEM provides an algorithm for solving any well-posed boundary value problem (BVP).
@@ -153,13 +153,12 @@ projection error. The result is known as Cea's lemma,
     ||u-u_h||_X \leq \frac{M}{\alpha}\min_{v_h\in X_h^p}||u-v_h||_X,
     \label{eq:Cea}
 \end{align}
-
 the solution $u_h$ provided by the Galerkin method is known as the orthogonal projection of $u$ onto $X_h^p$. 
 
 Before this section ends it is important to understand the two ways to increase accuracy and the effects these two ways have on the algorithm. 
 Assume the solution of the BVP to be infinitely smooth and the domain be sufficiently regular. 
 This yields an error $e = Ch^p$, $C$ being some positive constant.
-Factors such as geometric complexity, condition-number, non-linear operators and the continuity of the 
+Factors such as geometric complexity, condition number, non-linear operators and the continuity of the 
 solution will all provide slightly more complicated error estimates. 
 However for a simpler BVP such as the Poisson problem on the unit square, the error estimate is valid.  
 A $h$-refinement will lead to an algebraic convergence of order $p$, while the sparsity of the system is conserved
@@ -191,7 +190,7 @@ and in this thesis only the Galerkin version with numerical integration (sometim
 For a full introduction to SM and its applications to BVP see~\cite{Canuto}.
 SM can be reduced to an interpolation problem such as FEM, and are interesting from a theoretical point of view due to its 
 spectral convergence rate which allows you to obtain solutions of extremely high accuracy. 
-The most important draw-back of SM are the difficulties with applications to complex geometries. The Fourier basis
+The most important drawback of SM are the difficulties with applications to complex geometries. The Fourier basis
 gives rise to a very efficient method, but is restricted to periodic boundary conditions. Using the GLL-points and
 corresponding Lagrange polynomials allow the system of equations surging from
 a BVP can be constructed in an elegant way, but it is rarely sparse and often result in expensive calculations. 
@@ -393,7 +392,7 @@ For all elements $\Omega_k$ Find $u_{h,k}\in X^N_k$  such that
 %
 Where $X^N_k =  H_0^1(\Omega_k)\bigcap P_N(\Omega_k)$. The same discretization 
 procedure as performed for the pure spectral case is now done for each of the 
-sub-domains $\Omega_k$,
+subdomains $\Omega_k$,
 %
 \begin{align}
     \sum_i\left(  u_i\int_{\Omega_k}\nabla \psi_i \cdot \nabla \psi_j d \Omega + 
@@ -423,7 +422,7 @@ Applying the identities from \eref{eq:transforms} to \eref{eq:HelmholtzdiscreteS
 Notice how the integrals depend on the local Jacobian $\mathbf{J}_k$ and its determinant $J_k$.
 The local matrices $A_k,M_k$ and the loading vector $f_k$ are gathered from each element.
 Equivalently as for FEM the global matrices has to be assembled
-from all the local matrices corresponding to each sub-domain. This procedure is general and 
+from all the local matrices corresponding to each subdomain. This procedure is general and 
 if the elements are chosen to be sufficiently small it can 
 be performed on almost any deformed domain as opposed to SM. 
 
@@ -497,7 +496,7 @@ For a full derivation and discussion on this matter it is referred to chapter 6.
 \cite{Karniadakis}.
 
 The filter in \eref{eq:filtereffect} is in this thesis applied such that the $k$ highest Legendre modes
-are dampened with coefficients $\alpha_i = (\frac{k+1-i}{k+1})^2\alpha_0 $, with $\alpha_0$ being the filter constant
+are dampened with coefficients $\alpha_i = (\frac{k-i}{k})^2\alpha_0 $, with $\alpha_0$ being the filter constant
 for the highest mode. The action of the filter can therefore be described as 
 a matrix equation in two steps, first adding the contribution from the higher polynomials to the 
 lower ones and then subtracting the contribution from the higher polynomials. Let $u$ be the 
@@ -510,7 +509,7 @@ vector containing the Legendre coefficients.
     \label{eq:filterstepwise}
 \end{align}
 In this case $I_{\alpha,k}$ is a diagonal matrix 
-diag$(0,0,\cdots,\alpha_k,\alpha_{k-1},\cdots,\alpha_1)$ 
+diag$(0,0,\cdots,\alpha_{k-1},\alpha_{k-2},\cdots,\alpha_0)$ 
 while $\mathcal{F}_{\alpha,k}$ is also sparse and with the same non-zero entries as $I_{\alpha,k}$,
 but this time they are located on the second sup-diagonal (removing the 2 first zeros). 
 \begin{align}
@@ -557,7 +556,7 @@ of some differential equations and the mathematical filter described in the prev
 
 Let $u$ be some smooth continuous function, and let $\bar u = [\hat u_1L_1(x),\hat u_2L_2(x), \cdots]$
 be the vector with the corresponding Legendre basis times the appropriate coefficients. 
-$P_{k}$ is the diagonal matrix with ones on the $k$ last entries and $0$ on the rest.
+The matrix $P_{k}$ is a diagonal matrix with ones on the $k$ last entries and $0$ on the rest.
 
 Let us consider the two initial value problems 
 \begin{align}
@@ -589,7 +588,7 @@ The Laplace operator applied in a Legendre space is known to take a sparse upper
 with entries only on even sup-diagonals. By naming this matrix $A$ the entries are given as 
 %
 \begin{align}
-    A_{ij} = 4||L_i||^{-2} \sum_{k=1}^{(j-i)/2+1} ||L_{j+1-2k}||^{-2}, \qquad \text{ if } 2 \le j-i = mod(2). 
+    A_{ij} = 4||L_i||^{-2} \sum_{k=0}^{(j-i)/2-1} ||L_{j-1-2k}||^{-2}, \qquad \text{ if } 2 \le j-i = mod(2). 
     \label{Laplace-entries}
 \end{align}
 %
@@ -610,7 +609,13 @@ Euler of \eref{eq:ivps2} can be written as
 %
 
 Notice the resemblance to the application of the filter in \eref{eq:filterstepwise}. The second step
-is identical if $\alpha_i = \lambda_2\Delta t/(1+\lambda_2\Delta t)\approx \lambda_2\Delta t$. 
+is identical if 
+%
+\begin{align}
+\alpha_i = \lambda_2\Delta t/(1+\lambda_2\Delta t)\approx \lambda_2\Delta t. 
+    \label{eq:alpha1}
+\end{align}
+%
 The truncated Laplacian $A^*$ is not equal to the corresponding
 filter matrix $\mathcal{F}_{\alpha,k}$, but there are some similarities between these to matrices.
 They are both upper triangular with zeros along the diagonal and positive entries on the second 
@@ -618,7 +623,13 @@ sup-diagonal. The main difference is that the Laplacian applied on the $N$th Leg
 $L_N$ affect all the terms $L_{N-2},L_{N-4},\cdots$, while the filter only affects $L_{N-2}$.
 To illustrate this effect~\fref{fig:entries} shows the non-zero entries of the
 Laplacian matrix, the red dots indicate the non-zero entries that are not present in the filtering
-matrix.
+matrix. If however filtering is applied only on the last two nodes, then $\mathcal{F}_{\alpha,2} = A^*$ if 
+$\alpha_i = \lambda_1\Delta t A_{n-2-i,n-i}$, for $ i = 0,1$ 
+Using the known formula of the norm from~\ref{eq:relations} we can write this as 
+\begin{align}
+\alpha_i = \lambda_1\Delta t (2(n-i)-3)(2(n-i)-2). 
+    \label{eq:alpha2}
+\end{align}
 %
 \begin{figure}[h]
 	\centering
@@ -631,14 +642,34 @@ matrix.
 %
 If one were to insist that the Laplacian should work locally in Legendre space, in other words 
 if $A_{ij}=0$ if $i-j>2$, then the Laplacian and the filtering would have the same non-zero entries 
-and a clever choice of $\alpha_i$ would yield equality. Notice in particular the similarity of 
-applying a filter and including a SGS-model, with $\nu_T$ as a constant in \eref{eq:NSLES} the term 
+and by choosing $\alpha_i$ as would yield equality. Notice in particular the similarity of 
+applying a filter and including a SGS model, with $\nu_T$ as a constant in \eref{eq:NSLES} the term 
 $\nabla \nu_Ts_{ij}$ reduces to $\nu_T\Delta \mathbf{u}$.
 
 This way of considering the filtering procedure is similar to the variational multiscale (VMS) 
 approach to LES first introduced by Hughes~\cite{Hughes}. This method is based on the assumption that
-the unresolved structures have a negligible effect on the larger scales, hence the SGS-model is 
+the unresolved structures have a negligible effect on the larger scales, hence the SGS model is 
 only included for the small but still resolved scales of motion.
+
+%\colorbox{red}{omit this section}
+%Before ending this chapter let us give some estimates for the coefficients $\lambda_1,\lambda_2$ in~\eref{eq:ivps}.
+%For the simulations presented in~\cref{case1}, the polynomial degree was $N = 7$ and 
+%the relation between filtering of the last node and the time step was $\alpha_0/\Delta t = 50$.
+%Solving~\eref{eq:alpha1} and $\ref{eq:alpha2}$ for $\lambda_1$ and
+%$\lambda_2$ yields for the last Legendre mode
+%\begin{align}
+    %\lambda_1 = 50/66, \qquad \lambda_2 = 50.
+    %\label{eq:coeffs}
+%\end{align}
+%This implies that when the filter is applied in the simulations performed in~\cref{case1} it corresponds to 
+%solving for the highest mode the PDEs 
+%\begin{align}
+    %\begin{split}
+    %\frac{\partial v }{\partial s} &=  \frac{50}{60}\Delta v, \qquad v(0) = u^n, \qquad 0<s<\Delta t, \\
+    %\frac{\partial u }{\partial s} &= -50u, \qquad u(0) = u^n, \qquad 0<s<\Delta t.
+    %\end{split}
+    %\label{eq:ivpfinal}
+%\end{align}
 
 %\colorbox{red}{Issue: wavespace is not equivalent Legendre space}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -662,7 +693,7 @@ quadrature rule of order $3/2N$. The concept and illustrative examples are given
 sufficiently fine the non-linear term will not need to be solved using a higher order quadrature rule, 
 an example of this is presented in \cref{results}.
 This is one of the time vs.\ accuracy questions one have to decide for each problem. 
-Instead of applying the GLL-quadrature "designed" for the basis-functions the functions
+Instead of applying the GLL-quadrature "designed" for the basis functions the functions
 has to be evaluated in a new set of GLL-points with $3/2$ as many nodes. This is a costly 
 process and should only be applied when absolutely necessary. 
 
@@ -822,31 +853,23 @@ stable only for operators with eigenvalues below a certain limit $\gamma$ that d
 on the scheme. When applied on the N-S 
 equations it is the convection term $\Delta t M^{-1}C(\mathbf{u})\mathbf{u}$
 as observed in~\eref{eq:fracstep} that is evaluated by
-an explicit scheme. Let $\lambda_{max}$ be the maximum eigenvalue of
-$M^{-1}C(\mathbf{u})$, which is known to scale as 
-$\mathcal{O}(N^{2})=\mathcal{O}(\Delta x_{\min}^{-1})$, and be proportional to $\mathbf{u}$.
-The following inequality has to be satisfied for the scheme to be stable, 
+an explicit scheme. Let $h^e$ and $u^e$ denote the grid size and the maximum absolute velocity in element $e$.
+According to~\cite{Karniadakis} the maximum eigenvalue of $M^{-1}C(\mathbf{u})$ can be estimated as
+$\lambda_{max} \approx c\max_e u^e P^2/h^e$, where $c$ is some constant obtained from numerical 
+experiments and analytical results. Notice that $\Delta x^e_{min} = h^e_{min}/P^{2}$ due to the distribution of 
+the GLL-nodes. This relation leads to an easily computable stability criteria analogous to the CFL-condition,
 %
 \begin{align}
-    \Delta t \lambda_{\max} = c\frac{\Delta t}{\Delta x} \le \gamma.
+    \Delta t \lambda_{\max} = cu^e_{max}\frac{\Delta t}{\Delta x^e_{min}} \le \gamma.
     \label{eq:restriction}
 \end{align}
 %
-By introducing the Courant number, $\mbox{\scriptsize{\bf{CFL}}} = \bar u \Delta t/ \Delta x$,
-and a discretization-specific constant $S$, the inequality in~\eref{eq:restriction} 
-can be rewritten as the CFL-condition,
-%
-\begin{align}
-    S \cdot \mbox{\scriptsize{\bf{CFL}}}   \le \gamma.
-    \label{eq:CFLcondition}
-\end{align}
-%
-This inequality is used to adjust the time-step such that the development in time is maximized
+This inequality is used to adjust the time step such that the development in time is maximized
 within the stability criteria for the scheme.
 
 \subsection{Operator integrating factor schemes (OIFS)}\label{OIFS}
 The operator-splitting method described in the previous chapter may lead to an unstable scheme, 
-and require small time-steps.
+and require small time steps.
 OIFS is a similar method but it offers a more stable scheme and is more efficient by using a multi-stage method that allows 
 larger advances in time. The presentation of the method is presented here in a computational fashion,
 for a full description and derivation of the method it is referred to Maday et al~\cite{raey}.
@@ -951,7 +974,7 @@ Where $M,A,D,C(\mathbf{u})$ denotes the mass integral, Laplacian, gradient and n
 %\end{itemize}
 A schematic overview of the method is stated below, where the equations on the right hand side are 
 solved and the updated solution is stated on the left hand side. By performing these 
-steps the solution $(\mathbf{u},p)$ is developed one time-step
+steps the solution $(\mathbf{u},p)$ is developed one time step
 from $(\mathbf{u}^n,p^n)$ to $(\mathbf{u}^{n+1},p^{n+1})$. 
 %\begin{align}
     %\begin{split}
@@ -985,9 +1008,9 @@ from $(\mathbf{u}^n,p^n)$ to $(\mathbf{u}^{n+1},p^{n+1})$.
 %
 As earlier mentioned this method is convenient because it allows us to handle the different 
 terms with different solution techniques. Hence the term including the
-non-linear skew-symmetric advection matrix $C$ will be approximated by
+non-linear skew-symmetric advection matrix $C(\mathbf{u})$ will be approximated by
 an $k$th order extrapolation (EXTk) scheme. The first step can also be evaluated in 
-an OIFS-way to gain stability. This implies using the discretization introduced in \eref{eq:NSOIFS1}
+an OIFS procedure to gain stability. This implies using the discretization introduced in \eref{eq:NSOIFS1}
 with only the forcing function on the right hand side, and solving the
 IVP \eref{eq:IVP} with RK4 to obtain $\mathbf{u}^{*}$. 
 

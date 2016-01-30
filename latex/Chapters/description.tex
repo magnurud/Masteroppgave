@@ -329,11 +329,11 @@ This tensor is a consequence of applying the filter on the non-linear advection 
 and it is this tensor that is modelled by a subgrid-scale model. See~\cite{Pope} for a full derivation on the 
 application of a filter on the momentum equation. 
 
-\subsection{Dynamic Smagorinsky-Lilly SGS-model}
-The problem is now reduced to modelling the tensor $\tau_{ij}$, one of the most common SGS-models is the 
+\subsection{Dynamic Smagorinsky-Lilly SGS model}
+The problem is now reduced to modelling the tensor $\tau_{ij}$, one of the most common SGS models is the 
 dynamic Smagorinsky-Lilly model which is the one applied in this thesis. 
 The initial progress of this model was made by Smagorinsky in 1963,
-and by Lilly in 1967~\cite{Lilly67} who suggested the following model for the SGS-tensor
+and by Lilly in 1967~\cite{Lilly67} who suggested the following model for the SGS tensor
 %
 \begin{align}
     \begin{split}
@@ -356,7 +356,7 @@ assumption a computable expression is developed for the dynamical constant.
 Let $a,b$ denote two distinct filters with corresponding filter widths $l_a,l_b$. 
 Throughout this thesis $l_a$ will be the grid size. The second filter width $l_b$ 
 is in this thesis based the same elemental grid, but with a number of nodes $N_b = N_a - 2$.
-Hence the relation which is the only parameter needed for the simulation is calculated as $lambda = (N_a-1)/(N_b-1)$.
+Hence the relation which is the only parameter needed for the simulation is calculated as $\lambda = (N_a-1)/(N_b-1)$.
 Filter $b$ is often referred to as the test filter and is only included to provide an estimation 
 of the dynamic Smagorinsky constant. Remember that $a$ is the filter corresponding too the numerical discretization, while 
 filter $b$ is obtained by applying the filter described in \cref{filtering} with $\alpha_i=1$ for the highest modes.
@@ -434,9 +434,9 @@ in general terms as $2\nabla \cdot (\nu s_{ij})$.
 %
 Notice that if $v_t$ is a constant in the entire domain this equation would 
 be equivalent to the one for a fluid with viscosity $\nu'= \nu + \nu_t$. The idea is 
-that $\nu_t$ will be larger when the subgrid-structures are significant and closer to zero 
+that $\nu_t$ will be larger when the subgrid structures are significant and closer to zero 
 when the flow is laminar. This is just one of many types of models that are based on an 
-anology between subgrid-scale stress and physical stress. 
+analogy between subgrid-scale stress and physical stress. 
 
 %\subsection{Decoupling the pressure} 
 

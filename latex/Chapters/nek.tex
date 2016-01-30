@@ -45,7 +45,7 @@ With SEM as the numerical method applied it is possible to obtain very accurate 
 %The possibility to make a mesh through a visual gui is provided through for instance ICEM.
 %This mesh can then later be transformed to the inputfile required by Nek5000. 
 
-Nek5000 provides some basic tools for generation of mesh. For more complex geometries this tool cannot compare with more visualized-based softwares 
+Nek5000 provides some basic tools for generation of mesh. For more complex geometries this tool cannot compare with more visual softwares 
 such as ICEM from ANSYS that exports mesh to several numerical solvers such as Fluent and Nastran.
 An automatic way of converting a mesh created in ICEM to the format required by Nek5000 is therefore very useful. 
 The way the mesh is created in this thesis is visualized in \fref{fig:mesh}.
@@ -67,7 +67,7 @@ circles in 2-D geometries, spherical shell elements and a general 2nd degree int
 Further manipulation of the element edges is left to the user to define manually in \verb|usrdat2|
 for each particular problem. One of the objectives of this thesis is to make Nek5000 more
 user-friendly and create automatic routines to handle complex geometry. Before the work regarding
-the mesh routines are further elaborated an overview of the file-structure will be presented.
+the mesh routines are further elaborated an overview of the file structure will be presented.
 
 \section{Editable files}
 %
@@ -155,12 +155,12 @@ frequently used for this thesis are described below,
 %\end{table}
 %
 \begin{itemize}
-    \item \verb|userbc| - Define the boundary conditions on the inflow-boundary. 
+    \item \verb|userbc| - Define the boundary conditions on the inflow boundary. 
     \item \verb|uservp| - Define variable properties, impose the eddy viscosity when applying LES. 
-    \item \verb|userchk| - Read inflow-data, and specify the output.
+    \item \verb|userchk| - Read inflow data, and specify the output.
     \item \verb|usrdat2| - Project the geometry onto a deformed general surface. The details of how this routine is used will be 
     specified further in \cref{implementation}. 
-    \item \verb|usrdat3| - Defines the interpolation algorithm that is applied to the inflow-data. 
+    \item \verb|usrdat3| - Defines the interpolation algorithm that is applied to the inflow data. 
 \end{itemize}
 %
 In addition to these routines all user-defined functions are specified in this file. The LES implementation in Nek5000 is based
@@ -191,9 +191,9 @@ and \cite{TomboulidesPnPn}.
 
 As mentioned before an important difference between these two implementations is the fact that the $P_NP_N$ 
 implementation is based on an analytical splitting algorithm, while the $P_NP_{N-2}$ formulation is based on 
-a splitting of the discrete scheme. The boundary condition of the pressure poisson equation in the fractional step method
+a splitting of the discrete scheme. The boundary condition of the pressure Poisson equation in the fractional step method
 is often mentioned as a major difference between these two schemes, and a reason to choose the latter.
-It is however argumented in for instance~\cite{Guermond2006} that the discrete splitting also
+It is however stated and proved in for instance~\cite{Guermond2006} that the discrete splitting also
 introduces an erroneous boundary condition weakly.
 
 %To best understand the work flow of Nek5000 the subroutine \verb|nek_advance| in \verb|drive1.f| should be examined.

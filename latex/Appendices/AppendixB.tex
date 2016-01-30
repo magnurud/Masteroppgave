@@ -9,9 +9,9 @@
 \section{Variables}
 
 The Nek manual provides information on many of the variables given in the .rea and SIZE
-file. It is however no list of useful variables defined in other files. Below is a list of
-some of the variables that have been frequently used in .usr subroutines which initially are 
-defined outside of both SIZE, .rea and .usr. 
+file. It is however no list of useful variables defined in other files. 
+In~\tref{tab:variables} some of the variables that have been frequently used in .usr
+subroutines are listed. Note that all the variables listed in this table are defined outside of SIZE, .rea and .usr 
 
 
 \begin{table}
@@ -27,6 +27,7 @@ tavg(ax1,ay1,az1,lelt,ldimt)     & Averaged values of t and all passive scalars\
 xm1(lx1,ly1,lz1,lelt)            & X-coordinates for the velocity mesh \\
 xm2(lx2,ly2,lz2,lelv)            & X-coordinates for the pressure mesh\\
 unx(lx1,lz1,6,lelt)              & Surface normals \\
+area(lx1,lz1,6,lelt)             & Surface integral weights\\
 
 \multicolumn{2}{l}{\textbf{INPUT}}\\ \hline
 
@@ -46,20 +47,16 @@ vdiff(lx1,ly1,lz1,lelt,ldimt1)  & Convective constants to additional scalars\\
 
 \multicolumn{2}{l}{\textbf{TSTEP}}\\ \hline
 istep                            & Current iteration step\\
-iostep                           & Output step frecuency\\
+iostep                           & Output step frequency\\
 time                             & Current time\\
-tstep                            & Current timestep	\\
-dt                               & Timestep\\
-dtlag(10)                        & The preevious 10 timesteps\\
+tstep                            & Current time step	\\
+dt                               & Time step\\
+dtlag(10)                        & The previous 10 time steps\\
 bd(10)                           & Max 10 backward difference coeffs\\
 ab(10)                           & Max 10 extrapolation coeffs (Adam-Bashforth)\\
 
 \multicolumn{2}{l}{\textbf{WZ}}\\ \hline
 zgm1(lx1,3)                      & GLL points for x,y and z directions \\
-
-\multicolumn{2}{l}{\textbf{WZF}}\\ \hline            
-zgl(lx1)                         & Gauss lobatto points\\
-wgl(lx1)                         & Gauss lobatto weights\\
 
 \multicolumn{2}{l}{\textbf{OTHER}}\\ \hline            
 x,y,z                            & Local coordinates assigned by nekasgn()\\
@@ -73,7 +70,7 @@ pm1 (lx1,ly1,lz1,lelv)           & Pressure mapped to mesh 1\\
 
 \end{tabular}
 
-\caption{useful variables in Nek, the bold capital sections denote the seperate files in /trunk/nek/.}
+\caption{useful variables in Nek, the bold capital sections denote the separate files in /trunk/nek/.}
 
 \label{tab:variables}
 \end{table}
@@ -96,11 +93,11 @@ Assigns the index limits of a face f with nx1,ny1,nz1 points in each spatial dir
 
 \textbf{chsign(wrk,nx1)} change the sign of every element in vector wrk of length nx1.
 
-\textbf{cfill(zg,c,nx1)}  Fill vector zg of lenght nx1 with the constant c.
+\textbf{cfill(zg,c,nx1)}  Fill vector zg of length nx1 with the constant c.
 
 \textbf{rzero(zg,nx1) } Fill vector zg of length nx1 with zeroes.
 
-\textbf{rcopy(zg,zg2,nx1) } copy all elements from vector zg2 to vector zg, both of lenght nx1.
+\textbf{rcopy(zg,zg2,nx1) } copy all elements from vector zg2 to vector zg, both of length nx1.
 
 \subsection{Functions regarding mesh and distribution of GLL-points}
 
@@ -109,7 +106,7 @@ algorithm should use vertices, edges or faces to distribute the inner GLL-points
 
 \textbf{xyzlin(xl,yl,zl,nxl,nxl,nxl,e,ifaxl)} Generate bi- or trilinear mesh.
 
-\textbf{fix\_geom()} Routine for re distributing the gll-points corrctly on the updated geometry.
+\textbf{fix\_geom()} Routine for assuring mesh consistency and re distributing the internal  gll-points correctly on the updated geometry.
 
 \subsection{Additional auxiliary functions implemented for this thesis}
 

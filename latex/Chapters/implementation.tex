@@ -215,7 +215,7 @@ To understand the algorithm a short description of the auxiliary functions is
 given in the list below
 \begin{itemize}
     \item create\_working\_surface(e,f) -- Loops through all the nodes in surf.i and adds the 
-        surface-coordinates within a certain radius to the center of face $f$ on element $e$ to the array wrk.
+        surface coordinates within a certain radius to the center of face $f$ on element $e$ to the array wrk.
         This saves time in the search for interpolation points for each GLL-node.
     \item init\_interpolation\_array() -- initializing the array containing the closest 
         points on the surface for the current GLL-node. 
@@ -256,7 +256,7 @@ surfmesh\_myFlow. The following commands are then executed
 \begingroup
 \fontsize{12pt}{14pt}
 \begin{lstlisting}[escapechar=|,frame=none]
->> /mshconvert --mesh mesh_myFlow 
+>> ./mshconvert --mesh mesh_myFlow 
     --reafile init.rea --outfile myFlow.rea
     --tol 1e-3 --temperature True --curvetype A
 
@@ -285,7 +285,7 @@ and a helicopter body was used. These surfaces were loaded as \verb|.tin| files 
 around the surfaces. The domains are presented in given in 
 \fref{fig:surfpro}, notice the coarse element sizes in the figures.
 These geometries were chosen because they resemble a typical problem with 
-spectral elements. Since the initial element-mesh is relatively coarse it does not capture all 
+spectral elements. Since the initial element mesh is relatively coarse it does not capture all 
 the details in the geometry and the GLL-nodes distributed on the faces corresponding to the 
 unstructured surface will be misplaced. 
 %It is however no theoretical problem to reconstruct the surface with with a polynomial of order $P$. 
@@ -314,7 +314,7 @@ describing the surface is typically of order $P \approx 7$.
 %
 \section{Spatial averaging routine}
 A dynamic Smagorinsky model has previously been implemented in Nek5000 for flow in a channel. 
-The SGS-model as described in \cref{description} depends on an averaging routine to calculate
+The SGS model as described in \cref{description} depends on an averaging routine to calculate
 the dynamic Smagorinsky constant. The previous implementation in Nek5000 applies a planar average routine
 in addition to averaging in time. The planar averaging is based on the assumption that the Smagorinsky 
 constant is the same for all points with equal distance to the walls of the channel.
