@@ -265,7 +265,21 @@
 \addtotoc{Abstract} % Add the "Abstract" page entry to the Contents
 
 \abstract{\addtocontents{toc}{\vspace{1em}} % Add a gap in the Contents, for aesthetics
-Sed ullamcorper quam eu nisl interdum at interdum enim egestas. Aliquam placerat justo sed lectus lobortis ut porta nisl porttitor. Vestibulum mi dolor, lacinia molestie gravida at, tempus vitae ligula. Donec eget quam sapien, in viverra eros. Donec pellentesque justo a massa fringilla non vestibulum metus vestibulum. Vestibulum in orci quis felis tempor lacinia. Vivamus ornare ultrices facilisis. Ut hendrerit volutpat vulputate. Morbi condimentum venenatis augue, id porta ipsum vulputate in. Curabitur luctus tempus justo. Vestibulum risus lectus, adipiscing nec condimentum quis, condimentum nec nisl. 
+Simulations of turbulent flow and gas dispersion are performed using Nek5000, with and without a subgrid-scale model.
+The results are compared with data from wind-tunnel experiments and previously performed simulations in CDP. 
+These comparisons show good agreement between the reference data and the results obtained in this thesis,
+and the simulation time is reported to be approximately five times faster for Nek5000. 
+Two routines have been implemented to improve the work with complex geometries, and a laminar test case
+is used to confirm the importance of this work and the spectral accuracy of the solver.
+
+\vfill
+
+Simuleringer av turbulente strømninger og spredning av gass er gjort i Nek5000, med og uten en 
+subgrid-scale modell. Resultatene er sammenlignet med vindtunnel eksperimenter og simuleringer i CDP.
+Disse sammenligningene viser god overenstemmelse mellom referenseløsningene og resultatene fra denne oppgaven,
+simuleringstiden kan i tillegg rapporteres å være omlag fem ganger raskere med Nek5000.
+To rutiner er skrevet for å forbedre arbeidet med komplekse geometrier, og et laminært test case 
+er brukt til å bekrefte viktigheten av dette arbeidet og den spektrale konvergensen til løseren.
 }
 
 \clearpage % Start a new page
@@ -275,13 +289,19 @@ Sed ullamcorper quam eu nisl interdum at interdum enim egestas. Aliquam placerat
 %	ACKNOWLEDGEMENTS
 %----------------------------------------------------------------------------------------
 
-%\setstretch{1.3} % Reset the line-spacing to 1.3 for body text (if it has changed)
+\setstretch{1.3} % Reset the line-spacing to 1.3 for body text (if it has changed)
 
-%\acknowledgements{\addtocontents{toc}{\vspace{1em}} % Add a gap in the Contents, for aesthetics
+\acknowledgements{\addtocontents{toc}{\vspace{1em}} % Add a gap in the Contents, for aesthetics
+I would like to thank my Supervisor at FFI, Carl Erik Wasberg for excellent guidance, 
+and great support during the work with this thesis. I have truly enjoyed our many discussions
+over these past 20 weeks. Big thanks also to my supervisor Anne Kværnø at NTNU for great
+advices whenever requested.
 
-%The acknowledgements and the people to thank go here, don't forget to include your project advisor\ldots
-%}
-%\clearpage % Start a new page
+I would also like to thank the turbulence-group at FFI for interesting discussions and our many lunch conversations,
+special thanks to Daniel Eriksson, Thor Gjesdal and Hannibal Fossum for providing reference data,
+numerical expertise and requested geometry. 
+}
+\clearpage % Start a new page
 
 %%fakesection - List of contents/figs/tables
 %----------------------------------------------------------------------------------------

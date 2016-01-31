@@ -80,50 +80,80 @@ pm1 (lx1,ly1,lz1,lelv)           & Pressure mapped to mesh 1\\
 \subsection{standard calculations found in math.f or navier1.f}
 
 \textbf{nekasgn(ix,iy,iz,ie) } Assigns the coordinates of node 
-    (ix,iy,iz) in element ie to the common variables x,y,z 
+    \verb|(ix,iy,iz)| in element ie to the common variables \verb|x,y,z|.
 
 \textbf{facind(kx1,kx2,ky1,ky2,kz1,kz2,nx1,ny1,nz1,f) } 
-Assigns the index limits of a face f with nx1,ny1,nz1 points in each spatial direction.
+Assigns the index limits of a face \verb|f| with \verb|nx1,ny1,nz1| points in each spatial direction.
 
-\textbf{zwgll(zg,wg,nx1)} Get the nx1 GLL-points and weights to zg and wg.
+\textbf{zwgll(zg,wg,nx1)} Get the nx1 GLL-points and weights to \verb|zg| and \verb|wg|.
 
-\textbf{cadd(zg,c,nx1)} Adding a constant c to a vector zg of length nx1.
+\textbf{cadd(zg,c,nx1)} Adding a constant \verb|c| to a vector \verb|zg| of length \verb|nx1|.
 
-\textbf{cmult(zg,c,nx1)} Multiplying every element of vector zg of length nx1 with c.
+\textbf{cmult(zg,c,nx1)} Multiplying every element of vector \verb|zg| of length \verb|nx1| with \verb|c|.
 
-\textbf{chsign(wrk,nx1)} change the sign of every element in vector wrk of length nx1.
+\textbf{chsign(wrk,nx1)} change the sign of every element in vector wrk of length \verb|nx1|.
 
-\textbf{cfill(zg,c,nx1)}  Fill vector zg of length nx1 with the constant c.
+\textbf{cfill(zg,c,nx1)}  Fill vector \verb|zg| of length \verb|nx1| with the constant \verb|c|.
 
-\textbf{rzero(zg,nx1) } Fill vector zg of length nx1 with zeroes.
+\textbf{rzero(zg,nx1) } Fill vector \verb|zg| of length \verb|nx1| with zeroes.
 
-\textbf{rcopy(zg,zg2,nx1) } copy all elements from vector zg2 to vector zg, both of length nx1.
+\textbf{rcopy(zg,zg2,nx1) } copy all elements from vector \verb|zg2| to vector \verb|zg|, both of length \verb|nx1|.
 
 \subsection{Functions regarding mesh and distribution of GLL-points}
 
-\textbf{gh\_face\_extend(x,zg,n,type,e,v)}  The Gordon hall algorithm described in chapter~\ref{numerics}, the type variable denotes whether the 
+\textbf{gh\_face\_extend(x,zg,n,type,ie,v)}  The Gordon hall algorithm described in chapter~\ref{numerics}, the type variable denotes whether the 
 algorithm should use vertices, edges or faces to distribute the inner GLL-points. 
 
-\textbf{xyzlin(xl,yl,zl,nxl,nxl,nxl,e,ifaxl)} Generate bi- or trilinear mesh.
+\textbf{xyzlin(xl,yl,zl,nxl,nxl,nxl,ie,ifaxl)} Generate bi- or trilinear mesh.
 
-\textbf{fix\_geom()} Routine for assuring mesh consistency and re distributing the internal  gll-points correctly on the updated geometry.
+\textbf{fix\_geom()} Routine for assuring mesh consistency and re distributing the internal  GLL-points correctly on the updated geometry.
 
-\subsection{Additional auxiliary functions implemented for this thesis}
+\subsection{Additional auxiliary functions implemented for this thesis}\label{surfaceprojection}
 
-\textbf{fix\_gll(e,f)} Redistribute the gll-points between the given face and the opposite to make sure that all points lie within the element.
+\textbf{readsurfpro(wrksurf,iwrkelem)} Read the coordinates from \verb|surf.i| to \verb|wrksurf| and add the elements and faces in \verb|bdry.i| to \verb|iwrkelem|.
 
-\textbf{getface(kx1,kx2,ky1,ky2,kz1,kz2,wrk,n,e)} assigning the values of the face in element e corresponding to the index limits kx1,kx2\ldots to the array wrk of size n*n*3.
+\textbf{getfaceinfo(mid,radius,wrk,ie,f)} Estimate the midpoint \verb|mid| and \verb|radius| of the face \verb|f| in element \verb|ie|. 
 
-\textbf{getsurfnorm(sn,ix,iy,iz,f,ie)} Providing the surface normal sn at point ix,iy,iz of element ie and face f 
+\textbf{createworkingarray(wrkbdry,wrksurf,mid,iter,beta,rad,f)} updating \verb|wrkbdry|, Get the points in \verb|wrksurf| within a distance \verb|rad| from the point \verb|mid|. 
 
-\textbf{calcerror(error,lambda,sn,wrk,radius)} calculate the distance from the initial gll-point to a given point on the surface.  
+\textbf{fix\_gll(ie,f)} Redistribute the GLL-points between face \verb|f| and the opposite face in element \verb|ie| to make sure that all points lie within the element.
 
-\textbf{interp\_up(iinterp,rinterp,error,k)} Update interpolation points
+\textbf{getface(kx1,kx2,ky1,ky2,kz1,kz2,wrk,n,ie)} assigning the values of the face in element \verb|ie| corresponding to the index limits \verb|kx1,kx2|\ldots to the array \verb|wrk(n,n,3)| .
 
-\textbf{set\_new\_pt(iinterp,rinterp,ix,iy,iz,e)} defining the position of the new gll-point on the surface
+\textbf{getsurfnorm(sn,ix,iy,iz,f,ie)} Providing the surface normal \verb|sn| at point \verb|ix,iy,iz| of element \verb|ie| and face \verb|f|. 
 
-\textbf{getlimits(k,n,kx1,kx2,ky1,ky2,kz1,kz2)} Get the index limits kx1,kx2\ldots corresponding to edge k with n gll-points.
+\textbf{calcerror(error,lambda,sn,wrk,radius)} calculate the distance \verb|error| from the initial GLL-point to a given point on the surface.  
 
-\textbf{setcoords(xq,yq,zq,xedge,yedge,zedge,nxl,k)} copy the updated edges xedge to the initial edges xq
+\textbf{interp\_up(iinterp,rinterp,n,error,k)} Update interpolation points, validate if the new point \verb|k| with distance \verb|error| from the current point is closer than the existing interpolation points in \verb|iinterp|. 
 
-\textbf{getcoords(xq,yq,zq,xedge,yedge,zedge,nxl,k)} copy the node information from the initial edge xq to xedge
+\textbf{set\_new\_pt(iinterp,rinterp,ix,iy,iz,ie)} defining the position of the new GLL-point on the surface.
+
+\textbf{getlimits(k,n,kx1,kx2,ky1,ky2,kz1,kz2)} Get the index limits \verb|kx1,kx2|\ldots corresponding to edge \verb|k| with \verb|n| GLL-points.
+
+\textbf{setcoords(xq,yq,zq,xedge,yedge,zedge,nxl,k)} copy the updated edges \verb|xedge| to the initial edges \verb|xq|.
+
+\textbf{getcoords(xq,yq,zq,xedge,yedge,zedge,nxl,k)} copy the node information from the initial edge \verb|xq| to \verb|xedge|.
+
+\textbf{checkcorner(is,ix,iy,iz,kz1,kz2,ky1,ky2,kx1,kx2)} Check if the current GLL-point is a corner.
+
+\textbf{addcorners(wrkbdry,iter,ie,f)} Add the corners of the element to \verb|wrkbdry| so that they can be used to do the projection of neighbouring points.
+
+\subsection{Additional functions for mshconvert}
+This section contains the additional functions written to supplement the script \verb|mshconvert.py|. In addition to the functions 
+listed here, minor extensions were also done in the already existing functions.
+
+\textbf{getreastart(name)} Use the first section of the file \verb|name.rea| as a template for the new \verb|.rea| file.
+
+\textbf{getreaend(name)} Use the last section of the file \verb|name.rea| as a template for the new \verb|.rea| file.
+
+\textbf{fixbc(name)} Fix lower case inflow boundary conditions.
+
+\textbf{fixthermalbc(name,iftemp)} Include thermal boundary conditions if the flag \verb|temperature=true|.
+
+\textbf{points2circ(x1,x2,x3)} Find the radius and midpoint of the circle correponding to 3 points on an arc.
+
+\textbf{write\_surface\_file()} Write the file \verb|surf.i|.
+
+\textbf{write\_surf\_list()} Write the file \verb|bdry.i|.
+
+\textbf{fixSIZE()} Add or change the variables that describes the sizes of \verb|surf.i| and \verb|bdry.i| in the local \verb|SIZE| file.

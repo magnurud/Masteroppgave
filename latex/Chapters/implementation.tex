@@ -211,8 +211,8 @@ fix_geom()
 \end{lstlisting}
 \endgroup
 % 
-To understand the algorithm a short description of the auxiliary functions is 
-given in the list below
+To understand the algorithm a short description of the functions is 
+given in the list below, for additional minor routines implemented see Appendix~\ref{surfaceprojection}
 \begin{itemize}
     \item create\_working\_surface(e,f) -- Loops through all the nodes in surf.i and adds the 
         surface coordinates within a certain radius to the center of face $f$ on element $e$ to the array wrk.
@@ -292,21 +292,37 @@ unstructured surface will be misplaced.
 With the routine described in \cref{surfpro} the surface is approximated accurately 
 by higher order polynomials. 
 %
+%\begin{figure}[h]
+%\centering
+  %\centerline{
+%\begin{minipage}{.5\textwidth}
+  %\includegraphics[width=1.0\linewidth]{Figures/helicopter.jpg}
+  %%\captionof{figure}{A figure}
+%\end{minipage}%
+%\begin{minipage}{.5\textwidth}
+  %\centering
+  %\includegraphics[width=1.0\linewidth]{Figures/mesh_ekeberg.jpg}
+%\end{minipage}
+%}
+  %\caption{Two examples of smooth surfaces with no analytical expression. 
+  %To the left is the body of a helicopter, to the right is the hill of Ekeberg.}
+  %\label{fig:surfpro}
+%\end{figure}
+%
+%
 \begin{figure}[h]
-\centering
-  \centerline{
-\begin{minipage}{.5\textwidth}
-  \includegraphics[width=1.0\linewidth]{Figures/helicopter.jpg}
-  %\captionof{figure}{A figure}
-\end{minipage}%
-\begin{minipage}{.5\textwidth}
-  \centering
-  \includegraphics[width=1.0\linewidth]{Figures/mesh_ekeberg.jpg}
-\end{minipage}
-}
-  \caption{Two examples of smooth surfaces with no analytical expression. 
-  To the left is the body of a helicopter, to the right is the hill of Ekeberg.}
-  \label{fig:surfpro}
+    \centering
+  \includegraphics[width=0.8\linewidth]{Figures/helicopter.jpg}
+	\caption{Body of a helicopter.}
+	\label{fig:layout}
+\end{figure}
+%
+%
+\begin{figure}[h]
+    \centering
+  \includegraphics[width=0.8\linewidth]{Figures/mesh_ekeberg.jpg}
+	\caption{Hill of Ekeberg.}
+	\label{fig:layout}
 \end{figure}
 %
 The algorithm restricts itself to relatively smooth surfaces, since the polynomial 
