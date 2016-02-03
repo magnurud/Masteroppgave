@@ -1,0 +1,18 @@
+\select@language {british}
+\contentsline {section}{\numberline {1}Introduction}{7}{section.1}
+\contentsline {subsection}{\numberline {1.1}CDP vs. Fluent}{8}{subsection.1.1}
+\contentsline {section}{\numberline {2}Mathematical formulation}{9}{section.2}
+\contentsline {subsection}{\numberline {2.1}Turbulence modelling}{10}{subsection.2.1}
+\contentsline {section}{\numberline {3}Computational details}{11}{section.3}
+\contentsline {subsection}{\numberline {3.1}Implementation in Fluent}{11}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Reading the inflow}{12}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Cases investigated}{13}{subsection.3.3}
+\contentsline {section}{\numberline {4}Results and discussion}{14}{section.4}
+\contentsline {subsection}{\numberline {4.1}Boundary layer creation}{15}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Neutrally buoyant gas}{16}{subsection.4.2}
+\contentsline {subsection}{\numberline {4.3}Performance testing - (removed/do again due to cluster instabilities?)}{19}{subsection.4.3}
+\contentsline {subsection}{\numberline {4.4}Testing of discretization schemes in Fluent}{20}{subsection.4.4}
+\contentsline {subsection}{\numberline {4.5}The effect of the subgrid-scale model}{23}{subsection.4.5}
+\contentsline {subsection}{\numberline {4.6}Grid size}{25}{subsection.4.6}
+\contentsline {section}{\numberline {5}Heavy gas}{26}{section.5}
+\contentsline {section}{\numberline {6}Conclusion}{28}{section.6}

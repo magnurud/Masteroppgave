@@ -1,0 +1,179 @@
+%==================================================================
+%
+%  LaTeX kommandoer for FFI malen (ffiarticle)
+%
+%==================================================================
+
+%===================================================================
+%
+% Forside
+%
+%===================================================================
+
+% Forfatter 
+% Settes inn med standard \author{} i hoveddokument
+ 
+% Tittel
+% Settes inn med standard \title{} i hoveddokument
+
+% Undertittel 
+%\subtitle{ (undertittel) } % Norsk dersom norsk språk er valgt, ellers engelsk 
+
+% Engelsk tittel
+\englishtitle{(englishtitle)} % Sett inn tekst KUN dersom norsk språk er valgt
+% NB! dersom engelsk språk settes tittel inn med \title{} i hoveddokument 
+
+
+%====================================================================
+%
+% Gradering av tittel 
+%
+%====================================================================
+
+%\unclassifiedtitle % Brukes for å gjøre tittelen ugradert i et gradert dokument
+%\restrictedtitle % Brukes for å gjøre tittelen begrenset i et gradert dokument
+
+%====================================================================
+%
+% Paragrafer i offentlighetsloven. Brukes for dokumenter gradert til
+% unntattOffentlighet eller fortrolig 
+%
+%====================================================================
+
+%\offentlighetsloven{\S5a, jfr forvaltningsloven \S13}
+
+%\offentlighetsloven{\S\ 13 jf fvl \S\ 13}% (Taushetsplikt)}                         
+%\offentlighetsloven{\S\ 14}% (Organinterne dokumenter)}                          
+%\offentlighetsloven{\S\ 15.1}% (Interne dokumenter utanfrå - underordna organ)}  
+%\offentlighetsloven{\S\ 15.2}% (Interne dokumenter utanfrå - råd og
+%vurderingar)}
+%\offentlighetsloven{\S\ 20}% (Utanrikspolitiske interesser)}                     
+%\offentlighetsloven{\S\ 21}% (Nasjonale forsvars- og tryggingsinteresser)}       
+%\offentlighetsloven{\S\ 22 - første punktum}% (Budsjettsaker - departementet)}   
+%\offentlighetsloven{\S\ 22 - annet punktum}% Budsjettsaker-                      
+                                % underliggende organ                           
+%\offentlighetsloven{\S\ 23.1}%Økonomi, lønns- og personalforvaltnign             
+%\offentlighetsloven{\S\ 23.3}%Anbud                                              
+%\offentlighetsloven{\S\ 25}%Tilsetjingssaker med mer   
+
+%=========================================================================
+%
+% Nedgraderingstid for et gradert dokument
+%
+%=========================================================================
+
+%\downgrad{5 YEARS}
+
+
+%=========================================================================
+% 
+% Datoer
+%
+%==========================================================================
+
+\dateofpublishingNo{Dag Måned År}
+\dateofpublishingEn{\today}
+
+%==========================================================================
+%
+% Tittelsidas bakside
+%
+%==========================================================================
+
+% Rapportnummeret
+\reportnumber{åårr/yyyyy}
+
+% Prosjektnummer
+\projectnumber{xxx}
+
+% ISBN-nummer
+%\isbnP{ISBN papirversjon}
+%\isbnE{ISBN elektronisk versjon}
+
+% Emneord
+
+\emneord{Neutral gas}
+\emneord{Large eddy simulation}
+\emneord{Urban street cayon}
+\emneord{Fluent performance test}
+\emneord{Fluent vs. CDP}
+\emneord{Fluent solver settings}
+
+%============================================================================
+%
+% Sjefer
+%
+%============================================================================
+
+%Adm. dir.
+\directorgeneral{John Mikal Størdal}
+%Avdelingssjef
+\divisionmanager{(avdelingssjef)}
+%Forskningssjef
+%\chiefscientist{(forskningssjef)}
+%Prosjektleder
+\projectleader{(prosjektleder)}
+
+
+%============================================================================
+% 
+% Sammendrag
+%
+%============================================================================
+
+% Norsk sammendrag
+
+\sammendrag{
+Denne rapporten undersøker hvor godt den kommersielle CFD-programvaren Fluent kan estimere dispersjon 
+av en nøytral gass. Resultatene er sammenlignet med data fra et vindtunnel-eksperiment
+og tilsvarende simuleringer i CDP\@. Alle simuleringer er utført ved hjelp av Large Eddy Simulations
+(LES). Det er også eksperimentert med ulike diskretiseringsskjemaer som ligger tilgjengelig i
+Fluent, effekten av en subgrid-scale (SGS) modell og bekreftelse av at nøyaktigheten øker med antall 
+frihetsgrader. Testproblemet som er brukt for sammenligning av data
+er dispersjon av en nøytral gass i en vindtunnel med fire kubiske klosser som representerer et urbant
+bygningsmiljø.
+
+I byplanlegging og større prosjekter innenfor infrastruktur er det viktig å ha kunnskap til hvordan 
+farlige gasser og væsker bør behandles. Å kunne simulere disse scenarioene tillater oss å være 
+bedre forberedt på uønskede hendelser som gasslekkasje fra en fabrikk. Valg av programvare og 
+matematisk formulering er viktig for å kunne tilby en korrekt løsning innenfor en akseptabel 
+tidsramme.
+
+Resultatene fra Fluent stemmer godt overens med de eksperimentelle dataene og simuleringene gjort
+i CDP\@. Bredden og høyden på gass-skyen som oppstår som en følge av gassutslippet 
+er konsistent med tidligere data. Ulike diskretiseringsskjemaer har et signifikant utslag på
+regnetiden og resultatene varierer også i noen grad. 
+Selv om tid kan bli spart ved å anvende andre innstillinger enn de som er anbefalt av Fluent, 
+tilsier resultatene at standardinstillingene i Fluent gir de mest nøyaktige resultatene.
+Simuleringene har vært gjennomført på opptil 120 kjerner og koden skalerer godt
+etterhvert som antall kjerner øker.
+
+}
+
+% English summary
+\abstractdocpage{This report investigates how well the commercial CFD software 
+Fluent can estimate dispersion of a neutrally buoyant gas. 
+The results obtained are compared with data from a wind-tunnel 
+experiment and similar simulations performed in CDP\@. All simulations are performed using 
+Large Eddy Simulation (LES). It is also experimented with different discretization schemes 
+available in Fluent, the effect of a subgrid-scale model as well as confirming that the
+accuracy increases with the degrees of freedom.
+The reference case used to compare the data is gas dispersion 
+of a neutral gas in a wind-tunnel with four cubic obstacles representing an urban street canyon. 
+
+In city planning and large projects within infrastructure it is important to have knowledge of how 
+hazardous gases and liquids should be handled. Being able to simulate these scenarios enable us 
+to be better prepared for unwanted events such as a factory gas leak. The choice of 
+software and mathematical formulation is important in order to provide a correct solution 
+within a reasonable amount of time.
+
+The results obtained using Fluent agree well with the experimental data and the CDP simulations, 
+The width and height of the plume generated by the gas release is consistent with the previous 
+results. There are some disagreements in the data measured close to the wall.
+The choice of discretization scheme has a significant impact on the computational time 
+and the results vary to some degree. Allthough the time can be saved by applying a non-default
+scheme the results indicate that the default setting in Fluent provides the most accurate solution.
+The simulations have been performed on up to 120 cores and the program scales very well as the amount of cores is increased.
+}
+% Forord
+%\forord{Forord er valgfritt}
