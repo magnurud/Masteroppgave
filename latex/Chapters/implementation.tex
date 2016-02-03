@@ -23,15 +23,17 @@ in the encounter with complex geometries.
 As shown in \fref{fig:mesh} the coarse element grid is created
 in ICEM and then converted using the existing python script \verb|mshconvert| while the
 distribution of GLL-nodes and the simulation itself was performed in Nek5000.
-\verb|.rea| contains exact information about the corners,
+The input file \verb|.rea| contains exact information about the corners,
 limited information about the edges, and no information about the faces of the elements.
 Hence the distribution of the GLL-nodes on a non-regular surface requires data exceeding the one in \verb|.rea|.
 
 Two advancements have been made in this thesis regarding the work with irregular geometries in Nek5000.
-The first part is a fully automatic procedure which projects any edge onto a circle. This is a
-convenient method when working with cylinder geometries and other similar shapes. The second part
-is an attempt to include general boundary surfaces by creating a semi-automatic procedure allowing 
-the user to represent any geometry with polynomials of the same order as applied for the basis functions.
+The first part is a fully automatic procedure that projects any edge onto a circle segment. This is a
+convenient method when working with cylinder geometries and other similar shapes. An equivalent routine 
+exists for 2D geometry, and some special cases of 3D geometry as well. The routine created for this thesis is 
+however a general method in 3D that allows an edge to be specified as a circle segment in any plane independent of the coordinate axes.
+The second part is an attempt to improve the possibilities to work with general boundary surfaces by creating a semi-automatic procedure allowing 
+the user to represent any geometry with polynomials of the same order as the basis functions for the velocity.
 The algorithms are presented in \cref{implementation}. 
 
 Propagation of curved geometry was also experimented with. 
@@ -59,13 +61,13 @@ By defining the GLL-nodes on the curved edges such that they correspond to an ar
 the internal nodes accordingly. 
 
 The curved edges are specified in \verb|.rea| and have until now been read as a second degree polynomial or as a part of a 
-spherical shell. The routine \verb|xyzarc()| was created to process curved edges specified in \verb|.rea| with a radius and center.
+spherical shell. The routine \verb|xyzarc()| was created to process curved edges specified in \verb|.rea| with a radius and a center.
 It can be considered as an alternative to the already implemented \verb|xyzquad()| in \verb|genxyz.f| which generates curved edges 
 represented as second order polynomials.
 The algorithm is described below and \fref{fig:curvature} gives a visual representation of the situation.
 
 The two end nodes of the edge are denoted $a$ and $b$. 
-The mid node of the edge is named $c$, while 
+The midpoint of the linear edge is named $c$, while 
 %$s$ will be the arc length, 
 $\theta$ is the full angle of the circle sector,
 $cc$ is the center coordinates, 
@@ -97,21 +99,21 @@ The remaining operation is to call the Gordon Hall algorithm and create the inte
 %
 \begin{figure}[h]
     \centering
-    \includegraphics[width = 0.4\textwidth]{Figures/curvature.pdf}
+    \includegraphics[width = 0.6\textwidth]{Figures/curvature.pdf}
     \caption{A sketch of the curved edge and the variables necessary to calculate the projection}
     \label{fig:curvature}
 \end{figure}
 %
 To make this implementation fully automatic a small change in the script \verb|mshconvert| was also necessary. 
-Since ICEM provides the midpoints of the curved edges, a function was added to convert the midpoint information 
-originally provided to a circle center and its corresponding radius.
+Since ICEM provides the midpoints of the curved edges, a function \verb|points2circ| was added to convert the midpoint information 
+originally provided to a circle center and its corresponding radius. 
 \section{General surface projection}\label{surfpro}
 The routine \verb|xyzarc()| enables the user to more accurately represent circular edges.
 For more complex geometry such as actual terrain and other surfaces without any analytic
-expression the large element sizes make the geometrical representation difficult. 
+expression, large elements make the geometrical representation difficult. 
 Theoretically the GLL-points can be projected onto a non-analytical surface, but since 
 the element mesh is created in a different program the necessary information is not available
-to Nek5000. The idea is to create an additional fine surface mesh in ICEM such
+to Nek5000. The idea is to create an additional surface mesh in ICEM such
 that the nodes in this mesh describes the surface fine enough to distribute the GLL-nodes correctly in Nek5000.
 During the initialization of the mesh in Nek5000 the program can read this information and project the GLL-nodes onto 
 the provided surface. 
@@ -124,31 +126,31 @@ The routine was made as automatic as possible, and can be summarized in these th
 \end{enumerate}
 
 To explain the input parameters, let us first agree upon some naming conventions. 
-The set of surface points is denoted $S$, while $f_e$ will denote the set of points 
+The set of surface points is denoted $S$, while $f_e$ denotes the set of points 
 in element $e$ that belong to the face that is going to be projected onto the surface described by $S$.
 The number of interpolation points is denoted $n$, which has a maximum upper limit of three,
 since the surface mesh is recommended to be a tetrahedra mesh. Setting $n=1$ simply projects 
 a point in $f_e$ to the closest one in $S$.
 The interpolation algorithm used for this experiment is an inverse distance interpolation
 which applies the inverse distance squared as weights. The distance between a point
-$\mathbf{x}\in f_e$, and a point $\mathbf{y} \in S $ is given as 
+$\mathbf{x}_0\in f_e$, and a point $\mathbf{x}_i \in S $ is given as 
 \begin{align}
-    ||\mathbf{x}-\mathbf{y}||_{a} = a ||\mathbf{x}-\mathbf{y}||_{l^2}
-    + (1-a)||\mathbf{n} - \frac{(\mathbf{x}-\mathbf{y})}{||\mathbf{x}-\mathbf{y}||_{l^2}}||_{l^2},
+    ||\mathbf{x}_0-\mathbf{x}_i||_{a} = a ||\mathbf{x}_0-\mathbf{x}_i||_{l^2}
+    + (1-a)||\mathbf{n}_0 - \frac{(\mathbf{x}_0-\mathbf{x}_i)}{||\mathbf{x}_0-\mathbf{x}_i||_{l^2}}||_{l^2},
     \label{eq:distancenorm}
 \end{align}
-with $\mathbf{n}$ as the surface normal of the initial element face in the point $\mathbf{x}$.
+with $\mathbf{n}_0$ as the surface unit normal vector of the initial element face in the point $\mathbf{x}_0$.
 
-The last parameter is provided to determine the size of the working array. 
+The last parameter is provided to determine the size of the working array,
+which is denoted \verb|wrk| in the pseudo code for this routine. 
 The projection is done element wise, and to avoid unnecessary calculations a subset $S_e \subset S$
 is used in~\eref{eq:distancenorm}.
 Let $\mathbf{x}_e$ be the point at the center of face $f_e$
 with radius $r_e$, the subset is then formulated as  
 $S_e = \left\{ \mathbf{x} \in S , ||\mathbf{x}_e-\mathbf{x}|| < b \cdot r_e \right\}$.
 
-Let $\left\{ \mathbf{x} \right\}_m$ be the $m$ closest in the sense of the norm defined by~\eref{eq:distancenorm},
-and let $\mathbf{x}_0$ be the original point before the projection is performed. The surface normal in point
-$\mathbf{x}_0$ is denoted $\mathbf{n}_0$. The new point $\mathbf{x}^*$ is chosen such that it minimizes the distance 
+Let $\left\{ \mathbf{x} \right\}_m$ be the $m$ closest points to $\mathbf{x}_0$ in the sense of the norm
+defined by~\eref{eq:distancenorm}. The new point $\mathbf{x}^*$ is chosen such that it minimizes the distance 
 to the points $\left\{ \mathbf{x} \right\}_m$ along the line $\mathbf{x}_0+k\mathbf{n}_0$. Mathematically this can be stated as, 
 \begin{align}
     \begin{split}
@@ -170,16 +172,16 @@ To do this let us define the vectors $\mathbf{\tilde x}_i=\mathbf{x}_i-\mathbf{x
     \label{eq:minimizing}
 \end{align}
 %
-An important argument for projecting the points in this manner is that for a plane element face two 
-neighbouring GLL-nodes can never end up on the same point. 
+An important argument for projecting the points in this manner is that for a plane element face all nodes move parallel
+to each other thus maintaining their relative position.
 
 In addition to the standard Nek5000 library the file \verb|surfpro.f| needs to be added to 
 the folder \verb|trunk/nek/| along with all the other scripts applied by Nek5000.
 This implementation could be done directly in \verb|.usr|, but it is of practical 
 interest to keep this file as tidy as possible.
 Two external files are also generated by the modified \verb|mshconvert| script for the algorithm to work.
-\verb|surf.i| contains all the coordinates to the points on the refined surface. 
-\verb|bdry.i| contains the element, and face number to all the faces to be projected onto the surface.
+The file \verb|surf.i| contains all the coordinates to the points on the refined surface, while 
+the element and face number of all the faces that are going to be projected are written to \verb|bdry.i|. 
 
 The algorithm is best explained through a simple box with a non-regular floor. 
 An example of this situation is the hill of Ekeberg. 
@@ -191,13 +193,16 @@ order to describe the surface for all the GLL-points that belong to the boundary
 assumes that the surface mesh is equidistantly distributed whereas the GLL-nodes 
 are denser along the boundaries of each element, $\Delta x_{min} = \mathcal{O}(1/N^2)$. 
 
+\newpage
 The pseudo code for the algorithm is listed below with the temporal costs commented out.
 %
 \begingroup
 \fontsize{12pt}{14pt}
 \begin{lstlisting}[escapechar=|,frame=none]
-do e,f in bdry.i   !O(E)
-  wrk = create_working_surface(e,f)  !O(EN^4) 
+iwrkelem = read(bdry.i)
+wrksurf = read(surf.i)
+do e,f in iwrkelem   !O(E)
+  wrk = create_working_surface(e,f,wrksurf)  !O(EN^4) 
   do i in GLL-nodes   !O(N^2)
     interp = init_interpolation_array() !O(1) 
     do j in wrk   !O(N^4)
@@ -212,21 +217,22 @@ fix_geom()
 \endgroup
 % 
 To understand the algorithm a short description of the functions is 
-given in the list below, for additional minor routines implemented see Appendix~\ref{surfaceprojection}
+given in the list below, note that these are idealized routines simplified to 
+explain the flow of the total algorithm, for all auxiliary subroutines implemented see Appendix~\ref{surfaceprojection}.
 \begin{itemize}
-    \item create\_working\_surface(e,f) -- Loops through all the nodes in surf.i and adds the 
+    \item create\_working\_surface(e,f,wrksurf) -- Loops through all the nodes in $wrksurf$ and adds the 
         surface coordinates within a certain radius to the center of face $f$ on element $e$ to the array wrk.
         This saves time in the search for interpolation points for each GLL-node.
     \item init\_interpolation\_array() -- initializing the array containing the closest 
         points on the surface for the current GLL-node. 
-    \item update\_int\_array(interp,wrk(j)) -- compares the current surface point to the 
-        already existing interpolation points and adds it to the list if it is found to 
-        be closer to the initial GLL-node.
+    \item update\_int\_array(interp,wrk(j)) -- compares the surface point $j$ to the 
+        already existing interpolation points in $interp$ and adds it to the list if it is found to 
+        be closer to the $i$th GLL-node.
     \item set\_new\_point(interp,wrk,i,e,f) -- updating the new GLL-point determined by the 
         surface points in interp.
     \item fix\_GLL() -- There is a risk after distributing the GLL-points on the surface that
         some of the internal GLL-points falls outside the element. This function distributes 
-        all internal GLL-points correctly between the newly projected face and the opposite.
+        all internal GLL-points correctly between the projected face and the opposite.
     \item fix\_geom() -- An already existing Nek routine that makes sure the manipulation of the 
         geometry is consistent with neighbouring elements, and distributes the internal GLL-points correctly.
 \end{itemize}
@@ -236,6 +242,9 @@ to the total runtime of the program it is desirable to have a fast algorithm. An
 important to be made is the amount of extra storage space needed for this algorithm.
 By analysing the pseudo code the time of the algorithm should be of order $\mathcal{O}(E(EN^4+N^2N^4+N^3))=\mathcal{O}(EN^4(E+N^2))$
 and the amount of additional storage space will be of order $\mathcal{O}(EN^4+E+N^2)=\mathcal{O}(EN^4)$.
+By reading \verb|surf.i| directly in \verb|create_working_surface| the amount of storage space drops to $\mathcal{O}(E+N^2)$,
+but this requires opening and reading through the entire file for each element.
+
 
 The routine attempts to be as automatic as possible and the only implementation necessary is 
 a call from \verb|usrdat2| with 3 input variables.
@@ -279,11 +288,13 @@ further work on this algorithm will be discussed in~\cref{discussion}.
     %int a[4];
     %p = a;
 %\end{lstlisting}
+\newpage
 \subsection{Test of the projection routine}
 To test the algorithm described in~\cref{surfpro} the hill of Ekeberg in Oslo 
 and a helicopter body was used. These surfaces were loaded as \verb|.tin| files in ICEM and coarse hex meshes were created 
-around the surfaces. The domains are presented in given in 
-\fref{fig:surfpro}, notice the coarse element sizes in the figures.
+around the surfaces. The domains are presented in 
+\fref{fig:heli} and~\ref{fig:hill}, notice the coarse element sizes in the figures.
+Especially in the hill of Ekeberg the mesh edges clearly give a bad representation of the actual geometry.
 These geometries were chosen because they resemble a typical problem with 
 spectral elements. Since the initial element mesh is relatively coarse it does not capture all 
 the details in the geometry and the GLL-nodes distributed on the faces corresponding to the 
@@ -312,24 +323,24 @@ by higher order polynomials.
 %
 \begin{figure}[h]
     \centering
-  \includegraphics[width=0.8\linewidth]{Figures/helicopter.jpg}
+  \includegraphics[width=0.7\linewidth]{Figures/helicopter.jpg}
 	\caption{Body of a helicopter.}
-	\label{fig:layout}
+	\label{fig:heli}
 \end{figure}
 %
 %
 \begin{figure}[h]
     \centering
-  \includegraphics[width=0.8\linewidth]{Figures/mesh_ekeberg.jpg}
+  \includegraphics[width=0.7\linewidth]{Figures/mesh_ekeberg.jpg}
 	\caption{Hill of Ekeberg.}
-	\label{fig:layout}
+	\label{fig:hill}
 \end{figure}
 %
 The algorithm restricts itself to relatively smooth surfaces, since the polynomial 
 describing the surface is typically of order $P \approx 7$.
 %
-\section{Spatial averaging routine}
-A dynamic Smagorinsky model has previously been implemented in Nek5000 for flow in a channel. 
+\section{Spatial averaging routine}\label{avgroutine}
+The dynamic Smagorinsky model has previously been implemented in Nek5000 for flow in a channel. 
 The SGS model as described in \cref{description} depends on an averaging routine to calculate
 the dynamic Smagorinsky constant. The previous implementation in Nek5000 applies a planar average routine
 in addition to averaging in time. The planar averaging is based on the assumption that the Smagorinsky 

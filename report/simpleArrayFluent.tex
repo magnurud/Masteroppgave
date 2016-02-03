@@ -596,28 +596,32 @@ The fluctuation of the released gas concentration is plotted against the wind-tu
 Also in this plot the simulated and experimental data give similar results. 
 One can clearly see how the simulation captures the structures of the fluctuation. 
 %
-\subsection{Performance testing - (removed/do again due to cluster instabilities?)}
+\subsection{Performance testing}
 A small performance test was performed to evaluate Fluents ability to run on multiple cores.
 \begin{table}[h]
 	\centering
 	\begin{tabular}{|c|c|c|c|}
 		\hline
 		Cores & Time (h)& Speedup per iteration  & Total speedup \\		\hline
-		40		& 94,7& 1				 & 1						 \\
-		80		& 51,6& 1,9			 & 1,8					 \\
-		120		& 25,8& 2,9			 & 3,7					 \\	\hline
+		%40		& 94,7& 1				 & 1						 \\
+		%80		& 51,6& 1,9			 & 1,8					 \\
+		%120		& 25,8& 2,9			 & 3,7					 \\	\hline
+		20		& 18.97& 1    		     & 1.   					 \\
+		40		& 10.80& 1.8   		 & 1.8  					 \\
+		100		& 3.46& 4.4			 & 5.5					 \\
+		120		& 2.93& 5.3			 & 6.5					 \\	\hline
 	\end{tabular}
 	\caption{Small performance test on 4000 iterations.}
 	\label{tab:perfscaling}
 \end{table}
-In table~\ref{tab:perfscaling} the simulations are not executed on the same interval in time, but the 
-flow and gas-release is well-developed in all 3 cases.
-This can affect the convergence-rate and thus also the total run-time.
-The data does however indicate a good speedup for a number of cores in this range. 
-For $120$ cores the convergence went drastically faster than for the two others, this is what
-cause the surprisingly good total speedup. A possible explanation could be that the 
-local preconditioner used in the calculation results in a
+In table~\ref{tab:perfscaling} the simulations are performed on 0.8 s of flow time.
+The total speedup is actually better than what is considered optimal speedup for 100 and 120 processors.
+This. The solution actually converges faster for a higher number of processors.
+This somewhat surprising event is what causes the super optimal speedup. 
+can affect the convergence-rate and thus also the total run-time.
+A possible explanation could be that the local preconditioner used in the calculation results in a
 faster convergence when the problem is decomposed to 120 cores. 
+The speedup per iteration is also very good.
 %
 \subsection{Testing of discretization schemes in Fluent}\label{chap:perf}
 As mentioned in Section~\ref{Fluent}, several of the solution methods have been compared and a small 
@@ -818,7 +822,11 @@ Along the first two measurment lines in figure~\ref{fig:cHheavy}, Fluent and CDP
 provides very similar results. And the measurement at $x = 0$ shows decent similarity 
 to the experimental data as well. Further downstream Fluent fails to predict the middle 
 peak which is present in both the experiment and the simulations done in CDP. The 
-concentration is also consistently underestimated.
+concentration is also consistently underestimated. The first measurement is overestimated 
+by both Fluent and CDP and is probably caused by the sharp concentration gradient in $z$-direction.
+The first plot in figure~\ref{fig:cVheavy} reveals that a small deviation in $z$ leads to a large
+change in concentration. This is one possible explanation for the seemingly overestimation of concentration 
+along the first horizontal measurment line.
 %
 \begin{figure}[!h]
     \centering

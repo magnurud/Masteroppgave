@@ -9,7 +9,7 @@
 \BOOKMARK [1][-]{section.4}{Results and discussion}{}% 9
 \BOOKMARK [2][-]{subsection.4.1}{Boundary layer creation}{section.4}% 10
 \BOOKMARK [2][-]{subsection.4.2}{Neutrally buoyant gas}{section.4}% 11
-\BOOKMARK [2][-]{subsection.4.3}{Performance testing - \(removed/do again due to cluster instabilities?\)}{section.4}% 12
+\BOOKMARK [2][-]{subsection.4.3}{Performance testing}{section.4}% 12
 \BOOKMARK [2][-]{subsection.4.4}{Testing of discretization schemes in Fluent}{section.4}% 13
 \BOOKMARK [2][-]{subsection.4.5}{The effect of the subgrid-scale model}{section.4}% 14
 \BOOKMARK [2][-]{subsection.4.6}{Grid size}{section.4}% 15

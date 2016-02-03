@@ -1,12 +1,11 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.6.15)  3 FEB 2016 14:40
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.10.26)  3 FEB 2016 23:36
 entering extended mode
  restricted \write18 enabled.
- file:line:error style messages enabled.
  %&-line parsing enabled.
 **simpleArrayFluent.tex
 (./simpleArrayFluent.tex
 LaTeX2e <2011/06/27>
-Babel <3.9h> and hyphenation patterns for 78 languages loaded.
+Babel <3.9h> and hyphenation patterns for 26 languages loaded.
 (./ffiarticle.cls
 Document Class: ffiarticle 2012/08/23 FFI report class
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
@@ -37,6 +36,8 @@ File: babel.def 2013/12/03 3.9h Babel common definitions
 \babel@savecnt=\count87
 \U@D=\dimen103
 )
+\l@british = a dialect from \language\l@english 
+\l@UKenglish = a dialect from \language\l@english 
 \l@canadian = a dialect from \language\l@american 
 \l@australian = a dialect from \language\l@british 
 \l@newzealand = a dialect from \language\l@british 
@@ -684,10 +685,10 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 
 ]
 Package epstopdf Info: Source file: <figures/layout.eps>
-(epstopdf)                    date: 2015-07-17 15:10:37
+(epstopdf)                    date: 2016-02-03 23:06:33
 (epstopdf)                    size: 207095 bytes
 (epstopdf)             Output file: <figures/layout-eps-converted-to.pdf>
-(epstopdf)                    date: 2015-07-17 15:11:11
+(epstopdf)                    date: 2016-02-03 23:06:33
 (epstopdf)                    size: 25652 bytes
 (epstopdf)             Command: <repstopdf --outfile=figures/layout-eps-convert
 ed-to.pdf figures/layout.eps>
@@ -719,10 +720,10 @@ Underfull \vbox (badness 1708) has occurred while \output is active []
 
  [8 <./figures/ref2.pdf>] [9]
 Package epstopdf Info: Source file: <figures/b8inst.eps>
-(epstopdf)                    date: 2015-07-10 14:49:30
+(epstopdf)                    date: 2016-02-03 23:06:33
 (epstopdf)                    size: 997702 bytes
 (epstopdf)             Output file: <figures/b8inst-eps-converted-to.pdf>
-(epstopdf)                    date: 2015-07-10 15:07:11
+(epstopdf)                    date: 2016-02-03 23:06:33
 (epstopdf)                    size: 82916 bytes
 (epstopdf)             Command: <repstopdf --outfile=figures/b8inst-eps-convert
 ed-to.pdf figures/b8inst.eps>
@@ -829,7 +830,7 @@ Package pdftex.def Info: figures/cfluctH.pdf used on input line 589.
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [19 <./figures/cfluctH.pdf>]
-Overfull \hbox (35.62482pt too wide) in paragraph at lines 630--644
+Overfull \hbox (35.62482pt too wide) in paragraph at lines 634--648
  [][] 
  []
 
@@ -837,14 +838,14 @@ Overfull \hbox (35.62482pt too wide) in paragraph at lines 630--644
 File: figures/perftest.pdf Graphic file (type pdf)
 
 <use figures/perftest.pdf>
-Package pdftex.def Info: figures/perftest.pdf used on input line 652.
+Package pdftex.def Info: figures/perftest.pdf used on input line 656.
 (pdftex.def)             Requested size: 347.12495pt x 315.57947pt.
  [21 <./figures/perftest.pdf>]
 <figures/default-not.pdf, id=353, 397.485pt x 505.89pt>
 File: figures/default-not.pdf Graphic file (type pdf)
 
 <use figures/default-not.pdf>
-Package pdftex.def Info: figures/default-not.pdf used on input line 698.
+Package pdftex.def Info: figures/default-not.pdf used on input line 702.
 (pdftex.def)             Requested size: 347.12495pt x 441.81125pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -854,14 +855,14 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 File: figures/sgsmodel.pdf Graphic file (type pdf)
 
 <use figures/sgsmodel.pdf>
-Package pdftex.def Info: figures/sgsmodel.pdf used on input line 749.
+Package pdftex.def Info: figures/sgsmodel.pdf used on input line 753.
 (pdftex.def)             Requested size: 347.12495pt x 441.81125pt.
  [24 <./figures/sgsmodel.pdf>]
 <figures/ref-coarse.pdf, id=382, 397.485pt x 505.89pt>
 File: figures/ref-coarse.pdf Graphic file (type pdf)
 
 <use figures/ref-coarse.pdf>
-Package pdftex.def Info: figures/ref-coarse.pdf used on input line 768.
+Package pdftex.def Info: figures/ref-coarse.pdf used on input line 772.
 (pdftex.def)             Requested size: 347.12495pt x 441.81125pt.
 
 Underfull \vbox (badness 1881) has occurred while \output is active []
@@ -871,35 +872,35 @@ Underfull \vbox (badness 1881) has occurred while \output is active []
 File: figures/cHheavy.pdf Graphic file (type pdf)
 
 <use figures/cHheavy.pdf>
-Package pdftex.def Info: figures/cHheavy.pdf used on input line 810.
+Package pdftex.def Info: figures/cHheavy.pdf used on input line 814.
 (pdftex.def)             Requested size: 303.73184pt x 386.58002pt.
  [26 <./figures/cHheavy.pdf>]
-<figures/cVheavy.pdf, id=405, 397.485pt x 505.89pt>
+<figures/cVheavy.pdf, id=406, 397.485pt x 505.89pt>
 File: figures/cVheavy.pdf Graphic file (type pdf)
  <use figures/cVheavy.pdf>
-Package pdftex.def Info: figures/cVheavy.pdf used on input line 825.
+Package pdftex.def Info: figures/cVheavy.pdf used on input line 833.
 (pdftex.def)             Requested size: 303.73184pt x 386.58002pt.
 
 [27 <./figures/cVheavy.pdf>] [28] (./simpleArrayFluent.bbl)
 
 AED: lastpage setting LastPage
 [29]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 886.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 886.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 894.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 894.
  (./simpleArrayFluent.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 886.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 886.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 894.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 894.
 Package rerunfilecheck Info: File `simpleArrayFluent.out' has not changed.
-(rerunfilecheck)             Checksum: 929134E0B8EFE668247E5AE15C85CFF6;1204.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 886.
+(rerunfilecheck)             Checksum: 904E6EEAD1EC3F99734A901569A60908;1151.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 894.
  ) 
 Here is how much of TeX's memory you used:
- 12347 strings out of 493304
- 196294 string characters out of 6139871
- 379412 words of memory out of 5000000
- 15322 multiletter control sequences out of 15000+600000
+ 12350 strings out of 494465
+ 196331 string characters out of 6166360
+ 376390 words of memory out of 5000000
+ 15110 multiletter control sequences out of 15000+600000
  77251 words of font info for 123 fonts, out of 8000000 for 9000
- 957 hyphenation exceptions out of 8191
+ 350 hyphenation exceptions out of 8191
  43i,20n,45p,557b,507s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-rmtt.enc}{/usr/share/texmf/fonts/enc/
 dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr
@@ -918,10 +919,10 @@ f/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy
 8.pfb></usr/share/texmf/fonts/type1/public/lm/lmtk10.pfb></usr/share/texmf/font
 s/type1/public/lm/lmtt10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtti10.pf
 b>
-Output written on simpleArrayFluent.pdf (29 pages, 1227553 bytes).
+Output written on simpleArrayFluent.pdf (29 pages, 1226611 bytes).
 PDF statistics:
- 517 PDF objects out of 1000 (max. 8388607)
- 438 compressed objects within 5 object streams
+ 518 PDF objects out of 1000 (max. 8388607)
+ 439 compressed objects within 5 object streams
  101 named destinations out of 1000 (max. 500000)
  25323 words of extra memory for PDF output out of 29859 (max. 10000000)
 

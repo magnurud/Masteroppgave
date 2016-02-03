@@ -119,7 +119,7 @@
 \setlength{\captionmargin}{20pt}
 \newcommand{\fref}[1]{Figure~\ref{#1}}
 \newcommand{\tref}[1]{Table~\ref{#1}}
-\newcommand{\eref}[1]{Eq.(\ref{#1})}
+\newcommand{\eref}[1]{Eq. (\ref{#1})}
 \newcommand{\cref}[1]{Chapter~\ref{#1}}
 \newcommand{\sref}[1]{Section~\ref{#1}}
 \newcommand{\aref}[1]{Appendix~\ref{#1}}
@@ -297,18 +297,18 @@
   \thispagestyle{empty}
   \begin{center}
     \setlength{\parskip}{0pt}
-    {\normalsize \UNIVNAME \par} % University name in capitals
-    \bigskip
+ %  {\normalsize \UNIVNAME \par} % University name in capitals
+  %  \bigskip
     {\huge{\textit{Abstract}} \par}
     \bigskip
     %{\normalsize \facname \par} % Faculty name
     %{\normalsize \deptname \par} % Department name
     %\bigskip
-    {\normalsize \degreename\par} % Degree name
+ %   {\normalsize \degreename\par} % Degree name
     \bigskip
-    {\normalsize\bf \@title \par} % Thesis title
+ %   {\normalsize\bf \@title \par} % Thesis title
     \medskip
-    {\normalsize by \authornames \par} % Author name
+  %  {\normalsize by \authornames \par} % Author name
     \bigskip
   \end{center}
 }

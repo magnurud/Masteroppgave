@@ -10,7 +10,7 @@
 \contentsline {section}{\numberline {4}Results and discussion}{14}{section.4}
 \contentsline {subsection}{\numberline {4.1}Boundary layer creation}{15}{subsection.4.1}
 \contentsline {subsection}{\numberline {4.2}Neutrally buoyant gas}{16}{subsection.4.2}
-\contentsline {subsection}{\numberline {4.3}Performance testing - (removed/do again due to cluster instabilities?)}{19}{subsection.4.3}
+\contentsline {subsection}{\numberline {4.3}Performance testing}{19}{subsection.4.3}
 \contentsline {subsection}{\numberline {4.4}Testing of discretization schemes in Fluent}{20}{subsection.4.4}
 \contentsline {subsection}{\numberline {4.5}The effect of the subgrid-scale model}{23}{subsection.4.5}
 \contentsline {subsection}{\numberline {4.6}Grid size}{25}{subsection.4.6}

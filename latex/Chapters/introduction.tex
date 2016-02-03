@@ -15,9 +15,9 @@
 %solutions of the incompressible N-S equations.  
 
 The physics regarding fluids in motion are described mathematically by the Navier-Stokes (N-S) equations. 
-They are a result of the conservation of momentum and mass and are stated in~\eref{eq:NS}. For a complete 
+They are a result of the conservation of momentum and mass and are stated in~\eref{eq:NS}.
+This thesis is restricted to numerical solutions of the incompressible N-S equations. For a complete 
 description of the necessary assumptions and simplifications it is referred to~\cite{White}.  
-This thesis is restricted to numerical solutions of the incompressible N-S equations.
 An important dimensionless quantity is the Reynolds number $Re$, which describes the ratio between 
 momentum forces and viscous forces. For large Reynolds numbers the flow becomes turbulent and a 
 large range of scales needs to be resolved. A lot of research has been devoted to determine the
@@ -64,8 +64,9 @@ and~\ref{results}.
         \begin{itemize}
             \item Grid generation.
             \item Setup the problem with necessary input and output.
-            \item Implementation of the spatial avering routine for the dynamic Smagorinsky model.
+            \item Implementation of the spatial averaging routine for the dynamic Smagorinsky model.
             \item Simulations with Nek5000 with different grids, polynomial order,stabilization methods.
         \end{itemize}
+    \item Analytical work with the numerical filter.
 \end{itemize}
 

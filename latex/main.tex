@@ -177,40 +177,40 @@
 %	TITLE PAGE
 %----------------------------------------------------------------------------------------
 
-\begin{titlepage}
-\begin{center}
+%\begin{titlepage}
+%\begin{center}
 
-\textsc{\LARGE \univname}\\[1.5cm] % University name
-\textsc{\Large Project TMA4500}\\[0.5cm] % Thesis type
+%\textsc{\LARGE \univname}\\[1.5cm] % University name
+%\textsc{\Large Project TMA4500}\\[0.5cm] % Thesis type
 
-\HRule \\[0.4cm] % Horizontal line
-{\huge \bfseries \ttitle}\\[0.4cm] % Thesis title
-\HRule \\[1.5cm] % Horizontal line
+%\HRule \\[0.4cm] % Horizontal line
+%{\huge \bfseries \ttitle}\\[0.4cm] % Thesis title
+%\HRule \\[1.5cm] % Horizontal line
  
-\begin{minipage}{0.4\textwidth}
-\begin{flushleft} \large
-\emph{Author:}\\
-\href{http://www.johnsmith.com}{\authornames} % Author name - remove the \href bracket to remove the link
-\end{flushleft}
-\end{minipage}
-\begin{minipage}{0.4\textwidth}
-\begin{flushright} \large
-\emph{Supervisor:} \\
-\href{http://www.jamessmith.com}{\supname} % Supervisor name - remove the \href bracket to remove the link  
-\end{flushright}
-\end{minipage}\\[3cm]
+%\begin{minipage}{0.4\textwidth}
+%\begin{flushleft} \large
+%\emph{Author:}\\
+%\href{http://www.johnsmith.com}{\authornames} % Author name - remove the \href bracket to remove the link
+%\end{flushleft}
+%\end{minipage}
+%\begin{minipage}{0.4\textwidth}
+%\begin{flushright} \large
+%\emph{Supervisor:} \\
+%\href{http://www.jamessmith.com}{\supname} % Supervisor name - remove the \href bracket to remove the link  
+%\end{flushright}
+%\end{minipage}\\[3cm]
  
-%\large \textit{A thesis submitted in fulfilment of the requirements\\ for the degree of \degreename}\\[0.3cm] % University requirement text
-%\textit{in the}\\[0.4cm]
-\groupname\\\deptname\\[2cm] % Research group name and department name
+%%\large \textit{A thesis submitted in fulfilment of the requirements\\ for the degree of \degreename}\\[0.3cm] % University requirement text
+%%\textit{in the}\\[0.4cm]
+%\groupname\\\deptname\\[2cm] % Research group name and department name
  
-{\large \today}\\[4cm] % Date
-%\includegraphics{Logo} % University/department logo - uncomment to place it
+%{\large \today}\\[4cm] % Date
+%%\includegraphics{Logo} % University/department logo - uncomment to place it
  
-\vfill
-\end{center}
+%\vfill
+%\end{center}
 
-\end{titlepage}
+%\end{titlepage}
 %%fakesection - Declaration of Authorship
 %----------------------------------------------------------------------------------------
 %	DECLARATION PAGE
@@ -272,14 +272,14 @@ and the simulation time is reported to be approximately five times faster for Ne
 Two routines have been implemented to improve the work with complex geometries, and a laminar test case
 is used to confirm the importance of this work and the spectral accuracy of the solver.
 
-\vfill
+%\vfill
 
-Simuleringer av turbulente strømninger og spredning av gass er gjort i Nek5000, med og uten en 
-subgrid-scale modell. Resultatene er sammenlignet med vindtunnel eksperimenter og simuleringer i CDP.
-Disse sammenligningene viser god overenstemmelse mellom referenseløsningene og resultatene fra denne oppgaven,
-simuleringstiden kan i tillegg rapporteres å være omlag fem ganger raskere med Nek5000.
-To rutiner er skrevet for å forbedre arbeidet med komplekse geometrier, og et laminært test case 
-er brukt til å bekrefte viktigheten av dette arbeidet og den spektrale konvergensen til løseren.
+%Simuleringer av turbulente strømninger og spredning av gass er gjort i Nek5000, med og uten en 
+%subgrid-scale modell. Resultatene er sammenlignet med vindtunnel eksperimenter og simuleringer i CDP.
+%Disse sammenligningene viser god overenstemmelse mellom referenseløsningene og resultatene fra denne oppgaven,
+%simuleringstiden kan i tillegg rapporteres å være omlag fem ganger raskere med Nek5000.
+%To rutiner er skrevet for å forbedre arbeidet med komplekse geometrier, og et laminært test case 
+%er brukt til å bekrefte viktigheten av dette arbeidet og den spektrale konvergensen til løseren.
 }
 
 \clearpage % Start a new page
@@ -405,7 +405,7 @@ numerical expertise and requested geometry.
 %$\mathbf{w} = [w_1 \; w_2 ] $ & Negative gradient of $u$ \\
 $\mathbf{u}$ &  the velocity field \\ 
 $p$ & pressure \\
-$\mathbf{f}$ & source function / loading function \\
+$\mathbf{f}$ & source function\\
 $\nu$ & kinematic viscosity \\
 $U$ & Freestream velocity / velocity scale \\
 $L$ & Length scale \\
@@ -416,8 +416,8 @@ $s_{ij} = 1/2(\nabla \mathbf{u} + \nabla^T \mathbf{u})$ & Strain-rate tensor \\
 $\mathcal{S} = |s_{ij}|= \sqrt{2s_{ij}s_{ij}}$ & Absolute value of the strain-rate tensor \\
 $\tau_{ij} $   & subgrid-scale tensor \\
 $\mathcal{A}$  & The bilinear Laplace operator \\
-$\mathcal{B} $ & The bilinear divergence operators \\
-$\mathcal{C} $ & The trilinear convection operators \\
+$\mathcal{B} $ & The bilinear divergence operator \\
+$\mathcal{C} $ & The trilinear convection operator \\
 $A$ & The stiffness matrix \\
 $D$ & The divergence matrix \\
 $C$ & The convection matrix \\

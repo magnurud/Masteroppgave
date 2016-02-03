@@ -8,23 +8,23 @@
 
 The Legendre polynomials are a group of orthogonal polynomials on $(-1,1)$ satisfying the recurrence relation 
 \begin{align}
-    (k+1)L_{k+1}(x) = (2k+1)xL_{k}(x)-kL_{k-1}(x),
+    (n+1)L_{n+1}(x) = (2n+1)xL_{n}(x)-nL_{n-1}(x),
     \label{eq:Legendrerecursive}
 \end{align}
 where $L_0(x) = 1$ and $L_1(x) = x$. Some other useful properties are the $L_2$-norm and 
 the derivatives which can be found in any texbook, for instance~\cite{Canuto},
 \begin{align}
     \begin{split}
-    ||L_k(x)||^2 &= \int_{-1}^1L_{k}(x)dx = \frac{2}{2k+1},  \\
-    L_{k+1}'(x) &= (2k+1)L_k(x)+L_{k-1}'(x).
+    ||L_n(x)||^2 &= \int_{-1}^1L_{n}(x)dx = \frac{2}{2n+1},  \\
+    L_{n+1}'(x) &= (2n+1)L_n(x)+L_{n-1}'(x).
     \end{split}
     \label{eq:relations}
 \end{align}
 By continuing the recursive form of the second line in \eref{eq:relations} one obtains
 \begin{align}
     \begin{split}
-    L_{k-1}'(x) &= (2(k-2)+1)L_{k-2}(x)+L_{k-3}'(x), \\
-    L_{k-3}'(x) &= (2(k-4)+1)L_{k-4}(x)+L_{k-5}'(x), \\
+    L_{n-1}'(x) &= (2(n-2)+1)L_{n-2}(x)+L_{n-3}'(x), \\
+    L_{n-3}'(x) &= (2(n-4)+1)L_{n-4}(x)+L_{n-5}'(x), \\
     \vdots 
     \end{split}
     \label{eq:derivatives}
@@ -32,9 +32,9 @@ By continuing the recursive form of the second line in \eref{eq:relations} one o
 Which ultimately enables an expression for the derivative based on the lower order Legendre polynomials, explicitly given as 
 \begin{align}
     \begin{split}
-    L_{k+1}'(x) &= (2k+1)L_k(x)\\
-    &+(2(k-2)+1)L_{k-2}(x)\\
-    &+(2(k-4)+1)L_{k-4}(x)+\cdots 
+    L_{n+1}'(x) &= (2n+1)L_n(x)\\
+    &+(2(n-2)+1)L_{n-2}(x)\\
+    &+(2(n-4)+1)L_{n-4}(x)+\cdots 
     \end{split}
     \label{eq:der-explicit}
 \end{align}
@@ -42,18 +42,18 @@ Notice that the coefficients in front of each polynomial is 2 times the inverse 
 to be simplified to 
 \begin{align}
     \begin{split}
-    L_{k+1}'(x) &= 2||L_k||^{-2}L_k(x)\\
-    &+2||L_{k-2}||^{-2}L_{k-2}(x)\\
-    &+2||L_{k-4}||^{-2}L_{k-4}(x)+\cdots 
+    L_{n+1}'(x) &= 2||L_n||^{-2}L_n(x)\\
+    &+2||L_{n-2}||^{-2}L_{n-2}(x)\\
+    &+2||L_{n-4}||^{-2}L_{n-4}(x)+\cdots 
     \end{split}
     \label{eq:der-explicit1}
 \end{align}
 In this thesis the second order derivatives will be used and by the result in \eref{eq:der-explicit} they will be given as 
 \begin{align}
     \begin{split}
-    L_{k+1}''(x) &= 2||L_k||^{-2}L_k'(x)\\
-    &+2||L_{k-2}||^{-2}L_{k-2}'(x)\\
-    &+2||L_{k-4}||^{-2}L_{k-4}'(x)+\cdots 
+    L_{n+1}''(x) &= 2||L_n||^{-2}L_n'(x)\\
+    &+2||L_{n-2}||^{-2}L_{n-2}'(x)\\
+    &+2||L_{n-4}||^{-2}L_{n-4}'(x)+\cdots 
     \end{split}
     \label{eq:der-explicit2}
 \end{align}

@@ -78,8 +78,8 @@ the mesh routines are further elaborated an overview of the file structure will 
 	\label{fig:files}
 \end{figure}
 %
-To work with Nek5000 requires knowledge of some practicalities .
-Nek5000 is recompiled for every case and the user specify all the case specific 
+Working with Nek5000 requires knowledge to some practicalities.
+The program is recompiled for every case and the user specify all the necessary  
 information in the three files \verb|{.rea,.usr,SIZE}|. \verb|.usr| and \verb|SIZE| are 
 compiled with the standard Nek5000 library using makenek which creates the executable file \verb|nek5000|,
 they can be considered the surface and the core of the entire program. 
@@ -164,13 +164,13 @@ frequently used for this thesis are described below,
 \end{itemize}
 %
 In addition to these routines all user-defined functions are specified in this file. The LES implementation in Nek5000 is based
-on several subroutines specified in addition to those stated above. A list of some of the variables and functions 
+on several subroutines in addition to those stated above. A list of some of the variables and functions 
 applied for the implementations in this thesis are stated in Appendix~\ref{AppendixB}.
 The \verb|.usr| file can be considered as the surface of Nek5000, easily accessible for the user.
 
 \section{The basics of the solver}
 The most important building blocks in Nek5000 are the \verb|fluid| and \verb|heat| functions that solves the 
-N-S and passive scalar equations. The N-S solver works distinctly depending on the mathematical formulation
+N-S and passive scalar equations. The N-S solver works in different ways depending on the mathematical formulation
 enabled whereas the PS equation, which does not depend on the pressure, is solved similarly for $P_NP_N$ and $P_NP_{N-2}$. 
 For the sake of clarity, \fref{fig:files} shows how the algorithms are called from the main routine.
 This is a simplified flow chart that does not include choices such as filters, preconditioners, LES-model, 
@@ -300,7 +300,7 @@ For more advanced geometry it is considered a necessity to have some visual mesh
 In this thesis all of the meshes have been made in ICEM and then converted using the python 
 script \verb|mshconvert| as illustrated in~\fref{fig:mesh}. Since a lot 
 of the work done regarding the mesh was done based on this script a brief description will be 
-given in this subsection.
+given here.
 
 ICEM is able to write mesh files for many different solvers, including Fluent and Nastran. 
 The original \verb|mshconvert| script can take any of these two formats as input and write a 

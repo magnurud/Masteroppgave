@@ -9,19 +9,19 @@
 %----------------------------------------------------------------------------------------
 
 This chapter will present the cases investigated and the results acquired.
-The main tools in addition to Nek5000 needed to perform the simulations presented in this 
+The main tools in addition to Nek5000 used to obtain the results in this 
 chapter are \textit{ANSYS ICEM} and \textit{python}. For post-processing \textit{Visit} and
 \textit{Matlab} were used.
 %
 \section{Case 1: Gas dispersion in a simplified urban area} \label{case1}
 %The problem investigated in this work is gas dispersion of neutral gas in a velocity field through four cubic blocks.
 %Similar simulations have been done in CDP and Fluent which are compared to data from a wind-tunnel experiment performed by ALAN.
-The scenario investigated in this work is dispersion of a neutral gas in a rectangular tunnel
+The scenario investigated in this case is dispersion of a neutral gas in a rectangular tunnel
 with four cubic blocks placed as obstacles. The blocks have sides $h = 0.109$m and represent a 
 set of buildings forming a street canyon. The gas is released from a circular source on 
 ground level and
 is translated by the wind field through the canyon, see \fref{fig:layout}.
-In this figure $h$ have been used as the length scale. The dotted lines
+In this figure $h$ has been used as the length scale. The dotted lines
 indicate the positions where data is collected.
 %
 \begin{figure}[h]
@@ -31,16 +31,15 @@ indicate the positions where data is collected.
 \end{figure}
 %
 
-Scaling the domain with the size of the boundary layer $H =1$m restricts it to
+Scaling the entire domain with the size of the boundary layer $H =1$m restricts it to
 the box $0.0\leq x/H \leq 4.96,-1.75\leq y/H \leq 1.75, 0\leq z/H \leq 1.5$.
 The four cubic boxes are centered around $(1.4315,0)$ with a distance $h$ between each box.
-The source is placed with its center in $(0.396,0)$ and radius $r = 0.0515$.
-The grid used for the computations consists of 14747 elements and with a polynomial degree of
-7 the total number of nodes $N\approx 5.2$mill. There are no curved elements in this case, so the 
-circular source is created simply by requiring that the inflow velocity is non-zero for the nodes
+The source is placed with its center in $(0.396,0)$ and has a radius $r = 0.0515$.
+The grid used for the computations consists of 14747 elements and a polynomial degree of
+7, this makes the total number of nodes $N\approx 5.2$mill. There are no curved elements in this case, so the 
+circular source is created simply by requiring that the inflow velocity is non-zero only for the nodes
 on the floor within that particular circle. The corresponding area is somewhat different from that
-of a circle $\approx 5 \%$, but this is taken care of in the post-processing.
-
+of a circle $\approx 5 \%$, but this is scaled correctly during the post-processing.
 
 The simulations are performed using Large Eddy Simulation (LES) 
 with the dynamic Smagorinsky-Lilly subgrid-scale model and by applying the polynomial filtering
@@ -48,10 +47,10 @@ routine that is available in Nek5000.
 The release of gas will result in a plume that is advected with the wind field,
 see \fref{fig:plume}. The concentration of the released gas at the 
 indicated positions in \fref{fig:layout} are compared with 
-experimental wind tunnel data and simulations performed in CDP~\cite{CDP}. 
-For clarification some of the variables repeatedly mentioned throughout this thesis will be 
+experimental wind-tunnel data and simulations performed in CDP~\cite{CDP}. 
+For clarification some of the variables repeatedly mentioned in this section are
 stated explicitly in \tref{tab:simplevariables}.
-\begin{table}
+\begin{table}[h]
     \centering
     \begin{tabular}{c c c c}
         Variable & value & unit & commentary \\ \hline
@@ -66,7 +65,7 @@ stated explicitly in \tref{tab:simplevariables}.
     \label{tab:simplevariables}
 \end{table}
 
-The inflow conditions had to be mapped onto the boundary at each time step. To mimic the situation in the wind-tunnel the velocity field
+The inflow condition at $x=0$ has to be mapped onto the boundary at each time step. To mimic the situation in the wind-tunnel the velocity field
 on the inflow was generated in a different simulation performed in CDP. The inflow velocity was written to file every 
 $0.0013$s for a total of $28$s and had to be interpolated onto the domain for the simulations in Nek5000 since the grid was not identical.
 The right plot in \fref{fig:inflow} is an instantaneous picture of the inflow velocity in x-direction, 
@@ -91,24 +90,26 @@ the inflow data to the computational mesh, this was done directly in \verb|.usr|
 \end{figure}
 %
 
-The simulations in Nek5000 were performed in the following manner; first 6 seconds of initialization of the velocity field in the 
-channel, followed by 8 seconds of gas release to initialize the gas concentration. After assuring that the wind-field was 
-correctly created and the released gas had reached the measurement lines furthest from the source the data sampling of 22 seconds 
-started.
 %
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.6\textwidth]{Figures/plume2.png}
 	\caption{An iso-surface of the average concentration with $C=0.03$ 
-    after 30 seconds of sampling. Streamwise direction is from left to right.}
+    after 22 seconds of sampling. Streamwise direction is from left to right.}
 	\label{fig:plume}
 \end{figure}
 %
+The simulations in Nek5000 were performed in the following manner; first 6 seconds of flow-through to initialize the velocity field 
+in the channel, followed by 8 seconds of gas release to initialize the gas concentration. After assuring that the wind-field was 
+correctly created and the released gas had reached the measurement lines furthest from the source, the data sampling of 22 seconds 
+started.
 
 The mesh used in the simulations performed in Nek5000 and the one performed in CDP are 
 different, and the resolution in the part of the domain close to the cubes is described 
 in~\tref{tab:meshdiff}.
-\begin{table}
+It is evident that the resolution is better in the simulations done in CDP and especially in 
+the $z$-direction. 
+\begin{table}[h]
     \centering
     \begin{tabular}{c| c c c}
         Solver   & $n_x$& $n_y$ & $n_z$ \\ \hline
@@ -119,17 +120,12 @@ in~\tref{tab:meshdiff}.
     \label{tab:meshdiff}
 \end{table}
 
-The resolution is better in the simulations done in CDP and especially in 
-the $z$-direction. It should also be mentioned that all elements for the mesh used in Nek5000
-have straight edges. The circular source is described directly in \verb|userbc| by allowing 
-a certain inflow velocity only if the point on the ground is within a certain distance 
-to the center of the source.
 
 \subsection{Results - Gas dispersion} 
 This case is a part of a larger project designed to evaluate different solvers 
 ability to perform simulations of gas dispersion. The N-S equations are solved using
-the $P_NP_N$ formulation with the fractional step method, IOFS with a target Courant number 
-equal 2 was enabled to maximize the time step as recommended in~\cite{Nek}. It should be 
+the $P_NP_N$ formulation with the fractional step method, IOFS with a target CFL-number 
+equal 2.0 was enabled to maximize the time step as recommended in~\cite{Nek}. It should be 
 mentioned that when activating the SGS model and deactivating the 
 filter the simulation is more probable to blow up. This effect is captured in~\fref{fig:maxvel}
 that shows how the Smagorinsky model does not damp spurious velocity modes in the 
@@ -138,8 +134,8 @@ same degree as the filter.
 %
 \begin{figure}[h]
 	\centering
-	\includegraphics[trim=0.5cm 7cm 0.5cm 7cm, width=0.8\textwidth]{Figures/maxvel.pdf}
-    \caption{$||\mathbf{u}||_{\infty}$ as a function of time, the green line represents the 
+	\includegraphics[trim=0.5cm 7cm 0.5cm 7cm, width=0.6\textwidth]{Figures/maxvel.pdf}
+    \caption{$||\mathbf{u}||_{\infty}$ as a function of time. The green line represents the 
 simulation with the dynamic Smagorinsky SGS model and the blue line represents the filtering 
 with $\alpha = 0.05$ and a quadratic decay on the last 3 modes.}
 	\label{fig:maxvel}
@@ -201,10 +197,9 @@ with $\alpha = 0.05$ and a quadratic decay on the last 3 modes.}
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.9\textwidth]{Figures/NekcH_all.pdf}
-    \caption{Time-averaged concentration with a sample time of $22.00$ s at $y = 0$ plotted
-    vertically and scaled 
-    with the free-stream velocity and emission rate. Compared against wind tunnel data.
-Two dashed lines on either side of the centerline represent the canyon.}
+    \caption{Time-averaged concentration with a sample time of $22.00$s at $z/H = 0.025$ plotted
+    and scaled with the free-stream velocity and the emission rate. Compared with wind-tunnel data 
+    and results from CDP. Two dashed lines on either side of the centerline represent the canyon.}
     \label{fig:cHall}
 \end{figure}
 
@@ -223,20 +218,10 @@ if anything the SGS model shows a tendency to estimate higher concentration peak
 In particular the first plot indicates a significant difference.
 An important difference between the filtering and the SGS model is 
 that the filter works based on the current state of the flow 
-whereas the amount of diffusion added by the SGS model is mostly decided
+whereas the amount of diffusion added by the SGS model is strongly biased 
 by the previous states of the flow.
-This could lead to either too much or too little smoothing locally.
+This could lead to local observations of either too much or too little smoothing.
 
-\newpage
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.9\textwidth]{Figures/NekcV_all.pdf}
-    \caption{Time-averaged concentration with a sample time of $22.00$ s at $y = 0$ plotted
-    vertically and scaled 
-    with the free-stream velocity and emission rate. Compared against wind tunnel data.
-Two dashed lines on either side of the centerline represent the canyon.}
-    \label{fig:cVall}
-\end{figure}
 The concentration along the vertical measurement lines is plotted in \fref{fig:cVall} and overall 
 Nek5000 provides good results according to the reference solutions. The largest difference is found close 
 to the wall right in the middle of the cubes. In particular the simulation with filtering 
@@ -247,10 +232,18 @@ are able to correct this.
 The $P_NP_N$ formulation is known to produce splitting errors of significant sizes 
 close to the wall, and could play an important role in this part of the domain.
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.95\textwidth]{Figures/NekcV_all.pdf}
+    \caption{Time-averaged concentration with a sample time of $22.00$s at $y = 0$ plotted
+    and scaled with the free-stream velocity and the emission rate. Compared with wind-tunnel data
+    and results from CDP.}
+    \label{fig:cVall}
+\end{figure}
 The simulations were also performed using the $P_NP_{N-2}$ formulation with filtering, and the 
-results were similar to those observed above. The SGS model did however not function at all, 
-and resulted in a system crash in one of the earliest time steps. It was beyond the scope of 
-this work to correct this presumable bug in the Nek5000 implementation. 
+results were similar to those observed above. The SGS model did however not function at all for 
+the $P_NP_{N-2}$ implementation, and resulted in a system crash in one of the earliest time steps.
+It was beyond the scope of this work to correct this presumable bug in the Nek5000 implementation. 
 
 It was also experimented with different meshes. An attempt was made to improve the 
 results at the measurement lines in between the cubes by increasing the resolution in
@@ -262,6 +255,7 @@ The simulation was performed using $P_NP_N$ with filtering, but the results were
 similar to the ones previously obtained. It could seem like a refinement of the 
 mesh in the $x$ and $y$ direction could be necessary to achieve better results. 
 
+\newpage
 As for the performance of Nek5000 the results are baffling. With the same number of processors,
 same accuracy criteria, and approximately the same number of nodes in the grid, Nek5000 simulated
 one second of flow more than five times as fast as a numerical code comparable to CDP! 
@@ -343,14 +337,15 @@ The drag and lift forces on a surface $S$ are given as
 $v_t$ is the tangential velocity, $\mathbf{n}=[n_x,n_y,0]$ is the unit vector normal to the surface $S$ 
 and the tangent velocity vector is defined as $\mathbf{t} = [n_y,-n_x,0]$.
  
-Surface integrals in Nek5000 are solved numerically, $\int_S f dS = \sum f_i A_i$, where $f$ is some function and $A_i$ is the area corresponding
-to the nodal value $f_i$. $A_i$ corresponds to a two dimensional mass matrix in Nek5000 available for all elements.
+Surface integrals in Nek5000 are solved numerically, $\int_S f dS = \sum f_i A_i$, where $f$ is some function and 
+$A_i$ is the quadrature weight to the $i$th GLL-node for the surface integral over face S.
+$A_i$ corresponds to a two dimensional mass matrix in Nek5000 available for all elements and all faces in the array 
+\verb|area(lx1,lz1,6,lelt)|.
 
 The coefficients corresponding to these forces known as the drag and lift coefficients 
 are given by the formulas 
 \begin{align}
-    c_D = \frac{2F_D}{\rho U^2 D H}
-    \qquad , \qquad
+    c_D = \frac{2F_D}{\rho U^2 D H}, \qquad
     c_L = \frac{2F_L}{\rho U^2 D H}.
     \label{eq:dragnliftcoeffs}
 \end{align}
@@ -373,16 +368,16 @@ that consists of pointers to all the faces on the cylinder.
 %
 \begin{figure}[h]
     \centering
-    \includegraphics[width = 0.3\textwidth]{Figures/cyl_elem.pdf}
+    \includegraphics[trim=0.5cm 4cm 0.5cm 4cm,width = 0.3\textwidth]{Figures/cyl_elem.pdf}
     \caption{Initial mesh around cylinder.}
     \label{fig:cyl_elem}
 \end{figure}
 %
 The mesh around the cylinder is illustrated in \fref{fig:cyl_elem}.
 Initially this case was solved using a second degree polynomial to describe the circle segments
-corresponding to each element. However with the new routine implemented as described 
+corresponding to each element. With the implementation of the new routine as described 
 in~\cref{xyzarc} the circle segments could be represented with the same order as 
-the polynomials used for the velocity space. The importance of the error resulting 
+the polynomials used for the velocity. The importance of the error resulting 
 from the second degree approximation of the circle segments is presented in \cref{results}.
 %Note that these elements was split in three, in order to obtain 
 %a finer mesh in the region of interest. Of the elements numbered in~\fref{fig:cyl_elem}
@@ -390,17 +385,13 @@ from the second degree approximation of the circle segments is presented in \cre
 %describing the curved edges describe approximately $\Theta = 360^{\circ}/(6\cdot 3) = 20^{\circ}$
 %of the complete circle. 
 
-An additional test that is performed on this case is how different settings in Nek5000 will affect the estimation of the drag and lift coefficients.
+An additional test performed on this case was how different settings in Nek5000 affect the estimation of the drag and lift coefficients.
 Perhaps most curious is whether the $P_NP_N$ or $P_NP_{N-2}$ formulation is applied. Note that the pressure in the latter formulation is 
 not defined on the boundary of the cylinder and does therefore need to be extrapolated onto the surface in order for the integral to be 
-calculated. On the other side is the splitting scheme implied by the $P_NP_N$ forces the erroneous boundary condition on the pressure.
+calculated. It is however more likely that this effect will be negligible compared with the splitting error implied by both schemes, 
+since they both impose an erroneous boundary condition on the pressure.
 %
 \subsection{Results - benchmark comparison}
-The effect of the algorithm explained in \cref{xyzarc} is
-illustrated by solving a laminar flow test problem. 
-The solution is compared with previous benchmark computations performed by a number of 
-contributors~\cite{benchmark}. 
-
 The results are presented in \tref{tab:testcase}, and they confirm that the treatment of the geometry is 
 essential, both coefficients are computed with significantly better accuracy. 
 %
@@ -417,7 +408,7 @@ essential, both coefficients are computed with significantly better accuracy.
 		\bottomrule	
 	\end{tabular}
 	\caption{Results for the drag and lift coefficients with reference values 
-	$c_D = 6.18533$ and $c_L = 0.009401$. $p=11$ for the simulations in Nek5000.}
+	$c_D = 6.18533$ and $c_L = 0.009401$. $P=11$ for the simulations in Nek5000.}
 \label{tab:testcase}
 \end{table}
 %
@@ -427,7 +418,7 @@ in a different manner for Nek5000 so the comparison is not as direct as it may s
 
 \subsection{Results - internal adjustments }
 As discussed in \cref{nek} there are many adjustments available in Nek5000. 
-To enlighten the actual effect on the results, several different settings were 
+To understand the actual effect on the results, several different settings were 
 investigated for this case and the results are presented in \tref{tab:perf}. 
 The spectral convergence is also confirmed in \fref{fig:liftconv} by calculating the 
 lift coefficient error for increasing polynomial degree. 
@@ -437,8 +428,8 @@ lift coefficient error for increasing polynomial degree.
         \includegraphics[trim=0.5cm 7cm 0.5cm 7cm, width=0.8\textwidth]{Figures/lift_coef4.pdf}}
 	\caption{The logarithm of the error plotted against the polynomial degree. All results 
         are with $P_NP_{N-2}$ and de-aliasing, and they are solved without using the 
-    characteristic scheme or any filtering. A line illustrating a second order convergence is 
-    plotted to illustrate the convergence rate.}
+    characteristic scheme or any filtering. Two lines illustrating a second order convergence and spectral convergence 
+    is plotted to illustrate the convergence rate obtained in Nek5000.}
 	\label{fig:liftconv}
 \end{figure}
 %
@@ -446,10 +437,19 @@ lift coefficient error for increasing polynomial degree.
 The setting that has the biggest impact on the result is the $P_NP_N$ scheme which clearly performs 
 worse than the others. It would seem like the error on the boundary known to be present in both schemes
 has a bigger effect in the $P_NP_N$ formulation.
-Use of the IOFS method was expected to have a negative effect on the accuracy due to~\cite{Deville}, 
-this is not observed for this case.
-The filtering does have a negative effect on calculation of the lift coefficient,
+Use of the IOFS method was expected to have a negative effect on the accuracy as stated in~\cite{Deville}, 
+this is however not observed for this case.
+The filtering does have a negative effect on calculation of the lift coefficient as expected,
 but it is of relatively small significance which confirms the analytical results from \eref{eq:filterenergy}. 
+
+Be aware that these results are obtained from a laminar test case and does not in any way 
+suggest any optimal adjustment for Nek5000. It is however important to be aware that the activation 
+of de-aliasing does not guarantee a better result. For a well-resolved flow situation such as $N=11$ 
+for this case, the effect of aliasing is negligible and applying a higher order quadrature to resolve the 
+non-linear term is a waste of computational time. For $N=7$ the results show that activation of de-aliasing
+provides a better estimate, so the decision to activate de-aliasing or not depends on the type of flow
+and the resolution of the mesh. The fact that the aliased solution for $N=11$ performs better than the rest, 
+is probably because of the accuracy of the reference solution.
 %
 \begin{table}[h]
     \centering
@@ -464,40 +464,11 @@ but it is of relatively small significance which confirms the analytical results
          6 &7 & No & Yes& No & No & 0.002 & 12.24\\
          7 &7 & No & No & No & No & 0.013 & 25.04\\
 
-%   default   
-%   Alias     
-%   Char    0.000  12.24
-%   filter  8.43539472e-01  -1.26292235e+01
-%   P_NP_N  9.33531436e-02  -6.23979364e+00
-
-
-%   Alias   1.32183732e-02  -2.50363621e+01
-%   Char    1.00237174e-04  -1.22425816e+01
-%   default 1.61349516e-03  -1.22431699e+01
-%   filter  8.43539472e-01  -1.26292235e+01
-%   P_NP_N  9.33531436e-02  -6.23979364e+00
-
     \end{tabular}
-    %\begin{tabular}{c | c c c c | c c | c c c}
-         %& \multicolumn{4}{|c|}{Settings} & \multicolumn{2}{|c|}{\% Error} & \multicolumn{3}{|c}{Data} \\\hline
-         %\#  & ifsplit & Dealiasing & IOFS & Filter & $c_D$ & $c_L$ & DT & CFL & T/Tstep \\ \hline 
-         %1 & F & T & F & F & 0.005 & 0.102 & 1e-04 & 2.03 & 2.1e-02 \\
-         %2 & T & T & F & F & 0.013 & 2.349 & 1e-04 & 2.03 & 2.1e-02 \\
-         %3 & F & T & F & T & 0.005 & 0.431 & 1e-04 & 2.03 & 2.1e-02 \\
-         %4 & F & T & T & F & 0.005 & 0.179 & 1e-04 & 2.03 & 2.1e-02 \\
-         %5 & F & F & F & F & NaN   & NaN   & 1e-04 & 2.03 & 2.1e-02 \\
-    %\end{tabular}
     \caption{Test of solver settings in Nek5000.}
     \label{tab:perf}
 \end{table}
 %
-Be aware that these results are obtained from a laminar test case and does not in any way 
-suggest any optimal adjustment for Nek5000. It is however important to be aware that the activation 
-of de-aliasing is not guaranteed to give a better result. For a well-resolved flow situation such as $N=11$ 
-for this case, the effect of aliasing is negligible and applying a higher order quadrature to resolve the 
-non-linear term is a waste of computational time. For $N=7$ the results show that activation of de-aliasing
-provides a better estimate, so the decision to activate de-aliasing or not depends on the type of flow
-and the resolution of the mesh.
 
 When designing the mesh it is important to be aware of how the computational time depends on the polynomial 
 degree. In user manual for Nek~\cite{Nek} it states that the computational time for one time step is 
@@ -512,14 +483,14 @@ time unit is therefore expected to be $\mathcal{O}(EP^{6})$ which is confirmed i
   \centerline{
 \begin{minipage}{.6\textwidth}
   \centering
-  \includegraphics[trim=0.5cm 3cm 0.5cm 7cm,width=1.0\linewidth]{Figures/tperstep.pdf}
+  \includegraphics[trim=0.5cm 5cm 0.5cm 5cm,width=1.0\linewidth]{Figures/tperstep.pdf}
 \end{minipage}
 \begin{minipage}{.6\textwidth}
-  \includegraphics[trim=0.5cm 3cm 0.5cm 7cm,width=1.0\linewidth]{Figures/tpers.pdf}
+  \includegraphics[trim=0.5cm 5cm 0.5cm 5cm,width=1.0\linewidth]{Figures/tpers.pdf}
   %\captionof{figure}{A figure}
 \end{minipage}%
 }
-  \caption{Computational time in Nek5000 as a function of the polynomial degree $P$. }
+  \caption{Computational time for one time step and for one second in Nek5000 as a function of the polynomial degree $P$. }
   \label{fig:comptime}
 \end{figure}
 %
@@ -528,20 +499,19 @@ time unit is therefore expected to be $\mathcal{O}(EP^{6})$ which is confirmed i
 Nek5000 has proven to give accurate results with a relatively coarse mesh as
 presented in~\cref{results}. This is as expected since it is based on a higher order 
 method known to yield great accuracy. As for the performance it is no doubt that the 
-efforts put into the efficiency of the code has paid off. The possibility to obtain 
-results 5-10 times faster than similar softwares is an important factor to keep in mind. 
+effort put into the efficiency of the code has paid off. The possibility to obtain 
+results 5-10 times faster than similar softwares is an important factor to keep in mind 
+when choosing which software to use. 
 The polynomial degree is chosen by changing a single parameter, which makes performance tests
 and accuracy adjustments simple to do. 
 
 Since the mathematical formulation in Nek5000 is based on a tensor product of the basis functions 
 in each direction it is limited to the use of hex-mesh. This is no problem for the geometries 
 studied in this thesis, but for complex geometry the use of tetrahedral mesh is mandatory.
-It did also prove difficult to work with refinements made in ICEM which restricts the possibility 
-to make a mesh with large differences in grid size.
 
 Another aspect worth noticing is the filtering procedure which has some similarities to variational multiscale
 as presented in~\cref{physfilt}. It would be interesting to design some test cases to further 
-investigate its properties. 
+investigate its properties.  
 
 The fact that Nek5000 is an open-source code is also a huge advantage to other black-box solvers. 
 Although the user community is not that large there are several committed users that provide 
@@ -559,9 +529,9 @@ what provides best results. Treating the points along the edges differently, sin
 have a larger risk of being affected by the neighbouring element. Omitting the projection 
 for certain points, especially those on edges that limits to other boundary conditions.
 Restricting the relative or absolute change to avoid too much disturbance in the original mesh. 
-These are just some ideas that might be worth having in mind if applying this method.
+These are just some ideas that might be worth having in mind if applying or expanding this method.
 
-For the simple array case it was experimented with different meshes and the Nek seemed to 
+For the simple array case it was experimented with different meshes and Nek5000 seemed to 
 have no problems with refined grids from ICEM. The refinement functionality does however not 
 provide the same flexibility to adjust the number of elements. Perhaps even better results could 
 have been achieved by making an o-grid around the most important part of the domain,
@@ -571,3 +541,6 @@ distributed in a more economical fashion and an overall better result could have
 Finding out why the dynamic Smagorinsky model did not work for the $P_NP_{N-2}$ is also 
 something that should be investigated further. As well as experimentation with 
 other LES-models. 
+
+The effect of the filter is also something that could be studied further, perhaps it would 
+be possible to support the choice of alpha based on some analytical result.
