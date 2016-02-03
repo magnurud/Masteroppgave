@@ -237,7 +237,7 @@ def write_surface_file():
     # Creating new parameter if not already existing
     if (not dummy):
         ofile.write('c automatically added by nmshconvert \n') 
-        ofile.write('      parameter (nsurf={}) ! Number of bdry nodes\n'.format(tot_num_nodes))
+        ofile.write('      parameter (nsurf={}) ! Number of surface nodes\n'.format(tot_num_nodes))
     ofile.close()
 
 def write_surf_list():
@@ -341,7 +341,7 @@ def fixSIZE():
 
     if (not work_dummy): 
         ofile.write('c automatically added by nmshconvert \n') 
-        ofile.write('      parameter (nwork={}) ! Number of bdry nodes\n'.format(nwork))
+        ofile.write('      parameter (nwork={}) ! Number of working nodes\n'.format(nwork))
     ofile.close()
 
 

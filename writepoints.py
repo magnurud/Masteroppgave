@@ -15,7 +15,7 @@ def genline(t,x):
     # a function mapping from 0,1 to a set of 3D points
     return array([[t*(x[1]-x[0])+x[0]],[t*(x[3]-x[2])+x[2]],[t*(x[5]-x[4])+x[4]]])
 
-def makehpts(f,n,x,s):
+def makehpts(f,n,x,s): # INCLUDE ENDPOINTS
     # INPUT: 
     # f - function which defines a line
     # n - number of points
@@ -30,8 +30,7 @@ def makehpts(f,n,x,s):
         #outfile.close()
     return 1
 
-def makehpts2(f,n,x,s):
-    # FOR INTERNAL POINTS ONLY !! 
+def makehpts2(f,n,x,s): # FOR INTERNAL POINTS ONLY !
     # INPUT: 
     # f - function which defines a line
     # n - number of points
@@ -45,4 +44,17 @@ def makehpts2(f,n,x,s):
          if(t != 0 and t!= 1):
             savetxt(outfile,transpose(f(t,x)),fmt='%-7.4f')
         #outfile.close()
+    return 1
+
+def writenumberofpoints(N):
+    # INPUT:
+    # N - Total number of lines in hpts.in
+    # OUTPUT:
+    # hpts.in with N on the first line
+
+    f = open('hpts.in','w')
+    f.write(str(N))
+    f.write('\n')
+    f.close()
+
     return 1
