@@ -1,6 +1,7 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.6.15)  1 FEB 2016 13:41
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.6.15)  3 FEB 2016 14:40
 entering extended mode
  restricted \write18 enabled.
+ file:line:error style messages enabled.
  %&-line parsing enabled.
 **simpleArrayFluent.tex
 (./simpleArrayFluent.tex
@@ -683,17 +684,17 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 
 ]
 Package epstopdf Info: Source file: <figures/layout.eps>
-(epstopdf)                    date: 2016-02-01 13:41:47
+(epstopdf)                    date: 2015-07-17 15:10:37
 (epstopdf)                    size: 207095 bytes
 (epstopdf)             Output file: <figures/layout-eps-converted-to.pdf>
-(epstopdf)                    date: 2016-02-01 13:41:47
+(epstopdf)                    date: 2015-07-17 15:11:11
 (epstopdf)                    size: 25652 bytes
 (epstopdf)             Command: <repstopdf --outfile=figures/layout-eps-convert
 ed-to.pdf figures/layout.eps>
 (epstopdf)             \includegraphics on input line 70.
 Package epstopdf Info: Output file is already uptodate.
 
-<figures/layout-eps-converted-to.pdf, id=129, 718.685pt x 291.0875pt>
+<figures/layout-eps-converted-to.pdf, id=134, 718.685pt x 291.0875pt>
 File: figures/layout-eps-converted-to.pdf Graphic file (type pdf)
 
 <use figures/layout-eps-converted-to.pdf>
@@ -705,152 +706,103 @@ Overfull \hbox (43.3931pt too wide) in paragraph at lines 70--71
 [][] 
  []
 
-
-LaTeX Warning: Citation `eriksson' on page 7 undefined on input line 81.
-
-<figures/ref2.pdf, id=133, 947.54pt x 544.43402pt>
+<figures/ref2.pdf, id=139, 947.54pt x 544.43402pt>
 File: figures/ref2.pdf Graphic file (type pdf)
  <use figures/ref2.pdf>
-Package pdftex.def Info: figures/ref2.pdf used on input line 105.
+Package pdftex.def Info: figures/ref2.pdf used on input line 108.
 (pdftex.def)             Requested size: 390.51143pt x 224.37411pt.
 
-
-LaTeX Warning: Citation `dynsmag' on page 7 undefined on input line 111.
-
-
-LaTeX Warning: Citation `eriksson' on page 7 undefined on input line 116.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-Underfull \vbox (badness 1688) has occurred while \output is active []
+Underfull \vbox (badness 2181) has occurred while \output is active []
 
  [7 <./figures/layout-eps-converted-to.pdf>]
+Underfull \vbox (badness 1708) has occurred while \output is active []
 
-LaTeX Warning: Citation `theoryguide' on page 8 undefined on input line 150.
-
-[8 <./figures/ref2.pdf>]
-
-LaTeX Warning: Citation `Ham' on page 9 undefined on input line 158.
-
-
-LaTeX Warning: Citation `CDP' on page 9 undefined on input line 164.
-
-[9]
-
-LaTeX Warning: Citation `Pope' on page 10 undefined on input line 243.
-
-
-LaTeX Warning: Citation `dynsmag' on page 10 undefined on input line 253.
-
-
-LaTeX Warning: Citation `smagorinsky' on page 10 undefined on input line 254.
-
-
-LaTeX Warning: Citation `dynsmag' on page 10 undefined on input line 265.
-
-
-LaTeX Warning: Citation `eriksson' on page 10 undefined on input line 276.
-
+ [8 <./figures/ref2.pdf>] [9]
 Package epstopdf Info: Source file: <figures/b8inst.eps>
-(epstopdf)                    date: 2016-02-01 13:41:46
+(epstopdf)                    date: 2015-07-10 14:49:30
 (epstopdf)                    size: 997702 bytes
 (epstopdf)             Output file: <figures/b8inst-eps-converted-to.pdf>
-(epstopdf)                    date: 2016-02-01 13:41:46
+(epstopdf)                    date: 2015-07-10 15:07:11
 (epstopdf)                    size: 82916 bytes
 (epstopdf)             Command: <repstopdf --outfile=figures/b8inst-eps-convert
 ed-to.pdf figures/b8inst.eps>
-(epstopdf)             \includegraphics on input line 284.
+(epstopdf)             \includegraphics on input line 285.
 Package epstopdf Info: Output file is already uptodate.
-<figures/b8inst-eps-converted-to.pdf, id=182, 820.06375pt x 495.8525pt>
+
+<figures/b8inst-eps-converted-to.pdf, id=204, 820.06375pt x 495.8525pt>
 File: figures/b8inst-eps-converted-to.pdf Graphic file (type pdf)
 
 <use figures/b8inst-eps-converted-to.pdf>
 Package pdftex.def Info: figures/b8inst-eps-converted-to.pdf used on input line
- 284.
+ 285.
 (pdftex.def)             Requested size: 390.51143pt x 236.1301pt.
  [10]
-LaTeX Font Info:    Try loading font information for OMS+lmr on input line 298.
+LaTeX Font Info:    Try loading font information for OMS+lmr on input line 299.
 
 
 (/usr/share/texmf/tex/latex/lm/omslmr.fd
 File: omslmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `OMS/lmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/lmsy/m/n' tried instead on input line 298.
+(Font)              Font shape `OMS/lmsy/m/n' tried instead on input line 299.
  [11 <./figures/b8inst-eps-converted-to.pdf>]
 LaTeX Font Info:    Font shape `OMS/lmr/bx/n' in size <10.95> not available
-(Font)              Font shape `OMS/lmsy/b/n' tried instead on input line 317.
-
-
-LaTeX Warning: Citation `theoryguide' on page 12 undefined on input line 336.
-
-LaTeX Font Info:    Try loading font information for OT1+lmtt on input line 358
+(Font)              Font shape `OMS/lmsy/b/n' tried instead on input line 318.
+LaTeX Font Info:    Try loading font information for OT1+lmtt on input line 357
 .
-(/usr/share/texmf/tex/latex/lm/ot1lmtt.fd
+ (/usr/share/texmf/tex/latex/lm/ot1lmtt.fd
 File: ot1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 Package microtype Info: Loading generic settings for font family
 (microtype)             `lmtt' (encoding: OT1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-
-
-LaTeX Warning: Citation `UDF' on page 12 undefined on input line 359.
-
-[12]
+ [12]
 LaTeX Font Info:    Font shape `OT1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `OT1/lmtt/b/n' tried instead on input line 378.
- [13] <figures/rey.pdf, id=232, 397.485pt x 361.35pt>
+(Font)              Font shape `OT1/lmtt/b/n' tried instead on input line 377.
+ [13] [14]
+<figures/rey.pdf, id=268, 397.485pt x 361.35pt>
 File: figures/rey.pdf Graphic file (type pdf)
-
-<use figures/rey.pdf>
-Package pdftex.def Info: figures/rey.pdf used on input line 486.
+ <use figures/rey.pdf>
+Package pdftex.def Info: figures/rey.pdf used on input line 487.
 (pdftex.def)             Requested size: 173.55916pt x 157.78697pt.
- <figures/uplus2.pdf, id=233, 397.485pt x 361.35pt>
+
+<figures/uplus2.pdf, id=269, 397.485pt x 361.35pt>
 File: figures/uplus2.pdf Graphic file (type pdf)
-
-<use figures/uplus2.pdf>
-Package pdftex.def Info: figures/uplus2.pdf used on input line 490.
+ <use figures/uplus2.pdf>
+Package pdftex.def Info: figures/uplus2.pdf used on input line 491.
 (pdftex.def)             Requested size: 173.55916pt x 157.78697pt.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [14]
 [15 <./figures/rey.pdf> <./figures/uplus2.pdf>]
-<figures/iso3-def.png, id=256, 963.6pt x 722.7pt>
+<figures/iso3-def.png, id=283, 963.6pt x 722.7pt>
 File: figures/iso3-def.png Graphic file (type png)
  <use figures/iso3-def.png>
-Package pdftex.def Info: figures/iso3-def.png used on input line 512.
+Package pdftex.def Info: figures/iso3-def.png used on input line 514.
 (pdftex.def)             Requested size: 208.27232pt x 156.20453pt.
 
-<figures/iso06-def.png, id=257, 963.6pt x 722.7pt>
+<figures/iso06-def.png, id=284, 963.6pt x 722.7pt>
 File: figures/iso06-def.png Graphic file (type png)
  <use figures/iso06-def.png>
-Package pdftex.def Info: figures/iso06-def.png used on input line 516.
+Package pdftex.def Info: figures/iso06-def.png used on input line 518.
 (pdftex.def)             Requested size: 208.27232pt x 156.20453pt.
 
-<figures/iso03-def.png, id=258, 963.6pt x 722.7pt>
+<figures/iso03-def.png, id=285, 963.6pt x 722.7pt>
 File: figures/iso03-def.png Graphic file (type png)
  <use figures/iso03-def.png>
-Package pdftex.def Info: figures/iso03-def.png used on input line 519.
+Package pdftex.def Info: figures/iso03-def.png used on input line 521.
 (pdftex.def)             Requested size: 208.27232pt x 156.20453pt.
 
-<figures/iso007-def.png, id=259, 963.6pt x 722.7pt>
+<figures/iso007-def.png, id=286, 963.6pt x 722.7pt>
 File: figures/iso007-def.png Graphic file (type png)
 
 <use figures/iso007-def.png>
-Package pdftex.def Info: figures/iso007-def.png used on input line 523.
+Package pdftex.def Info: figures/iso007-def.png used on input line 525.
 (pdftex.def)             Requested size: 208.27232pt x 156.20453pt.
- <figures/cH.pdf, id=263, 397.485pt x 505.89pt>
+ <figures/cH.pdf, id=290, 397.485pt x 505.89pt>
 File: figures/cH.pdf Graphic file (type pdf)
 
 <use figures/cH.pdf>
-Package pdftex.def Info: figures/cH.pdf used on input line 553.
+Package pdftex.def Info: figures/cH.pdf used on input line 555.
 (pdftex.def)             Requested size: 347.12495pt x 441.81125pt.
 
 
@@ -858,104 +810,97 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [16 <./figures/iso3-def.png (PNG copy)> <./figures/iso06-def.png (PNG copy)> <.
 /figures/iso03-def.png (PNG copy)> <./figures/iso007-def.png (PNG copy)>]
-[17 <./figures/cH.pdf>] <figures/cV.pdf, id=278, 397.485pt x 505.89pt>
+[17 <./figures/cH.pdf>] <figures/cV.pdf, id=306, 397.485pt x 505.89pt>
 File: figures/cV.pdf Graphic file (type pdf)
 
 <use figures/cV.pdf>
-Package pdftex.def Info: figures/cV.pdf used on input line 568.
+Package pdftex.def Info: figures/cV.pdf used on input line 570.
 (pdftex.def)             Requested size: 347.12495pt x 441.81125pt.
  [18
 
  <./figures/cV.pdf>]
-<figures/cfluctH.pdf, id=290, 397.485pt x 505.89pt>
+<figures/cfluctH.pdf, id=317, 397.485pt x 505.89pt>
 File: figures/cfluctH.pdf Graphic file (type pdf)
  <use figures/cfluctH.pdf>
-Package pdftex.def Info: figures/cfluctH.pdf used on input line 586.
+Package pdftex.def Info: figures/cfluctH.pdf used on input line 589.
 (pdftex.def)             Requested size: 347.12495pt x 441.81125pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [19 <./figures/cfluctH.pdf>]
-Overfull \hbox (35.62482pt too wide) in paragraph at lines 627--641
+Overfull \hbox (35.62482pt too wide) in paragraph at lines 630--644
  [][] 
  []
 
-[20] <figures/perftest.pdf, id=311, 397.485pt x 361.35pt>
+[20] <figures/perftest.pdf, id=338, 397.485pt x 361.35pt>
 File: figures/perftest.pdf Graphic file (type pdf)
 
 <use figures/perftest.pdf>
-Package pdftex.def Info: figures/perftest.pdf used on input line 649.
+Package pdftex.def Info: figures/perftest.pdf used on input line 652.
 (pdftex.def)             Requested size: 347.12495pt x 315.57947pt.
  [21 <./figures/perftest.pdf>]
-<figures/default-not.pdf, id=326, 397.485pt x 505.89pt>
+<figures/default-not.pdf, id=353, 397.485pt x 505.89pt>
 File: figures/default-not.pdf Graphic file (type pdf)
 
 <use figures/default-not.pdf>
-Package pdftex.def Info: figures/default-not.pdf used on input line 695.
+Package pdftex.def Info: figures/default-not.pdf used on input line 698.
 (pdftex.def)             Requested size: 347.12495pt x 441.81125pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [22 <./figures/default-not.pdf>] [23]
-<figures/sgsmodel.pdf, id=345, 397.485pt x 505.89pt>
+<figures/sgsmodel.pdf, id=372, 397.485pt x 505.89pt>
 File: figures/sgsmodel.pdf Graphic file (type pdf)
 
 <use figures/sgsmodel.pdf>
-Package pdftex.def Info: figures/sgsmodel.pdf used on input line 746.
+Package pdftex.def Info: figures/sgsmodel.pdf used on input line 749.
 (pdftex.def)             Requested size: 347.12495pt x 441.81125pt.
  [24 <./figures/sgsmodel.pdf>]
-<figures/ref-coarse.pdf, id=355, 397.485pt x 505.89pt>
+<figures/ref-coarse.pdf, id=382, 397.485pt x 505.89pt>
 File: figures/ref-coarse.pdf Graphic file (type pdf)
 
 <use figures/ref-coarse.pdf>
-Package pdftex.def Info: figures/ref-coarse.pdf used on input line 765.
+Package pdftex.def Info: figures/ref-coarse.pdf used on input line 768.
 (pdftex.def)             Requested size: 347.12495pt x 441.81125pt.
 
 Underfull \vbox (badness 1881) has occurred while \output is active []
 
- [25 <./figures/ref-coarse.pdf>] <figures/cHheavy.pdf, id=367, 397.485pt x 505.
+ [25 <./figures/ref-coarse.pdf>] <figures/cHheavy.pdf, id=394, 397.485pt x 505.
 89pt>
 File: figures/cHheavy.pdf Graphic file (type pdf)
 
 <use figures/cHheavy.pdf>
-Package pdftex.def Info: figures/cHheavy.pdf used on input line 807.
+Package pdftex.def Info: figures/cHheavy.pdf used on input line 810.
 (pdftex.def)             Requested size: 303.73184pt x 386.58002pt.
  [26 <./figures/cHheavy.pdf>]
-<figures/cVheavy.pdf, id=378, 397.485pt x 505.89pt>
+<figures/cVheavy.pdf, id=405, 397.485pt x 505.89pt>
 File: figures/cVheavy.pdf Graphic file (type pdf)
  <use figures/cVheavy.pdf>
-Package pdftex.def Info: figures/cVheavy.pdf used on input line 822.
-(pdftex.def)             Requested size: 347.12495pt x 441.81125pt.
+Package pdftex.def Info: figures/cVheavy.pdf used on input line 825.
+(pdftex.def)             Requested size: 303.73184pt x 386.58002pt.
 
-[27 <./figures/cVheavy.pdf>] [28]
-No file simpleArrayFluent.bbl.
+[27 <./figures/cVheavy.pdf>] [28] (./simpleArrayFluent.bbl)
 
 AED: lastpage setting LastPage
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 883.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 883.
-(./simpleArrayFluent.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 883.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 883.
+[29]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 886.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 886.
+ (./simpleArrayFluent.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 886.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 886.
 Package rerunfilecheck Info: File `simpleArrayFluent.out' has not changed.
-(rerunfilecheck)             Checksum: 6B5178944358E81504EEC712864D0CFA;1154.
-
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 883.
+(rerunfilecheck)             Checksum: 929134E0B8EFE668247E5AE15C85CFF6;1204.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 886.
  ) 
 Here is how much of TeX's memory you used:
- 12333 strings out of 493304
- 196112 string characters out of 6139871
- 379515 words of memory out of 5000000
- 15320 multiletter control sequences out of 15000+600000
+ 12347 strings out of 493304
+ 196294 string characters out of 6139871
+ 379412 words of memory out of 5000000
+ 15322 multiletter control sequences out of 15000+600000
  77251 words of font info for 123 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 43i,20n,45p,558b,507s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 43i,20n,45p,557b,507s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-rmtt.enc}{/usr/share/texmf/fonts/enc/
 dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr
 /share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/
@@ -973,10 +918,10 @@ f/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy
 8.pfb></usr/share/texmf/fonts/type1/public/lm/lmtk10.pfb></usr/share/texmf/font
 s/type1/public/lm/lmtt10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtti10.pf
 b>
-Output written on simpleArrayFluent.pdf (28 pages, 1224005 bytes).
+Output written on simpleArrayFluent.pdf (29 pages, 1227553 bytes).
 PDF statistics:
- 485 PDF objects out of 1000 (max. 8388607)
- 407 compressed objects within 5 object streams
- 91 named destinations out of 1000 (max. 500000)
- 25315 words of extra memory for PDF output out of 29859 (max. 10000000)
+ 517 PDF objects out of 1000 (max. 8388607)
+ 438 compressed objects within 5 object streams
+ 101 named destinations out of 1000 (max. 500000)
+ 25323 words of extra memory for PDF output out of 29859 (max. 10000000)
 

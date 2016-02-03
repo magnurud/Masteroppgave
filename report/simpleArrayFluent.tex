@@ -55,15 +55,15 @@
     %\begin{itemize}
         %\item Description of the problem
         %\item LES - how basic? 
-        %\item the wind tunnel experiment and numerical experiment in CDP
+        %\item the wind-tunnel experiment and numerical experiment in CDP
         %\item Fluent and CDP
     %\end{itemize}
-    The scenario investigated in this work is dispersion of a neutral gas in a rectangular tunnel
+    The scenario investigated in this work is dispersion of neutral and heavy gas in a rectangular tunnel
     with four cubic blocks placed as obstacles. The blocks have sides $h = 0.109$ m and represent a 
     set of buildings forming a street canyon. The gas is released from a circular source on 
     ground level and
     is translated by the wind field through the canyon, see figure~\ref{fig:layout}.
-    In this figure $h$ is used as the length scale. The dotted lines
+    In this figure, $h$ is used as the length scale. The dotted lines
     indicate the positions where data is collected.
     %
     \begin{figure}[h]
@@ -77,14 +77,9 @@
     the box $1.04\leq x/H \leq 6,-1.75\leq y/H \leq 1.75, 0\leq z/H \leq 1.5$.
     The four cubic boxes are centered around $(2.4715,0)$ with a distance $h$ between each box.
     The source is placed with its center in $(1.436,0)$ and radius $r = 0.0515$.
-    The grid used for the simulation consists of $6.2$ million nodes and is described in detail
-    in~\cite{eriksson}. It is an unstructured hex-mesh that can be divided into three 
-    regions (R1,R2,R3) with different spatial discretization. The finest region is concentrated around the 
-    area where the plume is assumed to be located. In addition the grid size defining the source 
-    is even finer than in the rest of R1. The grid sizes in wall units, based on the length scale 
-    $l^{+}=lU^{*}/\nu$ is specified in table~\ref{tab:gridsize}. The variables $\nu,U^*$ are defined 
-    in table~\ref{tab:variables}. An illustration of the three regions 
-    is found in figure~\ref{fig:ref}
+    The grid used for the simulation is an instructured hex-mesh consisting of $6.2$ million nodes.
+    It can be divided into three regions (R1,R2,R3) with different degree of refinement.
+    %
     \begin{table}[h]
         \centering
         \begin{tabular}{c|c c c|c c c| }
@@ -100,6 +95,14 @@
 \label{tab:gridsize}
 \end{table}
 %
+    The finest region is concentrated around the area where the plume is assumed to be located.
+    In addition the grid size defining the source is even finer than in the rest of R1.
+    An illustration of the three regions is found in figure~\ref{fig:ref}
+    The grid sizes in wall units, based on the length scale 
+    $l^{+}=lU^{*}/\nu$ is specified in table~\ref{tab:gridsize}, and the variables $\nu,U^*$ are defined 
+    in table~\ref{tab:variables}. 
+    For a more detailed description of the mesh it is referred to~\cite{eriksson}. 
+%
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.9\textwidth]{figures/ref2.pdf}
@@ -109,14 +112,14 @@
 %
 The simulations are performed using Large Eddy Simulation (LES) 
 with the dynamic Smagorinsky-Lilly subgrid-scale model~\cite{dynsmag}. 
-The release of gas will result in a plume that is advected with the wind field. The size and 
+Releasing gas into this domain results in a plume that is advected with the wind field. The size and 
 shape of the plume at the indicated positions in figure~\ref{fig:layout} are compared with 
 experimental data and simulations performed in CDP\@. 
 The wind-field in the tunnel is created by an inflow condition that is defined from previous 
 simulations in CDP~\cite{eriksson}.
 For clarification, some of the variables used a lot throughout this work will be stated explicitly
 in table~\ref{tab:variables}.
-\begin{table}
+\begin{table}[h]
     \centering
     \begin{tabular}{c c c c}
         Variable & Value & Unit & Description \\ \hline
@@ -147,19 +150,19 @@ in table~\ref{tab:variables}.
 	%(Note that the default settings depend on the type of problem about to be solved)
 	The algorithm used in Fluent is a pressure-velocity coupling scheme called SIMPLE\@.
 	It is a predictor-corrector method for solving the equations of continuity~\cref{eq:continuity}
-	and momentum~\cref{eq:momentum} and is documented in the Fluent Theory Guide~\cite{theoryguide}. 
-    This scheme provides
-	estimations for the velocity $\mathbf{u}$ and the pressure $p$ for each timestep. When these 
-	estimations are obtained the transport equation for the species transport is solved. 
+	and momentum~\cref{eq:momentum},more info about this method can be found 
+    in the Fluent Theory Guide~\cite{theoryguide}. 
+    This scheme provides estimations for the velocity $\mathbf{u}$
+    and the pressure $p$ for each timestep. When these variables are 
+    updated the transport equation for the species concentration is solved. 
 	This procedure is continued until convergence is reached within each timestep. 
 
-
 	The numerical method used in CDP VIDA is a predictor-corrector method 
-	developed by Ham (2007)~\cite{Ham} and has a slightly different approach. 
-	Instead of first solving for pressure and velocity VIDA makes an initial prediction of 
-	the flux and the mass fraction of the species. This allows it to calculate the density. 
+	developed by Ham (2007)~\cite{Ham}, and has a slightly different approach to the problem. 
+	Instead of first solving for pressure and velocity, VIDA makes an initial prediction of 
+	the flux and the mass fraction of the species, and based on this guess the density is calculated. 
 	The prediction for flux is then corrected by conserving mass, and the mass fraction is 
-	corrected by the transport equation. After doing these calculations the velocity 
+	corrected by solving the transport equation. After doing these calculations the velocity 
 	and pressure equations are solved in a coupled manner similar to the way Fluent does it.
 	The method is described in \emph{Cascade's User's \& Developer's manual 2014, chap. 9.2}~\cite{CDP}.
 	
@@ -168,30 +171,28 @@ in table~\ref{tab:variables}.
   is therefore more stable and achieves faster convergence, whereas the algorithm applied in Fluent 
 	requires more iterations per timestep and is more dependent on its stability coefficients.
 \section{Mathematical formulation}
-Assuming incompressible flow, the governing equations are the continuity equation, 
-\begin{align}
-	\nabla \cdot \mathbf{u} = 0,
-	\label{eq:continuity}
-\end{align}
-and the Navier-Stokes (N-S) equation obtained by conserving momentum,
+Assuming incompressible flow, the governing equations of the physics regarding this work 
+are the Navier-Stokes equations 
 \begin{align}
 	\rho \frac{\partial \mathbf{u}}{\partial t} + \rho \mathbf{u} \cdot \nabla \mathbf{u} 
-	= \rho \mathbf{g} - \nabla p +\frac{\partial}{\partial x_j} 
+	&= \rho \mathbf{g} - \nabla p +\frac{\partial}{\partial x_j} 
 	\left[ 2\mu S_{ij}
-	-\frac{2}{3} \delta_{ij}\frac{\partial u_j}{\partial x_i}\right].
-	\label{eq:momentum}
+	-\frac{2}{3}\rho \delta_{ij}\frac{\partial u_j}{\partial x_i}\right],\label{eq:momentum}\\
+	\nabla \cdot \mathbf{u} &= 0.
+	\label{eq:continuity}
 \end{align}
 In these equations $\mathbf{u} = [u_1, u_2, u_3]$ is the velocity of the flow, $p$ is the pressure, $\rho$ is the 
 mass density of air, $S_{ij}=\frac{1}{2}(\frac{\partial u_i}{\partial x_j}+
 \frac{\partial u_j}{\partial x_i})$ is the strain rate tensor,
 $\mathbf{g} = [0,0,-g]$ is the gravitational acceleration, $\mu$ is the dynamic viscosity of air
-and $\delta_{ij}$ is the Kronecker delta function. Since the gas released has the same density 
-as air, the gravitational term is not taken into account in these calculations. 
-In order to compute the transport of the gas an additional equation has to be solved, namely 
-the transport diffusion equation for the mass fraction $Z$ of the neutral gas,
+and $\delta_{ij}$ is the Kronecker delta function. 
+For a neutrally buoyant gas the density is constant and the gravitational
+term can be omitted from~\ref{eq:momentum}. 
+The transport of the gas is found by solving an additional equation, namely 
+the scalar equation for the mass fraction $Z$ of the gas,
 %
 \begin{align}
-	\frac{\partial}{\partial t}(\rho Z) + \nabla \cdot (\rho \mathbf{u}Z) = -\nabla \cdot \mathbf{J} + S.	
+	\frac{\partial}{\partial t}(\rho Z) + \mathbf{u} \cdot \nabla (\rho Z) = -\nabla \cdot \mathbf{J} + S.	
 	\label{eq:transport}
 \end{align}
 %
@@ -208,9 +209,9 @@ the volume-weighted mixing law is applied,
 %
 \subsection{Turbulence modelling}
 The governing equations are solved using LES, which consists of simulating the large scale structures
-and modelling the smaller ones. The filter width determines the size of the structures 
-to be resolved and of those to be modelled. For this work the grid size is used as the filter width.
-The grid size is the lowest possible bound and a common choice for the filter width. 
+and modelling the smaller ones. To apply LES a filter is used to seperate the larger structures 
+from the smaller ones. For this work the grid is used as the filter, and a corresponding filter 
+width can be defind as the grid size.
 The filtered N-S equation is then given as 
 %
 %\begin{align}
@@ -241,13 +242,13 @@ fluctuating velocity components $u_i'$ as
 \end{align}
 %
 The eddy-viscosity assumption first introduced by Boussinesq~\cite{Pope} is a common way to simplify this
-tensor, which will be done in this work as well,
+tensor, 
 
 %
 \begin{align}
 	\boldsymbol\tau_{ij} = -2\mu_{SGS}\overline{S}_{ij}+\frac{1}{3}\delta_{ij}\boldsymbol\tau_{kk}.
 \end{align}
-Notice that the isotropic part of the tensor, $\boldsymbol\tau_{kk}$, is not modelled, but will instead
+Notice that the isotropic part of the tensor $\boldsymbol\tau_{kk}$ is not modelled, but will instead
 be added to the filtered static pressure term $\tilde{p}$.
 The tensor $\boldsymbol\tau_{ij}$ will model the effect of the SGS motions in the flow. There are many ways of modelling
 this tensor, and for this work the dynamic Smagorinsky-Lilly~\cite{dynsmag} model is used. This is a method developed 
@@ -273,7 +274,7 @@ and $L_s$ is the filter width.
 All simulations are performed in Fluent 16.1 and the settings used can be found in 
 subsection~\ref{Fluent}.
 The least conventional part of the implementation is how the inflow boundary condition is imposed. 
-The velocity profile entering the domain is generated in a previous simulation~\cite{eriksson}. 
+The velocity profile entering the domain is generated in a previously performed simulation~\cite{eriksson}. 
 Figure~\ref{fig:inlet} illustrates how this velocity profile is imposed at every timestep as an 
 inflow boundary condition at $x=1.04$. Along the sides of the channel and the roof symmetric 
 boundary conditions are selected, the floor has no-slip conditions and for the outflow plane 
@@ -290,7 +291,7 @@ used for creating the boundary layer.}
 %
 \subsection{Implementation in Fluent}\label{Fluent}
  The configurations used are 
-briefly stated in the list below. The boldfaced objects are the default settings which will be 
+briefly stated in the list below. The boldfaced objects are the default settings that will be 
 compared with optional settings.
 \begin{enumerate}
 		\item Models
@@ -307,7 +308,7 @@ compared with optional settings.
 					\item Main inflow:  Read from files using several UDFs
 					\item Gas source:  Specified mass flow rate $50l/\min$
 					\item Floor and cubes:  No slip conditions
-					\item Walls and ``sky''Free slip conditions by specifying symmetric stress
+					\item Walls and ``sky'':  Free slip conditions by specifying symmetric stress
 				\end{itemize}
 		\item Solution Methods
 			\begin{itemize}
@@ -339,17 +340,15 @@ Fluent Theory Guide~\cite{theoryguide}, but the scheme is given as
 	-(1+\beta_{n+1/2}+\beta_{n-1/2})\phi_{n-1}+\beta_{n-1/2}\phi_{n-2}}{\Delta t}.
 	\label{eq:u2ob}
 \end{align}
-Unless the bounding factors are chosen such that they correspond to the discretization in~\cref{eq:u2o}
+Unless the bounding factors are chosen such that they correspond to the discretization in~\cref{eq:u2o},
 the error term will be of order $O(\Delta t)$. 
 The second order upwind method used for the discretization of the species is a method which 
 adds a diffusion term of order $O(\Delta t)$ and does in this way stabilize the numerical 
 method by reducing the order of accuracy. 
 
-By choosing different solution methods one can expect to obtain slightly different run times
-and solutions. Based on the assumption that Fluent provides stable, diffusive solutions
-the momentum, air and transport schemes from point 4 in the list above will be exchanged
-for less diffusive schemes.
-
+By choosing different solution methods one can expect to obtain slightly different
+runtimes and solutions. Attempting to provide a more accurate solution, the 
+defaults schemes were exchanged for presumably less diffusive ones.
 
 \subsection{Reading the inflow}
 The inflow at each timestep is specified componentwise in separate files.
@@ -398,12 +397,12 @@ define interpolation algorithm  (``DEFINE_INIT'')
 
 In order to make the interpolation algorithm run efficiently some global variables are stored. 
 These variables will be deleted after a Fluent session and it is necessary 
-to redefine them for every new Fluent session. Note that \verb|DEFINE_INIT| is only executable
-at the initialization of the flow. There is therefore necessary to initialize the global 
+to redefine them for every new Fluent session. Note that \verb|DEFINE_INIT| is executed
+at the initialization of the flow. It is therefore necessary to initialize the global 
 variables in a different way. This is solved by creating the 
-UDF \verb|DEFINE_ON_DEMAND| which can be executed at any given point and thus 
-initialize the global variables when starting up Fluent in the middle of a 
-simulation.
+UDF \verb|DEFINE_ON_DEMAND|. This macro can be executed at any given point during the simulation
+and can therefore also be used to initialize the global variables
+when starting up Fluent in the middle of a run.
 		
 The interpolation algorithm used for this experiment is an inverse distance
 interpolation using the four closest points and the inversed distance
@@ -411,14 +410,14 @@ squared as weights.
 
 \subsection{Cases investigated}
 One of the main objectives of this work is to investigate the Fluent solver and 
-how it manages to simulate gas dispersion. In order to get a good understanding of 
+how it manages to simulate gas dispersion. To get a good understanding of 
 how the solver works and how the different settings in Fluent affect the solution,
 several comparison studies were performed. The results are presented in chapter~\ref{results}, 
-but for clarity the different cases investigated will be stated and motivated here. 
+but for clarity the different cases investigated are stated and motivated here. 
 
 \begin{enumerate}
     \item \textbf{Fluent/CDP/Wind tunnel experiment}\\
-        comparing the solution to the data from CDP simulations and wind tunnel experiments
+        comparing the solution to the data from CDP simulations and wind-tunnel experiments
     \item \textbf{Variation in solver settings}\\
         Fluent automatically suggests certain solver settings depending on the 
         problem to be solved. To find out if it was possible to make the solver more 
@@ -426,26 +425,28 @@ but for clarity the different cases investigated will be stated and motivated he
     \item \textbf{The effect of the SGS model}\\
         Comparing solutions with and without an SGS model. In the central parts of the domain
         the mesh is very fine, $\Delta \sim \eta$, where $\eta$ is the Smagorinsky length scale 
-        which is estimated to be approximately $1.5$mm in section ~\ref{sgs}. 
-        Most of the turbulent structures are resolved and the SGS model should be less important. 
+        that is estimated to be approximately $1.5$ mm in section~\ref{sgs}. 
+        Most of the turbulent structures are resolved and 
+        Fluent should be able to provide a decent solution without an SGS model.
     \item \textbf{Variation in gridsize}\\
         In order to find out how good the resolution of the mesh needs to be,
         solutions using $N=6.200.000 ,N/2\text{ and } N/4$ nodes is compared. For the coarser meshes 
         the SGS model will be more important, and a lot of computational time can be saved 
-        if the SGS model is found to provide good results. This is also an important test
-        to check that grid convergence is obtained.
+        if the SGS model is found to provide good results. 
+        By doing this test we also confirm that  
+        the accuracy increases with $N$.
     \item \textbf{Fluent/CDP/Wind tunnel experiment - Heavy gas}\\
-        Comparing the solution to the data from CDP simulations and wind tunnel 
-        experiments for heavy gas release. The same volume of gas is inserted to the domain, 
+        Comparing the solution to the data from CDP simulations and wind-tunnel 
+        experiments for heavy gas release. The same volume of gas is released from the source, 
         and the settings of the solver is as similar as possible to the default case for 
-        neutral gas. The only changes necessary in Fluent was switching on gravity and adding
-        CO$_2$ as a species. 
+        neutral gas. The only changes necessary in Fluent was adding the gravitational term
+        and changing the species CO$_2$.
 \end{enumerate}
 
 \section{Results and discussion}\label{results}
-This section contains the results from the simulations compared with
-the experimental wind tunnel measurements and the simulations performed with CDP\@.
-In order to generate the results the values in table~\ref{tab:output} are being 
+This section contains results from the simulations compared with
+the experimental wind-tunnel measurements and the simulations performed with CDP\@.
+To generate the results the values in table~\ref{tab:output} are 
 written to file from Fluent. 
 	
 \begin{table}[h]
@@ -463,22 +464,22 @@ written to file from Fluent.
     \end{center}
 \end{table}
 
-All values are either predefined in Fluent or easily calculated from 
-the available values. All values are averaged in time, with a sample time specified in each case. 
-All time-averaged variables will be denoted $\overline{var}$, and the variables 
+All variables are either predefined in Fluent or easily calculated from 
+these. All data used for comparison is averaged, and the sampling time will be specified
+in each case. All time-averaged variables will be denoted $\overline{var}$, and the variables 
 averaged in both time and space will be denoted $\langle var \rangle$.
 
 \subsection{Boundary layer creation}
-Before any gas can be released the profile of the flow and the boundary layer 
+Before any gas can be released, the profile of the flow and the boundary layer 
 have to be correctly estimated.
-The Reynold's stresses and the scaled velocity variable is therefore compared 
-with the wind tunnel experiment. 
+The Reynold stresses and the scaled velocity is therefore compared 
+with the wind-tunnel experiment. 
 The results in figure~\ref{fig:bl} show good agreement with the experimental data
 apart from an underestimation of the first normal stress.
 The sharp peaks right above ground level are due to the roughness elements
 (see figure~\ref{fig:inlet}) used to create the boundary layer.
-One can clearly see from $\langle uu\rangle$ how this stabilizes 
-inside the domain where no roughness elements are present.
+By comparing the stresses on the inflow face with a parallel plane further into the domain
+one can confirm that the turbulence is maintained. 
 %
 \begin{figure}[h]
   \centering
@@ -498,9 +499,10 @@ plotted against $z/H$. (b) $U^+$ plotted against $z^+$}
 \end{figure}
 %
 
-The reduction of stress is also visible in~\ref{fig:bl}(b). $U^+ = U_{ref}/U^*$ increases 
-slightly in the buffer region $(5<z^+<200)$ implying a reduction in the friction velocity 
-estimated by the relation $U^* = \sqrt{-\langle uw\rangle}$. The averaging of $uw$ in this particular
+The stress is however somewhat reduced as seen in~\ref{fig:bl}(b). The scaled velocity 
+$U^+ = U_{ref}/U^*$ increases slightly in the buffer region $(5<z^+<200)$
+implying a reduction in the friction velocity estimated by the relation
+$U^* = \sqrt{-\langle uw\rangle}$. The averaging of $uw$ in this particular
 estimation of $U^*$ is done in time and within the spatial domain $-1\leq y/H \leq 1$ 
 and $0\leq z/H \leq 0.2$. 
 \newpage
@@ -530,7 +532,7 @@ and $0\leq z/H \leq 0.2$.
 \label{fig:iso}
 \end{figure}
 %
-In figure~\ref{fig:iso} the mass fraction of the released gas is fixed on the surfaces. 
+In figure~\ref{fig:iso} the averaged mass fraction of the released gas is fixed on the surfaces. 
 The results show a very smooth surface for the different values for the concentration.
 The plume is slightly shifted towards negative y-direction, this indicates that the sampling time
 should be even longer. 
@@ -552,7 +554,7 @@ for the measurements downstream in the experimental data.
 	\centering
 	\includegraphics[width=0.8\textwidth]{figures/cH.pdf}
 	\caption{Time-averaged concentration with a sample time of $12.48$ s at $z/H = 0.025$ plotted horizontally and scaled 
-	with the free-stream velocity and emission rate. Compared against wind tunnel data.
+	with the free-stream velocity and emission rate. Compared against wind-tunnel data.
 Two dashed lines on either side of the centerline represent the canyon.}
 \label{fig:cH}
 \end{figure}
@@ -567,14 +569,15 @@ Two dashed lines on either side of the centerline represent the canyon.}
 	\centering
 	\includegraphics[width=0.8\textwidth]{figures/cV.pdf}
 	\caption{Time-averaged concentration with a sample time of $12.48$ s at $y/H = 0$ plotted vertically and scaled with the
-		free-stream	velocity and emission rate. Compared against wind tunnel data.}
+		free-stream	velocity and emission rate. Compared against wind-tunnel data.}
 \label{fig:cV}
 \end{figure}
 %
 
-The computational results in figure~\ref{fig:cV} capture very well the 
-structure of the concentration in the plane $y=0$. Further downstream the differences 
-increase, and Fluent has a tendency to overestimate the concentration. 
+The computational results presented in figure~\ref{fig:cV} gives an image of the vertical 
+profile of the averaged gas plume in the plane $y=0$. The results coincide very well 
+apart from the measurement lines further downstream where the differences 
+increase, and Fluent tend to overestimate the concentration. 
 Close to the wall the solutions are not identical, but all the data estimates roughly the 
 same peak concentration. 
 %Both the height and the development of the plume is predicted very well with the simulations. 
@@ -585,11 +588,11 @@ same peak concentration.
 	\centering
 	\includegraphics[width=0.8\textwidth]{figures/cfluctH.pdf}
 	\caption{Fluctuating concentration with a sample time of $12.48$ s at $z/H = 0.025$ plotted horizontally and
-	scaled with the free stream velocity and emission rate. Compared against wind tunnel data.} 
+	scaled with the free stream velocity and emission rate. Compared against wind-tunnel data.} 
 \label{fig:cfluctH}
 \end{figure}
 %
-The fluctuation of the released gas concentration is plotted against the wind tunnel data in figure~\ref{fig:cfluctH}.
+The fluctuation of the released gas concentration is plotted against the wind-tunnel data in figure~\ref{fig:cfluctH}.
 Also in this plot the simulated and experimental data give similar results. 
 One can clearly see how the simulation captures the structures of the fluctuation. 
 %
@@ -617,7 +620,7 @@ local preconditioner used in the calculation results in a
 faster convergence when the problem is decomposed to 120 cores. 
 %
 \subsection{Testing of discretization schemes in Fluent}\label{chap:perf}
-As mentioned in Section~\ref{Fluent}, several of the solution methods have been tested and a small 
+As mentioned in Section~\ref{Fluent}, several of the solution methods have been compared and a small 
 performance-test is done. The discretizations referred to as default are the ones stated in boldface
 in the list in Section~\ref{Fluent}. The performance data are all relative to the all-default 
 	solution given explicitly in the last row. Relative convergence refers to the number of times convergence is reached relative to the all-default
@@ -638,7 +641,7 @@ case.
 	\caption{Performance test on 4000 timesteps, or 6.4 seconds for different solution method settings in Fluent,
 		all with convergence criteria $5\cdot10^{-8}$ on the residual from the continuity equation, and a maximum of 50 iterations per timestep.
 		The simulations are all performed on 40 cores. Convergence is here defined as the number of 
-		timesteps which reached convergence divided by the total number of timesteps. }
+		timesteps that reached convergence divided by the total number of timesteps. }
 \label{tab:performance}
 \end{table}
 %
@@ -658,9 +661,9 @@ This is as expected since the simulation
 is done with a neutrally buoyant gas which will have very little impact on the flow.
 By changing the time discretization the convergence rate increases slightly, 
 while the calculation time drops by almost 10 \%. 
-With the 3rd order MUSCL scheme for momentum, convergence is increased by 70 \%, and with a 
+With the 3rd order MUSCL scheme for momentum, convergence is increased by 40 \%, and with a 
 small change in the computational time at iteration level the total runtime is decreased by 17 \%.
-The data in table~\ref{tab:performance} will depend on the convergence criteria and the maximum 
+The data in table~\ref{tab:performance} depends on the convergence criteria and the maximum 
 number of iterations allowed, but it gives an indication of how the different solver settings compare.  
 %
 %
@@ -672,7 +675,7 @@ number of iterations allowed, but it gives an indication of how the different so
 	%\label{fig:cVcompcases}
 %\end{figure}
 %
-The change which has the most significant impact is the momentum discretization, 
+The change that has the most significant impact is the momentum discretization, 
 in figure~\ref{fig:default-not} %and~\ref{fig:cVcompcases} 
 the results after $5.92$
 seconds is presented. The shape of the plume is very similar in all cases, the width is 
@@ -703,7 +706,7 @@ the tuned case consistently underestimates the concentration.
 %An interesting difference is in 
 %the last plot in figure~\ref{fig:cVcompcases}, where the default scheme predicts a higher
 %concentration for $ 1 \leq z \leq 2$. 
-%The fact that the data from the wind tunnel experiment and from CDP also predicts 
+%The fact that the data from the wind-tunnel experiment and from CDP also predicts 
 %a lower concentration than Fluent (figure~\ref{fig:cV}) in this domain gives reason to believe that 
 %by changing the discretization schemes one might be able to provide better estimates for
 %the species concentration.
@@ -731,7 +734,7 @@ The plots clearly show that even without the SGS model Fluent is able to capture
 plume. It is worth to mention that the
 sampling time is not sufficiently long for the plume to be stabilized, so it is hard to determine 
 whether the simulation without an SGS model will be able to predict a plume that is similar to the 
-measured data from the wind tunnel experiment. But the effect of the SGS model is indisputable,
+measured data from the wind-tunnel experiment. But the effect of the SGS model is indisputable,
 especially the horizontal plots illustrates how it reduces the asymmetry of the plume.  
 
 By comparing the performance as done to the tests in table~\ref{tab:performance} one finds that 
@@ -753,11 +756,11 @@ does not change.
 %
 \subsection{Grid size}
 By reducing the number of grid cells, the result should yield a less
-accurate solution. In figure~\ref{fig:ref-coarse} three distinct meshes
+accurate solution. In figure~\ref{fig:ref-coarse}, three distinct meshes
 are compared. 
 The difference between the solutions are not critical, they all estimate a plume similar 
 to the experimental one.
-With coarser mesh Fluent does however consistently estimate a lower peak, something that 
+With a coarser mesh Fluent does however consistently estimate a lower peak, something that 
 would suggest a poorer approximation of the conserving laws of passive scalars.
 %
 \begin{figure}[h]
@@ -794,13 +797,13 @@ refinement layer, in other words $R1 = R2$.
 %the \textit{3rd order MUSCL}-scheme as a more agressive option to \textit{Bounded CD}. Put in a 
 %simpler way, one can expect a more correct solution if it turns out to be sufficiently stable.
 \section{Heavy gas}
-A passive scalar does not have any effect on the velocity field so the computational 
+A passive scalar does not have any effect on the velocity field, so the computational 
 challenges are similar to the ones encountered when simulating a common flow problem. 
 When a heavy gas is released into a flow it has to be treated as an active scalar and 
 it will affect the initial velocity field. This is a computationally more demanding problem, 
 but nevertheless a realistic case and it is important to verify that our computational software 
 is able to provide good estimates. The measurments are done in the same fashion as for neutral 
-gas, but at slightly different positions downstream.
+gas, but at different positions downstream.
 %
 \begin{figure}[!h]
     \centering
@@ -811,7 +814,7 @@ gas, but at slightly different positions downstream.
 \end{figure}
 %
 \newpage
-Along the first two measurment lines in figure~\ref{fig:cHheavy} Fluent and CDP 
+Along the first two measurment lines in figure~\ref{fig:cHheavy}, Fluent and CDP 
 provides very similar results. And the measurement at $x = 0$ shows decent similarity 
 to the experimental data as well. Further downstream Fluent fails to predict the middle 
 peak which is present in both the experiment and the simulations done in CDP. The 
@@ -819,16 +822,16 @@ concentration is also consistently underestimated.
 %
 \begin{figure}[!h]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/cVheavy.pdf}
+    \includegraphics[width=0.7\textwidth]{figures/cVheavy.pdf}
     \caption{Time-averaged concentration with $28.8$ s of sampling at $y/H = 0$.
         All concentrations are scaled with the free-stream velocity and the emission rate.}
 \label{fig:cVheavy}
 \end{figure}
-\newpage
 %
 From the data along the vertical lines plotted in figure~\ref{fig:cVheavy} Fluent consistently 
 underestimates the concentration close to the wall. The slope of the profile is also very 
 different from CDP and the experimental data.
+\newpage
 %
 %\begin{figure}[h]
     %\centering
